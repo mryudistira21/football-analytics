@@ -1,0 +1,20 @@
+# Big / local-only things — never commit these
+data/*.mp4
+data/*.mov
+data/*.mkv
+data/*.pt
+data/*.csv
+data/*.png
+data/heat*
+!data/.gitkeep
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
