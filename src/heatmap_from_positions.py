@@ -16,6 +16,7 @@ histogram is kept, never the whole table.
 """
 from __future__ import annotations
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -42,13 +43,18 @@ def draw_pitch(ax):
         ax.add_patch(plt.Rectangle((x0, 13.84), 16.5, 40.32, fill=False, color="white", lw=1.2, zorder=3))
 
 
-def attacks_right(team: str, period: int, home_dir: str) -> bool:
-    home_right_1h = home_dir.upper() == "R"
-    home_right = home_right_1h if period == 1 else not home_right_1h
+def attacks_right(team: str, period: int, directions: dict[str, bool]) -> bool:
+    key = str(int(period))
+    if key not in directions:
+        raise ValueError(
+            f"No home attacking direction is recorded for period {period}. "
+            "Add it to the tracking metadata; extra time must not be inferred."
+        )
+    home_right = directions[key]
     return home_right if team == "home" else not home_right
 
 
-def accumulate(csv: Path, home_dir: str | None, chunksize: int = 200_000):
+def accumulate(csv: Path, directions: dict[str, bool] | None, chunksize: int = 200_000):
     hists: dict[str, np.ndarray] = {}
     counts: dict[str, int] = {}
     cols = ["period", "team", "x", "y", "role"]
@@ -65,8 +71,10 @@ def accumulate(csv: Path, home_dir: str | None, chunksize: int = 200_000):
         chunk = chunk[chunk["x"].between(0, PITCH_L) & chunk["y"].between(0, PITCH_W)]
         for team, g in chunk.groupby("team"):
             x, y = g["x"].to_numpy(), g["y"].to_numpy()
-            if home_dir and team in ("home", "away") and "period" in g:
-                flip = ~np.array([attacks_right(team, int(p), home_dir) for p in g["period"]])
+            if directions and team in ("home", "away") and "period" in g:
+                flip = ~np.array([
+                    attacks_right(team, int(p), directions) for p in g["period"]
+                ])
                 x = np.where(flip, PITCH_L - x, x)
                 y = np.where(flip, PITCH_W - y, y)
             h, _, _ = np.histogram2d(x, y, bins=BINS, range=[[0, PITCH_L], [0, PITCH_W]])
@@ -91,17 +99,40 @@ def save_heatmap(h: np.ndarray, title: str, out: Path):
 def main() -> int:
     ap = argparse.ArgumentParser(description="Hot-area maps from a tracking CSV.")
     ap.add_argument("csv", type=Path)
-    ap.add_argument("--home-dir", choices=["R", "L"], help="which way home attacks on screen in the 1st half")
+    ap.add_argument("--meta", type=Path, help="tracking metadata JSON (defaults to <csv>.meta.json)")
+    ap.add_argument("--home-dir", choices=["R", "L"], help="legacy fallback: home attacking direction in period 1")
     ap.add_argument("--out", default="data/heat", help="output path prefix")
     a = ap.parse_args()
 
-    hists, counts = accumulate(a.csv, a.home_dir)
+    meta_path = a.meta or a.csv.with_suffix(".meta.json")
+    directions = None
+    if meta_path.is_file():
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        raw = meta.get("home_attacks_right_by_period")
+        if isinstance(raw, dict):
+            directions = {}
+            for period, value in raw.items():
+                if isinstance(value, bool):
+                    directions[str(period)] = value
+                elif str(value).upper() in ("R", "L"):
+                    directions[str(period)] = str(value).upper() == "R"
+            if not directions:
+                raise SystemExit(f"No valid home_attacks_right_by_period found in {meta_path}")
+    elif a.home_dir:
+        right = a.home_dir.upper() == "R"
+        directions = {"1": right, "2": not right}
+    elif "period" in pd.read_csv(a.csv, nrows=0).columns:
+        raise SystemExit(
+            f"Tracking metadata not found: {meta_path}. Supply --meta or legacy --home-dir R/L."
+        )
+
+    hists, counts = accumulate(a.csv, directions)
     if not hists:
         print("No usable rows found.")
         return 1
     prefix = Path(a.out)
     prefix.parent.mkdir(parents=True, exist_ok=True)
-    note = "attacking →" if a.home_dir else "camera view"
+    note = "attacking →" if directions else "camera view"
     for team, h in hists.items():
         safe = "".join(ch for ch in team if ch.isalnum() or ch in "-_")
         save_heatmap(h, f"Hot areas — {team} ({counts[team]:,} positions, {note})",
