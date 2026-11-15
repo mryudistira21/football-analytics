@@ -555,12 +555,48 @@ def main() -> int:
                         and timestamp - args.start_seconds <= args.annotated_max_seconds
                     ):
                         annotated = frame.copy()
-                        if tracked.tracker_id is not None:
-                            for box, tid in zip(tracked.xyxy, tracked.tracker_id):
+                        if tracked.tracker_id is not None and tracked.class_id is not None:
+                            for box, tid, cid in zip(tracked.xyxy, tracked.tracker_id, tracked.class_id):
+                                if tid is None:
+                                    continue
+                                role = (
+                                    "GK" if int(cid) == class_ids["goalkeeper"]
+                                    else "REF" if int(cid) == class_ids["referee"]
+                                    else "P"
+                                )
+                                team = "unknown"
+                                if role != "REF" and votes[int(tid)]:
+                                    ordered = votes[int(tid)].most_common()
+                                    if len(ordered) == 1 or ordered[0][1] > ordered[1][1]:
+                                        team = ordered[0][0]
+                                color = (
+                                    (40, 210, 70) if team == "home"
+                                    else (40, 145, 255) if team == "away"
+                                    else (175, 175, 175)
+                                )
+                                if role == "REF":
+                                    color = (190, 190, 190)
                                 x1, y1, x2, y2 = np.asarray(box, dtype=int)
-                                cv2.rectangle(annotated, (x1, y1), (x2, y2), (70, 220, 90), 2)
-                                cv2.putText(annotated, f"ID {tid}", (x1, max(15, y1 - 5)),
-                                            cv2.FONT_HERSHEY_SIMPLEX, 0.45, (70, 220, 90), 1)
+                                cv2.rectangle(annotated, (x1, y1), (x2, y2), color, 2)
+                                label = f"{role} {int(tid)} {team}"
+                                cv2.putText(
+                                    annotated, label, (x1, max(15, y1 - 5)),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1,
+                                    cv2.LINE_AA,
+                                )
+                        if len(ball):
+                            ball_center = ball.get_anchors_coordinates(
+                                anchor=sv.Position.CENTER
+                            )[0].astype(int)
+                            cv2.circle(
+                                annotated, tuple(ball_center), 7,
+                                (40, 40, 240), 2, cv2.LINE_AA,
+                            )
+                            cv2.putText(
+                                annotated, "BALL", (int(ball_center[0]) + 8, int(ball_center[1]) - 8),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (40, 40, 240), 1,
+                                cv2.LINE_AA,
+                            )
                         cv2.putText(annotated, f"CAMERA: {camera_state.upper()}", (12, 28),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
                         writer.write(annotated)
