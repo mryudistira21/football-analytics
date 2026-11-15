@@ -395,7 +395,7 @@ def main() -> int:
         with temporary_csv.open("w", newline="", encoding="utf-8") as fp:
             out = csv.DictWriter(fp, fieldnames=FIELDS)
             out.writeheader()
-            decoded_count = 0
+            decoded_count = max(0, int(round(args.start_seconds * fps)))
             try:
                 while True:
                     ok, frame = cap.read()
