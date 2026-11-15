@@ -81,8 +81,8 @@ Outputs:
 
 ```text
 D:\Video-Bola-Analis\tracking\
-  test20_tracks.csv
-  test20_tracks.meta.json
+  test20_p1_tracks.csv
+  test20_p1_tracks.meta.json
   test20_preview.mp4
 ```
 
