@@ -12,20 +12,22 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 | **camera** | tracking CSV | the goal on the **left of the broadcast picture**, all match long |
 | **team** | event CSV (Tagger) | the acting team's **own goal**; every team attacks toward `x = 105` |
 
-- Converting camera → team: if the team attacks **left** on screen in that period, `x' = 105 − x`, `y' = 68 − y`. Teams swap ends at half-time. The match's `home_dir_1h` (`R` or `L`) says which way home attacks on screen in period 1.
+- Converting camera → team: if the team attacks **left** on screen in that period, `x' = 105 − x`, `y' = 68 − y`.
+- Direction per period is explicit, not assumed. The match metadata carries `home_attacks_right_by_period` (e.g. `{"1": true, "2": false}`). Teams swap at half-time, but extra time (periods 3–4) gets a fresh coin toss (IFAB Law 8), so never infer period 3 from period 1. For a normal two-half match, `home_dir_1h` (`R`/`L`) is enough and periods 3–4 are absent.
 
 ## 2. Time
 | Field | Type | Meaning |
 |---|---|---|
-| `video_seconds` | float | seconds from the start of the **video file** (the join key between tracks) |
+| `video_seconds` | float | seconds from the start of the **video file** (the join key between tracks). The Tagger records it whenever a video is loaded, in **either** time mode; empty only when no video was loaded, and such events cannot be joined to tracking. |
 | `frame` | int | 0-based frame index in the video file (tracking only) |
 | `fps` | float | video frame rate, stored once per run (tracking metadata) |
 | `period` | int | 1 = first half, 2 = second half, 3/4 = extra time |
 | `match_seconds` | float | match clock in seconds (as on the scoreboard) |
 
-`video_seconds = frame / fps`. Join events to tracking by `video_seconds` (nearest frame within ±0.5 s).
+`video_seconds = frame / fps`. Join events to tracking by `video_seconds`, taking the nearest tracking frame within a tolerance of **one sampling interval**, `frame_stride / fps` (e.g. 30 fps with `frame_stride` 3 → 0.1 s), not a fixed half-second. A tagged event's `video_seconds` is a human click and can lag the true moment by a second or so, so when several candidate players fall inside the window, record the ambiguity rather than forcing one match.
 
 ## 3. Identity
+- `match_id`: one immutable id per recording/analysis, shared by both tracks. Two recordings of the "same" fixture (e.g. a replay) get different `match_id`s.
 - `team`: always `home` or `away` (names live in match metadata).
 - `shirt_number` (events) and `track_id` (tracking) are **separate identifiers**. A `track_id` is anonymous and can change after occlusions or camera cuts. They are linked only through an explicit mapping table that a human confirms:
   `track_map.csv`: `match_id, track_id, video_seconds_from, video_seconds_to, team, shirt_number`
@@ -33,8 +35,9 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 ## 4. Event CSV (Track A, Pitchside Tagger export)
 One row per event; coordinates in the **team** frame.
 
-`match, id, half, match_clock, match_seconds, video_seconds, team, side, player, player_name, event, outcome, receiver, receiver_name, x, y, end_x, end_y, body_part, situation, assist_event_id, xg, xt_added, progressive, into_box`
+`match_id, match_name, id, half, match_clock, match_seconds, video_seconds, team, side, player, player_name, event, outcome, receiver, receiver_name, x, y, end_x, end_y, body_part, situation, assist_event_id, xg, xt_added, progressive, into_box`
 
+- `match_id` is the stable id both tracks share (the Tagger's internal match id, e.g. `m8f3k2ab`); `match_name` is the display name only. Join across tracks on `match_id`, never on the name.
 - `team` is the team name; `side` is `home` or `away` (use `side` to join with tracking).
 - `event`: `pass, cross, shot, tackle, interception, recovery, clearance, foul`
 - `outcome`: `complete, incomplete` (pass/cross) · `goal, on target, off target, blocked` (shot) · `won, lost` (tackle) · `complete` (others)

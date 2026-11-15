@@ -13,6 +13,7 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — `DATA_CONTRACT.md` (shared format for both tracks)
 - [x] **Claude** — downloader v2: 30 fps cap, trim without re-encode, disk check, JS runtime, `--crop auto`
 - [x] **Claude** — `src/club_db.py` local club/player/match database; Tagger "Load from file" for lineups
+- [x] **Claude** — ChatGPT review round 2: xT play_pattern, match_id, video_seconds, downloader path, storage/assist edge cases, contract (extra-time, tolerance)
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off
 - [ ] **Claude** — match report page from a finished CSV (one shareable page per match)
 - [ ] **Claude** — export to SPADL so socceraction (VAEP) and mplsoccer work on our data

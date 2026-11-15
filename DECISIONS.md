@@ -2,6 +2,17 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-15 — After ChatGPT's second review (integration pass)
+- **xT methodology (Finding E):** now excludes WHOLE set-piece possessions via StatsBomb `play_pattern`, not just the delivery, for passes, carries and shots. Kept patterns: Regular Play, From Counter, From Keeper, From Kick Off. Training moves 411k → 224k; near-goal peak 0.25 → 0.32. "Open play only" is now literally true. Grid refitted; Tagger and models/xt_grid.json stay identical (192 cells).
+- **Stable match_id (Finding B):** event CSV now starts `match_id, match_name, ...`. `match_id` is the Tagger's immutable id; joins use it, never the display name.
+- **video_seconds always captured (Finding C):** recorded whenever a video is loaded, in both time modes; empty only with no video. This is the join key to tracking.
+- **Downloader output path (Finding A):** `resolve_output()` prefers the merged `filepath`, then falls back to the newest matching file on disk. Smoke-tested with a mock.
+- **Storage edge cases (Finding F1):** corrupted local match-list/events now warn instead of looking like an empty match; a failed load blocks saves so unreadable data is never overwritten.
+- **Assist by match time (Finding F2):** candidateAssist orders by clock, not tag order, so seeking back in the video and tagging late still links correctly.
+- **Extra-time direction (Finding D):** contract now carries `home_attacks_right_by_period`; periods 3–4 get a fresh coin toss, never inferred from period 1.
+- **Join tolerance:** contract ties it to `frame_stride / fps`, not a fixed ±0.5 s.
+- **30 fps is best-effort:** documented; if no ≤30 fps stream exists the download keeps the higher rate (plays fine) and the note says how to bring it down.
+
 ## 2026-11-15 — After ChatGPT's source review
 - Accepted and fixed: set-piece filter in `fit_xt.py` (refit: open play only, 412k moves), `fit_xt.py` main() + mkdir, Tagger localStorage error surfacing, xA = pass whose receiver is the shooter, CSV import validation, exact xG coefficients in the Tagger, PPDA labelled as approximation, downloader real output path, measured crop.
 - Not changed: StatsBomb coordinates are already oriented with the acting team attacking toward x = 120, so `fit_xt.py` needs no per-team flip.
