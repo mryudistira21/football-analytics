@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-15 — Track B pitch geometry aligned with Pitchside Tagger
+- **Homography target geometry:** Track B maps Roboflow's 32 ordered soccer-pitch keypoints to the exact 105 × 68 m landmark coordinates used by Pitchside Tagger. Do not axis-scale the 120 × 70 m source template independently; this distorts internal markings while a homography can still have a low reprojection residual.
+- The mapping is identified in tracking metadata as `pitchside_tagger_105x68_v1` and guarded by tests for all 32 landmarks plus rejection of unexpected source geometry/order.
+- **Camera-state contract for v1:** only `wide` and `closeup` are emitted. Here `closeup` is a fallback for invalid/unavailable pitch calibration, not a confirmed semantic close-up; replay/graphics classification remains future work.
+- A 30-second video smoke test still requires the local `test20.mp4` and model weights; do not mark it complete based only on unit tests.
+
 ## 2026-11-15 — After ChatGPT's second review (integration pass)
 - **xT methodology (Finding E):** now excludes WHOLE set-piece possessions via StatsBomb `play_pattern`, not just the delivery, for passes, carries and shots. Kept patterns: Regular Play, From Counter, From Keeper, From Kick Off. Training moves 411k → 224k; near-goal peak 0.25 → 0.32. "Open play only" is now literally true. Grid refitted; Tagger and models/xt_grid.json stay identical (192 cells).
 - **Stable match_id (Finding B):** event CSV now starts `match_id, match_name, ...`. `match_id` is the Tagger's immutable id; joins use it, never the display name.

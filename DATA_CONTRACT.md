@@ -4,6 +4,7 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 
 ## 1. Pitch and coordinates
 - Pitch: **105 × 68 metres**. Units are metres everywhere, never pixels.
+- Track B homography targets must use the **same 32 internal landmark coordinates as Pitchside Tagger**. Do not independently scale Roboflow's 120 × 70 m template axes to 105 × 68 m: that changes penalty-area, goal-area and penalty-spot geometry even when the homography residual is small. The validated mapping is versioned as `pitchside_tagger_105x68_v1` in tracking metadata.
 - `y = 0` is the **top touchline as seen on the broadcast camera**; `y` grows downward (same as the screen and the Tagger).
 - Two frames, never mixed in one column:
 
@@ -52,7 +53,7 @@ One row per detected object per processed frame; coordinates in the **camera** f
 - `role`: `player, goalkeeper, referee, ball`
 - `team`: `home, away, unknown` (`unknown` for referees, ball, unclassified)
 - `x`, `y`: metres; empty when the frame has no valid pitch calibration.
-- `camera_state`: `wide` (usable for positions), `closeup`, `replay`, `graphics`. Only `wide` rows carry `x`, `y`.
+- `camera_state`: Track B v1 emits `wide` or `closeup`. `wide` means the frame's pitch-keypoint homography passed calibration validation and its coordinates are usable. `closeup` is the fallback when calibration does not pass; it is **not** a semantic guarantee that the footage is a close-up and may also include replay/graphics frames or weak keypoint detections. Only `wide` rows carry `x`, `y`. Add `replay` or `graphics` only when a future version actually detects and tests those states.
 - Metadata file next to it, `<name>.meta.json`: at minimum `match_id, video_file, fps, width, height, home_dir_1h, home_attacks_right_by_period, frame_stride, model_versions`. It should also record the processed `period`, source-video start/end seconds, completion status, and relevant tracking configuration.
 
 ## 6. Resource rules (both tracks)

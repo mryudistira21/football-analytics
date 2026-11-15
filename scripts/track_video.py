@@ -35,13 +35,48 @@ def model_dir() -> Path:
     return Path(os.environ.get("FOOTBALL_MODEL_DIR") or video_dir() / "models")
 
 
+# Roboflow Sports SoccerPitchConfiguration keypoint order (centimetres).
+# Keep this reference in sync with the upstream 32-vertex configuration. The
+# runtime check below makes an upstream geometry/order change fail loudly.
+_ROBOFLOW_PITCH_VERTICES_CM = np.asarray([
+    [0, 0], [0, 1450], [0, 2584], [0, 4416], [0, 5550], [0, 7000],
+    [550, 2584], [550, 4416], [1100, 3500],
+    [2015, 1450], [2015, 2584], [2015, 4416], [2015, 5550],
+    [6000, 0], [6000, 2585], [6000, 4415], [6000, 7000],
+    [9985, 1450], [9985, 2584], [9985, 4416], [9985, 5550],
+    [10900, 3500], [11450, 2584], [11450, 4416],
+    [12000, 0], [12000, 1450], [12000, 2584], [12000, 4416],
+    [12000, 5550], [12000, 7000], [5085, 3500], [6915, 3500],
+], dtype=np.float32)
+
+# The matching 32 landmarks in Pitchside Tagger's 105 x 68 metre geometry.
+# These are true pitch dimensions/markings, not an independent axis rescale.
+_TAGGER_PITCH_VERTICES_M = np.asarray([
+    [0, 0], [0, 13.84], [0, 24.84], [0, 43.16], [0, 54.16], [0, 68],
+    [5.5, 24.84], [5.5, 43.16], [11, 34],
+    [16.5, 13.84], [16.5, 24.84], [16.5, 43.16], [16.5, 54.16],
+    [52.5, 0], [52.5, 24.85], [52.5, 43.15], [52.5, 68],
+    [88.5, 13.84], [88.5, 24.84], [88.5, 43.16], [88.5, 54.16],
+    [94, 34], [99.5, 24.84], [99.5, 43.16],
+    [105, 0], [105, 13.84], [105, 24.84], [105, 43.16],
+    [105, 54.16], [105, 68], [43.35, 34], [61.65, 34],
+], dtype=np.float32)
+
+
 def pitch_targets(vertices: Any) -> np.ndarray:
-    """Roboflow's 12000 x 7000 cm pitch -> DATA_CONTRACT's 105 x 68 metres."""
+    """Map Roboflow's ordered 32 pitch landmarks to the Tagger's 105 x 68 m pitch."""
     v = np.asarray(vertices, dtype=np.float32)
-    if v.ndim != 2 or v.shape[1] != 2:
-        raise ValueError("Expected pitch vertices with shape (n, 2)")
-    return np.column_stack((v[:, 0] * (105.0 / 12000.0),
-                            v[:, 1] * (68.0 / 7000.0))).astype(np.float32)
+    if v.shape != _ROBOFLOW_PITCH_VERTICES_CM.shape:
+        raise ValueError(
+            "Expected the 32 ordered Roboflow soccer pitch keypoints; "
+            f"received shape {v.shape}"
+        )
+    if not np.allclose(v, _ROBOFLOW_PITCH_VERTICES_CM, atol=1e-3, rtol=0):
+        raise ValueError(
+            "Unexpected Roboflow pitch landmark geometry/order. "
+            "Update the validated source and Tagger landmark arrays together."
+        )
+    return _TAGGER_PITCH_VERTICES_M.copy()
 
 
 def fit_homography(
@@ -319,7 +354,8 @@ def main() -> int:
             "sports": "roboflow/sports",
         },
         "team_cluster_0_side": args.cluster_0_side,
-        "camera_state_method": "wide only when frame pitch-keypoint homography passes validation; otherwise closeup",
+        "pitch_geometry": "pitchside_tagger_105x68_v1",
+        "camera_state_method": "wide when pitch-keypoint homography passes validation; otherwise closeup (v1 fallback state)",
         "complete": False,
     }
     temporary_csv = output.with_suffix(output.suffix + ".partial")

@@ -8,6 +8,7 @@ First implementation of video-to-position tracking. It is deliberately separate 
 - Tracks people using Supervision ByteTrack.
 - Optionally learns two kit-colour clusters from a capped sample of player crops using Roboflow Sports' SigLIP + UMAP + KMeans TeamClassifier.
 - Detects pitch keypoints on each sampled frame and estimates a homography.
+- Maps the 32 ordered Roboflow pitch keypoints to the Tagger's actual 105 × 68 m landmark geometry (`pitchside_tagger_105x68_v1`); it does not independently scale the source pitch axes.
 - Converts bottom-centre player locations and ball centres into the 105 x 68 metre camera coordinate frame.
 - Streams rows to a temporary CSV, promoting it to the final CSV only after a successful run.
 - Writes a metadata JSON beside the CSV.
@@ -17,7 +18,7 @@ First implementation of video-to-position tracking. It is deliberately separate 
 
 1. **Team clusters are arbitrary.** `--cluster-0-side home` maps cluster 0 to home; it does not prove that cluster 0 is home. Check the short annotated preview, then rerun with `--cluster-0-side away` if reversed.
 2. **Track IDs are not shirt numbers.** IDs can change after occlusions/camera cuts. Use a human-confirmed `track_map.csv` as described in DATA_CONTRACT.md.
-3. **Camera-state classification is conservative.** `wide` means pitch calibration passed geometric checks; `closeup` means it did not. V1 does not reliably distinguish replay, graphics or other non-live footage, so it must not claim to deduplicate replays.
+3. **Camera-state classification is calibration-based, not semantic.** V1 emits only `wide` and `closeup`: `wide` means the pitch homography passed validation; `closeup` is the fallback when it did not. The fallback can include genuine close-ups, replays, graphics, or poor keypoint detections. V1 does not reliably identify replay/graphics footage and must not claim to deduplicate it.
 4. **Homography is per sampled frame.** There is no temporal interpolation or camera-cut smoothing yet. Frames with weak calibration have blank coordinates.
 5. **VFR timing needs validation.** The script uses OpenCV's decoder timestamp when it increases monotonically, otherwise frame/FPS. Validate event joins for variable-frame-rate screen recordings.
 6. **Goalkeepers may remain unknown.** V1 team-colour votes are accumulated from outfield players; the goalkeeper is not confidently assigned to a side yet.
