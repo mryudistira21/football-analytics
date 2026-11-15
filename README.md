@@ -8,7 +8,7 @@ First match: **PERSIBA Bantul vs Gresik United** (Liga Nusantara 2026/27).
 
 | Track | What it gives | How |
 |---|---|---|
-| **A — Manual tagging** | passing, shooting, crossing, xG, xA, shot maps, pass maps, hot areas | Watch the video and click events on a pitch. Runs in a browser, no GPU. |
+| **A — Manual tagging** | passing, shooting, crossing, xG, xA, xT, progressive passes, pass networks, PPDA, field tilt, shot/pass maps, hot areas | Watch the video and click events on a pitch. Runs in a browser, no GPU. |
 | **B — Automatic tracking** | player/ball positions, hot areas, later event detection | `roboflow/sports` CV models (players, ball, pitch) on the RTX 2070. |
 
 Track A works today and needs nothing installed. Track B is the harder, GPU-based pipeline we build up over time.
@@ -31,7 +31,10 @@ The current plan, open questions and decisions live in [`TASKS.md`](TASKS.md) an
 ## Repo layout
 
 ```
-src/        reusable code (xG model, crop, heatmaps, position export)
+src/        reusable code (xG + xT models, crop, heatmaps)
+models/     fitted model files (xT grid)
+scripts/    how the models were fitted (re-runnable)
+tagger/     source of the Pitchside Tagger web app
 collab/     the hand-off note for ChatGPT, kept up to date
 notebooks/  experiments
 data/       local only — videos, model weights, CSVs (git-ignored)
@@ -39,5 +42,12 @@ data/       local only — videos, model weights, CSVs (git-ignored)
 
 ## Quick start (Track A)
 
-The Pitchside Tagger is a hosted page — open it, set up the match, load your video, click events.
-Link: see `collab/status.md`. Export CSV from it lands in `data/` and feeds the scripts in `src/`.
+1. Get the video (720p, H.264 so the browser can play it):
+   ```powershell
+   pip install -U yt-dlp
+   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --name persiba_vs_gresik
+   # only the first 15 minutes, to try things out:
+   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --start 00:00 --end 15:00 --name test15
+   ```
+2. Open the Pitchside Tagger, set up the match, choose the video from `data/`, and tag.
+3. Download the CSV into `data/`. The scripts in `src/` read it.
