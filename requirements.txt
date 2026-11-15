@@ -1,0 +1,17 @@
+# Track B — automatic tracking (install on D:, Python 3.10/3.11, see DECISIONS.md)
+#
+# Install PyTorch FIRST, separately, with the cu118 index — not from this file:
+#   pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
+# Then:
+#   pip install -r requirements.txt
+#   pip install git+https://github.com/roboflow/sports.git
+
+ultralytics
+supervision
+opencv-python
+numpy
+pandas
+scipy
+matplotlib
+gdown          # downloads the sports models from Google Drive
+umap-learn     # team classification clustering
