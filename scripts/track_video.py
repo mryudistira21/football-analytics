@@ -385,6 +385,8 @@ def main() -> int:
         if args.limit_seconds is not None:
             duration_limit = args.start_seconds + args.limit_seconds
             stop_at = min(stop_at, duration_limit) if stop_at is not None else duration_limit
+        metadata["effective_end_seconds"] = stop_at
+        write_meta()
 
         processed = 0
         last_timestamp = -1.0
