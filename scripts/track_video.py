@@ -214,7 +214,12 @@ def main() -> int:
     parser.add_argument("--frame-stride", type=int, default=3)
     parser.add_argument("--imgsz", type=int, default=960)
     parser.add_argument("--pitch-imgsz", type=int, default=960)
-    parser.add_argument("--limit-seconds", type=float)
+    parser.add_argument("--start-seconds", type=float, default=0.0,
+                        help="source-video start time; use one run per match period")
+    parser.add_argument("--end-seconds", type=float,
+                        help="source-video end time (exclusive)")
+    parser.add_argument("--limit-seconds", type=float,
+                        help="maximum processing duration from --start-seconds (smoke test)")
     parser.add_argument("--no-team-classification", action="store_true")
     parser.add_argument("--team-sample-seconds", type=float, default=240)
     parser.add_argument("--team-sample-interval", type=float, default=1.5)
@@ -244,6 +249,10 @@ def main() -> int:
         directions[str(period)] = side == "R"
     if str(args.period) not in directions:
         parser.error(f"Period {args.period} needs --period-direction {args.period}:R or {args.period}:L.")
+    if args.start_seconds < 0:
+        parser.error("--start-seconds must be >= 0")
+    if args.end_seconds is not None and args.end_seconds <= args.start_seconds:
+        parser.error("--end-seconds must be greater than --start-seconds")
     if args.limit_seconds is not None and args.limit_seconds <= 0:
         parser.error("--limit-seconds must be positive")
 
@@ -285,7 +294,9 @@ def main() -> int:
     width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     cap.release()
 
-    output = (args.output or (video_dir() / "tracking" / f"{video.stem}_tracks.csv")).expanduser().resolve()
+    output = (args.output or (
+        video_dir() / "tracking" / f"{video.stem}_p{args.period}_tracks.csv"
+    )).expanduser().resolve()
     meta_path = output.with_suffix(".meta.json")
     output.parent.mkdir(parents=True, exist_ok=True)
     if not args.overwrite and (output.exists() or meta_path.exists()):
@@ -299,6 +310,9 @@ def main() -> int:
         "home_dir_1h": args.home_dir_1h,
         "home_attacks_right_by_period": period_dirs,
         "frame_stride": args.frame_stride,
+        "period": args.period,
+        "source_start_seconds": args.start_seconds,
+        "source_end_seconds": args.end_seconds,
         "model_versions": {
             "ultralytics": importlib.metadata.version("ultralytics"),
             "supervision": importlib.metadata.version("supervision"),
@@ -364,6 +378,13 @@ def main() -> int:
         cap = cv2.VideoCapture(str(video))
         if not cap.isOpened():
             raise RuntimeError(f"Cannot reopen video: {video}")
+        if args.start_seconds > 0:
+            cap.set(cv2.CAP_PROP_POS_MSEC, args.start_seconds * 1000.0)
+
+        stop_at = args.end_seconds
+        if args.limit_seconds is not None:
+            duration_limit = args.start_seconds + args.limit_seconds
+            stop_at = min(stop_at, duration_limit) if stop_at is not None else duration_limit
 
         processed = 0
         last_timestamp = -1.0
@@ -374,22 +395,28 @@ def main() -> int:
         with temporary_csv.open("w", newline="", encoding="utf-8") as fp:
             out = csv.DictWriter(fp, fieldnames=FIELDS)
             out.writeheader()
-            frame_index = 0
+            decoded_count = 0
             try:
                 while True:
                     ok, frame = cap.read()
                     if not ok:
                         break
-                    # OpenCV position is a presentation timestamp on most files; fallback to frame/FPS.
+                    # POS_FRAMES reports the next frame after read.
+                    raw_frame_pos = cap.get(cv2.CAP_PROP_POS_FRAMES)
+                    frame_index = max(0, int(raw_frame_pos) - 1) if raw_frame_pos > 0 else decoded_count
+                    decoded_count += 1
+
+                    # Prefer the decoder's presentation timestamp (PTS).
                     raw_msec = cap.get(cv2.CAP_PROP_POS_MSEC)
                     timestamp = raw_msec / 1000.0
                     if not math.isfinite(timestamp) or timestamp < 0 or timestamp <= last_timestamp:
                         timestamp = frame_index / fps
                     last_timestamp = timestamp
-                    if args.limit_seconds is not None and timestamp > args.limit_seconds:
+                    if timestamp < args.start_seconds:
+                        continue
+                    if stop_at is not None and timestamp >= stop_at:
                         break
                     if frame_index % args.frame_stride:
-                        frame_index += 1
                         continue
                     processed += 1
 
@@ -532,7 +559,6 @@ def main() -> int:
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
                         writer.write(annotated)
 
-                    frame_index += 1
             finally:
                 cap.release()
                 if writer.isOpened():
