@@ -399,7 +399,11 @@ def main() -> int:
                     )[0]
                     detections = sv.Detections.from_ultralytics(result)
                     if detections.class_id is None:
-                        detections = detections[np.zeros(0, dtype=bool)]
+                        detections = sv.Detections(
+                            xyxy=np.empty((0, 4), dtype=np.float32),
+                            confidence=np.empty((0,), dtype=np.float32),
+                            class_id=np.empty((0,), dtype=int),
+                        )
                     else:
                         keep_ids = np.array(list(class_ids.values()), dtype=int)
                         confidence = (
