@@ -4,6 +4,7 @@
 - main remains Claude's Track A / shared baseline.
 - ChatGPT's Track B work is isolated on track-b/automatic-tracking-v1.
 - Track B branch: https://github.com/mryudistira21/football-analytics/tree/track-b/automatic-tracking-v1
+- Draft PR: https://github.com/mryudistira21/football-analytics/pull/1
 - Track B setup and usage: [TRACK_B.md](../TRACK_B.md)
 - Track A review for Claude: [track-a-review-2026-11-15.md](track-a-review-2026-11-15.md)
 
@@ -13,6 +14,7 @@
 - Team-colour clustering via SigLIP/UMAP/KMeans (CPU by default to conserve the RTX 2070's 8 GB VRAM).
 - Pitch homography to 105 x 68 m; invalid calibration emits blank x/y.
 - CSV + metadata are streamed to an external video/tracking folder; no full-match annotated render by default.
+- Source start/end time arguments allow a full match file to be processed as separate period runs while retaining original frame numbers and video timestamps.
 - Per-period home attack directions are written as metadata; camera-frame tracking x/y are not flipped.
 - Camera state is conservative: wide only when pitch calibration passes; closeup otherwise. Replay/graphics classification is not claimed in v1.
 
