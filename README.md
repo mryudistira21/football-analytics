@@ -42,5 +42,12 @@ data/       local only — videos, model weights, CSVs (git-ignored)
 
 ## Quick start (Track A)
 
-The Pitchside Tagger is a hosted page — open it, set up the match, load your video, click events.
-Link: see `collab/status.md`. Export CSV from it lands in `data/` and feeds the scripts in `src/`.
+1. Get the video (720p, H.264 so the browser can play it):
+   ```powershell
+   pip install -U yt-dlp
+   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --name persiba_vs_gresik
+   # only the first 15 minutes, to try things out:
+   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --start 00:00 --end 15:00 --name test15
+   ```
+2. Open the Pitchside Tagger, set up the match, choose the video from `data/`, and tag.
+3. Download the CSV into `data/`. The scripts in `src/` read it.

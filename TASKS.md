@@ -7,7 +7,8 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — xG model fitted on StatsBomb open data → `src/xg_model.py`
 - [x] **Claude** — Tagger v2: xT + progressive passes + passes into box; receiver # + pass network; defensive events (tackle, interception, recovery, clearance, foul) → PPDA, field tilt; xG race chart; lineups
 - [x] **Claude** — xT grid fitted on StatsBomb open data → `src/xt_model.py`, `models/xt_grid.json`, `scripts/fit_xt.py`
-- [ ] **Rizki** — download the full match at 720p (yt-dlp), tag the first 15 minutes, export CSV to `data/`
+- [x] **Claude** — `src/download_match.py` (yt-dlp, 720p H.264, optional start/end)
+- [ ] **Rizki** — download the match with `src/download_match.py`, tag the first 15 minutes, export CSV to `data/`
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off
 - [ ] **Claude** — match report page from a finished CSV (one shareable page per match)
 - [ ] **Claude** — export to SPADL so socceraction (VAEP) and mplsoccer work on our data
