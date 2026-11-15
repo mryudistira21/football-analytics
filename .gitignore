@@ -1,4 +1,6 @@
-# Big / local-only things — never commit these
+# Big / local-only things — never commit these.
+# Videos live OUTSIDE the repo by default (sibling football-video/ folder),
+# so the editor never indexes them. data/ still ignored for CSVs etc.
 data/*.mp4
 data/*.mov
 data/*.mkv
