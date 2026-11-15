@@ -83,6 +83,29 @@ def gb(n: float) -> str:
     return f"{n / 1024**3:.2f} GB"
 
 
+def resolve_output(info: dict, out_dir: Path, stem: str) -> Path | None:
+    """The final merged file, not an intermediate video/audio component.
+
+    yt-dlp's top-level `filepath` is set after merge + post-processing; a
+    `requested_downloads` entry can still point at a component. Try both, then
+    fall back to the newest matching file actually on disk.
+    """
+    cands: list[str] = []
+    rd = info.get("requested_downloads") or []
+    if rd:
+        cands += [rd[0].get("filepath"), rd[0].get("_filename")]
+    cands += [info.get("filepath"), info.get("_filename")]
+    for c in cands:
+        if c and Path(c).exists():
+            return Path(c)
+    if "%" not in stem:
+        hits = sorted(out_dir.glob(stem + ".*"), key=lambda p: p.stat().st_mtime, reverse=True)
+        vids = [h for h in hits if h.suffix.lower() in (".mp4", ".mkv", ".webm", ".mov")]
+        if vids or hits:
+            return (vids or hits)[0]
+    return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Download a match video for tagging.")
     ap.add_argument("url")
@@ -158,16 +181,18 @@ def main() -> int:
 
         info = ydl.process_ie_result(info, download=True)
 
-    downloads = info.get("requested_downloads") or [{}]
-    path = Path(downloads[0].get("filepath") or downloads[0].get("_filename") or "")
-    if not path.exists():
-        print("Download finished but the output file could not be located in", out_dir)
+    path = resolve_output(info, out_dir, stem)
+    if not path or not path.exists():
+        print("Download finished but the merged output file could not be located in", out_dir)
         return 1
     fps = info.get("fps")
     print(f"\nSaved: {path}")
     print(f"{info.get('width')}x{info.get('height')} @ {fps} fps, codec {info.get('vcodec')}, {gb(path.stat().st_size)}")
-    if a.fps and fps and fps > a.fps + 1:
-        print(f"Note: YouTube had no {a.fps} fps stream at this height, so this is {fps} fps.")
+    over_fps = a.fps and fps and fps > a.fps + 1
+    if over_fps:
+        print(f"Note: YouTube had no {a.fps} fps stream at this height, so this is {fps} fps. "
+              f"Add --crop auto, or --fps {a.fps} on a re-encode, to bring it down; "
+              "the Tagger plays it fine either way.")
 
     if a.crop != "none":
         from crop_broadcast import crop_video, detect_crop
@@ -176,7 +201,7 @@ def main() -> int:
             print("No black bars found: no crop needed.")
         else:
             cropped = path.with_name(path.stem + "_crop.mp4")
-            cap = a.fps if (a.fps and fps and fps > a.fps + 1) else None   # re-encoding anyway: apply the fps cap too
+            cap = a.fps if over_fps else None   # re-encoding anyway: apply the fps cap too
             crop_video(path, cropped, crop, a.threads, cap)
             if not a.keep_original:
                 path.unlink()

@@ -344,7 +344,7 @@ function xgOf(e){
   const z=-1.40636605-0.10564557*d+1.38289241*a-1.12515185*(e.body==="head"?1:0)+0.52487711*(e.sit==="fk"?1:0);
   return 1/(1+Math.exp(-z));
 }
-const XT=[[0.0019,0.00289,0.00365,0.00462,0.00534,0.00632,0.00718,0.00822,0.00972,0.01124,0.01324,0.01526,0.01746,0.01884,0.01914,0.01673],[0.00247,0.00343,0.00435,0.00527,0.00613,0.007,0.00811,0.00918,0.01052,0.012,0.01393,0.01621,0.01899,0.02125,0.02275,0.02123],[0.00301,0.00412,0.00495,0.00579,0.0067,0.00766,0.00858,0.00983,0.01125,0.01275,0.01469,0.01754,0.02069,0.02444,0.02672,0.02632],[0.0036,0.00454,0.00532,0.0061,0.00704,0.00802,0.00896,0.0103,0.0118,0.01325,0.01525,0.01833,0.02299,0.02964,0.03649,0.0278],[0.0038,0.00476,0.00554,0.00643,0.00723,0.00819,0.00927,0.01058,0.01209,0.0136,0.01563,0.01896,0.02509,0.04162,0.08006,0.06688],[0.00436,0.00494,0.00571,0.00645,0.00736,0.00824,0.00935,0.01055,0.01229,0.01363,0.01598,0.01975,0.03002,0.05875,0.12752,0.2527],[0.00436,0.00494,0.00571,0.00645,0.00736,0.00824,0.00935,0.01055,0.01229,0.01363,0.01598,0.01975,0.03002,0.05875,0.12752,0.2527],[0.0038,0.00476,0.00554,0.00643,0.00723,0.00819,0.00927,0.01058,0.01209,0.0136,0.01563,0.01896,0.02509,0.04162,0.08006,0.06688],[0.0036,0.00454,0.00532,0.0061,0.00704,0.00802,0.00896,0.0103,0.0118,0.01325,0.01525,0.01833,0.02299,0.02964,0.03649,0.0278],[0.00301,0.00412,0.00495,0.00579,0.0067,0.00766,0.00858,0.00983,0.01125,0.01275,0.01469,0.01754,0.02069,0.02444,0.02672,0.02632],[0.00247,0.00343,0.00435,0.00527,0.00613,0.007,0.00811,0.00918,0.01052,0.012,0.01393,0.01621,0.01899,0.02125,0.02275,0.02123],[0.0019,0.00289,0.00365,0.00462,0.00534,0.00632,0.00718,0.00822,0.00972,0.01124,0.01324,0.01526,0.01746,0.01884,0.01914,0.01673]];
+const XT=[[0.00393,0.00521,0.00628,0.00791,0.00883,0.01014,0.01143,0.01279,0.0149,0.01686,0.01943,0.02184,0.02462,0.02623,0.0262,0.02234],[0.00464,0.006,0.00741,0.00889,0.01003,0.01128,0.01268,0.01398,0.01598,0.01806,0.02039,0.02336,0.02668,0.0287,0.02973,0.02917],[0.00538,0.00702,0.00829,0.00943,0.0107,0.01206,0.01331,0.01496,0.01679,0.01872,0.02127,0.02427,0.02818,0.03263,0.03557,0.03528],[0.00639,0.0077,0.00872,0.00983,0.01106,0.0125,0.01356,0.01543,0.01728,0.01946,0.02185,0.02597,0.03212,0.04005,0.04492,0.03297],[0.00643,0.00796,0.009,0.01033,0.01135,0.01255,0.01407,0.01574,0.01758,0.0198,0.02272,0.02719,0.03405,0.05355,0.0914,0.06521],[0.0073,0.0083,0.00925,0.01034,0.01152,0.01261,0.01411,0.01561,0.01697,0.01999,0.02311,0.02719,0.03937,0.0761,0.17596,0.3171],[0.0073,0.0083,0.00925,0.01034,0.01152,0.01261,0.01411,0.01561,0.01697,0.01999,0.02311,0.02719,0.03937,0.0761,0.17596,0.3171],[0.00643,0.00796,0.009,0.01033,0.01135,0.01255,0.01407,0.01574,0.01758,0.0198,0.02272,0.02719,0.03405,0.05355,0.0914,0.06521],[0.00639,0.0077,0.00872,0.00983,0.01106,0.0125,0.01356,0.01543,0.01728,0.01946,0.02185,0.02597,0.03212,0.04005,0.04492,0.03297],[0.00538,0.00702,0.00829,0.00943,0.0107,0.01206,0.01331,0.01496,0.01679,0.01872,0.02127,0.02427,0.02818,0.03263,0.03557,0.03528],[0.00464,0.006,0.00741,0.00889,0.01003,0.01128,0.01268,0.01398,0.01598,0.01806,0.02039,0.02336,0.02668,0.0287,0.02973,0.02917],[0.00393,0.00521,0.00628,0.00791,0.00883,0.01014,0.01143,0.01279,0.0149,0.01686,0.01943,0.02184,0.02462,0.02623,0.0262,0.02234]];
 const xtAt=(x,y)=>XT[clamp(Math.floor(y/PW*12),0,11)][clamp(Math.floor(x/PL*16),0,15)];
 const xtAdded=e=>isPassLike(e)&&e.out==="ok"&&e.ex!=null?xtAt(e.ex,e.ey)-xtAt(e.x,e.y):0;
 const inBox=(x,y)=>x>=88.5&&y>=13.84&&y<=54.16;
@@ -366,13 +366,13 @@ const Store={mode:"memory",db:null,
   },
   async listMatches(){
     if(this.mode==="db"){const s=await this.db.collection("matches").get();return s.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}))}
-    if(this.mode==="local"){try{return JSON.parse(localStorage.getItem("pt:matches")||"[]")}catch(e){return[]}}
+    if(this.mode==="local"){const raw=localStorage.getItem("pt:matches");if(!raw)return[];try{return JSON.parse(raw)}catch(e){toast("Saved match list looks corrupted — export any open match's CSV.");throw e}}
     return [];
   },
   async saveMatch(m){
     const {id,...body}=m;
     if(this.mode==="db")return this.db.doc("matches/"+id).set(body);
-    if(this.mode==="local"){try{const l=await this.listMatches();const i=l.findIndex(x=>x.id===id);if(i>=0)l[i]=m;else l.push(m);localStorage.setItem("pt:matches",JSON.stringify(l))}catch(e){}}
+    if(this.mode==="local"){const l=await this.listMatches();const i=l.findIndex(x=>x.id===id);if(i>=0)l[i]=m;else l.push(m);localStorage.setItem("pt:matches",JSON.stringify(l))}
   },
   async deleteMatch(id,chunks){
     if(this.mode==="db"){for(const c of chunks)await this.db.doc(`matches/${id}/chunks/c${c}`).delete();await this.db.doc("matches/"+id).delete();return}
@@ -380,7 +380,7 @@ const Store={mode:"memory",db:null,
   },
   async loadEvents(id){
     if(this.mode==="db"){const s=await this.db.collection(`matches/${id}/chunks`).get();const out=[];s.docs.forEach(d=>{const b=d.data();if(b&&Array.isArray(b.events))out.push(...b.events)});return out}
-    if(this.mode==="local"){try{return JSON.parse(localStorage.getItem("pt:ev:"+id)||"[]")}catch(e){return[]}}
+    if(this.mode==="local"){const raw=localStorage.getItem("pt:ev:"+id);if(!raw)return[];try{return JSON.parse(raw)}catch(e){toast("This match's saved events look corrupted and could not be read.");throw e}}
     return [];
   },
   async saveChunk(id,c,events){ if(this.mode==="db")return this.db.doc(`matches/${id}/chunks/c${c}`).set({events}); },
@@ -389,7 +389,7 @@ const Store={mode:"memory",db:null,
 const CHUNK=400;
 let dirty=new Set(), saveTimer=null, saveChain=Promise.resolve(), saveErr=false;
 function markDirty(c){
-  if(!S.match||S.match.demo)return;
+  if(!S.match||S.match.demo||S.loadFailed)return;
   dirty.add(c); clearTimeout(saveTimer); saveTimer=setTimeout(flush,700); storeBadge("saving");
 }
 const stripCalc=e=>{const {xg,...rest}=e;return rest};
@@ -511,8 +511,11 @@ const video=$("#video");
 let videoLoaded=false;
 function clockNow(){const c=S.clock;return c.base+(c.running?(Date.now()-c.at)/1000:0)}
 function nowTimes(){
-  if(S.src==="video"&&videoLoaded){const t=video.currentTime;return{t,clock:(S.match?.offset||0)+t}}
-  return{t:null,clock:clockNow()};
+  // video_seconds (t) is recorded whenever a video is loaded, in either time mode,
+  // so events stay joinable to tracking data. The match clock still follows the chosen source.
+  const t=videoLoaded?video.currentTime:null;
+  if(S.src==="video"&&videoLoaded)return{t,clock:(S.match?.offset||0)+t};
+  return{t,clock:clockNow()};
 }
 setInterval(()=>{
   $("#clockFace").textContent=fmt(clockNow());
@@ -598,18 +601,22 @@ function continueFromLast(){
 $("#contBtn").onclick=continueFromLast;
 
 function candidateAssist(){
-  // Same team's completed passes in the last 20 s, newest first, stopping at a lost pass (possession broke).
-  const g=S.tag,shooter=$("#pnum").value.trim(),pool=[];
-  for(let i=S.events.length-1;i>=0;i--){
-    const e=S.events[i];
-    if(e.team!==S.team||!isPassLike(e))continue;
-    if(e.out!=="ok"||g.clock-e.clock>20)break;
-    if(g.clock-e.clock>=-1&&!S.events.some(s=>s.ast===e.id))pool.push(e);
+  // Same-team actions in the 20 s before the shot, ordered by MATCH TIME (not tag order,
+  // so seeking back in the video and tagging late still works). Possession must be unbroken.
+  const g=S.tag,shooter=$("#pnum").value.trim();
+  const taken=new Set(S.events.filter(s=>s.ast).map(s=>s.ast));
+  const before=S.events.filter(e=>e.team===S.team&&e.clock<=g.clock+0.001&&g.clock-e.clock<=20)
+    .sort((a,b)=>a.clock-b.clock);
+  const pool=[];
+  for(let i=before.length-1;i>=0;i--){const e=before[i];
+    if(!isPassLike(e)){if(e.out==="fail"||["tackle"].includes(e.type))break;else continue}
+    if(e.out!=="ok")break;                 // a lost pass broke possession
+    if(!taken.has(e.id))pool.push(e);      // newest first
   }
   if(!pool.length)return null;
-  if(shooter){const m=pool.find(e=>e.rcv===shooter);if(m)return m;   // receiver is the shooter: a real assist
-    if(pool[0].rcv&&pool[0].rcv!==shooter)return null;}               // last pass went to someone else: don't guess
-  return pool[0];                                                       // shooter or receiver unknown: best guess, can be unticked
+  if(shooter){const m=pool.find(e=>e.rcv===shooter);if(m)return m;
+    if(pool[0].rcv&&pool[0].rcv!==shooter)return null;}
+  return pool[0];
 }
 function openOutcome(){
   const ob=$("#outbar"),g=S.tag;ob.hidden=false;
@@ -1035,8 +1042,8 @@ function fillMatchSel(){
 $("#matchSel").onchange=async e=>{const id=e.target.value;if(S.match&&id===S.match.id)return;if(id==="demo")return loadDemo();const m=S.matches.find(x=>x.id===id);if(m)await openMatch(m)};
 async function openMatch(m){
   if(dirty.size){clearTimeout(saveTimer);flush();await saveChain}
-  S.match=m;S.events=[];$("#demoBanner").hidden=true;fillMatchSel();resetTag();renderAll();
-  try{S.events=(await Store.loadEvents(m.id)).map(e=>({...e,xg:xgOf(e)}))}catch(err){toast("Could not load events for this match.")}
+  S.match=m;S.events=[];S.loadFailed=false;$("#demoBanner").hidden=true;fillMatchSel();resetTag();renderAll();
+  try{S.events=(await Store.loadEvents(m.id)).map(e=>({...e,xg:xgOf(e)}))}catch(err){S.loadFailed=true;toast("Could not load this match's events — not shown, and not overwritten. Export a backup.");}
   renderAll();
 }
 function loadDemo(){S.match=DEMO;S.events=demoEvents();$("#demoBanner").hidden=false;fillMatchSel();renderAll()}
@@ -1080,10 +1087,10 @@ $("#delYes").onclick=async()=>{
 };
 
 /* ---------- CSV ---------- */
-const COLS=["match","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box"];
+const COLS=["match_id","match_name","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box"];
 function toCSV(){
   const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
-  const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.name,e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.team===0?"home":"away",e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
+  const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.id||"",S.match?.name||"",e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.team===0?"home":"away",e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
     e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):""].map(q).join(","));
   return COLS.join(",")+"\n"+rows.join("\n")+"\n";
 }
@@ -1114,7 +1121,7 @@ $("#importIn").addEventListener("change",e=>{
       lines.forEach(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
         const id=g("id")||uid();if(have.has(id)){skip.dup++;return}
         const type=g("event");if(!TYPES[type]){skip.type++;return}
-        const side=g("side").toLowerCase(),tn=g("team");
+        const side=g("side").toLowerCase(),tn=g("team")||g("match_name");
         const team=side==="home"?0:side==="away"?1:tn===S.match.home?0:tn===S.match.away?1:-1;
         if(team<0){skip.team++;return}
         const x=numOrNull(g("x")),y=numOrNull(g("y")),ex=numOrNull(g("end_x")),ey=numOrNull(g("end_y"));

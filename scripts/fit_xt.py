@@ -11,9 +11,13 @@ successful moves end. Then iterate
     xT = P(shoot) * P(goal | shot) + P(move) * sum(T(cell -> cell') * xT(cell'))
 until it converges.
 
+Open play only, defined precisely by StatsBomb's event-level `play_pattern`:
+every event (pass, carry AND shot) is kept only when its play_pattern is one of
+OPEN_PATTERNS below. This drops the WHOLE set-piece possession, not just the
+delivery, so a carry or shot that follows a corner is excluded too. Penalties
+are skipped as well.
+
 Notes
-- Open play only: set-piece passes (throw-ins, corners, free kicks, goal kicks,
-  kick-offs) and penalties are skipped.
 - StatsBomb stores every event with the acting team attacking left -> right
   (towards x = 120), in both halves, so no per-team flip is needed. The fitted
   grid confirms it: threat peaks at one end only.
@@ -34,7 +38,10 @@ ROOT = Path(__file__).resolve().parents[1]
 MODEL_DIR = ROOT / "models"
 BASE = "https://raw.githubusercontent.com/statsbomb/open-data/master/data/"
 COMPETITIONS = [(43, 106), (55, 282), (55, 43), (43, 3)]   # WC22, Euro24, Euro20, WC18
-SET_PIECES = {"Throw-in", "Corner", "Free Kick", "Goal Kick", "Kick Off"}
+# Open play = these play_patterns. Everything else (From Corner / Free Kick /
+# Throw In / Goal Kick, and the ambiguous "Other") is a set-piece possession
+# and is excluded whole.
+OPEN_PATTERNS = {"Regular Play", "From Counter", "From Keeper", "From Kick Off"}
 NX, NY = 16, 12
 
 
@@ -63,6 +70,8 @@ def count_match(match_id: int):
         loc = e.get("location")
         if not loc:
             continue
+        if e.get("play_pattern", {}).get("name") not in OPEN_PATTERNS:
+            continue                                    # whole set-piece possession excluded
         c = cell(*loc[:2])
         kind = e["type"]["name"]
         if kind == "Shot":
@@ -72,8 +81,6 @@ def count_match(match_id: int):
             goals[c] += e["shot"]["outcome"]["name"] == "Goal"
         elif kind == "Pass":
             p = e["pass"]
-            if p.get("type", {}).get("name") in SET_PIECES:
-                continue
             moves[c] += 1
             if "outcome" not in p:                      # no outcome = completed
                 trans[c, cell(*p["end_location"][:2])] += 1
@@ -119,7 +126,8 @@ def fit(workers: int = 12) -> dict:
     return {
         "nx": NX, "ny": NY,
         "grid": [[round(float(v), 5) for v in row] for row in grid],
-        "source": f"StatsBomb open data: WC2018, WC2022, Euro2020, Euro2024; {used} matches; open play only",
+        "source": (f"StatsBomb open data: WC2018, WC2022, Euro2020, Euro2024; {used} matches; "
+                   "open-play possessions only (play_pattern in " + ", ".join(sorted(OPEN_PATTERNS)) + ")"),
     }
 
 
