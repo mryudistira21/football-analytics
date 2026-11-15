@@ -207,6 +207,10 @@ def main() -> int:
     parser.add_argument("--device", choices=["auto", "cuda:0", "cpu"], default="auto")
     parser.add_argument("--period", type=int, choices=[1, 2, 3, 4], default=1)
     parser.add_argument("--home-dir-1h", choices=["R", "L"], required=True)
+    parser.add_argument(
+        "--period-direction", action="append", default=[], metavar="PERIOD:R|L",
+        help="explicit period direction override; required for periods 3 and 4",
+    )
     parser.add_argument("--frame-stride", type=int, default=3)
     parser.add_argument("--imgsz", type=int, default=960)
     parser.add_argument("--pitch-imgsz", type=int, default=960)
@@ -224,8 +228,22 @@ def main() -> int:
 
     if args.frame_stride < 1 or args.team_classify_every < 1:
         parser.error("frame stride and team classification interval must be positive")
-    if args.period in (3, 4):
-        parser.error("Extra time is not automatic in v1; extend metadata with the explicit coin-toss direction.")
+    directions = {
+        "1": args.home_dir_1h == "R",
+        "2": args.home_dir_1h != "R",
+    }
+    for item in args.period_direction:
+        try:
+            period_text, side = item.split(":", 1)
+            period = int(period_text)
+        except (ValueError, TypeError):
+            parser.error(f"Invalid --period-direction {item!r}; use PERIOD:R or PERIOD:L")
+        side = side.upper()
+        if period not in (1, 2, 3, 4) or side not in ("R", "L"):
+            parser.error(f"Invalid --period-direction {item!r}; use period 1..4 and R/L")
+        directions[str(period)] = side == "R"
+    if str(args.period) not in directions:
+        parser.error(f"Period {args.period} needs --period-direction {args.period}:R or {args.period}:L.")
     if args.limit_seconds is not None and args.limit_seconds <= 0:
         parser.error("--limit-seconds must be positive")
 
@@ -274,7 +292,7 @@ def main() -> int:
         print("Output exists; pass --overwrite or choose another --output.", file=sys.stderr)
         return 1
 
-    period_dirs = {"1": args.home_dir_1h == "R", "2": args.home_dir_1h != "R"}
+    period_dirs = directions
     metadata: dict[str, Any] = {
         "match_id": args.match_id, "video_file": str(video),
         "fps": float(fps), "width": width, "height": height,
@@ -384,7 +402,16 @@ def main() -> int:
                         detections = detections[np.zeros(0, dtype=bool)]
                     else:
                         keep_ids = np.array(list(class_ids.values()), dtype=int)
-                        detections = detections[np.isin(detections.class_id, keep_ids)]
+                        confidence = (
+                            detections.confidence
+                            if detections.confidence is not None
+                            else np.ones(len(detections), dtype=np.float32)
+                        )
+                        thresholds = np.where(
+                            detections.class_id == class_ids["ball"], 0.08, 0.25
+                        )
+                        keep = np.isin(detections.class_id, keep_ids) & (confidence >= thresholds)
+                        detections = detections[keep]
 
                     people = detections[np.isin(
                         detections.class_id,
