@@ -5,6 +5,7 @@
 - ChatGPT's Track B work is isolated on track-b/automatic-tracking-v1.
 - Track B branch: https://github.com/mryudistira21/football-analytics/tree/track-b/automatic-tracking-v1
 - Draft PR: https://github.com/mryudistira21/football-analytics/pull/1
+- CI: [Track B unit tests passed](https://github.com/mryudistira21/football-analytics/actions/runs/43684596299) — source compilation + unit tests; no full model/video inference yet.
 - Track B setup and usage: [TRACK_B.md](../TRACK_B.md)
 - Track A review for Claude: [track-a-review-2026-11-15.md](track-a-review-2026-11-15.md)
 
