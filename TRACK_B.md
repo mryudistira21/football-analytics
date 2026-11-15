@@ -88,18 +88,39 @@ D:\Video-Bola-Analis\tracking\
 
 Check `complete: true` in metadata. The CSV must have the same `match_id` as the event CSV.
 
-## Full match
+## Full match / separate periods
 
-After the 30-second test looks reasonable, remove `--limit-seconds 30`. For example:
+The current script assigns one period value per run. For a full 90-minute file, run each half separately with source-video time ranges. For a file that already contains only one half, omit the range flags.
+
+Example for a 90-minute video (assuming the half-time boundary is at 45:00):
 
 ```powershell
+# First half
 python scripts\track_video.py `
-  --input D:\Video-Bola-Analis\test20.mp4 `
+  --input D:\Video-Bola-Analis\match.mp4 `
   --match-id YOUR_TAGGER_MATCH_ID `
   --period 1 `
   --home-dir-1h R `
+  --start-seconds 0 --end-seconds 2700 `
+  --frame-stride 3
+
+# Second half — home direction automatically reverses from the recorded first-half direction
+python scripts\track_video.py `
+  --input D:\Video-Bola-Analis\match.mp4 `
+  --match-id YOUR_TAGGER_MATCH_ID `
+  --period 2 `
+  --home-dir-1h R `
+  --start-seconds 2700 --end-seconds 5400 `
   --frame-stride 3
 ```
+
+For extra time, specify the actual direction separately; do not infer it from period 1:
+
+```powershell
+python scripts\track_video.py --input match.mp4 --match-id YOUR_ID --period 3 --home-dir-1h R --period-direction 3:L
+```
+
+The default output filenames include the period suffix (for example, match_p1_tracks.csv and match_p2_tracks.csv). Source-video timestamps and frame indices remain relative to the original file, so the period CSVs can still be joined to Tagger events.
 
 Recommended initial frame stride is 3 (about 10 observations/sec on 30 FPS video). Use stride 2 for denser sampling at higher cost. Use `--no-team-classification` for the fastest pipeline test, with `team=unknown`.
 
