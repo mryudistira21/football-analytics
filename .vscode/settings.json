@@ -1,0 +1,19 @@
+{
+  "//": "Keeps Antigravity / VS Code light: don't index or watch heavy folders.",
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/venv/**": true,
+    "**/data/**": true,
+    "**/__pycache__/**": true,
+    "**/models/*.pt": true
+  },
+  "search.exclude": {
+    "**/.venv": true,
+    "**/venv": true,
+    "**/data": true,
+    "**/__pycache__": true
+  },
+  "files.exclude": {
+    "**/__pycache__": true
+  }
+}

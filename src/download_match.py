@@ -7,31 +7,40 @@ streams that must be merged. yt-dlp downloads both and merges them with ffmpeg.
 It prefers H.264 (avc1) video in an .mp4, because every browser plays that,
 so the file opens straight in the Pitchside Tagger.
 
+WHERE VIDEOS GO
+    Big video files are kept OUTSIDE the repo so the editor never indexes them.
+    By default this saves to a sibling "football-video" folder next to the repo
+    (e.g. D:\\Codingan\\football-video). Change it with --out, or set the
+    FOOTBALL_VIDEO_DIR environment variable once and forget it:
+        setx FOOTBALL_VIDEO_DIR D:\\footage
+
 Usage (from the repo folder, with the venv active):
     python src/download_match.py URL
     python src/download_match.py URL --height 1080
     python src/download_match.py URL --start 00:00 --end 15:00      # just a part
+    python src/download_match.py URL --out D:\\footage
     python src/download_match.py URL --list                          # show qualities
     python src/download_match.py URL --name persiba_vs_gresik
 
 Needs:  pip install -U yt-dlp   and   ffmpeg on PATH.
-Saves to data/ (git-ignored). For personal analysis only: the footage belongs
-to the league or broadcaster.
+For personal analysis only: the footage belongs to the league or broadcaster.
 """
 from __future__ import annotations
 import argparse
+import os
 import shutil
 import sys
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent.parent / "data"
+REPO = Path(__file__).resolve().parent.parent
+# Default: a sibling folder next to the repo, never inside it.
+DEFAULT_OUT = Path(os.environ.get("FOOTBALL_VIDEO_DIR", REPO.parent / "football-video"))
 
 
 def to_seconds(t: str) -> float:
-    parts = [float(p) for p in t.strip().split(":")]
     secs = 0.0
-    for p in parts:
-        secs = secs * 60 + p
+    for p in t.strip().split(":"):
+        secs = secs * 60 + float(p)
     return secs
 
 
@@ -42,6 +51,7 @@ def main() -> int:
     ap.add_argument("--start", help="start time mm:ss or hh:mm:ss (download only a part)")
     ap.add_argument("--end", help="end time mm:ss or hh:mm:ss")
     ap.add_argument("--name", help="output file name without extension (default: video title)")
+    ap.add_argument("--out", type=Path, default=DEFAULT_OUT, help=f"output folder (default: {DEFAULT_OUT})")
     ap.add_argument("--list", action="store_true", help="list available qualities and exit")
     a = ap.parse_args()
 
@@ -64,12 +74,13 @@ def main() -> int:
     fmt = (f"bv*[height<={h}][vcodec^=avc1]+ba[ext=m4a]/"   # H.264 + AAC: plays everywhere
            f"bv*[height<={h}]+ba/"                            # any codec, merged
            f"b[height<={h}]")                                 # last resort: combined stream
-    DATA.mkdir(parents=True, exist_ok=True)
+    out_dir = a.out
+    out_dir.mkdir(parents=True, exist_ok=True)
     stem = a.name or "%(title).80B"
     opts = {
         "format": fmt,
         "merge_output_format": "mp4",
-        "outtmpl": str(DATA / f"{stem}.%(ext)s"),
+        "outtmpl": str(out_dir / f"{stem}.%(ext)s"),
         "restrictfilenames": a.name is None,
         "noplaylist": True,
     }
@@ -86,6 +97,7 @@ def main() -> int:
     out = Path(path).with_suffix(".mp4")
     print(f"\nSaved: {out}")
     print(f"Resolution: {info.get('width')}x{info.get('height')}  video codec: {info.get('vcodec')}")
+    print("In the Tagger, click 'Choose video file' and pick this file — it can live anywhere.")
     if a.start:
         print(f"This clip starts at {a.start} of the video. Enter that as 'Match clock at"
               " video 0:00' in the Tagger if the video starts at kick-off.")
