@@ -2,6 +2,23 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-15 — After ChatGPT's source review
+- Accepted and fixed: set-piece filter in `fit_xt.py` (refit: open play only, 412k moves), `fit_xt.py` main() + mkdir, Tagger localStorage error surfacing, xA = pass whose receiver is the shooter, CSV import validation, exact xG coefficients in the Tagger, PPDA labelled as approximation, downloader real output path, measured crop.
+- Not changed: StatsBomb coordinates are already oriented with the acting team attacking toward x = 120, so `fit_xt.py` needs no per-team flip.
+- **`DATA_CONTRACT.md` is the shared format** between tracks. Tracking = camera frame; events = team frame; `video_seconds` joins them; `track_id` ≠ `shirt_number`.
+- Event CSV gains a `side` column (`home`/`away`).
+
+## 2026-11-15 — Light downloads and processing
+- Download 720p at **30 fps** (YouTube's own 30 fps stream, no re-encode). 60 fps adds nothing for tagging and doubles frames.
+- Trim with `--start/--end` **without re-encoding** (keyframe cut, a few seconds of slack). `--exact` re-encodes and is opt-in.
+- Any re-encode (crop, exact trim) uses the `veryfast` preset and **4 threads** by default, so the PC stays usable.
+- Disk space is checked before downloading. Videos live outside the repo.
+- yt-dlp needs a JS runtime: install **Deno** (`winget install DenoLand.Deno`) and `yt-dlp[default]`.
+- yt-dlp warns that Python 3.10 is deprecated. It still works; if a future yt-dlp drops 3.10, keep downloads in a separate small 3.13 venv and leave Track B on 3.10.
+
+## 2026-11-15 — Club and player database is local only
+`src/club_db.py` (SQLite) holds clubs, squads per season and matches. The database file (`data/football.db` or `FOOTBALL_DB`) and exported lineups are git-ignored and never pushed. Only the script is shared.
+
 ## 2026-11-15 — Tagger v2 scope and definitions
 Full-match tagging is the plan, so speed matters: digits set player # (and receiver # after the end click), "Follow the ball" makes the receiver the next passer and switches team after a lost pass, `A` starts the next event where the ball last was.
 - **xT:** 16 x 12 grid, StatsBomb open data (230 matches), value iteration over passes and carries. Completed passes earn xT(end) − xT(start); failed passes earn 0.

@@ -1,28 +1,28 @@
 # Status brief — paste this to ChatGPT
 
-Copy everything below the line into ChatGPT whenever you start or resume a session with it.
-Update it as the project moves. Keep it short.
+Copy everything below the line into ChatGPT when you start or resume a session with it.
 
 ---
 
-**Project:** Football analytics from match video — passing, shooting, crossing, hot areas, xG, xA.
-**First match:** PERSIBA Bantul vs Gresik United (Liga Nusantara 2026/27), 67-second test clip.
+**Project:** Football analytics from match video. Repo (our shared office): https://github.com/mryudistira21/football-analytics. Read `README.md`, `TASKS.md`, `DECISIONS.md` and **`DATA_CONTRACT.md`** before suggesting steps.
 
-**Shared repo (our office):** https://github.com/mryudistira21/football-analytics
-Read README.md, TASKS.md and DECISIONS.md there before suggesting steps. Put code and notes in the repo, not only in chat.
+**Lanes (unchanged):** ChatGPT = Track B (detection, tracking, pitch calibration, camera-state filter, tracking CSV). Claude = Track A (Pitchside Tagger, xG/xA/xT, event CSV, downloader, code review). Rizki decides and tests. We don't edit each other's files; cross-review only.
 
-**Two AIs, separate lanes:**
-- You (ChatGPT): the local CV pipeline — Windows env setup, detection + tracking, exporting per-frame player/ball positions to CSV.
-- Claude: the tagging app, the xG/xA model (`src/xg_model.py`), heatmaps from position CSVs, code review.
-Please don't give environment steps for the tagging app, and I'll keep Claude out of your tracking pipeline. If you change a shared decision, note it in DECISIONS.md so we don't collide.
+**Claude's response to your source review (2026-11-15):** thank you, it was useful. All fixes are in:
+- **xT model missing** — the file exists in the repo (`models/xt_grid.json`); your zip didn't include `models/`. Your secondary point was right: `scripts/fit_xt.py` now has `main()`, creates `models/`, and can't start downloading on import.
+- **Set-piece filter (`pass` → `continue`)** — real bug, fixed, grid refitted. It mattered: the corner-flag cell had been inflated by corners (0.033 → 0.017); the peak in front of goal is unchanged (0.25).
+- **Per-team/period normalisation in fit_xt** — not needed: StatsBomb stores every event with the acting team attacking toward x = 120 in both halves. The fitted grid confirms it (threat peaks at one end only).
+- **Silent localStorage failure** — fixed; a failed save now shows "Not saved" and a "storage full" warning.
+- **xA receiver/shooter** — fixed; the assist is the pass whose receiver is the shooter, and if the last pass went to someone else, no assist is linked.
+- **CSV import validation** — fixed; duplicate IDs, non-numeric or off-pitch coordinates, unknown teams and invalid outcomes are skipped and reported.
+- **xG coefficients** — Tagger now uses the exact Python coefficients (both give 0.157084 for a central 11 m shot).
+- **PPDA** — now labelled an approximation built from tagged events.
+- **Downloader output path** — now taken from the real downloaded file.
+- **Crop validation** — `src/crop_broadcast.py` now measures the live picture area (pixels that change over time), not a fixed 240 px; on the 2400×1080 screen recording it finds 1920:1080:240:0. ffmpeg's cropdetect alone was fooled by phone UI.
+- **Shared data contract** — agreed and written: **`DATA_CONTRACT.md`**. Key points: 105×68 m, two coordinate frames (tracking = camera frame, events = team frame) with the conversion rule, `video_seconds` as the join key, `frame`/`fps`/`period`, `track_id` kept separate from `shirt_number` with a human-confirmed `track_map.csv`, and a `camera_state` column. Please review it and say what you'd change before you build against it.
 
-**Hardware (settled):** RTX 2070, 8 GB VRAM, driver 526.98 → PyTorch **cu118** build. Everything installs on **D:** (`D:\Codingan\football-analytics`), C: is nearly full.
+**Settled decisions (don't re-open):** Python 3.10 venv for Track B, PyTorch cu118 (driver 526.98), roboflow/sports football models. Videos live outside the repo (`FOOTBALL_VIDEO_DIR`, e.g. `D:\Video-Bola-Analis`); download at 720p / 30 fps with `src/download_match.py` (no re-encode when trimming).
 
-**Decisions already made (don't re-open):**
-- Python **3.10** (3.11 ok, avoid 3.13).
-- Models: **roboflow/sports** football-trained models (players, ball, pitch keypoints), not generic YOLO — we need pitch keypoints for real-pitch coordinates.
-- cu118 PyTorch (driver too old for CUDA 12.x).
+**Resource rules for Track B (Rizki's PC: RTX 2070 8 GB, limited disk):** stream frames and append CSV rows as you go, process 720p/30 fps, allow a `frame_stride`, annotated video only as a short opt-in, float32 coordinates. Details in `DATA_CONTRACT.md` §6.
 
-**Where we are:** environment install on D: in progress; CUDA must report True. Next: download the sports models into `data/`, crop the broadcast picture (the clip is 2400×1080 with phone bars — real picture is 1920×1080 starting at x=240; use `src/crop_broadcast.py`), then run tracking.
-
-**What I need from you next:** help finish the env install and get PLAYER_TRACKING running on the cropped clip, then an export script that writes per-frame player positions (in metres, split by team) to a CSV. Claude will review that script and build the heatmaps from its output.
+**Your next milestone (from your own plan):** Automatic Tracking v1 on `test20.mp4` (720p, 30 fps target): player/ball detection, tracking IDs, team classification, pitch calibration to metres, camera-state filter, tracking CSV + `.meta.json` per the contract. Work on a branch (`track-b/...`); Claude reviews before merge. Downstream, `src/heatmap_from_positions.py` already reads that CSV (chunked, flips to team frame with `--home-dir`).

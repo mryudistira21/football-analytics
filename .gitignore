@@ -8,6 +8,9 @@ data/*.pt
 data/*.csv
 data/*.png
 data/heat*
+data/*.db
+data/lineups/
+*.sqlite
 !data/.gitkeep
 
 # Python

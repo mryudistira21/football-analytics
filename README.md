@@ -42,13 +42,18 @@ data/       local only — videos, model weights, CSVs (git-ignored)
 
 ## Quick start (Track A)
 
-1. Get the video (720p, H.264 so the browser can play it):
-   ```powershell
-   pip install -U yt-dlp
-   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --name persiba_vs_gresik
-   # videos save to a sibling folder (D:\Codingan\football-video), NOT inside the repo
-   # only the first 15 minutes, to try things out:
-   python src/download_match.py "https://www.youtube.com/live/nCVF6TTJGXw" --start 00:00 --end 15:00 --name test15
-   ```
-2. Open the Pitchside Tagger, set up the match, choose the video from `data/`, and tag.
-3. Download the CSV into `data/`. The scripts in `src/` read it.
+One-time setup (PowerShell, in the repo folder):
+```powershell
+py -3.10 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -U "yt-dlp[default]"
+winget install Gyan.FFmpeg DenoLand.Deno      # then open a NEW window
+setx FOOTBALL_VIDEO_DIR D:\Video-Bola-Analis   # videos live outside the repo
+```
+
+Each match:
+1. Download (720p, 30 fps, no re-encode):
+   `python src/download_match.py "URL" --start 17:00 --end 37:00 --name test20`
+2. Squads (optional, local only): `python src/club_db.py add-club ...`, `add-player ...`, then `lineup BTL` → in the Tagger setup click **Load from file**.
+3. Open the Pitchside Tagger, set up the match, choose the video, tag.
+4. Download the CSV. Its format is in `DATA_CONTRACT.md`.
