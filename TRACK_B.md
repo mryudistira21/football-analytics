@@ -21,7 +21,7 @@ First implementation of video-to-position tracking. It is deliberately separate 
 4. **Homography is per sampled frame.** There is no temporal interpolation or camera-cut smoothing yet. Frames with weak calibration have blank coordinates.
 5. **VFR timing needs validation.** The script uses OpenCV's decoder timestamp when it increases monotonically, otherwise frame/FPS. Validate event joins for variable-frame-rate screen recordings.
 6. **Goalkeepers may remain unknown.** V1 team-colour votes are accumulated from outfield players; the goalkeeper is not confidently assigned to a side yet.
-7. **Extra time is not supported in this first pass.** Run periods 1 and 2 separately. Do not infer extra-time direction from the first half.
+7. **Extra time requires explicit direction metadata.** Periods 3 and 4 are accepted only with `--period-direction 3:R|L` / `--period-direction 4:R|L`; never infer them from period 1.
 8. **Ball detection is a first-pass baseline.** It uses the ball class from the football player detector. Very small or blurred balls can be missed; the dedicated ball model is downloaded but not yet used in the main loop.
 
 ## Install (Windows / Python 3.10)
@@ -115,7 +115,7 @@ match_id,frame,video_seconds,period,track_id,role,team,x,y,confidence,camera_sta
 - Coordinates are only filled when `camera_state=wide`.
 - `track_id=0` is reserved for the single ball row; use `role` to distinguish it from person tracks.
 - People use anonymous ByteTrack IDs; do not equate these to shirt numbers.
-- Period 1 and 2 directions are written to metadata. Tracking coordinates themselves are not flipped by period.
+- Period 1 and 2 directions are derived from `--home-dir-1h`; periods 3 and 4 require explicit `--period-direction`. Tracking coordinates themselves are not flipped by period.
 
 ## Resource behaviour
 
