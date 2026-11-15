@@ -57,3 +57,6 @@ Each match:
 2. Squads (optional, local only): `python src/club_db.py add-club ...`, `add-player ...`, then `lineup BTL` → in the Tagger setup click **Load from file**.
 3. Open the Pitchside Tagger, set up the match, choose the video, tag.
 4. Download the CSV. Its format is in `DATA_CONTRACT.md`.
+
+## Quick start (Track B)
+Automatic video tracking is in [TRACK_B.md](TRACK_B.md). It covers model downloads, the 30-second smoke test, GPU/VRAM settings, CSV output and known limitations. Keep this on the Track B branch until the local RTX 2070 smoke test passes.
