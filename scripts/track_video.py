@@ -549,7 +549,11 @@ def main() -> int:
                     if processed % 100 == 0:
                         print(f"frames {processed:,}; video {timestamp:.1f}s; rows {rows_written:,}; camera={camera_state}")
 
-                    if writer.isOpened() and timestamp <= args.annotated_max_seconds:
+                    if (
+                        writer.isOpened()
+                        and timestamp >= args.start_seconds
+                        and timestamp - args.start_seconds <= args.annotated_max_seconds
+                    ):
                         annotated = frame.copy()
                         if tracked.tracker_id is not None:
                             for box, tid in zip(tracked.xyxy, tracked.tracker_id):
