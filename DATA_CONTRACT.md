@@ -18,17 +18,18 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 ## 2. Time
 | Field | Type | Meaning |
 |---|---|---|
-| `video_seconds` | float | seconds from the start of the **video file** (the join key between tracks). The Tagger records it whenever a video is loaded, in **either** time mode; empty only when no video was loaded, and such events cannot be joined to tracking. |
-| `frame` | int | 0-based frame index in the video file (tracking only) |
-| `fps` | float | video frame rate, stored once per run (tracking metadata) |
+| `video_seconds` | float | presentation time in seconds from the start of the **video file** (the join key between tracks). The Tagger records the video's current time whenever a video is loaded, in **either** time mode; empty only when no video was loaded, and such events cannot be joined to tracking. Tracking should use decoder presentation timestamps (PTS) where available. |
+| `frame` | int | 0-based decoded frame index in the video file (tracking only) |
+| `fps` | float | nominal/average video frame rate, stored once per run (tracking metadata); fallback only for deriving timestamps when PTS is unavailable |
 | `period` | int | 1 = first half, 2 = second half, 3/4 = extra time |
 | `match_seconds` | float | match clock in seconds (as on the scoreboard) |
 
-`video_seconds = frame / fps`. Join events to tracking by `video_seconds`, taking the nearest tracking frame within a tolerance of **one sampling interval**, `frame_stride / fps` (e.g. 30 fps with `frame_stride` 3 → 0.1 s), not a fixed half-second. A tagged event's `video_seconds` is a human click and can lag the true moment by a second or so, so when several candidate players fall inside the window, record the ambiguity rather than forcing one match.
+For constant-frame-rate files, `video_seconds` is approximately `frame / fps`; for variable-frame-rate files, use the frame's presentation timestamp (PTS) rather than assuming a constant frame interval. Join events to tracking by `video_seconds`, taking the nearest tracking frame within one actual sampling interval (approximately `frame_stride / fps` for constant-frame-rate video), not a fixed half-second. A tagged event's `video_seconds` is a human click and can lag the true moment by a second or so, so when several candidate players fall inside the window, record the ambiguity rather than forcing one match.
 
 ## 3. Identity
 - `match_id`: one immutable id per recording/analysis, shared by both tracks. Two recordings of the "same" fixture (e.g. a replay) get different `match_id`s.
-- `team`: always `home` or `away` (names live in match metadata).
+- Event CSV `side`: always `home` or `away`; event CSV `team` is the display name.
+- Tracking CSV `team`: `home`, `away`, or `unknown` (unknown when classification is unavailable or uncertain).
 - `shirt_number` (events) and `track_id` (tracking) are **separate identifiers**. A `track_id` is anonymous and can change after occlusions or camera cuts. They are linked only through an explicit mapping table that a human confirms:
   `track_map.csv`: `match_id, track_id, video_seconds_from, video_seconds_to, team, shirt_number`
 
