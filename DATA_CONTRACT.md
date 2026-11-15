@@ -53,7 +53,7 @@ One row per detected object per processed frame; coordinates in the **camera** f
 - `team`: `home, away, unknown` (`unknown` for referees, ball, unclassified)
 - `x`, `y`: metres; empty when the frame has no valid pitch calibration.
 - `camera_state`: `wide` (usable for positions), `closeup`, `replay`, `graphics`. Only `wide` rows carry `x`, `y`.
-- Metadata file next to it, `<name>.meta.json`: `match_id, video_file, fps, width, height, home_dir_1h, frame_stride, model_versions`.
+- Metadata file next to it, `<name>.meta.json`: at minimum `match_id, video_file, fps, width, height, home_dir_1h, home_attacks_right_by_period, frame_stride, model_versions`. It should also record the processed `period`, source-video start/end seconds, completion status, and relevant tracking configuration.
 
 ## 6. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.
