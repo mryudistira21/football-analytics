@@ -9,6 +9,10 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — xT grid fitted on StatsBomb open data → `src/xt_model.py`, `models/xt_grid.json`, `scripts/fit_xt.py`
 - [x] **Claude** — `src/download_match.py` (yt-dlp, 720p H.264, optional start/end)
 - [ ] **Rizki** — download the match with `src/download_match.py`, tag the first 15 minutes, export CSV to `data/`
+- [x] **Claude** — fixes from ChatGPT's review (xT refit, storage errors, xA, import validation, xG precision, PPDA label)
+- [x] **Claude** — `DATA_CONTRACT.md` (shared format for both tracks)
+- [x] **Claude** — downloader v2: 30 fps cap, trim without re-encode, disk check, JS runtime, `--crop auto`
+- [x] **Claude** — `src/club_db.py` local club/player/match database; Tagger "Load from file" for lineups
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off
 - [ ] **Claude** — match report page from a finished CSV (one shareable page per match)
 - [ ] **Claude** — export to SPADL so socceraction (VAEP) and mplsoccer work on our data
@@ -17,6 +21,7 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Rizki** — Git installed on D:\Codingan\Git
 - [~] **Rizki** — Python 3.10 env on D:, PyTorch cu118, ultralytics — CUDA must report True
 - [ ] **Rizki** — download roboflow/sports models (players, ball, pitch) into `data/`
+- [ ] **ChatGPT** — review `DATA_CONTRACT.md`, then Automatic Tracking v1 on `test20.mp4` (branch `track-b/...`)
 - [ ] **ChatGPT** — run PLAYER_TRACKING and RADAR on a 720p clip
 - [ ] **ChatGPT** — export per-frame player positions (metres, per team) to CSV
 - [ ] **Claude** — review the export script; heatmaps via `src/heatmap_from_positions.py`

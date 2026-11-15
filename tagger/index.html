@@ -176,8 +176,8 @@ table.grid th.n{text-align:right}
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
     <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
-    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><span class="note">One player per line: shirt number, then name. Optional.</span></div>
-    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea></div>
+    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><span class="note">One player per line: number, then name. Optional.</span></div></div>
+    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><span class="note">Export one with <code>club_db.py lineup</code>.</span></div></div>
     <div class="field" style="justify-content:flex-end"><div class="row"><button class="btn primary" type="submit" id="setupSave">Save match</button><button class="btn" type="button" id="setupCancel">Cancel</button><button class="btn ghost" type="button" id="setupDelete" hidden style="color:var(--warn)">Delete match</button></div></div>
   </form>
   <div class="row" id="delConfirm" hidden style="margin-top:10px"><span>Delete this match and all its tagged events?</span><button class="btn small" id="delYes" style="color:var(--warn)">Delete</button><button class="btn small" id="delNo">Keep</button></div>
@@ -300,11 +300,11 @@ table.grid th.n{text-align:right}
         <summary class="label" style="cursor:pointer">How the numbers are calculated</summary>
         <div class="method">
           <span><b>xG.</b> Logistic regression on 5,606 non-penalty shots from StatsBomb open data (World Cup 2018 &amp; 2022, Euro 2020 &amp; 2024): distance, goal-mouth angle, header, direct free kick. Penalties = 0.76. A central 11 m shot is 0.16 with the foot, 0.06 headed.</span>
-          <span><b>xA.</b> A shot links to the same team's last completed pass or cross from the previous 20 s. That pass gets the shot's xG as xA and counts as a key pass.</span>
-          <span><b>xT (expected threat).</b> A 16 × 12 grid fitted on the same 230 StatsBomb matches (432,000 passes and carries). Each cell holds the chance that having the ball there leads to a goal. A completed pass or cross earns xT(end) − xT(start); lost passes earn 0.</span>
+          <span><b>xA.</b> A shot links to the same team's completed pass or cross from the previous 20 s whose receiver is the shooter. If shooter or receiver numbers are missing, it suggests the last completed pass and you can untick it. That pass gets the shot's xG as xA and counts as a key pass.</span>
+          <span><b>xT (expected threat).</b> A 16 × 12 grid fitted on the same 230 StatsBomb matches (412,000 open-play passes and carries; set pieces excluded). Each cell holds the chance that having the ball there leads to a goal. A completed pass or cross earns xT(end) − xT(start); lost passes earn 0.</span>
           <span><b>Progressive pass.</b> A completed pass that brings the ball at least 30 m closer to goal inside your own half, 15 m when it crosses halfway, or 10 m inside the opponent's half.</span>
           <span><b>Pass into the box.</b> A completed pass or cross that ends in the penalty area and started outside it.</span>
-          <span><b>PPDA.</b> Opponent passes in their own 60% of the pitch ÷ your tackles, interceptions and fouls in that same zone. Lower = harder pressing.</span>
+          <span><b>PPDA (approximation).</b> Opponent passes in their own 60% of the pitch ÷ your tackles, interceptions and fouls in that same zone. Lower = harder pressing. Built only from the events you tag (no pressure events), so compare it between your own matches, not with professional data providers.</span>
           <span><b>Field tilt.</b> Your share of both teams' passes made in the final third. It shows who is pinning whom back.</span>
           <span><b>Possession (pass share).</b> Your share of all passes and crosses. A standard stand-in when you don't have ball-in-play time.</span>
         </div>
@@ -341,10 +341,10 @@ function xgOf(e){
   if(e.sit==="pen")return 0.76;
   const dx=PL-e.x, dy=Math.abs(PW/2-e.y), d=Math.hypot(dx,dy);
   let a=Math.atan2(7.32*dx, dx*dx+dy*dy-3.66*3.66); if(a<0)a+=Math.PI;
-  const z=-1.406-0.1056*d+1.383*a-1.125*(e.body==="head"?1:0)+0.525*(e.sit==="fk"?1:0);
+  const z=-1.40636605-0.10564557*d+1.38289241*a-1.12515185*(e.body==="head"?1:0)+0.52487711*(e.sit==="fk"?1:0);
   return 1/(1+Math.exp(-z));
 }
-const XT=[[0.00216,0.00317,0.00394,0.00484,0.00554,0.00652,0.00742,0.00845,0.01003,0.01157,0.01374,0.0159,0.01819,0.01985,0.02133,0.0331],[0.00269,0.00369,0.00459,0.0055,0.00638,0.00728,0.00843,0.00951,0.0109,0.01243,0.01454,0.01707,0.02,0.02215,0.0238,0.02309],[0.00321,0.00433,0.00518,0.00601,0.00696,0.00796,0.0089,0.01016,0.01163,0.01321,0.0153,0.01815,0.02144,0.02503,0.02743,0.02703],[0.00382,0.00482,0.00557,0.00635,0.00731,0.00829,0.00927,0.01061,0.01217,0.0137,0.01585,0.019,0.02344,0.03002,0.03673,0.02795],[0.00425,0.00502,0.00582,0.0067,0.00753,0.00845,0.00957,0.01088,0.01243,0.01405,0.01621,0.0194,0.02542,0.04178,0.08012,0.06676],[0.00489,0.00518,0.00593,0.00672,0.00764,0.0085,0.00965,0.01085,0.01215,0.01404,0.01645,0.0202,0.03026,0.05883,0.12753,0.25234],[0.00489,0.00518,0.00593,0.00672,0.00764,0.0085,0.00965,0.01085,0.01215,0.01404,0.01645,0.0202,0.03026,0.05883,0.12753,0.25234],[0.00425,0.00502,0.00582,0.0067,0.00753,0.00845,0.00957,0.01088,0.01243,0.01405,0.01621,0.0194,0.02542,0.04178,0.08012,0.06676],[0.00382,0.00482,0.00557,0.00635,0.00731,0.00829,0.00927,0.01061,0.01217,0.0137,0.01585,0.019,0.02344,0.03002,0.03673,0.02795],[0.00321,0.00433,0.00518,0.00601,0.00696,0.00796,0.0089,0.01016,0.01163,0.01321,0.0153,0.01815,0.02144,0.02503,0.02743,0.02703],[0.00269,0.00369,0.00459,0.0055,0.00638,0.00728,0.00843,0.00951,0.0109,0.01243,0.01454,0.01707,0.02,0.02215,0.0238,0.02309],[0.00216,0.00317,0.00394,0.00484,0.00554,0.00652,0.00742,0.00845,0.01003,0.01157,0.01374,0.0159,0.01819,0.01985,0.02133,0.0331]];
+const XT=[[0.0019,0.00289,0.00365,0.00462,0.00534,0.00632,0.00718,0.00822,0.00972,0.01124,0.01324,0.01526,0.01746,0.01884,0.01914,0.01673],[0.00247,0.00343,0.00435,0.00527,0.00613,0.007,0.00811,0.00918,0.01052,0.012,0.01393,0.01621,0.01899,0.02125,0.02275,0.02123],[0.00301,0.00412,0.00495,0.00579,0.0067,0.00766,0.00858,0.00983,0.01125,0.01275,0.01469,0.01754,0.02069,0.02444,0.02672,0.02632],[0.0036,0.00454,0.00532,0.0061,0.00704,0.00802,0.00896,0.0103,0.0118,0.01325,0.01525,0.01833,0.02299,0.02964,0.03649,0.0278],[0.0038,0.00476,0.00554,0.00643,0.00723,0.00819,0.00927,0.01058,0.01209,0.0136,0.01563,0.01896,0.02509,0.04162,0.08006,0.06688],[0.00436,0.00494,0.00571,0.00645,0.00736,0.00824,0.00935,0.01055,0.01229,0.01363,0.01598,0.01975,0.03002,0.05875,0.12752,0.2527],[0.00436,0.00494,0.00571,0.00645,0.00736,0.00824,0.00935,0.01055,0.01229,0.01363,0.01598,0.01975,0.03002,0.05875,0.12752,0.2527],[0.0038,0.00476,0.00554,0.00643,0.00723,0.00819,0.00927,0.01058,0.01209,0.0136,0.01563,0.01896,0.02509,0.04162,0.08006,0.06688],[0.0036,0.00454,0.00532,0.0061,0.00704,0.00802,0.00896,0.0103,0.0118,0.01325,0.01525,0.01833,0.02299,0.02964,0.03649,0.0278],[0.00301,0.00412,0.00495,0.00579,0.0067,0.00766,0.00858,0.00983,0.01125,0.01275,0.01469,0.01754,0.02069,0.02444,0.02672,0.02632],[0.00247,0.00343,0.00435,0.00527,0.00613,0.007,0.00811,0.00918,0.01052,0.012,0.01393,0.01621,0.01899,0.02125,0.02275,0.02123],[0.0019,0.00289,0.00365,0.00462,0.00534,0.00632,0.00718,0.00822,0.00972,0.01124,0.01324,0.01526,0.01746,0.01884,0.01914,0.01673]];
 const xtAt=(x,y)=>XT[clamp(Math.floor(y/PW*12),0,11)][clamp(Math.floor(x/PL*16),0,15)];
 const xtAdded=e=>isPassLike(e)&&e.out==="ok"&&e.ex!=null?xtAt(e.ex,e.ey)-xtAt(e.x,e.y):0;
 const inBox=(x,y)=>x>=88.5&&y>=13.84&&y<=54.16;
@@ -384,7 +384,7 @@ const Store={mode:"memory",db:null,
     return [];
   },
   async saveChunk(id,c,events){ if(this.mode==="db")return this.db.doc(`matches/${id}/chunks/c${c}`).set({events}); },
-  saveAllLocal(id,events){ if(this.mode==="local"){try{localStorage.setItem("pt:ev:"+id,JSON.stringify(events))}catch(e){}} }
+  saveAllLocal(id,events){ if(this.mode==="local")localStorage.setItem("pt:ev:"+id,JSON.stringify(events)); }
 };
 const CHUNK=400;
 let dirty=new Set(), saveTimer=null, saveChain=Promise.resolve(), saveErr=false;
@@ -401,7 +401,7 @@ function flush(){
       if(Store.mode==="local")Store.saveAllLocal(mid,S.events.map(stripCalc));
       else if(Store.mode==="db"){for(const c of cs)await Store.saveChunk(mid,c,S.events.filter(e=>e.c===c).map(stripCalc))}
       saveErr=false;
-    }catch(err){saveErr=true;cs.forEach(c=>dirty.add(c));toast(err&&err.code==="quota_exceeded"?"Storage is full. Export CSV and delete an old match.":"Could not save. Retrying on your next tag.")}
+    }catch(err){saveErr=true;cs.forEach(c=>dirty.add(c));const full=err&&(err.code==="quota_exceeded"||err.name==="QuotaExceededError"||err.code===22);toast(full?"Storage is full — export CSV now, then delete an old match.":"Could not save. Retrying on your next tag.")}
     storeBadge();
   });
 }
@@ -431,7 +431,7 @@ const teamColor=t=>t===0?(S.match?.hc||"#d7263d"):(S.match?.ac||"#f2c230");
 const pName=(t,p)=>{if(!p)return"";const lu=S.match?.lu?.[t===0?"h":"a"]||{};return lu[p]||""};
 const pLabel=(t,p)=>p?`#${p}${pName(t,p)?" "+pName(t,p):""}`:"#?";
 function inkOn(hex){const h=String(hex).replace("#","");if(h.length<6)return"#000";const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return(0.299*r+0.587*g+0.114*b)>150?"#111":"#fff"}
-function parseLineup(txt){const o={};String(txt||"").split(/\n/).forEach(l=>{const m=l.trim().match(/^(\d{1,3})\s*[.\-:)]?\s*(.*)$/);if(m)o[m[1]]=m[2].trim()});return o}
+function parseLineup(txt){const o={};String(txt||"").split(/\r?\n/).forEach(l=>{const m=l.trim().match(/^(\d{1,3})\s*[.\-:),;]?\s*(.*)$/);if(m&&m[2])o[m[1]]=m[2].replace(/^"|"$/g,"").split(/[,;]/)[0].trim()});return o}
 const lineupText=o=>Object.entries(o||{}).sort((a,b)=>+a[0]-+b[0]).map(([n,v])=>`${n} ${v}`).join("\n");
 
 /* ---------- demo ---------- */
@@ -598,14 +598,18 @@ function continueFromLast(){
 $("#contBtn").onclick=continueFromLast;
 
 function candidateAssist(){
-  const g=S.tag;
+  // Same team's completed passes in the last 20 s, newest first, stopping at a lost pass (possession broke).
+  const g=S.tag,shooter=$("#pnum").value.trim(),pool=[];
   for(let i=S.events.length-1;i>=0;i--){
     const e=S.events[i];
     if(e.team!==S.team||!isPassLike(e))continue;
-    if(e.out!=="ok")return null;
-    if(g.clock-e.clock<=20&&g.clock-e.clock>=-1&&!S.events.some(s=>s.ast===e.id))return e;
-    return null;
-  }return null;
+    if(e.out!=="ok"||g.clock-e.clock>20)break;
+    if(g.clock-e.clock>=-1&&!S.events.some(s=>s.ast===e.id))pool.push(e);
+  }
+  if(!pool.length)return null;
+  if(shooter){const m=pool.find(e=>e.rcv===shooter);if(m)return m;   // receiver is the shooter: a real assist
+    if(pool[0].rcv&&pool[0].rcv!==shooter)return null;}               // last pass went to someone else: don't guess
+  return pool[0];                                                       // shooter or receiver unknown: best guess, can be unticked
 }
 function openOutcome(){
   const ob=$("#outbar"),g=S.tag;ob.hidden=false;
@@ -614,7 +618,7 @@ function openOutcome(){
     if(g.astFor!==(a?a.id:null)){g.ast=a?a.id:null;g.astOn=!!a;g.astFor=a?a.id:null}
     ob.innerHTML=`<div class="row"><span class="label">Body</span><div class="seg" role="group"><button data-body="foot" aria-pressed="${g.body==="foot"}">Foot</button><button data-body="head" aria-pressed="${g.body==="head"}">Head <kbd>H</kbd></button></div>
       <span class="label">Situation</span><div class="seg" role="group"><button data-sit="open" aria-pressed="${g.sit==="open"}">Open play</button><button data-sit="fk" aria-pressed="${g.sit==="fk"}">Direct free kick</button><button data-sit="pen" aria-pressed="${g.sit==="pen"}">Penalty</button></div></div>
-      <div class="row">${a?`<label class="chip"><input type="checkbox" id="astChk" ${g.astOn?"checked":""}> Assisted by ${esc(TYPES[a.type].toLowerCase())} from ${esc(pLabel(a.team,a.p))} at ${fmt(a.clock)}</label>`:`<span class="note">No completed pass by this team in the last 20 s, so no assist is linked.</span>`}
+      <div class="row">${a?`<label class="chip"><input type="checkbox" id="astChk" ${g.astOn?"checked":""}> Assisted by ${esc(TYPES[a.type].toLowerCase())} from ${esc(pLabel(a.team,a.p))} at ${fmt(a.clock)}</label>`:`<span class="note">No completed pass to this shooter in the last 20 s, so no assist is linked.</span>`}
       <span class="chip mono" id="xgPrev"></span></div>
       <div class="row outs"><button class="btn goal" data-out="goal">Goal <kbd>G</kbd></button><button class="btn" data-out="on">Saved / on target <kbd>O</kbd></button><button class="btn" data-out="off">Off target <kbd>F</kbd></button><button class="btn" data-out="blocked">Blocked <kbd>B</kbd></button><button class="btn ghost" id="cancelTag">Cancel <kbd>Esc</kbd></button></div>`;
     ob.querySelectorAll("[data-body]").forEach(b=>b.onclick=()=>{g.body=b.dataset.body;openOutcome()});
@@ -827,7 +831,7 @@ function renderSummary(){
    ${row("Key passes",a.kp,b.kp,a.kp,b.kp)}
    ${row("Field tilt",a.tilt==null?"–":pct(a.tilt,1),b.tilt==null?"–":pct(b.tilt,1),a.tilt||0,b.tilt||0)}
    ${sec("Defending and pressing")}
-   ${row("PPDA (lower = more pressing)",a.ppda==null?"–":a.ppda.toFixed(1),b.ppda==null?"–":b.ppda.toFixed(1),a.ppda||0,b.ppda||0,true)}
+   ${row("PPDA, from tagged events (lower = more pressing)",a.ppda==null?"–":a.ppda.toFixed(1),b.ppda==null?"–":b.ppda.toFixed(1),a.ppda||0,b.ppda||0,true)}
    ${row("Tackles won / attempted",`${a.tklWon}/${a.tkl}`,`${b.tklWon}/${b.tkl}`,a.tkl,b.tkl)}
    ${row("Interceptions",a.int,b.int,a.int,b.int)}
    ${row("Ball recoveries",a.rec,b.rec,a.rec,b.rec)}
@@ -1063,6 +1067,7 @@ $("#setupForm").addEventListener("submit",async e=>{
   if(editing&&S.match&&S.match.id===m.id){S.match=m;fillMatchSel();renderAll()}else await openMatch(m);
   toast(editing?"Settings saved":"Match created. Start tagging.");
 });
+[["#fLuHFile","#fLuH"],["#fLuAFile","#fLuA"]].forEach(([fi,ta])=>$(fi).addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const o=parseLineup(String(rd.result));$(ta).value=lineupText(o);toast(`Loaded ${Object.keys(o).length} players`)};rd.readAsText(f);e.target.value=""}));
 $("#setupDelete").onclick=()=>{$("#delConfirm").hidden=false};
 $("#delNo").onclick=()=>{$("#delConfirm").hidden=true};
 $("#delYes").onclick=async()=>{
@@ -1075,10 +1080,10 @@ $("#delYes").onclick=async()=>{
 };
 
 /* ---------- CSV ---------- */
-const COLS=["match","id","half","match_clock","match_seconds","video_seconds","team","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box"];
+const COLS=["match","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box"];
 function toCSV(){
   const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
-  const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.name,e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
+  const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.name,e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.team===0?"home":"away",e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
     e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):""].map(q).join(","));
   return COLS.join(",")+"\n"+rows.join("\n")+"\n";
 }
@@ -1102,20 +1107,27 @@ $("#importIn").addEventListener("change",e=>{
     try{
       const lines=parseCSV(String(rd.result));const head=lines.shift().map(h=>h.trim());const ix=n=>head.indexOf(n);
       if(ix("event")<0||ix("x")<0)throw 0;
-      const have=new Set(S.events.map(x=>x.id));let n=0;
+      const have=new Set(S.events.map(x=>x.id));let n=0;const skip={dup:0,coords:0,team:0,type:0};
       const outMap={complete:"ok",incomplete:"fail",goal:"goal","on target":"on","off target":"off",blocked:"blocked",won:"won",lost:"lost"};
-      lines.forEach(r=>{const g=n=>ix(n)<0?"":(r[ix(n)]??"");
-        const id=g("id")||uid();if(have.has(id))return;
-        const type=g("event");if(!TYPES[type])return;
-        const tn=g("team");const team=tn===S.match.away?1:tn===S.match.home?0:(tn&&tn.toLowerCase().includes("away")?1:0);
-        const num=v=>v===""||v==null?null:+v;
+      const inPitch=(x,y)=>Number.isFinite(x)&&Number.isFinite(y)&&x>=0&&x<=PL&&y>=0&&y<=PW;
+      const numOrNull=v=>{if(v===""||v==null)return null;const n=+v;return Number.isFinite(n)?n:NaN};
+      lines.forEach(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
+        const id=g("id")||uid();if(have.has(id)){skip.dup++;return}
+        const type=g("event");if(!TYPES[type]){skip.type++;return}
+        const side=g("side").toLowerCase(),tn=g("team");
+        const team=side==="home"?0:side==="away"?1:tn===S.match.home?0:tn===S.match.away?1:-1;
+        if(team<0){skip.team++;return}
+        const x=numOrNull(g("x")),y=numOrNull(g("y")),ex=numOrNull(g("end_x")),ey=numOrNull(g("end_y"));
+        if(!inPitch(x,y)||(ex!=null&&!inPitch(ex,ey??NaN))){skip.coords++;return}
         let out=outMap[g("outcome")]||g("outcome");if(INSTANT.includes(type))out="ok";
-        const ev={id,c:0,half:+g("half")||1,clock:+g("match_seconds")||parseClock(g("match_clock"))||0,t:num(g("video_seconds")),team,type,p:g("player")||"",
-          x:+g("x"),y:+g("y"),ex:num(g("end_x")),ey:num(g("end_y")),out};
-        if(isPassLike(ev))ev.rcv=g("receiver")||"";
-        if(type==="shot"){ev.body=g("body_part")||"foot";ev.sit=g("situation")||"open";ev.ast=g("assist_event_id")||null}
-        ev.xg=xgOf(ev);ev.c=nextChunk();S.events.push(ev);markDirty(ev.c);n++;});
-      toast(`Imported ${n} events`);renderAll();
+        if(!OUTS[type].includes(out)){skip.type++;return}
+        const ms=numOrNull(g("match_seconds")),vt=numOrNull(g("video_seconds"));
+        const ev={id,c:0,half:+g("half")===2?2:1,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
+        if(isPassLike(ev))ev.rcv=g("receiver");
+        if(type==="shot"){ev.body=g("body_part")==="head"?"head":"foot";ev.sit=["open","fk","pen"].includes(g("situation"))?g("situation"):"open";ev.ast=g("assist_event_id")||null}
+        ev.xg=xgOf(ev);ev.c=nextChunk();S.events.push(ev);have.add(id);markDirty(ev.c);n++;});
+      const sk=Object.entries(skip).filter(([,v])=>v).map(([k,v])=>`${v} ${({dup:"duplicates",coords:"bad coordinates",team:"unknown team",type:"unknown event/outcome"})[k]}`);
+      toast(`Imported ${n} events${sk.length?" · skipped "+sk.join(", "):""}`);renderAll();
     }catch(err){toast("That file doesn't look like a Pitchside Tagger CSV")}
     e.target.value="";
   };rd.readAsText(f);

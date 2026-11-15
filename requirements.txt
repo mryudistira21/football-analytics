@@ -15,4 +15,4 @@ scipy
 matplotlib
 gdown          # downloads the sports models from Google Drive
 umap-learn     # team classification clustering
-yt-dlp         # match video download (src/download_match.py)
+yt-dlp[default] # match video download (src/download_match.py); also: winget install DenoLand.Deno
