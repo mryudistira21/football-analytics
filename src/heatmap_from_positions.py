@@ -6,10 +6,11 @@ x, y are metres on a 105 x 68 pitch in the CAMERA frame (x = 0 is the goal on
 the left of the broadcast picture). Rows with role other than player /
 goalkeeper are skipped when a `role` column exists.
 
-Each team is flipped to attack left -> right, using which way the home team
-attacks in the 1st half (they swap at half-time):
+Each team is flipped to attack left -> right using the per-period direction map
+in the tracking metadata JSON (same basename as the CSV):
+    python src/heatmap_from_positions.py tracking.csv
+For old CSVs without metadata, use the legacy two-half fallback:
     python src/heatmap_from_positions.py tracking.csv --home-dir R
-    python src/heatmap_from_positions.py tracking.csv --home-dir L --out data/heat
 
 Memory stays flat on long matches: the CSV is read in chunks and only a small
 histogram is kept, never the whole table.
@@ -116,14 +117,16 @@ def main() -> int:
                     directions[str(period)] = value
                 elif str(value).upper() in ("R", "L"):
                     directions[str(period)] = str(value).upper() == "R"
-            if not directions:
-                raise SystemExit(f"No valid home_attacks_right_by_period found in {meta_path}")
-    elif a.home_dir:
+        elif meta.get("home_dir_1h") in ("R", "L"):
+            right = meta["home_dir_1h"] == "R"
+            directions = {"1": right, "2": not right}
+    if not directions and a.home_dir:
         right = a.home_dir.upper() == "R"
         directions = {"1": right, "2": not right}
-    elif "period" in pd.read_csv(a.csv, nrows=0).columns:
+    if not directions and "period" in pd.read_csv(a.csv, nrows=0).columns:
         raise SystemExit(
-            f"Tracking metadata not found: {meta_path}. Supply --meta or legacy --home-dir R/L."
+            f"Tracking direction metadata not found in {meta_path}. "
+            "Supply --meta or legacy --home-dir R/L."
         )
 
     hists, counts = accumulate(a.csv, directions)
