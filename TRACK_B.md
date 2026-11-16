@@ -66,6 +66,8 @@ The script stores player, pitch and ball weights in the external model folder. T
 
 The downloader uses Google Drive file IDs directly and is compatible with gdown 6.x; do not add the removed `fuzzy` argument.
 
+The tracking pipeline uses `ByteTrackTracker` with a 0.25 activation threshold to retain the player's previous ByteTrack confidence behavior, and confirms IDs after three sampled observations.
+
 ## First smoke test
 
 Use the immutable `match_id` from the event CSV exported by Pitchside Tagger.

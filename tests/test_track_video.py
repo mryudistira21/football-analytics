@@ -78,3 +78,28 @@ def test_projection_marks_points_outside_pitch_as_missing():
     )
     assert np.isfinite(mapped[0]).all()
     assert np.isnan(mapped[1]).all()
+
+
+
+def test_external_bytetrack_tracker_accepts_supervision_detections_and_timestamps():
+    import supervision as sv
+    from trackers import ByteTrackTracker
+
+    tracker = ByteTrackTracker(
+        track_activation_threshold=0.25,
+        minimum_consecutive_frames=2,
+        frame_rate=30.0,
+    )
+    empty = sv.Detections(
+        xyxy=np.empty((0, 4), dtype=np.float32),
+        confidence=np.empty((0,), dtype=np.float32),
+        class_id=np.empty((0,), dtype=np.int64),
+    )
+
+    first = tracker.update(empty, timestamp=0.0)
+    second = tracker.update(empty, timestamp=0.1)
+
+    assert isinstance(first, sv.Detections)
+    assert isinstance(second, sv.Detections)
+    assert len(first) == 0
+    assert len(second) == 0

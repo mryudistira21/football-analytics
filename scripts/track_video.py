@@ -400,6 +400,7 @@ def main() -> int:
         pitch_model = YOLO(str(pitch_weights)).to(device)
         pitch_vertices = pitch_targets(SoccerPitchConfiguration().vertices)
         tracker = ByteTrackTracker(
+            track_activation_threshold=0.25,
             minimum_consecutive_frames=3,
             frame_rate=float(fps),
         )

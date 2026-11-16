@@ -24,7 +24,7 @@ jobs:
       - name: Install lightweight test dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install numpy opencv-python-headless pandas matplotlib pytest
+          python -m pip install numpy pandas matplotlib pytest "supervision>=0.31.0,<0.32.0" "trackers>=2.7.0,<3.0.0"
 
       - name: Compile Track B Python sources
         run: |
