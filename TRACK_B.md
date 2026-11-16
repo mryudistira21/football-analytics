@@ -61,6 +61,8 @@ python scripts\download_sports_models.py
 
 The script stores player, pitch and ball weights in the external model folder. The main v1 tracker uses the player detector (including its ball class) and the pitch-keypoint detector. The dedicated ball model is present for a future tiled ball-detection stage.
 
+The downloader uses Google Drive file IDs directly and is compatible with gdown 6.x; do not add the removed `fuzzy` argument.
+
 ## First smoke test
 
 Use the immutable `match_id` from the event CSV exported by Pitchside Tagger.

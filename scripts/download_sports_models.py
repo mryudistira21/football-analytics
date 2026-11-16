@@ -46,7 +46,6 @@ def download_models(model_dir: Path, force: bool = False) -> int:
                 id=file_id,
                 output=str(temporary),
                 quiet=False,
-                fuzzy=True,
             )
             if not result or not temporary.exists() or temporary.stat().st_size < 1_000_000:
                 raise RuntimeError("Google Drive did not return a valid model file.")
