@@ -5,7 +5,8 @@ First implementation of video-to-position tracking. It is deliberately separate 
 ## What v1 does
 
 - Runs Roboflow Sports' football player detector, which has the football classes: ball, goalkeeper, player and referee.
-- Tracks people using Supervision ByteTrack.
+- Tracks people using Roboflow's external `trackers.ByteTrackTracker` with native `supervision.Detections`; Supervision 0.31+ no longer ships `sv.ByteTrack`.
+- Passes decoder timestamps to the tracker so frame-stride sampling is reflected in its motion timing; tentative tracker ID `-1` rows are omitted from exported player tracks.
 - Optionally learns two kit-colour clusters from a capped sample of player crops using Roboflow Sports' SigLIP + UMAP + KMeans TeamClassifier.
 - Detects pitch keypoints on each sampled frame and estimates a homography.
 - Maps the 32 ordered Roboflow pitch keypoints to the Tagger's actual 105 × 68 m landmark geometry (`pitchside_tagger_105x68_v1`); it does not independently scale the source pitch axes.
@@ -36,6 +37,8 @@ cd D:\Codingan\football-analytics
 pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu118
 pip install -r requirements.txt
 pip install git+https://github.com/roboflow/sports.git
+
+# requirements.txt installs the external Trackers package used for ByteTrack
 ```
 
 Install pytest only for tests:

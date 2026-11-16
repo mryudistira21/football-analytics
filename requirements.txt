@@ -7,7 +7,8 @@
 #   pip install git+https://github.com/roboflow/sports.git
 
 ultralytics
-supervision
+supervision>=0.31.0,<0.32.0
+trackers>=2.7.0,<3.0.0  # ByteTrackTracker replacement for removed sv.ByteTrack
 opencv-python
 numpy
 pandas

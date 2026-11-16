@@ -307,6 +307,7 @@ def main() -> int:
     try:
         import torch
         import supervision as sv
+        from trackers import ByteTrackTracker
         from ultralytics import YOLO
         from sports.common.team import TeamClassifier
         from sports.configs.soccer import SoccerPitchConfiguration
@@ -351,6 +352,7 @@ def main() -> int:
         "model_versions": {
             "ultralytics": importlib.metadata.version("ultralytics"),
             "supervision": importlib.metadata.version("supervision"),
+            "trackers": importlib.metadata.version("trackers"),
             "sports": "roboflow/sports",
         },
         "team_cluster_0_side": args.cluster_0_side,
@@ -397,7 +399,10 @@ def main() -> int:
         player_model = YOLO(str(player_weights)).to(device)
         pitch_model = YOLO(str(pitch_weights)).to(device)
         pitch_vertices = pitch_targets(SoccerPitchConfiguration().vertices)
-        tracker = sv.ByteTrack(minimum_consecutive_frames=3)
+        tracker = ByteTrackTracker(
+            minimum_consecutive_frames=3,
+            frame_rate=float(fps),
+        )
         ball_tracker = __import__("sports.common.ball", fromlist=["BallTracker"]).BallTracker(buffer_size=12)
 
         writer = cv2.VideoWriter()
@@ -486,7 +491,11 @@ def main() -> int:
                         detections.class_id,
                         [class_ids["player"], class_ids["goalkeeper"], class_ids["referee"]],
                     )]
-                    tracked = tracker.update_with_detections(people)
+                    tracked = tracker.update(people, timestamp=timestamp)
+                    # ByteTrackTracker uses -1 for tentative/unmatched detections.
+                    # Do not export those as if they were persistent player identities.
+                    if tracked.tracker_id is not None and len(tracked):
+                        tracked = tracked[tracked.tracker_id >= 0]
 
                     pitch_result = pitch_model.predict(
                         frame, imgsz=args.pitch_imgsz, conf=0.10,

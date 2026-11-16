@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-16 — Track B tracker API follows Supervision 0.31+
+- Supervision 0.31.0 removed `sv.ByteTrack`; use Roboflow's external `trackers.ByteTrackTracker` with `tracker.update(detections, timestamp=...)`.
+- Pin Supervision to the 0.31.x API range and add `trackers>=2.7.0,<3.0.0` to the Track B requirements.
+- Filter tracker ID `-1` (tentative/unmatched detections) before team votes, CSV output and preview labels so it is never treated as a persistent player identity.
+- Pass source-video PTS timestamps and source FPS to ByteTrackTracker so frame-stride sampling does not masquerade as full-rate updates.
+
 ## 2026-11-15 — Track B pitch geometry aligned with Pitchside Tagger
 - **Homography target geometry:** Track B maps Roboflow's 32 ordered soccer-pitch keypoints to the exact 105 × 68 m landmark coordinates used by Pitchside Tagger. Do not axis-scale the 120 × 70 m source template independently; this distorts internal markings while a homography can still have a low reprojection residual.
 - The mapping is identified in tracking metadata as `pitchside_tagger_105x68_v1` and guarded by tests for all 32 landmarks plus rejection of unexpected source geometry/order.
