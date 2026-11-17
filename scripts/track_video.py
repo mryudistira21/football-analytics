@@ -502,9 +502,9 @@ def main() -> int:
                     if team_vram else ""
                 )
             )
-            team_classifier = TeamClassifier(device=team_device, batch_size=16)
 
             if requested_state is not None and requested_state.is_file():
+                team_classifier = TeamClassifier(device=team_device, batch_size=16)
                 reducer, cluster_model = load_team_cluster_state(
                     requested_state, args.cluster_0_side
                 )
@@ -513,6 +513,8 @@ def main() -> int:
                 team_state_loaded = True
                 print(f"Loaded team cluster state: {requested_state}")
             else:
+                # Sample with the resident player detector before loading SigLIP, so
+                # the temporary feature encoder does not overlap this GPU workload.
                 print("Sampling player crops for team classification...")
                 crops = sample_team_crops(
                     video, player_model, device, class_ids["player"],
@@ -521,6 +523,7 @@ def main() -> int:
                     start_seconds=args.start_seconds,
                 )
                 if len(crops) >= 30:
+                    team_classifier = TeamClassifier(device=team_device, batch_size=16)
                     team_classifier.fit(crops)
                     print(
                         f"Team classifier fitted on {len(crops)} crops ({team_device})."
@@ -532,15 +535,16 @@ def main() -> int:
                         print(f"Saved team cluster state: {requested_state}")
                 else:
                     print(f"Only {len(crops)} usable crops; teams will remain unknown.")
-                    team_classifier = None
                 del crops
                 gc.collect()
+
             metadata["team_classifier_state_path"] = (
                 str(requested_state) if requested_state is not None else None
             )
             metadata["team_classifier_state_loaded"] = team_state_loaded
             metadata["team_embedding_cache"] = "per-track SigLIP feature vectors"
             write_meta()
+
         pitch_vertices = pitch_targets(SoccerPitchConfiguration().vertices)
         tracker = ByteTrackTracker(
             track_activation_threshold=0.25,
