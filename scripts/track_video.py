@@ -284,17 +284,11 @@ def team_clusters_from_embeddings(team_classifier: Any, embeddings: np.ndarray) 
     return np.asarray(team_classifier.cluster_model.predict(projections), dtype=np.int64)
 
 
-def load_team_cluster_state(path: Path, expected_cluster_0_side: str) -> tuple[Any, Any]:
-    """Load fitted UMAP/KMeans state for consistent team labels across segments."""
+def load_team_cluster_state(path: Path) -> tuple[Any, Any]:
+    """Load fitted UMAP/KMeans state; home/away mapping is applied at prediction time."""
     state = joblib.load(path)
     if state.get("state_version") != 1:
         raise ValueError(f"Unsupported team classifier state version in {path}")
-    if state.get("cluster_0_side") != expected_cluster_0_side:
-        raise ValueError(
-            "Team classifier state uses cluster_0_side="
-            f"{state.get('cluster_0_side')!r}, but this run requested "
-            f"{expected_cluster_0_side!r}"
-        )
     return state["reducer"], state["cluster_model"]
 
 
@@ -498,9 +492,7 @@ def main() -> int:
                     torch, args.team_device, args.team_min_free_vram_gb
                 )
                 team_classifier = TeamClassifier(device=team_device, batch_size=16)
-                reducer, cluster_model = load_team_cluster_state(
-                    requested_state, args.cluster_0_side
-                )
+                reducer, cluster_model = load_team_cluster_state(requested_state)
                 team_classifier.reducer = reducer
                 team_classifier.cluster_model = cluster_model
                 team_state_loaded = True
