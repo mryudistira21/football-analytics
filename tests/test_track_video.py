@@ -189,15 +189,17 @@ def test_team_clusters_from_cached_embeddings():
     np.testing.assert_array_equal(clusters, [0, 1])
 
 
-def test_team_cluster_state_round_trip_preserves_side_mapping(tmp_path):
+def test_team_cluster_state_round_trip_is_independent_of_home_away_mapping(tmp_path):
     classifier = SimpleNamespace(
         reducer={"fitted": True},
         cluster_model={"clusters": 2},
     )
     path = tmp_path / "team-clusters.joblib"
     save_team_cluster_state(path, classifier, "home")
-    reducer, cluster_model = load_team_cluster_state(path, "home")
+    reducer, cluster_model = load_team_cluster_state(path)
     assert reducer == {"fitted": True}
     assert cluster_model == {"clusters": 2}
-    with pytest.raises(ValueError, match="cluster_0_side"):
-        load_team_cluster_state(path, "away")
+    # Home/away mapping can be changed in a later run without refitting clusters.
+    reducer_again, model_again = load_team_cluster_state(path)
+    assert reducer_again == reducer
+    assert model_again == cluster_model
