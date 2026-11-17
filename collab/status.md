@@ -31,3 +31,16 @@ Run the Track B 30-second smoke test from TRACK_B.md, inspect test20_preview.mp4
 
 ## Collaboration rule
 Do not merge Track B into main until the Windows smoke test passes. Claude should address the actionable Track A issues in collab/track-a-review-2026-11-15.md on main or a dedicated Track A branch.
+
+
+## Track B performance and Colab update — 17 November 2026
+- The latest Windows diagnostic logs showed the no-team test completed with 145 sampled frames / 1,615 rows for a 15-second window. The team-enabled test completed with 290 sampled frames / 4,230 rows for a 30-second window; initial SigLIP extraction for 300 training crops took about 67 seconds. The separate Colab notebook uses a hosted runtime; the laptop is not the compute host.
+- Track B now bounds the initial team-crop sampling pass to the effective segment window, including `--limit-seconds`, and samples from `--start-seconds`. Sampling reuses the resident player detector instead of instantiating another YOLO copy.
+- Added `--team-device auto|cuda:0|cpu`. Auto checks free VRAM after the player and pitch models are loaded; it selects CUDA when at least 4 GB is free, else CPU. SigLIP is loaded after crop sampling to avoid overlapping its model allocation with the sampling pass.
+- SigLIP features are cached per player track. New tracks are classified; stable assignments are not continuously re-embedded, while uncertain tracks can be refreshed after the configured interval. Default `--team-classify-every` is now 30.
+- Both YOLO inference calls now use `quantize="fp16"` on CUDA instead of deprecated `half=True`.
+- Added `--team-model-state` to persist/reuse fitted UMAP + KMeans state across segments, preserving cluster numbering. Cluster-to-home/away remains arbitrary and must be checked in the first segment.
+- Added `--track-id-offset` for unique person IDs across merged segments. Ball ID 0 is unchanged; track IDs remain anonymous and are not shirt numbers.
+- Added `notebooks/track_b_colab.ipynb`: hosted-GPU setup, optional yt-dlp video download, model installation/download, Google Drive output/log persistence, 15-minute segments, completion-aware resume, and concatenation.
+- Automated tests were expanded for team-device selection, stable/unstable track embedding refresh, cluster transforms, and saved cluster-state mapping. CI status must be checked for the latest branch commit before calling it green.
+- Keep Track A/Tagger, xG/xA/xT, and downloader behavior untouched. Do not merge the draft PR until CI and a Colab segment smoke test plus output validation pass.
