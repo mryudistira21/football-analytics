@@ -247,6 +247,10 @@ def choose_team_device(
             raise RuntimeError("--team-device cuda:0 requested, but CUDA is unavailable")
         return "cpu", None
 
+    # Release unused cached inference buffers before measuring true free VRAM.
+    empty_cache = getattr(torch_module.cuda, "empty_cache", None)
+    if callable(empty_cache):
+        empty_cache()
     free_bytes, total_bytes = torch_module.cuda.mem_get_info(0)
     memory = {
         "free_gb": round(float(free_bytes) / (1024 ** 3), 3),
