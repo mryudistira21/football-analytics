@@ -187,7 +187,7 @@ def extract_crop(frame: np.ndarray, box: Any) -> np.ndarray | None:
 
 def sample_team_crops(
     video: Path,
-    weights: Path,
+    model: Any,
     device: str,
     class_id: int,
     seconds: float,
@@ -197,8 +197,6 @@ def sample_team_crops(
     start_seconds: float = 0.0,
 ) -> list[np.ndarray]:
     """Bounded first pass: keep <= limit crops, never keep frames or full video in RAM."""
-    from ultralytics import YOLO
-
     cap = cv2.VideoCapture(str(video))
     if not cap.isOpened():
         raise RuntimeError(f"Cannot open video: {video}")
@@ -206,13 +204,12 @@ def sample_team_crops(
     step = max(1, int(round(fps * interval)))
     if start_seconds > 0:
         cap.set(cv2.CAP_PROP_POS_MSEC, start_seconds * 1000.0)
-    model = YOLO(str(weights)).to(device)
     crops: list[np.ndarray] = []
-    frame_no = 0
+    frame_no = max(0, int(round(start_seconds * fps)))
     try:
         while len(crops) < limit:
             ok, frame = cap.read()
-            if not ok or frame_no / fps >= seconds:
+            if not ok or frame_no / fps >= start_seconds + seconds:
                 break
             if frame_no % step == 0:
                 result = model.predict(frame, imgsz=imgsz, conf=0.25, device=device,
@@ -231,7 +228,6 @@ def sample_team_crops(
             frame_no += 1
     finally:
         cap.release()
-        del model
         gc.collect()
     return crops
 
@@ -525,7 +521,7 @@ def main() -> int:
             else:
                 print("Sampling player crops for team classification...")
                 crops = sample_team_crops(
-                    video, player_weights, device, class_ids["player"],
+                    video, player_model, device, class_ids["player"],
                     team_sample_seconds, args.team_sample_interval,
                     args.team_sample_max_crops, args.imgsz,
                     start_seconds=args.start_seconds,
