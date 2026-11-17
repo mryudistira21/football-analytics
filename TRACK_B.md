@@ -132,6 +132,21 @@ The default output filenames include the period suffix (for example, match_p1_tr
 
 Recommended initial frame stride is 3 (about 10 observations/sec on 30 FPS video). Use stride 2 for denser sampling at higher cost. Use `--no-team-classification` for the fastest pipeline test, with `team=unknown`.
 
+## Colab T4: segmented processing and resume
+
+Use [notebooks/track_b_colab.ipynb](notebooks/track_b_colab.ipynb) to run the heavy inference on a hosted Colab GPU and persist results in Google Drive. Configure the immutable Tagger `match_id`, source video, half boundaries and first-half home direction before running.
+
+- The notebook divides each configured period into 900-second (15-minute) segments by default. Each segment writes its own CSV, `.meta.json`, and log under `MyDrive/football-analysis/track_b/<match_id>/`.
+- A segment is skipped on rerun only when its CSV and metadata both exist and metadata says `complete: true`. Incomplete segments are rerun with `--overwrite`. Completed segment files remain as recovery checkpoints; the notebook concatenates them into one tracking CSV and a combined metadata file.
+- Person IDs are offset between segments so they do not collide in the concatenated CSV. Ball `track_id=0` remains reserved. IDs still do not identify a shirt number or prove that the same player is followed across a segment boundary.
+- The notebook persists the fitted UMAP reducer and KMeans cluster model in Drive using `--team-model-state`; later segments reuse it so cluster labels do not get independently refitted and swapped. Cluster 0 is still arbitrary: verify the first segment's home/away mapping before relying on `--cluster-0-side`.
+- `--team-device auto` checks free VRAM after the player and pitch YOLO models are loaded. It selects CUDA when free VRAM meets `--team-min-free-vram-gb` (4 GB by default), otherwise CPU. Use `--team-device cuda:0` to require CUDA or `cpu` to force CPU.
+- Team crop sampling reuses the resident player detector and is bounded by the effective segment window (including `--limit-seconds`), rather than silently sampling the default 240 seconds beyond a short smoke test.
+- SigLIP embeddings are retained per person track. New tracks are classified; stable tracks are not repeatedly embedded. Tracks with insufficient or unstable votes can be refreshed after `--team-reclassify-after` processed frames. `--team-classify-every` defaults to 30 processed frames.
+- Ultralytics inference uses `quantize="fp16"` on CUDA rather than the deprecated `half=True` argument.
+
+The notebook saves logs and outputs to Drive, but Colab runtimes are temporary. After reconnecting, remount Drive, rerun setup, and rerun the segment cell; completed segments will be skipped. A segment interrupted before its completion metadata is written will be rerun.
+
 ## Output schema
 
 The tracking CSV follows DATA_CONTRACT.md:
