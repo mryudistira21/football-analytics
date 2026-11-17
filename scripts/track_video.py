@@ -482,16 +482,10 @@ def main() -> int:
             1: "away" if args.cluster_0_side == "home" else "home",
         }
 
-        player_probe = YOLO(str(player_weights)).to(device)
-        class_ids = class_ids_from_names(player_probe.names)
-        del player_probe
-        gc.collect()
-        if device.startswith("cuda"):
-            torch.cuda.empty_cache()
-
-        # Keep both YOLO detectors resident before checking free VRAM for SigLIP.
-        # T4 has more headroom; smaller GPUs automatically fall back to CPU.
+        # Keep one copy of each YOLO detector resident. Reuse player_model during
+        # team-crop sampling; do not instantiate a third detector copy.
         player_model = YOLO(str(player_weights)).to(device)
+        class_ids = class_ids_from_names(player_model.names)
         pitch_model = YOLO(str(pitch_weights)).to(device)
 
         if not args.no_team_classification:
