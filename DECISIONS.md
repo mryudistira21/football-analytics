@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-17 — Track B runs in the cloud, not on the laptop
+The RTX 2070 laptop processed 60 s of video in 39 min (~39x real time) and hung twice under sustained load. A full match would be tens of hours. Decision: run the heavy CV pipeline (track_video.py) on Google Colab (free T4), download the tracking CSV, and keep local runs to short clips only (--frame-stride 10, --imgsz 640, team classification rarely). ChatGPT's three speed fixes (bound team sampling to --limit-seconds, cache SigLIP embeddings per track, half->quantize) help but don't make local full-match viable. Protect the hardware: no full-length runs on the laptop, and not alongside a browser full of Colab.
+
+## 2026-11-17 — No-terminal downloader
+Added src/download_gui.pyw (Tkinter) + "Unduh Video.bat" so videos can be downloaded without the terminal, with Full Pertandingan / Babak Pertama / Babak Kedua options (halves cut at keyframes, no re-encode). Reuses src/download_match.py's logic; Track A.
+
 ## 2026-11-15 — After ChatGPT's second review (integration pass)
 - **xT methodology (Finding E):** now excludes WHOLE set-piece possessions via StatsBomb `play_pattern`, not just the delivery, for passes, carries and shots. Kept patterns: Regular Play, From Counter, From Keeper, From Kick Off. Training moves 411k → 224k; near-goal peak 0.25 → 0.32. "Open play only" is now literally true. Grid refitted; Tagger and models/xt_grid.json stay identical (192 cells).
 - **Stable match_id (Finding B):** event CSV now starts `match_id, match_name, ...`. `match_id` is the Tagger's immutable id; joins use it, never the display name.
