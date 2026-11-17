@@ -1,5 +1,17 @@
 # Decisions
 
+## 2026-11-17 — Track B moves full-match inference to hosted Colab and runs resumable segments
+- The local Windows RTX 2070 run took about 39 minutes for 60 seconds of source video and the laptop froze twice during full-length attempts. Heavy Track B inference will use a hosted Colab GPU (T4 when available); Colab's hosted runtime is separate from the laptop's local CPU/GPU.
+- The notebook `notebooks/track_b_colab.ipynb` processes each half in 900-second segments by default and stores each segment CSV, metadata and log in Google Drive. Complete segments are skipped after reconnect; incomplete segments are rerun; segment CSVs are concatenated only after completion.
+- Segment runs use a persistent `--team-model-state` file (fitted UMAP + KMeans) so the arbitrary cluster 0/1 labels remain consistent between segments. Verify the first segment's cluster-to-home/away assignment before using it as ground truth.
+- Person `track_id` values receive a `--track-id-offset` per segment to avoid collisions in the merged CSV; ball `track_id=0` remains reserved. Track IDs still do not imply shirt numbers or cross-segment identity.
+- Team sampling is limited to the effective segment range, reuses the resident player detector, and no longer loads a third YOLO copy.
+- SigLIP features are cached per person track; stable tracks are not repeatedly embedded, while new or unstable tracks are refreshed. The default classification interval is 30 processed frames.
+- `--team-device auto` selects CUDA only when free VRAM after both YOLO models are loaded is at least 4 GB; otherwise it uses CPU. `cuda:0` and `cpu` can be selected explicitly.
+- Replace deprecated Ultralytics `half=True` inference calls with `quantize="fp16"` for CUDA.
+- Keep the 105 × 68 m pitch geometry, camera-state semantics, track CSV fields and data contract unchanged. Do not redesign Track A/Tagger as part of this work.
+
+
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
 ## 2026-11-16 — Track B tracker API follows Supervision 0.31+
