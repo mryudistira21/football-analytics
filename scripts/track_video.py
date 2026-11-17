@@ -490,20 +490,13 @@ def main() -> int:
 
         if not args.no_team_classification:
             requested_state = args.team_model_state.expanduser().resolve() if args.team_model_state else None
-            team_device, team_vram = choose_team_device(
-                torch, args.team_device, args.team_min_free_vram_gb
-            )
-            metadata["team_device"] = team_device
-            metadata["team_vram_at_selection"] = team_vram
-            print(
-                f"Team classifier device: {team_device}"
-                + (
-                    f" (free VRAM {team_vram['free_gb']:.2f}/{team_vram['total_gb']:.2f} GB)"
-                    if team_vram else ""
-                )
-            )
 
             if requested_state is not None and requested_state.is_file():
+                # State reuse does not need another player crop pass. Check free VRAM
+                # now, after both YOLO detectors are resident, before loading SigLIP.
+                team_device, team_vram = choose_team_device(
+                    torch, args.team_device, args.team_min_free_vram_gb
+                )
                 team_classifier = TeamClassifier(device=team_device, batch_size=16)
                 reducer, cluster_model = load_team_cluster_state(
                     requested_state, args.cluster_0_side
@@ -514,7 +507,7 @@ def main() -> int:
                 print(f"Loaded team cluster state: {requested_state}")
             else:
                 # Sample with the resident player detector before loading SigLIP, so
-                # the temporary feature encoder does not overlap this GPU workload.
+                # the feature encoder does not overlap this GPU workload.
                 print("Sampling player crops for team classification...")
                 crops = sample_team_crops(
                     video, player_model, device, class_ids["player"],
@@ -523,6 +516,11 @@ def main() -> int:
                     start_seconds=args.start_seconds,
                 )
                 if len(crops) >= 30:
+                    # Choose the classifier device after crop inference has completed,
+                    # using remaining free VRAM rather than a pre-sampling estimate.
+                    team_device, team_vram = choose_team_device(
+                        torch, args.team_device, args.team_min_free_vram_gb
+                    )
                     team_classifier = TeamClassifier(device=team_device, batch_size=16)
                     team_classifier.fit(crops)
                     print(
@@ -534,10 +532,21 @@ def main() -> int:
                         )
                         print(f"Saved team cluster state: {requested_state}")
                 else:
+                    team_device, team_vram = "not_used", None
                     print(f"Only {len(crops)} usable crops; teams will remain unknown.")
                 del crops
                 gc.collect()
 
+            metadata["team_device"] = team_device
+            metadata["team_vram_at_selection"] = team_vram
+            if team_device != "not_used":
+                print(
+                    f"Team classifier device: {team_device}"
+                    + (
+                        f" (free VRAM {team_vram['free_gb']:.2f}/{team_vram['total_gb']:.2f} GB)"
+                        if team_vram else ""
+                    )
+                )
             metadata["team_classifier_state_path"] = (
                 str(requested_state) if requested_state is not None else None
             )
