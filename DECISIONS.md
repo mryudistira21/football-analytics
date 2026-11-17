@@ -10,6 +10,8 @@
 - `--team-device auto` selects CUDA only when free VRAM after both YOLO models are loaded is at least 4 GB; otherwise it uses CPU. `cuda:0` and `cpu` can be selected explicitly.
 - Replace deprecated Ultralytics `half=True` inference calls with `quantize="fp16"` for CUDA.
 - Keep the 105 × 68 m pitch geometry, camera-state semantics, track CSV fields and data contract unchanged. Do not redesign Track A/Tagger as part of this work.
+- The saved UMAP/KMeans state preserves raw cluster numbering, not a permanent home/away choice. `--cluster-0-side` maps those labels at run time; the Colab notebook reruns completed segments when that mapping changes so merged CSVs remain consistent.
+- The notebook concatenates per-segment CSVs as a row stream to avoid loading the full match into memory.
 
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
