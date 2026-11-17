@@ -1,7 +1,19 @@
 import numpy as np
 import pytest
 
-from scripts.track_video import fit_homography, map_points, pitch_targets
+from collections import Counter
+from types import SimpleNamespace
+
+from scripts.track_video import (
+    choose_team_device,
+    fit_homography,
+    load_team_cluster_state,
+    map_points,
+    pitch_targets,
+    save_team_cluster_state,
+    should_refresh_team_embedding,
+    team_clusters_from_embeddings,
+)
 
 
 def roboflow_pitch_vertices():
@@ -103,3 +115,95 @@ def test_external_bytetrack_tracker_accepts_supervision_detections_and_timestamp
     assert isinstance(second, sv.Detections)
     assert len(first) == 0
     assert len(second) == 0
+
+
+
+def test_choose_team_device_uses_cuda_when_free_vram_meets_threshold():
+    fake_torch = SimpleNamespace(
+        cuda=SimpleNamespace(
+            is_available=lambda: True,
+            mem_get_info=lambda device: (6 * 1024**3, 16 * 1024**3),
+        )
+    )
+    device, memory = choose_team_device(fake_torch, "auto", 4.0)
+    assert device == "cuda:0"
+    assert memory == {"free_gb": 6.0, "total_gb": 16.0}
+
+
+def test_choose_team_device_falls_back_to_cpu_when_free_vram_is_low():
+    fake_torch = SimpleNamespace(
+        cuda=SimpleNamespace(
+            is_available=lambda: True,
+            mem_get_info=lambda device: (3 * 1024**3, 8 * 1024**3),
+        )
+    )
+    device, memory = choose_team_device(fake_torch, "auto", 4.0)
+    assert device == "cpu"
+    assert memory["free_gb"] == 3.0
+
+
+def test_choose_team_device_auto_uses_cpu_without_cuda():
+    fake_torch = SimpleNamespace(
+        cuda=SimpleNamespace(is_available=lambda: False)
+    )
+    assert choose_team_device(fake_torch, "auto") == ("cpu", None)
+
+
+def test_choose_team_device_rejects_explicit_cuda_without_cuda():
+    fake_torch = SimpleNamespace(
+        cuda=SimpleNamespace(is_available=lambda: False)
+    )
+    with pytest.raises(RuntimeError, match="CUDA is unavailable"):
+        choose_team_device(fake_torch, "cuda:0")
+
+
+def test_team_embedding_refresh_skips_stable_tracks():
+    votes = Counter({"home": 4})
+    assert should_refresh_team_embedding(votes, 100, 120, 150) is False
+    assert should_refresh_team_embedding(votes, 100, 260, 150) is False
+
+
+def test_team_embedding_refresh_rechecks_unstable_tracks_after_interval():
+    votes = Counter({"home": 2, "away": 2})
+    assert should_refresh_team_embedding(votes, 100, 249, 150) is False
+    assert should_refresh_team_embedding(votes, 100, 250, 150) is True
+
+
+def test_team_embedding_refresh_classifies_new_tracks():
+    assert should_refresh_team_embedding(Counter(), None, 1, 150) is True
+
+
+def test_team_clusters_from_cached_embeddings():
+    class Reducer:
+        def transform(self, features):
+            return features[:, :1]
+
+    class ClusterModel:
+        def predict(self, projections):
+            return (projections[:, 0] > 0.5).astype(int)
+
+    classifier = SimpleNamespace(reducer=Reducer(), cluster_model=ClusterModel())
+    clusters = team_clusters_from_embeddings(
+        classifier, np.asarray([[0.2, 1.0], [0.8, 1.0]], dtype=np.float32)
+    )
+    np.testing.assert_array_equal(clusters, [0, 1])
+
+
+def test_team_cluster_state_round_trip_preserves_side_mapping(tmp_path):
+    class Reducer:
+        pass
+
+    class ClusterModel:
+        pass
+
+    classifier = SimpleNamespace(
+        reducer=Reducer(),
+        cluster_model=ClusterModel(),
+    )
+    path = tmp_path / "team-clusters.joblib"
+    save_team_cluster_state(path, classifier, "home")
+    reducer, cluster_model = load_team_cluster_state(path, "home")
+    assert isinstance(reducer, Reducer)
+    assert isinstance(cluster_model, ClusterModel)
+    with pytest.raises(ValueError, match="cluster_0_side"):
+        load_team_cluster_state(path, "away")
