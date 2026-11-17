@@ -190,20 +190,14 @@ def test_team_clusters_from_cached_embeddings():
 
 
 def test_team_cluster_state_round_trip_preserves_side_mapping(tmp_path):
-    class Reducer:
-        pass
-
-    class ClusterModel:
-        pass
-
     classifier = SimpleNamespace(
-        reducer=Reducer(),
-        cluster_model=ClusterModel(),
+        reducer={"fitted": True},
+        cluster_model={"clusters": 2},
     )
     path = tmp_path / "team-clusters.joblib"
     save_team_cluster_state(path, classifier, "home")
     reducer, cluster_model = load_team_cluster_state(path, "home")
-    assert isinstance(reducer, Reducer)
-    assert isinstance(cluster_model, ClusterModel)
+    assert reducer == {"fitted": True}
+    assert cluster_model == {"clusters": 2}
     with pytest.raises(ValueError, match="cluster_0_side"):
         load_team_cluster_state(path, "away")
