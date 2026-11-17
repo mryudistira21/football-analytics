@@ -7,6 +7,7 @@ import importlib.metadata
 import json
 import math
 import os
+import joblib
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -193,6 +194,7 @@ def sample_team_crops(
     interval: float,
     limit: int,
     imgsz: int,
+    start_seconds: float = 0.0,
 ) -> list[np.ndarray]:
     """Bounded first pass: keep <= limit crops, never keep frames or full video in RAM."""
     from ultralytics import YOLO
@@ -202,13 +204,15 @@ def sample_team_crops(
         raise RuntimeError(f"Cannot open video: {video}")
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     step = max(1, int(round(fps * interval)))
+    if start_seconds > 0:
+        cap.set(cv2.CAP_PROP_POS_MSEC, start_seconds * 1000.0)
     model = YOLO(str(weights)).to(device)
     crops: list[np.ndarray] = []
     frame_no = 0
     try:
         while len(crops) < limit:
             ok, frame = cap.read()
-            if not ok or frame_no / fps > seconds:
+            if not ok or frame_no / fps >= seconds:
                 break
             if frame_no % step == 0:
                 result = model.predict(frame, imgsz=imgsz, conf=0.25, device=device,
@@ -230,6 +234,85 @@ def sample_team_crops(
         del model
         gc.collect()
     return crops
+
+
+
+
+def choose_team_device(
+    torch_module: Any,
+    requested: str = "auto",
+    min_free_vram_gb: float = 4.0,
+) -> tuple[str, dict[str, float] | None]:
+    """Choose SigLIP's device using free VRAM after both YOLO detectors are loaded."""
+    if requested == "cpu":
+        return "cpu", None
+    if not torch_module.cuda.is_available():
+        if requested == "cuda:0":
+            raise RuntimeError("--team-device cuda:0 requested, but CUDA is unavailable")
+        return "cpu", None
+
+    free_bytes, total_bytes = torch_module.cuda.mem_get_info(0)
+    memory = {
+        "free_gb": round(float(free_bytes) / (1024 ** 3), 3),
+        "total_gb": round(float(total_bytes) / (1024 ** 3), 3),
+    }
+    if requested == "cuda:0" or memory["free_gb"] >= min_free_vram_gb:
+        return "cuda:0", memory
+    return "cpu", memory
+
+
+def should_refresh_team_embedding(
+    vote_counts: Counter[str],
+    last_refresh_frame: int | None,
+    current_frame: int,
+    refresh_after_frames: int,
+    stability_ratio: float = 0.75,
+) -> bool:
+    """Refresh a track's SigLIP crop only when new, awaiting validation, or unstable."""
+    if last_refresh_frame is None:
+        return True
+    if current_frame - last_refresh_frame < refresh_after_frames:
+        return False
+    total_votes = sum(vote_counts.values())
+    if total_votes <= 1:
+        return True
+    return max(vote_counts.values()) / total_votes < stability_ratio
+
+
+def team_clusters_from_embeddings(team_classifier: Any, embeddings: np.ndarray) -> np.ndarray:
+    """Apply fitted UMAP + KMeans stages to already-extracted SigLIP features."""
+    features = np.asarray(embeddings, dtype=np.float32)
+    if features.ndim != 2 or len(features) == 0:
+        return np.empty((0,), dtype=np.int64)
+    projections = team_classifier.reducer.transform(features)
+    return np.asarray(team_classifier.cluster_model.predict(projections), dtype=np.int64)
+
+
+def load_team_cluster_state(path: Path, expected_cluster_0_side: str) -> tuple[Any, Any]:
+    """Load fitted UMAP/KMeans state for consistent team labels across segments."""
+    state = joblib.load(path)
+    if state.get("state_version") != 1:
+        raise ValueError(f"Unsupported team classifier state version in {path}")
+    if state.get("cluster_0_side") != expected_cluster_0_side:
+        raise ValueError(
+            "Team classifier state uses cluster_0_side="
+            f"{state.get('cluster_0_side')!r}, but this run requested "
+            f"{expected_cluster_0_side!r}"
+        )
+    return state["reducer"], state["cluster_model"]
+
+
+def save_team_cluster_state(path: Path, team_classifier: Any, cluster_0_side: str) -> None:
+    """Persist fitted UMAP/KMeans state atomically for reuse by later segments."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(path.suffix + ".partial")
+    joblib.dump({
+        "state_version": 1,
+        "cluster_0_side": cluster_0_side,
+        "reducer": team_classifier.reducer,
+        "cluster_model": team_classifier.cluster_model,
+    }, temporary)
+    temporary.replace(path)
 
 
 def main() -> int:
@@ -259,7 +342,15 @@ def main() -> int:
     parser.add_argument("--team-sample-seconds", type=float, default=240)
     parser.add_argument("--team-sample-interval", type=float, default=1.5)
     parser.add_argument("--team-sample-max-crops", type=int, default=300)
-    parser.add_argument("--team-classify-every", type=int, default=5)
+    parser.add_argument("--team-classify-every", type=int, default=30)
+    parser.add_argument("--team-device", choices=["auto", "cuda:0", "cpu"], default="auto")
+    parser.add_argument("--team-min-free-vram-gb", type=float, default=4.0)
+    parser.add_argument("--team-reclassify-after", type=int, default=150)
+    parser.add_argument("--team-stability-ratio", type=float, default=0.75)
+    parser.add_argument("--team-model-state", type=Path,
+                        help="persist/reuse fitted UMAP + KMeans state across video segments")
+    parser.add_argument("--track-id-offset", type=int, default=0,
+                        help="add this offset to person track IDs; ball ID 0 remains reserved")
     parser.add_argument("--cluster-0-side", choices=["home", "away"], default="home")
     parser.add_argument("--annotated-output", type=Path)
     parser.add_argument("--annotated-max-seconds", type=float, default=180)
@@ -268,6 +359,12 @@ def main() -> int:
 
     if args.frame_stride < 1 or args.team_classify_every < 1:
         parser.error("frame stride and team classification interval must be positive")
+    if args.team_reclassify_after < 1 or args.team_min_free_vram_gb < 0:
+        parser.error("team reclassification interval must be positive and VRAM threshold non-negative")
+    if not 0.5 <= args.team_stability_ratio <= 1.0:
+        parser.error("--team-stability-ratio must be between 0.5 and 1.0")
+    if args.track_id_offset < 0:
+        parser.error("--track-id-offset must be non-negative")
     directions = {
         "1": args.home_dir_1h == "R",
         "2": args.home_dir_1h != "R",
@@ -339,6 +436,15 @@ def main() -> int:
         print("Output exists; pass --overwrite or choose another --output.", file=sys.stderr)
         return 1
 
+    stop_at = args.end_seconds
+    if args.limit_seconds is not None:
+        duration_limit = args.start_seconds + args.limit_seconds
+        stop_at = min(stop_at, duration_limit) if stop_at is not None else duration_limit
+
+    team_sample_seconds = args.team_sample_seconds
+    if stop_at is not None:
+        team_sample_seconds = min(team_sample_seconds, max(0.0, stop_at - args.start_seconds))
+
     period_dirs = directions
     metadata: dict[str, Any] = {
         "match_id": args.match_id, "video_file": str(video),
@@ -347,6 +453,11 @@ def main() -> int:
         "home_attacks_right_by_period": period_dirs,
         "frame_stride": args.frame_stride,
         "period": args.period,
+        "track_id_offset": args.track_id_offset,
+        "team_device_requested": args.team_device,
+        "team_min_free_vram_gb": args.team_min_free_vram_gb,
+        "team_classify_every": args.team_classify_every,
+        "team_reclassify_after": args.team_reclassify_after,
         "source_start_seconds": args.start_seconds,
         "source_end_seconds": args.end_seconds,
         "model_versions": {
@@ -367,6 +478,9 @@ def main() -> int:
     try:
         team_classifier = None
         votes: dict[int, Counter[str]] = defaultdict(Counter)
+        team_embeddings: dict[int, np.ndarray] = {}
+        last_embedding_refresh: dict[int, int] = {}
+        team_state_loaded = False
         cluster_to_side = {
             0: args.cluster_0_side,
             1: "away" if args.cluster_0_side == "home" else "home",
@@ -379,25 +493,64 @@ def main() -> int:
         if device.startswith("cuda"):
             torch.cuda.empty_cache()
 
-        if not args.no_team_classification:
-            print("Sampling player crops for team classification...")
-            crops = sample_team_crops(
-                video, player_weights, device, class_ids["player"],
-                args.team_sample_seconds, args.team_sample_interval,
-                args.team_sample_max_crops, args.imgsz,
-            )
-            if len(crops) >= 30:
-                # Keep SigLIP on CPU to leave 8 GB VRAM for the two YOLO models.
-                team_classifier = TeamClassifier(device="cpu", batch_size=16)
-                team_classifier.fit(crops)
-                print(f"Team classifier fitted on {len(crops)} crops (CPU).")
-            else:
-                print(f"Only {len(crops)} usable crops; teams will remain unknown.")
-            del crops
-            gc.collect()
-
+        # Keep both YOLO detectors resident before checking free VRAM for SigLIP.
+        # T4 has more headroom; smaller GPUs automatically fall back to CPU.
         player_model = YOLO(str(player_weights)).to(device)
         pitch_model = YOLO(str(pitch_weights)).to(device)
+
+        if not args.no_team_classification:
+            requested_state = args.team_model_state.expanduser().resolve() if args.team_model_state else None
+            team_device, team_vram = choose_team_device(
+                torch, args.team_device, args.team_min_free_vram_gb
+            )
+            metadata["team_device"] = team_device
+            metadata["team_vram_at_selection"] = team_vram
+            print(
+                f"Team classifier device: {team_device}"
+                + (
+                    f" (free VRAM {team_vram['free_gb']:.2f}/{team_vram['total_gb']:.2f} GB)"
+                    if team_vram else ""
+                )
+            )
+            team_classifier = TeamClassifier(device=team_device, batch_size=16)
+
+            if requested_state is not None and requested_state.is_file():
+                reducer, cluster_model = load_team_cluster_state(
+                    requested_state, args.cluster_0_side
+                )
+                team_classifier.reducer = reducer
+                team_classifier.cluster_model = cluster_model
+                team_state_loaded = True
+                print(f"Loaded team cluster state: {requested_state}")
+            else:
+                print("Sampling player crops for team classification...")
+                crops = sample_team_crops(
+                    video, player_weights, device, class_ids["player"],
+                    team_sample_seconds, args.team_sample_interval,
+                    args.team_sample_max_crops, args.imgsz,
+                    start_seconds=args.start_seconds,
+                )
+                if len(crops) >= 30:
+                    team_classifier.fit(crops)
+                    print(
+                        f"Team classifier fitted on {len(crops)} crops ({team_device})."
+                    )
+                    if requested_state is not None:
+                        save_team_cluster_state(
+                            requested_state, team_classifier, args.cluster_0_side
+                        )
+                        print(f"Saved team cluster state: {requested_state}")
+                else:
+                    print(f"Only {len(crops)} usable crops; teams will remain unknown.")
+                    team_classifier = None
+                del crops
+                gc.collect()
+            metadata["team_classifier_state_path"] = (
+                str(requested_state) if requested_state is not None else None
+            )
+            metadata["team_classifier_state_loaded"] = team_state_loaded
+            metadata["team_embedding_cache"] = "per-track SigLIP feature vectors"
+            write_meta()
         pitch_vertices = pitch_targets(SoccerPitchConfiguration().vertices)
         tracker = ByteTrackTracker(
             track_activation_threshold=0.25,
@@ -423,10 +576,6 @@ def main() -> int:
         if args.start_seconds > 0:
             cap.set(cv2.CAP_PROP_POS_MSEC, args.start_seconds * 1000.0)
 
-        stop_at = args.end_seconds
-        if args.limit_seconds is not None:
-            duration_limit = args.start_seconds + args.limit_seconds
-            stop_at = min(stop_at, duration_limit) if stop_at is not None else duration_limit
         metadata["effective_end_seconds"] = stop_at
         write_meta()
 
@@ -466,7 +615,7 @@ def main() -> int:
 
                     result = player_model.predict(
                         frame, imgsz=args.imgsz, conf=0.08,
-                        device=device, half=half, verbose=False,
+                        device=device, quantize="fp16" if half else None, verbose=False,
                     )[0]
                     detections = sv.Detections.from_ultralytics(result)
                     if detections.class_id is None:
@@ -500,7 +649,7 @@ def main() -> int:
 
                     pitch_result = pitch_model.predict(
                         frame, imgsz=args.pitch_imgsz, conf=0.10,
-                        device=device, half=half, verbose=False,
+                        device=device, quantize="fp16" if half else None, verbose=False,
                     )[0]
                     matrix = None
                     stats = {"median_error_m": None, "inliers": 0}
@@ -517,7 +666,8 @@ def main() -> int:
                     if stats["median_error_m"] is not None:
                         errors.append(float(stats["median_error_m"]))
 
-                    # Team appearance votes every few processed frames; keep player IDs anonymous.
+                    # Extract SigLIP features only for new tracks, delayed validation,
+                    # or tracks whose accumulated team votes remain unstable.
                     if (
                         team_classifier is not None
                         and processed % args.team_classify_every == 0
@@ -527,12 +677,32 @@ def main() -> int:
                         players = tracked[tracked.class_id == class_ids["player"]]
                         crops_now, tids = [], []
                         for box, tid in zip(players.xyxy, players.tracker_id):
+                            if tid is None:
+                                continue
+                            tid_int = int(tid)
+                            if not should_refresh_team_embedding(
+                                votes[tid_int],
+                                last_embedding_refresh.get(tid_int),
+                                processed,
+                                args.team_reclassify_after,
+                                args.team_stability_ratio,
+                            ):
+                                continue
                             crop = extract_crop(frame, box)
-                            if crop is not None and tid is not None:
+                            if crop is not None:
                                 crops_now.append(crop)
-                                tids.append(int(tid))
+                                tids.append(tid_int)
                         if crops_now:
-                            for tid, cluster in zip(tids, team_classifier.predict(crops_now)):
+                            features = np.asarray(
+                                team_classifier.extract_features(crops_now),
+                                dtype=np.float32,
+                            )
+                            clusters = team_clusters_from_embeddings(
+                                team_classifier, features
+                            )
+                            for tid, feature, cluster in zip(tids, features, clusters):
+                                team_embeddings[tid] = feature.copy()
+                                last_embedding_refresh[tid] = processed
                                 votes[tid][cluster_to_side[int(cluster)]] += 1
 
                     positions = (
@@ -562,7 +732,7 @@ def main() -> int:
                             row = {
                                 "match_id": args.match_id, "frame": frame_index,
                                 "video_seconds": round(timestamp, 3), "period": args.period,
-                                "track_id": int(tid), "role": role, "team": team,
+                                "track_id": int(tid) + args.track_id_offset, "role": role, "team": team,
                                 "x": round(float(x), 2) if np.isfinite(x) else "",
                                 "y": round(float(y), 2) if np.isfinite(y) else "",
                                 "confidence": round(float(tracked.confidence[i]), 4)
@@ -624,7 +794,7 @@ def main() -> int:
                                     color = (190, 190, 190)
                                 x1, y1, x2, y2 = np.asarray(box, dtype=int)
                                 cv2.rectangle(annotated, (x1, y1), (x2, y2), color, 2)
-                                label = f"{role} {int(tid)} {team}"
+                                label = f"{role} {int(tid) + args.track_id_offset} {team}"
                                 cv2.putText(
                                     annotated, label, (x1, max(15, y1 - 5)),
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1,
@@ -661,6 +831,8 @@ def main() -> int:
             "camera_state_counts": dict(camera_counts),
             "calibration_median_error_m": round(float(np.median(errors)), 3) if errors else None,
             "track_count_with_team_votes": len(votes),
+            "team_embedding_cache_tracks": len(team_embeddings),
+            "track_id_offset": args.track_id_offset,
             "unknown_team_track_count": sum(
                 1 for v in votes.values()
                 if len(v) == 0 or (len(v.most_common()) > 1 and v.most_common()[0][1] == v.most_common()[1][1])
