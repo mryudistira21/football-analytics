@@ -16,4 +16,5 @@ scipy
 matplotlib
 gdown          # downloads the sports models from Google Drive
 umap-learn     # team classification clustering
+joblib         # persist UMAP/KMeans team-cluster state between Colab segments
 yt-dlp[default] # match video download (src/download_match.py); also: winget install DenoLand.Deno
