@@ -163,7 +163,7 @@ match_id,frame,video_seconds,period,track_id,role,team,x,y,confidence,camera_sta
 
 ## Resource behaviour
 
-Video is decoded one frame at a time. Team-crop sampling is capped (300 by default). The SigLIP team classifier runs on CPU to leave VRAM available for player and pitch models on the RTX 2070 8 GB. CSV rows are written incrementally. Annotated video is opt-in and short. Model weights and Hugging Face cache live outside the repo.
+Video is decoded one frame at a time. Team-crop sampling is capped (300 by default) and bounded by the effective segment window. SigLIP device selection is configurable: auto uses CUDA when at least 4 GB free VRAM remains after player and pitch YOLO models are resident; otherwise it falls back to CPU. On Colab T4, this normally allows SigLIP to use GPU memory when enough remains. SigLIP is loaded after crop sampling. Per-track embeddings are cached and stable tracks are not repeatedly embedded. CSV rows are written incrementally. Annotated video is opt-in and short. Model weights, Hugging Face cache and outputs live outside the repository.
 
 ## Test
 
