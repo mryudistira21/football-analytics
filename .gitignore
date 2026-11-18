@@ -13,6 +13,9 @@ data/lineups/
 *.sqlite
 !data/.gitkeep
 
+# Downloaded archives / generated bundles — keep binaries out of Git.
+*.zip
+
 # Python
 .venv/
 venv/

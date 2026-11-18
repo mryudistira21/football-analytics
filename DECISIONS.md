@@ -1,6 +1,39 @@
 # Decisions
 
+## 2026-11-18 — Track B exports per-track moments for the Tagger Reel
+- Build player moments as a pure post-processor over the tracking CSV; do not rerun YOLO or SigLIP.
+- Each anonymous track gets a separate cut-list CSV with exactly `moment,start_s,end_s,duration_s,start_clock,events,label`; source video seconds remain the playback/join values.
+- `events` is the descriptor (v1: `near_ball`); `label` is `ok`, `review`, or `wrong`. V1 emits only `ok` and `review`; never infer `wrong` from missing/weak evidence.
+- Keep `match_id`, `track_id`, team and diagnostics in a sidecar manifest, not as extra cut-list columns. Track IDs remain distinct from shirt numbers.
+- Segment status is explicit: `complete`, `partial_eof`, or `no_frames`. Resume accepts only complete metadata whose actual start/end coverage matches the requested interval; early EOF must not be treated as a completed segment.
+
+## 2026-11-17 — Track B moves full-match inference to hosted Colab and runs resumable segments
+- The local Windows RTX 2070 run took about 39 minutes for 60 seconds of source video and the laptop froze twice during full-length attempts. Heavy Track B inference will use a hosted Colab GPU (T4 when available); Colab's hosted runtime is separate from the laptop's local CPU/GPU.
+- The notebook `notebooks/track_b_colab.ipynb` processes each half in 900-second segments by default and stores each segment CSV, metadata and log in Google Drive. Complete segments are skipped after reconnect; incomplete segments are rerun; segment CSVs are concatenated only after completion.
+- Segment runs use a persistent `--team-model-state` file (fitted UMAP + KMeans) so the arbitrary cluster 0/1 labels remain consistent between segments. Verify the first segment's cluster-to-home/away assignment before using it as ground truth.
+- Person `track_id` values receive a `--track-id-offset` per segment to avoid collisions in the merged CSV; ball `track_id=0` remains reserved. Track IDs still do not imply shirt numbers or cross-segment identity.
+- Team sampling is limited to the effective segment range, reuses the resident player detector, and no longer loads a third YOLO copy.
+- SigLIP features are cached per person track; stable tracks are not repeatedly embedded, while new or unstable tracks are refreshed. The default classification interval is 30 processed frames.
+- `--team-device auto` selects CUDA only when free VRAM after both YOLO models are loaded is at least 4 GB; otherwise it uses CPU. `cuda:0` and `cpu` can be selected explicitly.
+- Replace deprecated Ultralytics `half=True` inference calls with `quantize="fp16"` for CUDA.
+- Keep the 105 × 68 m pitch geometry, camera-state semantics, track CSV fields and data contract unchanged. Do not redesign Track A/Tagger as part of this work.
+- The saved UMAP/KMeans state preserves raw cluster numbering, not a permanent home/away choice. `--cluster-0-side` maps those labels at run time; the Colab notebook reruns completed segments when that mapping changes so merged CSVs remain consistent.
+- The notebook concatenates per-segment CSVs as a row stream to avoid loading the full match into memory.
+
+
 Short log of choices, so neither AI re-opens a settled question. Newest first.
+
+## 2026-11-16 — Track B tracker API follows Supervision 0.31+
+- Supervision 0.31.0 removed `sv.ByteTrack`; use Roboflow's external `trackers.ByteTrackTracker` with `tracker.update(detections, timestamp=...)`.
+- Pin Supervision to the 0.31.x API range and add `trackers>=2.7.0,<3.0.0` to the Track B requirements.
+- Filter tracker ID `-1` (tentative/unmatched detections) before team votes, CSV output and preview labels so it is never treated as a persistent player identity.
+- Pass source-video PTS timestamps and source FPS to ByteTrackTracker so frame-stride sampling does not masquerade as full-rate updates.
+
+## 2026-11-15 — Track B pitch geometry aligned with Pitchside Tagger
+- **Homography target geometry:** Track B maps Roboflow's 32 ordered soccer-pitch keypoints to the exact 105 × 68 m landmark coordinates used by Pitchside Tagger. Do not axis-scale the 120 × 70 m source template independently; this distorts internal markings while a homography can still have a low reprojection residual.
+- The mapping is identified in tracking metadata as `pitchside_tagger_105x68_v1` and guarded by tests for all 32 landmarks plus rejection of unexpected source geometry/order.
+- **Camera-state contract for v1:** only `wide` and `closeup` are emitted. Here `closeup` is a fallback for invalid/unavailable pitch calibration, not a confirmed semantic close-up; replay/graphics classification remains future work.
+- A 30-second video smoke test still requires the local `test20.mp4` and model weights; do not mark it complete based only on unit tests.
 
 ## 2026-11-15 — After ChatGPT's second review (integration pass)
 - **xT methodology (Finding E):** now excludes WHOLE set-piece possessions via StatsBomb `play_pattern`, not just the delivery, for passes, carries and shots. Kept patterns: Regular Play, From Counter, From Keeper, From Kick Off. Training moves 411k → 224k; near-goal peak 0.25 → 0.32. "Open play only" is now literally true. Grid refitted; Tagger and models/xt_grid.json stay identical (192 cells).

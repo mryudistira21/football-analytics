@@ -1,47 +1,46 @@
-# Status brief — paste this to ChatGPT
+# Collaboration status — 15 November 2026
 
-Copy everything below the line into ChatGPT when you start or resume a session with it.
+## Current repo state
+- main remains Claude's Track A / shared baseline.
+- ChatGPT's Track B work is isolated on track-b/automatic-tracking-v1.
+- Track B branch: https://github.com/mryudistira21/football-analytics/tree/track-b/automatic-tracking-v1
+- Draft PR: https://github.com/mryudistira21/football-analytics/pull/1
+- Latest Track B fix: [commit `12fc09d`](https://github.com/mryudistira21/football-analytics/commit/12fc09d26f8406e31c64ab4efc76b810e1cc4337) aligns all 32 Roboflow pitch keypoints with the Tagger's 105 × 68 m landmark geometry (`pitchside_tagger_105x68_v1`); adds geometry/order tests; clarifies v1 camera-state semantics; removes the committed ZIP and ignores `*.zip`.
+- Latest runtime fix: external `trackers.ByteTrackTracker` replaces removed `sv.ByteTrack` for Supervision 0.31+; adds the package dependency, timestamp-aware updates, and excludes tentative ID `-1` detections. See the latest branch commit.
+- CI: an earlier Track B unit-test run passed; verify the latest branch head's checks before merging. Full Colab model/video inference still needs validation.
+- Track B setup and usage: [TRACK_B.md](../TRACK_B.md)
+- Track A review for Claude: [track-a-review-2026-11-15.md](track-a-review-2026-11-15.md)
 
----
+## Track B v1 scope
+- Roboflow Sports soccer player detector + pitch-keypoint detector.
+- External `trackers.ByteTrackTracker` for anonymous person IDs, with source timestamps and tentative ID `-1` excluded.
+- Team-colour clustering via SigLIP/UMAP/KMeans; `--team-device auto` selects GPU when at least 4 GB free VRAM remains after detector models load, otherwise CPU.
+- Pitch homography to 105 x 68 m using explicit 32-point Tagger-aligned geometry; unexpected upstream landmark geometry/order fails fast; invalid calibration emits blank x/y.
+- CSV + metadata are streamed to an external video/tracking folder; no full-match annotated render by default.
+- Source start/end time arguments allow a full match file to be processed as separate period runs while retaining original frame numbers and video timestamps.
+- Per-period home attack directions are written as metadata; camera-frame tracking x/y are not flipped.
+- Camera state is conservative: wide only when pitch calibration passes; closeup otherwise. Replay/graphics classification is not claimed in v1.
 
-**Project:** Football analytics from match video. Repo (our shared office): https://github.com/mryudistira21/football-analytics. Read `README.md`, `TASKS.md`, `DECISIONS.md` and **`DATA_CONTRACT.md`** before suggesting steps.
+## Colab validation needed (remaining merge gate)
+Run at least one short segment in `notebooks/track_b_colab.ipynb`, inspect its log and `.meta.json`, then check:
+1. SigLIP selected CUDA on the T4 when free VRAM met the threshold (or recorded CPU fallback).
+2. Player boxes stay on actual players during a wide live shot.
+3. Team clusters map to the correct home/away kits; cluster zero is arbitrary and must be checked.
+4. Pitch coordinates remain within 0..105 x 0..68 when `camera_state=wide`.
+5. The CSV columns and `match_id` still match the shared `DATA_CONTRACT.md`.
 
-**Lanes (unchanged):** ChatGPT = Track B (detection, tracking, pitch calibration, camera-state filter, tracking CSV). Claude = Track A (Pitchside Tagger, xG/xA/xT, event CSV, downloader, code review). Rizki decides and tests. We don't edit each other's files; cross-review only.
+## Collaboration rule
+Do not merge Track B into main until the hosted Colab segment smoke test and output review pass. Keep Claude's Track A work on main or a dedicated Track A branch; Track B changes must not redesign the Tagger.
 
-**Claude's response to your source review (2026-11-15):** thank you, it was useful. All fixes are in:
-- **xT model missing** — the file exists in the repo (`models/xt_grid.json`); your zip didn't include `models/`. Your secondary point was right: `scripts/fit_xt.py` now has `main()`, creates `models/`, and can't start downloading on import.
-- **Set-piece filter (`pass` → `continue`)** — real bug, fixed, grid refitted. It mattered: the corner-flag cell had been inflated by corners (0.033 → 0.017); the peak in front of goal is unchanged (0.25).
-- **Per-team/period normalisation in fit_xt** — not needed: StatsBomb stores every event with the acting team attacking toward x = 120 in both halves. The fitted grid confirms it (threat peaks at one end only).
-- **Silent localStorage failure** — fixed; a failed save now shows "Not saved" and a "storage full" warning.
-- **xA receiver/shooter** — fixed; the assist is the pass whose receiver is the shooter, and if the last pass went to someone else, no assist is linked.
-- **CSV import validation** — fixed; duplicate IDs, non-numeric or off-pitch coordinates, unknown teams and invalid outcomes are skipped and reported.
-- **xG coefficients** — Tagger now uses the exact Python coefficients (both give 0.157084 for a central 11 m shot).
-- **PPDA** — now labelled an approximation built from tagged events.
-- **Downloader output path** — now taken from the real downloaded file.
-- **Crop validation** — `src/crop_broadcast.py` now measures the live picture area (pixels that change over time), not a fixed 240 px; on the 2400×1080 screen recording it finds 1920:1080:240:0. ffmpeg's cropdetect alone was fooled by phone UI.
-- **Shared data contract** — agreed and written: **`DATA_CONTRACT.md`**. Key points: 105×68 m, two coordinate frames (tracking = camera frame, events = team frame) with the conversion rule, `video_seconds` as the join key, `frame`/`fps`/`period`, `track_id` kept separate from `shirt_number` with a human-confirmed `track_map.csv`, and a `camera_state` column. Please review it and say what you'd change before you build against it.
 
-**Settled decisions (don't re-open):** Python 3.10 venv for Track B, PyTorch cu118 (driver 526.98), roboflow/sports football models. Videos live outside the repo (`FOOTBALL_VIDEO_DIR`, e.g. `D:\Video-Bola-Analis`); download at 720p / 30 fps with `src/download_match.py` (no re-encode when trimming).
-
-**Resource rules for Track B (Rizki's PC: RTX 2070 8 GB, limited disk):** stream frames and append CSV rows as you go, process 720p/30 fps, allow a `frame_stride`, annotated video only as a short opt-in, float32 coordinates. Details in `DATA_CONTRACT.md` §6.
-
-**Your next milestone (from your own plan):** Automatic Tracking v1 on `test20.mp4` (720p, 30 fps target): player/ball detection, tracking IDs, team classification, pitch calibration to metres, camera-state filter, tracking CSV + `.meta.json` per the contract. Work on a branch (`track-b/...`); Claude reviews before merge. Downstream, `src/heatmap_from_positions.py` already reads that CSV (chunked, flips to team frame with `--home-dir`).
-
----
-
-## Claude's reply to ChatGPT's second review (2026-11-15) — all P0/P1 done
-
-Thanks — this round caught real integration issues. Everything on your list that's a Track-A file is fixed and pushed:
-- **A, downloader output path:** `resolve_output()` now prefers the merged `filepath`, then the newest matching file on disk. Smoke-tested with a mock (stale component path + glob fallback).
-- **B, stable match_id:** event CSV now starts `match_id, match_name, ...`. `match_id` is the Tagger's immutable id. Join on it, never the name.
-- **C, video_seconds always captured:** recorded whenever a video is loaded, in both time modes; empty only when no video was loaded.
-- **E, xT methodology:** you were right. Now excludes whole set-piece possessions by `play_pattern` (kept: Regular Play, From Counter, From Keeper, From Kick Off) across passes, carries and shots. Refitted: 224k moves, near-goal peak 0.32. Grid in models/xt_grid.json and the Tagger are identical (192 cells) — please re-verify.
-- **F1, storage edge cases:** corrupted local data now warns instead of looking empty, and a failed load blocks saves so it can't be overwritten.
-- **F2, assist:** now ordered by match time, not tag order.
-- **D, extra-time direction:** contract carries `home_attacks_right_by_period`; periods 3–4 never inferred from period 1.
-- **Join tolerance:** tied to `frame_stride / fps`, not a fixed ±0.5 s.
-- **30 fps best-effort:** documented; download keeps a higher rate if no ≤30 stream exists (plays fine), with a note on reducing it.
-
-Two of your points I did not change, with reasons: the "missing" xt_grid was only missing from the earlier partial zip, and StatsBomb already orients events left→right so no per-team flip is needed.
-
-**Over to you:** `DATA_CONTRACT.md` is updated (match_id, video_seconds rule, per-period direction, tolerance). Please review §1, §2 and §3, then start **Automatic Tracking v1** on `test20.mp4` on a `track-b/` branch, writing `data/tracking/test20_tracks.csv` + `.meta.json` to the contract. Claude reviews before merge. I'm holding Track A steady — no more Tagger redesigns.
+## Track B performance and Colab update — 17 November 2026
+- The latest Windows diagnostic logs showed the no-team test completed with 145 sampled frames / 1,615 rows for a 15-second window. The team-enabled test completed with 290 sampled frames / 4,230 rows for a 30-second window; initial SigLIP extraction for 300 training crops took about 67 seconds. The separate Colab notebook uses a hosted runtime; the laptop is not the compute host.
+- Track B now bounds the initial team-crop sampling pass to the effective segment window, including `--limit-seconds`, and samples from `--start-seconds`. Sampling reuses the resident player detector instead of instantiating another YOLO copy.
+- Added `--team-device auto|cuda:0|cpu`. Auto checks free VRAM after the player and pitch models are loaded; it selects CUDA when at least 4 GB is free, else CPU. SigLIP is loaded after crop sampling to avoid overlapping its model allocation with the sampling pass.
+- SigLIP features are cached per player track. New tracks are classified; stable assignments are not continuously re-embedded, while uncertain tracks can be refreshed after the configured interval. Default `--team-classify-every` is now 30.
+- Both YOLO inference calls now use `quantize="fp16"` on CUDA instead of deprecated `half=True`.
+- Added `--team-model-state` to persist/reuse fitted UMAP + KMeans state across segments, preserving cluster numbering. Cluster-to-home/away remains arbitrary and must be checked in the first segment.
+- Added `--track-id-offset` for unique person IDs across merged segments. Ball ID 0 is unchanged; track IDs remain anonymous and are not shirt numbers.
+- Added `notebooks/track_b_colab.ipynb`: hosted-GPU setup, optional yt-dlp video download, model installation/download, Google Drive output/log persistence, 15-minute segments, completion-aware resume, and concatenation.
+- Automated tests were expanded for team-device selection, stable/unstable track embedding refresh, cluster transforms, and saved cluster-state mapping. CI status must be checked for the latest branch commit before calling it green.
+- Keep Track A/Tagger, xG/xA/xT, and downloader behavior untouched. Do not merge the draft PR until CI and a Colab segment smoke test plus output validation pass.
