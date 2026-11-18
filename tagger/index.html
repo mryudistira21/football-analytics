@@ -1128,7 +1128,7 @@ function renderLog(){
     return"";
   };
   return`<div class="log tablewrap"><table class="grid"><thead><tr><th>Time</th><th>Team</th><th>Player</th><th>Event</th><th>Detail</th><th></th></tr></thead><tbody>
-   ${E.map(e=>`<tr><td>${e.t!=null&&videoLoaded?`<button class="btn small ghost mono" data-seek="${e.t}">${fmt(e.clock)}</button>`:`<span class="mono">${fmt(e.clock)}</span>`} <span class="muted" style="font-size:11px">${e.half===2?"2H":"1H"}</span></td>
+   ${E.map(e=>`<tr><td>${e.t!=null&&videoLoaded?`<button class="btn small ghost mono" data-seek="${e.t}">${fmt(e.clock)}</button>`:`<span class="mono">${fmt(e.clock)}</span>`} <span class="muted" style="font-size:11px">${({1:"1H",2:"2H",3:"ET1",4:"ET2"}[e.half]||"1H")}</span></td>
      <td><span class="swatch" style="vertical-align:-1px;background:${teamColor(e.team)}"></span> ${esc(teamName(e.team))}</td>
      <td>${esc(pLabel(e.team,e.p))}</td><td>${TYPES[e.type]||esc(e.type)}</td><td>${detail(e)}</td>
      <td class="act"><button class="btn small ghost ${revCls(e.rev)}" data-rev="${e.id}" title="Cycle confidence: unmarked → review → wrong → OK">${revLabel(e.rev)}</button> <button class="btn small ghost" data-del="${e.id}" aria-label="Delete event">Delete</button></td></tr>`).join("")}
@@ -1464,7 +1464,8 @@ $("#importIn").addEventListener("change",e=>{
         let out=outMap[g("outcome")]||g("outcome");if(INSTANT.includes(type))out="ok";
         if(!OUTS[type].includes(out)){skip.type++;return}
         const ms=numOrNull(g("match_seconds")),vt=numOrNull(g("video_seconds"));
-        const ev={id,c:0,half:+g("half")===2?2:1,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
+        const rawHalf=Number(g("half"));const half=Number.isInteger(rawHalf)&&rawHalf>=1&&rawHalf<=4?rawHalf:1;
+        const ev={id,c:0,half,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
         if(isPassLike(ev))ev.rcv=g("receiver");
         if(type==="shot"){ev.body=g("body_part")==="head"?"head":"foot";ev.sit=["open","fk","pen"].includes(g("situation"))?g("situation"):"open";ev.ast=g("assist_event_id")||null}
         const rv=g("review");if(["ok","review","wrong"].includes(rv))ev.rev=rv;
