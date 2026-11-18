@@ -94,7 +94,7 @@ D:\Video-Bola-Analis\tracking\
   test20_preview.mp4
 ```
 
-Check `complete: true` in metadata. The CSV must have the same `match_id` as the event CSV.
+Check `status: complete` and `complete: true` in metadata, along with actual start/end coverage. A short run bounded by `--limit-seconds` is complete only when it reaches that requested bound. The CSV must have the same `match_id` as the event CSV.
 
 ## Full match / separate periods
 
@@ -166,10 +166,7 @@ match_id,frame,video_seconds,period,track_id,role,team,x,y,confidence,camera_sta
 Build moments from an already-generated tracking CSV; this stage is a pure post-processor and does not load video or rerun YOLO/SigLIP:
 
 ```powershell
-python scripts\build_player_moments.py \
-  --input D:\Video-Bola-Analis\tracking\MATCH_tracking.csv \
-  --metadata D:\Video-Bola-Analis\tracking\MATCH_tracking.meta.json \
-  --output-dir D:\Video-Bola-Analis\tracking\MATCH_moments
+python scripts\build_player_moments.py --input D:\Video-Bola-Analis\tracking\MATCH_tracking.csv --metadata D:\Video-Bola-Analis\tracking\MATCH_tracking.meta.json --output-dir D:\Video-Bola-Analis\tracking\MATCH_moments
 ```
 
 - Reads only `role=player|goalkeeper` observations with `camera_state=wide` and valid 105 × 68 m coordinates. Candidate moments require a valid ball coordinate within 2.5 m (configurable) at the same frame, or the nearest ball sample within one actual tracking sample interval.
