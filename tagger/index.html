@@ -160,6 +160,8 @@ table.grid th.n{text-align:right}
 .xirow .pn{width:22px;text-align:right;color:var(--muted)} .xirow .pnm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ppos{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
 .ppos.gk{color:var(--warn);border-color:var(--warn)}
+.gkbtn{cursor:pointer;background:var(--surface);flex:none}
+.gkbtn.on{background:var(--warn);color:#fff;border-color:var(--warn)}
 .xifoot{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
 
 /* lineup quick-pick chips */
@@ -1362,21 +1364,25 @@ function sqOpenXI(side,box,club){
   const ps=((club&&club.players)||[]).map(p=>({num:String(p.number),name:p.name||"",pos:p.position||""})).sort((a,b)=>(+a.num||999)-(+b.num||999));
   if(!ps.length){box.innerHTML=`<span class="note">${esc(club.name||"That club")} has no players in the squads file yet — add them to <code>clubs.json</code> (or send me the roster).</span>`;return}
   const sel=new Set();
+  let gkNum=null;
+  const posGK=ps.find(p=>sqIsGK(p.pos)); // auto-mark GK when a position says so
+  if(posGK){gkNum=posGK.num;sel.add(posGK.num)}
   function render(){
-    const chosen=ps.filter(p=>sel.has(p.num)), gk=chosen.filter(p=>sqIsGK(p.pos)).length, ok=chosen.length===11&&gk===1;
-    const msg=chosen.length!==11?`Pick exactly 11 — ${chosen.length} selected`:gk!==1?`Need exactly 1 goalkeeper — ${gk} selected`:"";
+    if(gkNum&&!sel.has(gkNum))gkNum=null;
+    const ok=sel.size===11&&gkNum!=null;
+    const msg=sel.size!==11?`Pick exactly 11 — ${sel.size} selected`:gkNum==null?"Tap GK to mark the goalkeeper":"";
     box.innerHTML=`<div class="xi">
-      <div class="xihead"><b>${esc(club.name||"Squad")}</b> — starting XI <span class="xicount ${ok?"ok":"bad"}">${chosen.length}/11 · ${gk} GK</span></div>
-      <div class="xilist">${ps.map(p=>`<label class="xirow ${sel.has(p.num)?"on":""}"><input type="checkbox" data-n="${esc(p.num)}" ${sel.has(p.num)?"checked":""}><span class="pn mono">${esc(p.num)}</span><span class="pnm">${esc(p.name)}</span>${p.pos?`<span class="ppos ${sqIsGK(p.pos)?"gk":""}">${esc(p.pos)}</span>`:""}</label>`).join("")}</div>
+      <div class="xihead"><b>${esc(club.name||"Squad")}</b> — starting XI <span class="xicount ${ok?"ok":"bad"}">${sel.size}/11 · GK ${gkNum?("#"+esc(gkNum)):"—"}</span></div>
+      <div class="xilist">${ps.map(p=>`<div class="xirow ${sel.has(p.num)?"on":""}"><label style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer"><input type="checkbox" data-n="${esc(p.num)}" ${sel.has(p.num)?"checked":""}><span class="pn mono">${esc(p.num)}</span><span class="pnm">${esc(p.name)}</span></label><button type="button" class="ppos gkbtn ${gkNum===p.num?"on":""}" data-gk="${esc(p.num)}" title="Mark as goalkeeper">GK</button></div>`).join("")}</div>
       <div class="xifoot"><button class="btn small primary" data-act="set" ${ok?"":"disabled"}>Set starting XI</button>${ok?`<span class="note" style="color:var(--ok)">Ready.</span>`:`<span class="note">${msg}</span>`}</div></div>`;
     box.querySelectorAll("[data-n]").forEach(cb=>cb.onchange=()=>{cb.checked?sel.add(cb.dataset.n):sel.delete(cb.dataset.n);render()});
+    box.querySelectorAll("[data-gk]").forEach(b=>b.onclick=()=>{const n=b.dataset.gk;gkNum=gkNum===n?null:n;if(gkNum)sel.add(n);render()});
     const sb=box.querySelector("[data-act=set]");
     if(sb)sb.onclick=()=>{
-      const xi=ps.filter(p=>sel.has(p.num)).sort((a,b)=>(sqIsGK(b.pos)?1:0)-(sqIsGK(a.pos)?1:0)||(+a.num)-(+b.num));
+      const xi=ps.filter(p=>sel.has(p.num)).sort((a,b)=>(b.num===gkNum?1:0)-(a.num===gkNum?1:0)||(+a.num)-(+b.num));
       $(side==="h"?"#fLuH":"#fLuA").value=xi.map(p=>`${p.num} ${p.name}`).join("\n");
       sqFillTeam(side,club);
-      const gkn=(xi.filter(p=>sqIsGK(p.pos))[0]||{}).num||"?";
-      box.innerHTML=`<span class="note" style="color:var(--ok)">Starting XI set — 11 players, GK #${esc(gkn)}.</span>`;
+      box.innerHTML=`<span class="note" style="color:var(--ok)">Starting XI set — 11 players, GK #${esc(gkNum)}.</span>`;
     };
   }
   render();
