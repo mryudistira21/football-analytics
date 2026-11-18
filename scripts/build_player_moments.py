@@ -463,6 +463,22 @@ def write_moment_cut_lists(
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = output_dir / f"{tracking_csv.stem}_moments.manifest.json"
+    previous_cutlists: set[str] = set()
+    if manifest_path.is_file():
+        try:
+            previous_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            previous_cutlists = {
+                str(track["cut_list"])
+                for track in previous_manifest.get("tracks", [])
+                if isinstance(track, dict) and isinstance(track.get("cut_list"), str)
+                and Path(track["cut_list"]).name == track["cut_list"]
+                and track["cut_list"].startswith("track_")
+                and track["cut_list"].endswith("_moments.csv")
+            }
+        except (OSError, json.JSONDecodeError, TypeError):
+            previous_cutlists = set()
+
     windows_by_track: dict[int, list[dict[str, Any]]] = {}
     for track_id in sorted(candidates):
         windows = merge_candidate_observations(
@@ -564,8 +580,11 @@ def write_moment_cut_lists(
         "moment_count": total_moments,
         "tracks": per_track,
     }
-    manifest_path = output_dir / f"{tracking_csv.stem}_moments.manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    current_cutlists = {track["cut_list"] for track in per_track}
+    # Remove only stale cut-lists previously declared by this script's manifest.
+    for stale_name in previous_cutlists - current_cutlists:
+        (output_dir / stale_name).unlink(missing_ok=True)
     manifest["manifest_path"] = str(manifest_path)
     return manifest
 
