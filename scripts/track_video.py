@@ -150,6 +150,26 @@ def map_points(pixel_xy: Any, matrix: np.ndarray) -> np.ndarray:
     return mapped.astype(np.float32)
 
 
+def classify_segment_status(
+    processed_frames: int,
+    requested_end_seconds: float | None,
+    reached_requested_end: bool,
+    last_decoded_seconds: float | None,
+    end_tolerance_seconds: float,
+) -> str:
+    """Classify normal EOF against the requested source-video interval."""
+    if processed_frames <= 0:
+        return "no_frames"
+    if requested_end_seconds is None or reached_requested_end:
+        return "complete"
+    if (
+        last_decoded_seconds is not None
+        and last_decoded_seconds >= requested_end_seconds - end_tolerance_seconds
+    ):
+        return "complete"
+    return "partial_eof"
+
+
 def class_ids_from_names(names: Any) -> dict[str, int]:
     pairs = (
         [(int(k), str(v).lower()) for k, v in names.items()]
@@ -839,19 +859,13 @@ def main() -> int:
         # EOF before the requested stop is a partial segment, not a successful full segment.
         sample_interval_seconds = args.frame_stride / float(fps)
         end_tolerance_seconds = max(1.0 / float(fps), sample_interval_seconds * 1.5)
-        if processed == 0:
-            completion_status = "no_frames"
-        elif (
-            stop_at is None
-            or reached_requested_end
-            or (
-                last_decoded_timestamp is not None
-                and last_decoded_timestamp >= stop_at - end_tolerance_seconds
-            )
-        ):
-            completion_status = "complete"
-        else:
-            completion_status = "partial_eof"
+        completion_status = classify_segment_status(
+            processed,
+            stop_at,
+            reached_requested_end,
+            last_decoded_timestamp,
+            end_tolerance_seconds,
+        )
 
         # Atomic promotion keeps even a normal-EOF partial CSV available for diagnosis.
         temporary_csv.replace(output)
@@ -879,8 +893,8 @@ def main() -> int:
             ),
             "end_tolerance_seconds": round(end_tolerance_seconds, 4),
             "termination_reason": (
-                "requested_end_reached"
-                if reached_requested_end or stop_at is None
+                "requested_end_reached" if reached_requested_end
+                else "end_of_file_no_bound" if stop_at is None and processed > 0
                 else "end_of_file"
             ),
             "processed_frames": processed,
