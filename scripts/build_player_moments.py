@@ -357,61 +357,89 @@ def _candidate_observations(
     return candidates
 
 
-def _moment_quality(
+def _empty_quality() -> dict[str, Any]:
+    return {
+        "observation_count": 0,
+        "wide_count": 0,
+        "unknown_count": 0,
+        "ball_observation_count": 0,
+        "last_seconds": None,
+        "continuity_max_gap_s": 0.0,
+        "team_counts": Counter(),
+    }
+
+
+def _collect_quality_for_windows(
     tracking_csv: Path,
-    track_id: int,
-    start_s: float,
-    end_s: float,
+    windows_by_track: dict[int, list[dict[str, Any]]],
     ball_by_frame: dict[int, tuple[float, float, float]],
     ball_by_time: list[tuple[float, int, float, float]],
     max_time_delta: float,
-) -> dict[str, Any]:
-    total = wide = unknown = ball_observations = 0
-    times: list[float] = []
-    team_counts: Counter[str] = Counter()
+) -> None:
+    """Accumulate all moment quality metrics in one streaming pass over the CSV."""
+    starts = {
+        track_id: [window["start_s"] for window in windows]
+        for track_id, windows in windows_by_track.items()
+    }
+    for windows in windows_by_track.values():
+        for window in windows:
+            window["quality"] = _empty_quality()
 
     with tracking_csv.open("r", newline="", encoding="utf-8-sig") as handle:
         reader = csv.DictReader(handle)
         for row in reader:
             if (row.get("role") or "").strip().lower() not in PLAYER_ROLES:
                 continue
-            if finite_int(row.get("track_id")) != track_id:
-                continue
+            track_id = finite_int(row.get("track_id"))
             seconds = finite_float(row.get("video_seconds"))
-            if seconds is None or seconds < start_s or seconds > end_s:
+            if track_id is None or seconds is None or track_id not in windows_by_track:
                 continue
-            total += 1
-            times.append(seconds)
-            camera_state = (row.get("camera_state") or "").strip().lower()
-            if camera_state == "wide":
-                wide += 1
+            track_windows = windows_by_track[track_id]
+            index = bisect.bisect_right(starts[track_id], seconds) - 1
+            if index < 0:
+                continue
+            window = track_windows[index]
+            if seconds < window["start_s"] or seconds > window["end_s"]:
+                continue
+
+            quality = window["quality"]
+            quality["observation_count"] += 1
+            previous_seconds = quality["last_seconds"]
+            if previous_seconds is not None:
+                quality["continuity_max_gap_s"] = max(
+                    quality["continuity_max_gap_s"], seconds - previous_seconds
+                )
+            quality["last_seconds"] = seconds
+
+            if (row.get("camera_state") or "").strip().lower() == "wide":
+                quality["wide_count"] += 1
             team = (row.get("team") or "unknown").strip().lower() or "unknown"
-            team_counts[team] += 1
+            quality["team_counts"][team] += 1
             if team == "unknown":
-                unknown += 1
+                quality["unknown_count"] += 1
+
             frame = finite_int(row.get("frame"))
-            _, _, x = (None, None, None)
-            del x
-            # Count a ball observation independently of whether it is close enough.
             matched_ball, _ = match_ball_observation(
                 frame, seconds, ball_by_frame, ball_by_time, max_time_delta
             )
             if matched_ball is not None:
-                ball_observations += 1
+                quality["ball_observation_count"] += 1
 
-    times.sort()
-    max_gap = max(
-        (right - left for left, right in zip(times, times[1:])),
-        default=0.0,
-    )
-    return {
-        "observation_count": total,
-        "wide_share": wide / total if total else 0.0,
-        "unknown_team_share": unknown / total if total else 1.0,
-        "ball_observation_share": ball_observations / total if total else 0.0,
-        "continuity_max_gap_s": max_gap,
-        "team": team_counts.most_common(1)[0][0] if team_counts else "unknown",
-    }
+    for windows in windows_by_track.values():
+        for window in windows:
+            quality = window["quality"]
+            total = quality["observation_count"]
+            teams = quality["team_counts"]
+            window["quality"] = {
+                "observation_count": total,
+                "wide_share": quality["wide_count"] / total if total else 0.0,
+                "unknown_team_share": quality["unknown_count"] / total if total else 1.0,
+                "ball_observation_share": (
+                    quality["ball_observation_count"] / total if total else 0.0
+                ),
+                "continuity_max_gap_s": quality["continuity_max_gap_s"],
+                "team": teams.most_common(1)[0][0] if teams else "unknown",
+            }
 
 
 def write_moment_cut_lists(
@@ -451,9 +479,7 @@ def write_moment_cut_lists(
     )
 
     output_dir.mkdir(parents=True, exist_ok=True)
-    per_track: list[dict[str, Any]] = []
-    total_moments = 0
-
+    windows_by_track: dict[int, list[dict[str, Any]]] = {}
     for track_id in sorted(candidates):
         windows = merge_candidate_observations(
             candidates[track_id], merge_gap_seconds, sample_interval
@@ -462,9 +488,17 @@ def write_moment_cut_lists(
             window for window in windows
             if window["end_s"] - window["start_s"] >= min_duration_seconds
         ]
-        if not accepted:
-            continue
+        if accepted:
+            windows_by_track[track_id] = accepted
 
+    # One streaming quality pass for all generated windows; no repeated full-CSV scans.
+    _collect_quality_for_windows(
+        tracking_csv, windows_by_track, ball_by_frame, ball_by_time, sample_interval
+    )
+
+    per_track: list[dict[str, Any]] = []
+    total_moments = 0
+    for track_id, accepted in sorted(windows_by_track.items()):
         cutlist_path = output_dir / f"track_{track_id}_moments.csv"
         moment_diagnostics = []
         with cutlist_path.open("w", newline="", encoding="utf-8") as handle:
@@ -472,10 +506,7 @@ def write_moment_cut_lists(
             writer.writeheader()
             for sequence, window in enumerate(accepted, start=1):
                 start_s, end_s = window["start_s"], window["end_s"]
-                quality = _moment_quality(
-                    tracking_csv, track_id, start_s, end_s,
-                    ball_by_frame, ball_by_time, sample_interval,
-                )
+                quality = window["quality"]
                 calibration_error = calibration_error_for_window(
                     metadata, start_s, end_s
                 )
