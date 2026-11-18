@@ -586,6 +586,10 @@ def main() -> int:
 
         processed = 0
         last_timestamp = -1.0
+        last_decoded_timestamp: float | None = None
+        first_processed_timestamp: float | None = None
+        last_processed_timestamp: float | None = None
+        reached_requested_end = False
         rows_written = 0
         camera_counts: Counter[str] = Counter()
         errors: list[float] = []
@@ -610,13 +614,18 @@ def main() -> int:
                     if not math.isfinite(timestamp) or timestamp < 0 or timestamp <= last_timestamp:
                         timestamp = frame_index / fps
                     last_timestamp = timestamp
+                    last_decoded_timestamp = timestamp
                     if timestamp < args.start_seconds:
                         continue
                     if stop_at is not None and timestamp >= stop_at:
+                        reached_requested_end = True
                         break
                     if frame_index % args.frame_stride:
                         continue
                     processed += 1
+                    if first_processed_timestamp is None:
+                        first_processed_timestamp = timestamp
+                    last_processed_timestamp = timestamp
 
                     result = player_model.predict(
                         frame, imgsz=args.imgsz, conf=0.08,
@@ -827,10 +836,53 @@ def main() -> int:
                 if writer.isOpened():
                     writer.release()
 
-        # Atomic promotion prevents consumers from accidentally reading an incomplete CSV as final.
+        # EOF before the requested stop is a partial segment, not a successful full segment.
+        sample_interval_seconds = args.frame_stride / float(fps)
+        end_tolerance_seconds = max(1.0 / float(fps), sample_interval_seconds * 1.5)
+        if processed == 0:
+            completion_status = "no_frames"
+        elif (
+            stop_at is None
+            or reached_requested_end
+            or (
+                last_decoded_timestamp is not None
+                and last_decoded_timestamp >= stop_at - end_tolerance_seconds
+            )
+        ):
+            completion_status = "complete"
+        else:
+            completion_status = "partial_eof"
+
+        # Atomic promotion keeps even a normal-EOF partial CSV available for diagnosis.
         temporary_csv.replace(output)
         metadata.update({
-            "complete": True,
+            "status": completion_status,
+            "complete": completion_status == "complete",
+            "requested_start_seconds": args.start_seconds,
+            "requested_end_seconds": stop_at,
+            "actual_start_seconds": (
+                round(first_processed_timestamp, 3)
+                if first_processed_timestamp is not None else None
+            ),
+            "actual_end_seconds": (
+                round(last_processed_timestamp, 3)
+                if last_processed_timestamp is not None else None
+            ),
+            "last_decoded_seconds": (
+                round(last_decoded_timestamp, 3)
+                if last_decoded_timestamp is not None else None
+            ),
+            "processed_coverage_seconds": (
+                round(max(0.0, last_processed_timestamp - first_processed_timestamp), 3)
+                if first_processed_timestamp is not None and last_processed_timestamp is not None
+                else 0.0
+            ),
+            "end_tolerance_seconds": round(end_tolerance_seconds, 4),
+            "termination_reason": (
+                "requested_end_reached"
+                if reached_requested_end or stop_at is None
+                else "end_of_file"
+            ),
             "processed_frames": processed,
             "rows_written": rows_written,
             "camera_state_counts": dict(camera_counts),
@@ -846,8 +898,11 @@ def main() -> int:
         write_meta()
         print(f"\nTracking complete: {output}")
         print(f"Metadata: {meta_path}")
-        print(f"Processed frames: {processed:,}; rows: {rows_written:,}")
-        return 0
+        print(
+            f"Processed frames: {processed:,}; rows: {rows_written:,}; "
+            f"status: {completion_status}"
+        )
+        return 0 if completion_status == "complete" else 2
 
     except KeyboardInterrupt:
         metadata["interrupted"] = True
