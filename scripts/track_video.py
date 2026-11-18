@@ -910,7 +910,7 @@ def main() -> int:
             ),
         })
         write_meta()
-        print(f"\nTracking complete: {output}")
+        print(f"\nTracking output written ({completion_status}): {output}")
         print(f"Metadata: {meta_path}")
         print(
             f"Processed frames: {processed:,}; rows: {rows_written:,}; "
@@ -920,12 +920,14 @@ def main() -> int:
 
     except KeyboardInterrupt:
         metadata["interrupted"] = True
+        metadata["status"] = "interrupted"
         metadata["complete"] = False
         write_meta()
         print("Interrupted: partial CSV retained with .partial suffix.", file=sys.stderr)
         return 130
     except Exception as exc:
         metadata["error"] = str(exc)
+        metadata["status"] = "failed"
         metadata["complete"] = False
         write_meta()
         raise
