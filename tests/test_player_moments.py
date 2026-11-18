@@ -99,6 +99,14 @@ def test_infer_sampling_interval_uses_stride_over_fps():
     assert interval == pytest.approx(0.1)
 
 
+def test_infer_sampling_interval_prefers_observed_pts_for_vfr():
+    interval = infer_sampling_interval(
+        {"frame_stride": 3, "fps": 30.0},
+        observed_deltas=[0.09, 0.11, 0.12],
+    )
+    assert interval == pytest.approx(0.11)
+
+
 def test_confidence_is_conservative_and_never_auto_labels_wrong():
     label, reasons = confidence_for_moment(
         calibration_error_m=0.64,
