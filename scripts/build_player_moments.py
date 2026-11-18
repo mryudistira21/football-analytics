@@ -102,8 +102,11 @@ def match_ball_observation(
     if not ball_by_time:
         return None, None
 
-    times = [item[0] for item in ball_by_time]
-    index = bisect.bisect_left(times, player_seconds)
+    # Tuples are sorted by their first element (video_seconds), so bisect
+    # directly without rebuilding a full timestamp list for every player row.
+    index = bisect.bisect_left(
+        ball_by_time, (player_seconds, -1, float("-inf"), float("-inf"))
+    )
     candidates = []
     if index < len(ball_by_time):
         candidates.append(ball_by_time[index])
