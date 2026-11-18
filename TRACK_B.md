@@ -137,7 +137,7 @@ Recommended initial frame stride is 3 (about 10 observations/sec on 30 FPS video
 Use [notebooks/track_b_colab.ipynb](notebooks/track_b_colab.ipynb) to run the heavy inference on a hosted Colab GPU and persist results in Google Drive. Configure the immutable Tagger `match_id`, source video, half boundaries and first-half home direction before running.
 
 - The notebook divides each configured period into 900-second (15-minute) segments by default. Each segment writes its own CSV, `.meta.json`, and log under `MyDrive/football-analysis/track_b/<match_id>/`.
-- A segment is skipped on rerun only when its CSV and metadata both exist and metadata says `complete: true`. Incomplete segments are rerun with `--overwrite`. Completed segment files remain as recovery checkpoints; the notebook concatenates them into one tracking CSV and a combined metadata file.
+- A segment is skipped on rerun only when its CSV and metadata both exist, `status == "complete"`, `complete: true`, and recorded actual start/end coverage matches the requested interval within the sampling tolerance. `partial_eof` and `no_frames` outputs remain available for diagnosis but are never accepted as resumable completed checkpoints. Completed segment files remain as recovery checkpoints; the notebook concatenates them into one tracking CSV and a combined metadata file.
 - Person IDs are offset between segments so they do not collide in the concatenated CSV. Ball `track_id=0` remains reserved. IDs still do not identify a shirt number or prove that the same player is followed across a segment boundary.
 - The notebook persists the fitted UMAP reducer and KMeans cluster model in Drive using `--team-model-state`; later segments reuse it so cluster labels do not get independently refitted and swapped. Cluster 0 is still arbitrary: verify the first segment's home/away mapping before relying on `--cluster-0-side`.
 - `--team-device auto` checks free VRAM after the player and pitch YOLO models are loaded. It selects CUDA when free VRAM meets `--team-min-free-vram-gb` (4 GB by default), otherwise CPU. Use `--team-device cuda:0` to require CUDA or `cpu` to force CPU.
@@ -160,6 +160,27 @@ match_id,frame,video_seconds,period,track_id,role,team,x,y,confidence,camera_sta
 - `track_id=0` is reserved for the single ball row; use `role` to distinguish it from person tracks.
 - People use anonymous ByteTrack IDs; do not equate these to shirt numbers.
 - Period 1 and 2 directions are derived from `--home-dir-1h`; periods 3 and 4 require explicit `--period-direction`. Tracking coordinates themselves are not flipped by period.
+
+## Per-track player moments (Track B → Tagger Reel importer)
+
+Build moments from an already-generated tracking CSV; this stage is a pure post-processor and does not load video or rerun YOLO/SigLIP:
+
+```powershell
+python scripts\build_player_moments.py \
+  --input D:\Video-Bola-Analis\tracking\MATCH_tracking.csv \
+  --metadata D:\Video-Bola-Analis\tracking\MATCH_tracking.meta.json \
+  --output-dir D:\Video-Bola-Analis\tracking\MATCH_moments
+```
+
+- Reads only `role=player|goalkeeper` observations with `camera_state=wide` and valid 105 × 68 m coordinates. Candidate moments require a valid ball coordinate within 2.5 m (configurable) at the same frame, or the nearest ball sample within one actual tracking sample interval.
+- Candidate intervals are merged when their uncovered gap is no more than 1.2 seconds by default. The default minimum output duration is 0.5 seconds.
+- Writes one `track_<track_id>_moments.csv` per track. The CSV contains exactly the seven columns required by the Tagger importer: `moment,start_s,end_s,duration_s,start_clock,events,label`. `start_s` and `end_s` are source-video `video_seconds`; `events=near_ball`; `label` is `ok`, `review`, or `wrong`.
+- V1 assigns only `ok` or `review` automatically. `wrong` is reserved for human correction; weak evidence is not proof that the track is the wrong player.
+- A sidecar `*_moments.manifest.json` records `match_id`, `track_id`, team vote summary, calibration error, wide share, unknown-team share, ball-observation share, track continuity, and review reasons. The importer does not need the manifest and cut-list CSVs have no extra columns.
+- `track_id` remains an anonymous tracking identifier, never a shirt number. A later human-confirmed `track_map.csv` is required to map tracks to shirt numbers.
+- This is a proximity heuristic, not possession detection or event recognition. Close-up/fallback rows and moments without a valid ball observation are excluded.
+
+Confidence `ok` requires calibration median error ≤ 1.0 m, at least 90% wide observations, no more than 25% unknown-team observations, a ball observation for at least half of player observations, at least 3 observations and 2 seconds of duration, and no continuity gap larger than max(0.75 s, 3 sample intervals). Otherwise the moment is `review`.
 
 ## Resource behaviour
 
