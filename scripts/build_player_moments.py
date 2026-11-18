@@ -71,6 +71,12 @@ def infer_sampling_interval(
     if not segment_details:
         segment_details = [metadata]
 
+    # Consecutive sampled-frame PTS deltas take precedence, which also handles
+    # variable-frame-rate sources. Nominal stride/FPS is only a fallback.
+    deltas = [float(value) for value in observed_deltas if value > 0 and math.isfinite(value)]
+    if deltas:
+        return float(statistics.median(deltas))
+
     intervals = []
     for details in segment_details:
         stride = finite_float(details.get("frame_stride"))
@@ -79,10 +85,6 @@ def infer_sampling_interval(
             intervals.append(stride / fps)
     if intervals:
         return float(statistics.median(intervals))
-
-    deltas = [float(value) for value in observed_deltas if value > 0 and math.isfinite(value)]
-    if deltas:
-        return float(statistics.median(deltas))
     raise ValueError(
         "Cannot infer the tracking sample interval. Supply metadata or "
         "--sampling-interval-seconds."
@@ -238,6 +240,7 @@ def load_metadata(path: Path | None) -> dict[str, Any] | None:
 
 def read_ball_index(
     tracking_csv: Path,
+    expected_frame_stride: int | None = None,
 ) -> tuple[
     dict[int, tuple[float, float, float]],
     list[tuple[float, int, float, float]],
@@ -267,9 +270,19 @@ def read_ball_index(
             frame = finite_int(row.get("frame"))
             seconds = finite_float(row.get("video_seconds"))
             if frame is not None and seconds is not None and frame != last_frame:
+                frame_delta = frame - last_frame if last_frame is not None else None
+                is_consecutive_sample = (
+                    frame_delta is not None
+                    and frame_delta > 0
+                    and (
+                        expected_frame_stride is None
+                        or frame_delta == expected_frame_stride
+                    )
+                )
                 if (
-                    last_frame is not None and last_seconds is not None
-                    and frame > last_frame and seconds > last_seconds
+                    is_consecutive_sample
+                    and last_seconds is not None
+                    and seconds > last_seconds
                     and len(observed_deltas) < 10000
                 ):
                     observed_deltas.append(seconds - last_seconds)
@@ -443,7 +456,18 @@ def write_moment_cut_lists(
     if min_duration_seconds < 0:
         raise ValueError("min_duration_seconds must be non-negative")
 
-    ball_by_frame, ball_by_time, match_ids, observed_deltas = read_ball_index(tracking_csv)
+    stride_values = [
+        finite_int(details.get("frame_stride"))
+        for details in _metadata_segments(metadata)
+        if finite_int(details.get("frame_stride")) is not None
+        and finite_int(details.get("frame_stride")) > 0
+    ]
+    expected_stride = (
+        int(statistics.median(stride_values)) if stride_values else None
+    )
+    ball_by_frame, ball_by_time, match_ids, observed_deltas = read_ball_index(
+        tracking_csv, expected_frame_stride=expected_stride
+    )
     if len(match_ids) != 1:
         raise ValueError(
             "Input must contain exactly one non-empty match_id; "
