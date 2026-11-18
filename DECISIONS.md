@@ -1,5 +1,12 @@
 # Decisions
 
+## 2026-11-18 — Track B exports per-track moments for the Tagger Reel
+- Build player moments as a pure post-processor over the tracking CSV; do not rerun YOLO or SigLIP.
+- Each anonymous track gets a separate cut-list CSV with exactly `moment,start_s,end_s,duration_s,start_clock,events,label`; source video seconds remain the playback/join values.
+- `events` is the descriptor (v1: `near_ball`); `label` is `ok`, `review`, or `wrong`. V1 emits only `ok` and `review`; never infer `wrong` from missing/weak evidence.
+- Keep `match_id`, `track_id`, team and diagnostics in a sidecar manifest, not as extra cut-list columns. Track IDs remain distinct from shirt numbers.
+- Segment status is explicit: `complete`, `partial_eof`, or `no_frames`. Resume accepts only complete metadata whose actual start/end coverage matches the requested interval; early EOF must not be treated as a completed segment.
+
 ## 2026-11-17 — Track B moves full-match inference to hosted Colab and runs resumable segments
 - The local Windows RTX 2070 run took about 39 minutes for 60 seconds of source video and the laptop froze twice during full-length attempts. Heavy Track B inference will use a hosted Colab GPU (T4 when available); Colab's hosted runtime is separate from the laptop's local CPU/GPU.
 - The notebook `notebooks/track_b_colab.ipynb` processes each half in 900-second segments by default and stores each segment CSV, metadata and log in Google Drive. Complete segments are skipped after reconnect; incomplete segments are rerun; segment CSVs are concatenated only after completion.
