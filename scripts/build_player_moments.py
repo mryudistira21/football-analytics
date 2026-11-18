@@ -246,7 +246,7 @@ def read_ball_index(
 ]:
     """First pass: index valid wide-ball positions and infer sampled-frame deltas."""
     ball_by_frame: dict[int, tuple[float, float, float]] = {}
-    frame_times: list[float] = []
+    ball_timestamps: dict[int, float] = {}
     match_ids: set[str] = set()
     observed_deltas: list[float] = []
     last_frame: int | None = None
@@ -289,32 +289,13 @@ def read_ball_index(
             candidate = (x, y, confidence)
             if previous is None or confidence > previous[2]:
                 ball_by_frame[frame] = candidate
+                ball_timestamps[frame] = seconds
 
-    ball_by_time = []
-    # Re-read the ball-only records in timestamp order from the frame index.
-    # This avoids keeping the original CSV rows in memory.
-    with tracking_csv.open("r", newline="", encoding="utf-8-sig") as handle:
-        reader = csv.DictReader(handle)
-        for row in reader:
-            if (row.get("role") or "").strip().lower() != "ball":
-                continue
-            if (row.get("camera_state") or "").strip().lower() != "wide":
-                continue
-            frame = finite_int(row.get("frame"))
-            seconds = finite_float(row.get("video_seconds"))
-            if frame is None or seconds is None or frame not in ball_by_frame:
-                continue
-            x, y, confidence = ball_by_frame[frame]
-            ball_by_time.append((seconds, frame, x, y))
-    ball_by_time.sort(key=lambda item: item[0])
-    # Deduplicate frames in the fallback index.
-    deduplicated = []
-    seen_frames = set()
-    for item in ball_by_time:
-        if item[1] not in seen_frames:
-            deduplicated.append(item)
-            seen_frames.add(item[1])
-    return ball_by_frame, deduplicated, match_ids, observed_deltas
+    ball_by_time = sorted(
+        (seconds, frame, ball_by_frame[frame][0], ball_by_frame[frame][1])
+        for frame, seconds in ball_timestamps.items()
+    )
+    return ball_by_frame, ball_by_time, match_ids, observed_deltas
 
 
 def _candidate_observations(
