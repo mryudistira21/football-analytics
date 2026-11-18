@@ -2,6 +2,22 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-18 — Tagger v3: moment reels, confidence flags, telestration, lineup chips
+Driven by a peer prototype (midblockstats) doing the same auto-cut + reel concept. Added to the Tagger, all on the manual side so they work for match day without the CV pipeline:
+- **Moments / reel tab.** Pick a team + player (or whole team) and every tagged action becomes a clip; overlapping clips merge (gap ≤ 1.2 s). Play them back-to-back in the video, toggle any off, export a cut list. The **Actions** filter gives per-player, team-attack and team-defence reels. Needs `video_seconds`, so tag with a video loaded.
+- **Confidence / review flags.** Each event cycles unmarked → review → wrong → ok in the Log; badges show in the Log and on each Moment (worst-of). New `review` column in the events CSV (import + export).
+- **Telestration.** Pause the video, grab the frame, draw arrows / circles / line / pen / spotlight, save a PNG. The Metrica-style piece the peer tool lacks.
+- **Lineup quick-pick chips.** Tap a player from the match lineup instead of typing the number (works for receiver too). Reads `match.lu`.
+
+## 2026-11-18 — Track B cut-list importer (A↔B join, layer 1)
+The reel's "Imported (Track B)" source imports Track B per-track cut-lists. **Contract:** exactly 7 columns `moment,start_s,end_s,duration_s,start_clock,events,label`; `start_s`/`end_s` are `video_seconds` and drive playback; `label` is read as confidence (`ok`/`review`/`wrong`); `events` is the moment descriptor; `track` id comes from the `track_<id>_###` prefix in `moment`. One cut-list per track, multi-file load, deduped by `moment`. `start_clock`/`duration_s` display-only. Manifest (team, diagnostics) stays a sidecar — never extra columns in the cut-list. Implemented in `scripts/build_player_moments.py` on Track B.
+
+## 2026-11-18 — How Track A and Track B combine
+Two layers joined by `video_seconds`, not merged into one blob — Track B stays regeneratable, Track A events stay the source of truth for xG/xA/xT. Stages: (1) shared timeline — auto-moments + manual events in the same reel (done); (2) verify — B's confidence flags + A's review/edit correct the auto output, minimap sanity-checks; (3) event pre-fill — B auto-detects pass/shot and writes them as Tagger events pre-marked `review` for a human to confirm (later; needs event detection, harder than tracking).
+
+## 2026-11-18 — Club & player DB on Supabase (clubs + players only)
+Scope deliberately narrow: `clubs`, `players`, optional `lineups` go online; match events and Track B moments stay on their current paths (artifact db / CSV). Mirrors `src/club_db.py`'s SQLite schema. **RLS: anon key is read-only** (safe to embed in the private Tagger), only the `service_role` key writes (sync script / scraper). Files: `supabase/schema.sql`, `src/club_supabase.py` (push local→Supabase, pull squads). Tagger match settings gained a Supabase box + "From Supabase" lineup loader. Video never leaves the device; only clubs/players do.
+
 ## 2026-11-17 — Track B runs in the cloud, not on the laptop
 The RTX 2070 laptop processed 60 s of video in 39 min (~39x real time) and hung twice under sustained load. A full match would be tens of hours. Decision: run the heavy CV pipeline (track_video.py) on Google Colab (free T4), download the tracking CSV, and keep local runs to short clips only (--frame-stride 10, --imgsz 640, team classification rarely). ChatGPT's three speed fixes (bound team sampling to --limit-seconds, cache SigLIP embeddings per track, half->quantize) help but don't make local full-match viable. Protect the hardware: no full-length runs on the laptop, and not alongside a browser full of Colab.
 

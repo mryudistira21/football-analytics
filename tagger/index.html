@@ -146,7 +146,52 @@ table.grid th.n{text-align:right}
 .csvout{width:100%;min-height:120px;font-family:var(--font-mono);font-size:12px;margin-top:10px}
 .method{font-size:12px;color:var(--muted);margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:68ch}
 .method b{color:var(--ink);font-weight:600}
-@media (max-width:560px){.clockface{font-size:48px}.brand h1{font-size:22px}.zones{grid-template-columns:minmax(0,1fr)}}
+
+/* supabase squad picker */
+.sbpick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.sbpick select{max-width:60%}
+
+/* lineup quick-pick chips */
+.lineupchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.pchip{border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:3px 9px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;max-width:16ch}
+.pchip .pn{font-family:var(--font-mono)} .pchip .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-weight:500}
+.pchip[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--surface));color:var(--accent)}
+.pchip[aria-pressed="true"] .nm{color:inherit}
+
+/* review badges */
+.rev{font-size:11px;padding:2px 7px;border-radius:999px;border:1px solid var(--line);font-weight:600}
+.rev-ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.rev-review{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 55%,var(--line));background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.rev-wrong{color:#fff;background:var(--warn);border-color:var(--warn)}
+
+/* moments / reel */
+.moments{display:flex;flex-direction:column;gap:8px;margin-top:10px;max-height:620px;overflow:auto}
+.moment{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--surface-2)}
+.moment.off{opacity:.5}
+.moment .mnum{font-family:var(--font-display);font-size:20px;width:28px;text-align:center;color:var(--muted);flex:none}
+.moment .mmid{flex:1;min-width:0}
+.moment .mttl{font-weight:600;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.moment .mt{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.moment .macts{display:flex;gap:6px;flex-wrap:wrap;flex:none}
+.sw{position:relative;width:38px;height:22px;border-radius:999px;background:var(--line);border:0;flex:none;transition:background .15s}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
+.sw[aria-pressed="true"]{background:var(--ok)} .sw[aria-pressed="true"]::after{left:18px}
+.reelbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 2px}
+.reelbar .big{font-family:var(--font-display);font-size:16px}
+
+/* telestration */
+.teleov{position:fixed;inset:0;z-index:50;background:rgba(5,9,7,.92);display:flex;flex-direction:column;gap:10px;padding:max(14px,env(safe-area-inset-top)) 14px 14px;overflow:auto}
+.teletop{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#e6ece8}
+.teletop h2{color:#fff;font-size:20px;text-transform:uppercase}
+.teletools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.teletools .tbtn{border:1px solid #3a463f;background:#1b2520;color:#dfe7e2;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:600}
+.teletools .tbtn[aria-pressed="true"]{background:#e6ece8;color:#15211b;border-color:#e6ece8}
+.teletools input[type=color]{width:34px;height:32px;padding:2px;border:1px solid #3a463f;border-radius:6px;background:#1b2520}
+.teletools input[type=range]{width:90px}
+.telestage{position:relative;max-width:100%;margin:0 auto;align-self:center;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.telestage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#teleDraw{touch-action:none;cursor:crosshair}
+@media (max-width:560px){.clockface{font-size:48px}.brand h1{font-size:22px}.zones{grid-template-columns:minmax(0,1fr)}.moment .macts{width:100%}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -176,8 +221,9 @@ table.grid th.n{text-align:right}
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
     <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
-    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><span class="note">One player per line: number, then name. Optional.</span></div></div>
-    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><span class="note">Export one with <code>club_db.py lineup</code>.</span></div></div>
+    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sb="h">From Supabase</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sbpick" id="sbPickh"></div></div>
+    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sb="a">From Supabase</button><span class="note">Export one with <code>club_db.py lineup</code>.</span></div><div class="sbpick" id="sbPicka"></div></div>
+    <div class="field" style="grid-column:1/-1"><label class="label">Supabase (optional — online squads)</label><div class="inl" style="flex-wrap:wrap"><input type="text" id="sbUrl" placeholder="https://xxxx.supabase.co" style="flex:1 1 220px"><input type="text" id="sbKey" placeholder="anon public key" style="flex:1 1 220px"><input type="text" id="sbSeason" placeholder="season e.g. 2026-27" class="mono" style="width:130px"><button class="btn small" type="button" id="sbSave">Save</button></div><span class="note">Saved in this browser only. The anon key is read-only (safe here); never paste the service key. Then use “From Supabase” on a lineup.</span></div>
     <div class="field" style="justify-content:flex-end"><div class="row"><button class="btn primary" type="submit" id="setupSave">Save match</button><button class="btn" type="button" id="setupCancel">Cancel</button><button class="btn ghost" type="button" id="setupDelete" hidden style="color:var(--warn)">Delete match</button></div></div>
   </form>
   <div class="row" id="delConfirm" hidden style="margin-top:10px"><span>Delete this match and all its tagged events?</span><button class="btn small" id="delYes" style="color:var(--warn)">Delete</button><button class="btn small" id="delNo">Keep</button></div>
@@ -210,6 +256,7 @@ table.grid th.n{text-align:right}
             <button data-rate="0.5" aria-pressed="false">0.5×</button><button data-rate="1" aria-pressed="true">1×</button><button data-rate="1.5" aria-pressed="false">1.5×</button><button data-rate="2" aria-pressed="false">2×</button>
           </div>
           <label class="chip"><input type="checkbox" id="autoPause" checked> Pause while tagging</label>
+          <button class="btn small" id="teleBtn" disabled title="Pause and draw on the current frame">✎ Telestrate</button>
           <span class="now" id="nowV">--:--</span>
         </div>
       </div>
@@ -245,6 +292,7 @@ table.grid th.n{text-align:right}
         <label class="row" style="gap:6px"><span class="label">Player #</span><input type="text" inputmode="numeric" id="pnum" class="num mono" placeholder="—" maxlength="3"></label>
         <label class="row" style="gap:6px"><span class="label">Receiver #</span><input type="text" inputmode="numeric" id="rnum" class="num mono" placeholder="—" maxlength="3"></label>
       </div>
+      <div class="lineupchips" id="lineupChips"></div>
       <div class="typegroups" style="margin-bottom:8px">
         <div class="grp"><span class="label">Attack</span><div class="seg" role="group" aria-label="Attacking events">
           <button data-type="pass" aria-pressed="true">Pass <kbd>P</kbd></button>
@@ -283,6 +331,7 @@ table.grid th.n{text-align:right}
         <button role="tab" data-tab="passes" aria-selected="false">Pass map</button>
         <button role="tab" data-tab="network" aria-selected="false">Network</button>
         <button role="tab" data-tab="heat" aria-selected="false">Hot areas</button>
+        <button role="tab" data-tab="moments" aria-selected="false">Moments</button>
         <button role="tab" data-tab="log" aria-selected="false">Log</button>
       </div>
       <div id="tabBody"></div>
@@ -312,6 +361,30 @@ table.grid th.n{text-align:right}
     </section>
   </div>
 </main>
+<div class="teleov" id="teleOv" hidden>
+  <div class="teletop">
+    <h2>Telestrate</h2>
+    <div class="teletools" id="teleTools">
+      <button class="tbtn" data-tool="arrow" aria-pressed="true">↗ Arrow</button>
+      <button class="tbtn" data-tool="circle" aria-pressed="false">◯ Circle</button>
+      <button class="tbtn" data-tool="line" aria-pressed="false">／ Line</button>
+      <button class="tbtn" data-tool="pen" aria-pressed="false">✎ Pen</button>
+      <button class="tbtn" data-tool="spot" aria-pressed="false">◉ Spotlight</button>
+      <input type="color" id="teleColor" value="#ffd23f" aria-label="Colour">
+      <input type="range" id="teleWidth" min="2" max="12" value="5" aria-label="Line width">
+      <button class="tbtn" id="teleUndo">↶ Undo</button>
+      <button class="tbtn" id="teleClear">Clear</button>
+    </div>
+    <div class="spacer" style="flex:1"></div>
+    <button class="tbtn" id="teleSave">⤓ Save PNG</button>
+    <button class="tbtn" id="teleClose">✕ Close</button>
+  </div>
+  <div class="telestage" id="teleStage">
+    <canvas id="teleFrame"></canvas>
+    <canvas id="teleDraw"></canvas>
+  </div>
+  <p class="note" style="color:#9fb0a7;text-align:center;margin:0">Arrows, circles and a spotlight on the paused frame. Save it as an image for your report or to send.</p>
+</div>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -334,6 +407,13 @@ const INSTANT=["interception","recovery","clearance","foul"];
 const OUTS={pass:["ok","fail"],cross:["ok","fail"],shot:["goal","on","off","blocked"],tackle:["won","lost"],interception:["ok"],recovery:["ok"],clearance:["ok"],foul:["ok"]};
 const labelOut=o=>({ok:"complete",fail:"incomplete",goal:"goal",on:"on target",off:"off target",blocked:"blocked",won:"won",lost:"lost"}[o]||o);
 const isPassLike=e=>e.type==="pass"||e.type==="cross";
+
+/* review / confidence state on an event: unmarked → review → wrong → ok → unmarked */
+const REVSEQ=[null,"review","wrong","ok"];
+const revLabel=r=>({review:"Review",wrong:"Wrong",ok:"OK"}[r]||"Mark");
+const revCls=r=>r?("rev rev-"+r):"rev";
+const revNext=r=>REVSEQ[(REVSEQ.indexOf(r||null)+1)%REVSEQ.length];
+const worstRev=evs=>evs.some(e=>e.rev==="wrong")?"wrong":evs.some(e=>e.rev==="review")?"review":evs.some(e=>e.rev==="ok")?"ok":null;
 
 /* ---------- models ---------- */
 function xgOf(e){
@@ -423,8 +503,11 @@ function storeBadge(state){
 /* ---------- state ---------- */
 const S={matches:[],match:null,events:[],half:1,src:"video",team:0,type:"pass",
   tag:{stage:"start"},clock:{running:false,base:0,at:0},tab:"summary",pAuto:false,
-  f:{passTeam:"all",passType:"all",passPlayer:"all",heatTeam:"0",heatKind:"all",sortKey:"xt",sortDir:-1,netTeam:"0",netMin:"2",netHalf:"all"},
+  f:{passTeam:"all",passType:"all",passPlayer:"all",heatTeam:"0",heatKind:"all",sortKey:"xt",sortDir:-1,netTeam:"0",netMin:"2",netHalf:"all",
+     momTeam:"0",momPlayer:"all",momPad:"4",momKind:"all",momSrc:"events",momTrack:"all"},
+  reelOff:new Set(),auto:[],
   pausedByTag:false};
+var Reel={list:[],i:-1,active:false};
 
 const teamName=t=>t===0?(S.match?.home||"Home"):(S.match?.away||"Away");
 const teamColor=t=>t===0?(S.match?.hc||"#d7263d"):(S.match?.ac||"#f2c230");
@@ -526,7 +609,7 @@ $("#fileIn").addEventListener("change",e=>{
   try{video.src=URL.createObjectURL(f)}catch(err){videoFail();return}
   video.hidden=false;$("#vidEmpty").hidden=true;e.target.blur();
 });
-video.addEventListener("loadedmetadata",()=>{videoLoaded=true;["#playBtn","#backBtn","#fwdBtn"].forEach(s=>$(s).disabled=false);toast("Video loaded. Press Space to play.");renderTab()});
+video.addEventListener("loadedmetadata",()=>{videoLoaded=true;["#playBtn","#backBtn","#fwdBtn","#teleBtn"].forEach(s=>$(s).disabled=false);toast("Video loaded. Press Space to play.");renderTab()});
 video.addEventListener("error",videoFail);
 function videoFail(){
   videoLoaded=false;video.hidden=true;$("#vidEmpty").hidden=false;
@@ -534,8 +617,8 @@ function videoFail(){
 }
 video.addEventListener("play",()=>$("#playBtn span").textContent="Pause");
 video.addEventListener("pause",()=>$("#playBtn span").textContent="Play");
-const togglePlay=()=>{if(!videoLoaded)return;video.paused?video.play().catch(()=>{}):video.pause()};
-const seek=d=>{if(videoLoaded)video.currentTime=Math.max(0,video.currentTime+d)};
+const togglePlay=()=>{if(!videoLoaded)return;if(video.paused){Reel.active=false;video.play().catch(()=>{})}else video.pause()};
+const seek=d=>{if(videoLoaded){Reel.active=false;video.currentTime=Math.max(0,video.currentTime+d)}};
 $("#playBtn").onclick=togglePlay;$("#backBtn").onclick=()=>seek(-3);$("#fwdBtn").onclick=()=>seek(3);
 document.querySelectorAll("[data-rate]").forEach(b=>b.onclick=()=>{video.playbackRate=+b.dataset.rate;document.querySelectorAll("[data-rate]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
 function setSrc(s){S.src=s;$("#srcVideo").setAttribute("aria-pressed",s==="video");$("#srcClock").setAttribute("aria-pressed",s==="clock");$("#videoBox").hidden=s!=="video";$("#clockBox").hidden=s!=="clock"}
@@ -693,14 +776,30 @@ function undo(){
 }
 $("#undoBtn").onclick=undo;
 
+function renderLineupChips(){
+  const box=$("#lineupChips");if(!box)return;
+  const lu=S.match?.lu?.[S.team===0?"h":"a"]||{};
+  const nums=Object.keys(lu).sort((a,b)=>(+a||999)-(+b||999));
+  if(!S.match||!nums.length){box.innerHTML="";box.hidden=true;return}
+  box.hidden=false;
+  const rcv=S.tag.stage==="outcome"&&isPassLike({type:S.type});
+  const cur=(rcv?$("#rnum"):$("#pnum")).value.trim();
+  box.innerHTML=nums.map(n=>`<button class="pchip" data-pn="${esc(n)}" aria-pressed="${n===cur}"><span class="pn">${esc(n)}</span>${lu[n]?`<span class="nm">${esc(lu[n])}</span>`:""}</button>`).join("");
+  box.querySelectorAll("[data-pn]").forEach(b=>b.onclick=()=>{
+    const rcvNow=S.tag.stage==="outcome"&&isPassLike({type:S.type});
+    const inp=rcvNow?$("#rnum"):$("#pnum");inp.value=b.dataset.pn;if(!rcvNow)S.pAuto=false;
+    renderHint();
+  });
+}
 function renderHint(){
   const g=S.tag,h=$("#hint");
-  if(!S.match){h.innerHTML=`<span class="muted">Set up a match first.</span>`;return}
+  if(!S.match){h.innerHTML=`<span class="muted">Set up a match first.</span>`;renderLineupChips();return}
   const who=`<span class="swatch" style="background:${teamColor(S.team)}"></span><b>${esc(teamName(S.team))}</b>${$("#pnum").value?` <span class="mono">${esc(pLabel(S.team,$("#pnum").value))}</span>`:""}`;
   const tn=TYPES[S.type].toLowerCase(), pl=isPassLike({type:S.type});
   if(g.stage==="start")h.innerHTML=`<span class="step">1</span>${who}<span>— click where the ${tn} ${S.type==="shot"?"was taken":pl?"started":"happened"}${INSTANT.includes(S.type)?" (saves on click)":""}.</span>`;
   else if(g.stage==="end")h.innerHTML=`<span class="step">2</span>${who}<span>— click where the ${tn} ended (the receiver, or where it was lost).</span>`;
   else h.innerHTML=`<span class="step">${pl?"3":"2"}</span>${who}<span>— ${pl?"type the receiver's number, then ":""}choose the outcome. Time ${fmt(g.clock)}.</span>`;
+  renderLineupChips();
 }
 function drawTagPitch(){
   let s=pitch();
@@ -717,6 +816,7 @@ function drawTagPitch(){
 
 /* ---------- keyboard ---------- */
 document.addEventListener("keydown",e=>{
+  if(!$("#teleOv").hidden){if(e.key==="Escape")Tele.close();return}
   const tag=(e.target.tagName||"").toLowerCase();
   const inNum=["pnum","rnum"].includes(e.target.id);
   if(["input","textarea","select"].includes(tag)&&!(inNum&&["Enter","Escape"].includes(e.key)))return;
@@ -1009,20 +1109,167 @@ function renderLog(){
    ${E.map(e=>`<tr><td>${e.t!=null&&videoLoaded?`<button class="btn small ghost mono" data-seek="${e.t}">${fmt(e.clock)}</button>`:`<span class="mono">${fmt(e.clock)}</span>`} <span class="muted" style="font-size:11px">${e.half===2?"2H":"1H"}</span></td>
      <td><span class="swatch" style="vertical-align:-1px;background:${teamColor(e.team)}"></span> ${esc(teamName(e.team))}</td>
      <td>${esc(pLabel(e.team,e.p))}</td><td>${TYPES[e.type]||esc(e.type)}</td><td>${detail(e)}</td>
-     <td class="act"><button class="btn small ghost" data-del="${e.id}" aria-label="Delete event">Delete</button></td></tr>`).join("")}
+     <td class="act"><button class="btn small ghost ${revCls(e.rev)}" data-rev="${e.id}" title="Cycle confidence: unmarked → review → wrong → OK">${revLabel(e.rev)}</button> <button class="btn small ghost" data-del="${e.id}" aria-label="Delete event">Delete</button></td></tr>`).join("")}
   </tbody></table></div>${S.events.length>400?`<p class="note">Showing the latest 400 of ${S.events.length} events. Export CSV for all of them.</p>`:""}`;
+}
+
+/* ---------- moments / reel ---------- */
+const MOMKINDS={def:["tackle","interception","recovery","clearance","foul"]};
+function momentPlayers(team){
+  const set=new Set();
+  S.events.forEach(e=>{if(e.team===team&&e.t!=null){if(e.p)set.add(e.p);if(e.rcv)set.add(e.rcv)}});
+  return [...set].sort((a,b)=>(+a||999)-(+b||999));
+}
+function buildMoments(team,player,pad,kind){
+  let evs=S.events.filter(e=>e.team===team&&e.t!=null);
+  if(player!=="all")evs=evs.filter(e=>e.p===player||e.rcv===player);
+  if(kind==="shot")evs=evs.filter(e=>e.type==="shot");
+  else if(kind==="attack")evs=evs.filter(e=>["pass","cross","shot"].includes(e.type));
+  else if(kind==="def")evs=evs.filter(e=>MOMKINDS.def.includes(e.type));
+  evs=evs.slice().sort((a,b)=>a.t-b.t);
+  const out=[];
+  evs.forEach(e=>{
+    const after=e.type==="shot"?pad+2:Math.max(2,pad-1);
+    const start=Math.max(0,e.t-pad), end=e.t+after, last=out[out.length-1];
+    if(last&&start<=last.end+1.2){last.end=Math.max(last.end,end);last.events.push(e)}
+    else out.push({start,end,events:[e]});
+  });
+  out.forEach(m=>m.key=`${team}|${player}|${Math.round(m.start)}`);
+  return out;
+}
+function momentLabel(m){
+  const c={};m.events.forEach(e=>{c[e.type]=(c[e.type]||0)+1});
+  const goal=m.events.some(e=>e.type==="shot"&&e.out==="goal");
+  const parts=Object.entries(c).map(([t,n])=>n>1?`${n} ${TYPES[t].toLowerCase()}s`:TYPES[t].toLowerCase());
+  return (goal?"⚽ ":"")+parts.join(" · ");
+}
+function highlightReel(i){const key=i>=0&&Reel.list[i]?Reel.list[i].key:null;document.querySelectorAll("[data-moment]").forEach(el=>el.style.outline=el.dataset.moment===key?"2px solid var(--accent)":"")}
+function nextReel(){Reel.i++;const m=Reel.list[Reel.i];if(!m){Reel.active=false;video.pause();highlightReel(-1);toast("Reel finished");return}video.currentTime=m.start;video.play().catch(()=>{});highlightReel(Reel.i)}
+function playReel(list){if(!list.length){toast("No moments switched on");return}setSrc("video");Reel.list=list;Reel.i=-1;Reel.active=true;nextReel()}
+function playOne(m){setSrc("video");Reel.list=[m];Reel.i=-1;Reel.active=true;nextReel()}
+video.addEventListener("timeupdate",()=>{if(Reel.active){const m=Reel.list[Reel.i];if(m&&video.currentTime>=m.end-0.02)nextReel()}});
+video.addEventListener("ended",()=>{if(Reel.active)nextReel()});
+async function reelExport(){
+  const f=S.f,team=+f.momTeam,pad=+f.momPad||4;
+  const on=buildMoments(team,f.momPlayer,pad,f.momKind).filter(m=>!S.reelOff.has(m.key));
+  if(!on.length){toast("No moments switched on");return}
+  const who=f.momPlayer==="all"?"team":("p"+f.momPlayer);
+  const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
+  const cols=["moment","start_s","end_s","duration_s","start_clock","events","label"];
+  const rows=on.map((m,i)=>[i+1,m.start.toFixed(1),m.end.toFixed(1),(m.end-m.start).toFixed(1),fmt((S.match?.offset||0)+m.start),m.events.length,momentLabel(m)].map(q).join(","));
+  const csv=cols.join(",")+"\n"+rows.join("\n")+"\n";
+  const name=(S.match?.name||"match").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_"+who+"_reel.csv";
+  let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads")}catch(e){}
+  if(dl){try{await dl.save({filename:name,data:csv});toast("Cut list saved");return}catch(err){if(err&&err.code==="declined")return}}
+  const t=$("#csvOut");t.value=csv;t.hidden=false;t.focus();t.select();toast("Copy the cut list below.");
+}
+/* Track B cut-list import: accepts our 7-column format
+   (moment,start_s,end_s,duration_s,start_clock,events,label). start_s/end_s are
+   video_seconds and drive playback; `label` is read as confidence (ok/review/wrong)
+   and `events` as the moment descriptor; track id comes from the moment prefix. */
+function parseCutlist(text,fname){
+  const rows=parseCSV(text);if(!rows.length)return[];
+  const head=rows.shift().map(h=>h.trim().toLowerCase());const ix=n=>head.indexOf(n);
+  if(ix("start_s")<0||ix("end_s")<0)throw 0;
+  const base=fname.replace(/\.csv$/i,"");const out=[];
+  rows.forEach(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
+    const s=+g("start_s"),e=+g("end_s");if(!Number.isFinite(s)||!Number.isFinite(e)||e<=s)return;
+    const mid=g("moment")||`${base}_${out.length+1}`;
+    const tm=mid.match(/track[_-]?([A-Za-z0-9]+)/i);const track=tm?tm[1]:base;
+    const lab=g("label").toLowerCase();const conf=["ok","review","wrong"].includes(lab)?lab:null;
+    const desc=g("events")||(conf?"":g("label"))||"near ball";
+    out.push({key:"auto|"+mid,moment:mid,track,start:s,end:e,conf,desc,sclock:g("start_clock")});
+  });
+  return out;
+}
+function importCutlists(files){
+  let added=0,bad=0,done=0;
+  const have=new Set(S.auto.map(m=>m.key));
+  const finish=()=>{if(done<files.length)return;toast(`Imported ${added} auto-moments${bad?` · ${bad} file(s) unreadable`:""}`);S.f.momSrc="auto";renderAll()};
+  [...files].forEach(f=>{const rd=new FileReader();
+    rd.onload=()=>{try{parseCutlist(String(rd.result),f.name).forEach(m=>{if(!have.has(m.key)){S.auto.push(m);have.add(m.key);added++}})}catch(e){bad++}done++;finish()};
+    rd.onerror=()=>{bad++;done++;finish()};rd.readAsText(f)});
+}
+function currentMomentList(){
+  if(S.f.momSrc==="auto"){const tf=S.f.momTrack||"all";return S.auto.filter(m=>tf==="all"||m.track===tf)}
+  return buildMoments(+S.f.momTeam,S.f.momPlayer,+S.f.momPad||4,S.f.momKind);
+}
+function momentRow(m,i){
+  const off=S.reelOff.has(m.key),wr=m.events?worstRev(m.events):m.conf;
+  const title=m.events?momentLabel(m):esc(m.desc||"moment")+(m.track?` <span class="mt">track ${esc(m.track)}</span>`:"");
+  const meta=m.events?`${m.events.length} event${m.events.length>1?"s":""}`:(m.moment?esc(m.moment):"");
+  return `<div class="moment ${off?"off":""}" data-moment="${esc(m.key)}">
+    <div class="mnum">${i+1}</div>
+    <div class="mmid"><div class="mttl">${m.events?esc(momentLabel(m)):esc(m.desc||"near ball")} ${wr?`<span class="${revCls(wr)}">${revLabel(wr)}</span>`:""}${!m.events&&m.track?` <span class="mt">track ${esc(m.track)}</span>`:""}</div>
+      <div class="mt">${fmt(m.start)} – ${fmt(m.end)} · ${(m.end-m.start).toFixed(1)}s${meta&&m.events?" · "+meta:""}</div></div>
+    <div class="macts"><button class="btn small" data-play="${esc(m.key)}">▶ Play</button>
+      <button class="sw" data-toggle="${esc(m.key)}" aria-pressed="${!off}" aria-label="Include in reel"></button></div></div>`;
+}
+function renderMoments(){
+  const f=S.f,auto=f.momSrc==="auto";
+  const srcSeg=`<div class="seg" role="group" aria-label="Moment source" style="margin-bottom:10px">
+    <button id="msEv" aria-pressed="${!auto}">Tagged events</button>
+    <button id="msAuto" aria-pressed="${auto}">Imported (Track B)${S.auto.length?` · ${S.auto.length}`:""}</button></div>`;
+  if(auto){
+    const importBar=`<div class="reelbar"><label class="btn small" for="autoIn">⤒ Import cut list</label><input type="file" id="autoIn" accept=".csv,text/csv" multiple hidden>${S.auto.length?`<button class="btn small ghost" id="autoClear">Clear</button>`:""}</div>`;
+    if(!S.auto.length)return srcSeg+importBar+emptyMsg("Import Track B cut-list CSVs (the 7-column moment format). start_s / end_s are video_seconds, so load the same match video to play them in the reel.");
+    const tracks=[...new Set(S.auto.map(m=>m.track))].sort((a,b)=>(+a||1e9)-(+b||1e9));
+    if(f.momTrack!=="all"&&!tracks.includes(f.momTrack))f.momTrack="all";
+    const list=currentMomentList(),on=list.filter(m=>!S.reelOff.has(m.key)),dur=on.reduce((a,m)=>a+(m.end-m.start),0);
+    const head=`<div class="filters"><select id="mfTrack" aria-label="Track"><option value="all">All tracks (${S.auto.length})</option>${tracks.map(t=>`<option value="${esc(t)}">Track ${esc(t)}</option>`).join("")}</select>
+      <span class="mono note">${on.length}/${list.length} on · ${fmt(dur)}</span></div>`;
+    const bar=`<div class="reelbar"><button class="btn primary" id="reelPlay">▶ Play reel (${on.length})</button>
+      <div style="flex:1"></div><button class="btn small" id="reelAllOn">All on</button><button class="btn small" id="reelAllOff">All off</button></div>`;
+    return srcSeg+importBar+head+bar+`<div class="moments">${list.map(momentRow).join("")}</div>
+     <p class="note">Auto-moments from Track B. Each plays against the loaded match video using its video_seconds. Confidence badge comes from the file's <code>label</code> column.</p>`;
+  }
+  const team=+f.momTeam;
+  if(!S.events.some(e=>e.t!=null))return srcSeg+emptyMsg("Moments need video times. Tag with a video loaded — every tag then stores its video_seconds — and per-player clips appear here, ready to play as a reel.");
+  const players=momentPlayers(team);
+  if(f.momPlayer!=="all"&&!players.includes(f.momPlayer))f.momPlayer="all";
+  const moments=currentMomentList();
+  const head=`<div class="filters">
+    <select id="mfTeam" aria-label="Team"><option value="0">${esc(teamName(0))}</option><option value="1">${esc(teamName(1))}</option></select>
+    <select id="mfPlayer" aria-label="Player"><option value="all">Whole team</option>${players.map(p=>`<option value="${esc(p)}">${esc(pLabel(team,p))}</option>`).join("")}</select>
+    <select id="mfKind" aria-label="Actions"><option value="all">All on-ball actions</option><option value="attack">Attacking (pass/cross/shot)</option><option value="shot">Shots only</option><option value="def">Defensive actions</option></select>
+    <select id="mfPad" aria-label="Clip length"><option value="3">±3 s clips</option><option value="4">±4 s clips</option><option value="6">±6 s clips</option><option value="8">±8 s clips</option></select>
+  </div>`;
+  if(!moments.length)return srcSeg+head+emptyMsg("No tagged actions with video times for this selection yet.");
+  const on=moments.filter(m=>!S.reelOff.has(m.key)), totalDur=on.reduce((a,m)=>a+(m.end-m.start),0);
+  const bar=`<div class="reelbar"><button class="btn primary" id="reelPlay">▶ Play reel (${on.length})</button>
+    <span class="mono big">${fmt(totalDur)}</span><span class="note">${on.length} of ${moments.length} on</span>
+    <div style="flex:1"></div>
+    <button class="btn small" id="reelAllOn">All on</button><button class="btn small" id="reelAllOff">All off</button>
+    <button class="btn small" id="reelExport">⤓ Cut list</button></div>`;
+  return srcSeg+head+bar+`<div class="moments">${moments.map(momentRow).join("")}</div>
+   <p class="note">Each tagged action becomes a clip; overlapping ones merge. Switch a moment off to drop it from the reel. “Cut list” exports the on-moments as start/end times for ffmpeg or a video editor.</p>`;
 }
 
 function renderTab(){
   const t=S.tab,b=$("#tabBody");
-  b.innerHTML={summary:renderSummary,players:renderPlayers,shots:renderShots,passes:renderPasses,network:renderNetwork,heat:renderHeat,log:renderLog}[t]();
+  b.innerHTML={summary:renderSummary,players:renderPlayers,shots:renderShots,passes:renderPasses,network:renderNetwork,heat:renderHeat,moments:renderMoments,log:renderLog}[t]();
   const bind=pairs=>pairs.forEach(([s,k,reset])=>{const el=$(s);if(!el)return;el.value=S.f[k];el.onchange=()=>{S.f[k]=el.value;if(reset)S.f[reset]="all";renderTab()}});
   if(t==="players")b.querySelectorAll("[data-sort]").forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(S.f.sortKey===k)S.f.sortDir*=-1;else{S.f.sortKey=k;S.f.sortDir=-1}renderTab()});
   if(t==="passes")bind([["#pfTeam","passTeam","passPlayer"],["#pfType","passType"],["#pfPlayer","passPlayer"]]);
   if(t==="network")bind([["#nfTeam","netTeam"],["#nfHalf","netHalf"],["#nfMin","netMin"]]);
   if(t==="heat")bind([["#hfTeam","heatTeam"],["#hfKind","heatKind"]]);
+  if(t==="moments"){
+    const me=$("#msEv");if(me)me.onclick=()=>{S.f.momSrc="events";renderTab()};
+    const ma=$("#msAuto");if(ma)ma.onclick=()=>{S.f.momSrc="auto";renderTab()};
+    if(S.f.momSrc==="auto")bind([["#mfTrack","momTrack"]]);
+    else bind([["#mfTeam","momTeam","momPlayer"],["#mfPlayer","momPlayer"],["#mfKind","momKind"],["#mfPad","momPad"]]);
+    const ai=$("#autoIn");if(ai)ai.onchange=e=>{if(e.target.files.length)importCutlists(e.target.files);e.target.value=""};
+    const ac=$("#autoClear");if(ac)ac.onclick=()=>{S.auto.forEach(m=>S.reelOff.delete(m.key));S.auto=[];renderTab()};
+    const pb=$("#reelPlay");if(pb)pb.onclick=()=>playReel(currentMomentList().filter(m=>!S.reelOff.has(m.key)));
+    b.querySelectorAll("[data-play]").forEach(x=>x.onclick=()=>{const m=currentMomentList().find(mm2=>mm2.key===x.dataset.play);if(m)playOne(m)});
+    b.querySelectorAll("[data-toggle]").forEach(x=>x.onclick=()=>{const k=x.dataset.toggle;S.reelOff.has(k)?S.reelOff.delete(k):S.reelOff.add(k);renderTab()});
+    const ao=$("#reelAllOn");if(ao)ao.onclick=()=>{S.reelOff.clear();renderTab()};
+    const af=$("#reelAllOff");if(af)af.onclick=()=>{currentMomentList().forEach(m=>S.reelOff.add(m.key));renderTab()};
+    const ex=$("#reelExport");if(ex)ex.onclick=reelExport;
+  }
   if(t==="log"){
-    b.querySelectorAll("[data-seek]").forEach(x=>x.onclick=()=>{video.currentTime=+x.dataset.seek;setSrc("video")});
+    b.querySelectorAll("[data-seek]").forEach(x=>x.onclick=()=>{Reel.active=false;video.currentTime=+x.dataset.seek;setSrc("video")});
+    b.querySelectorAll("[data-rev]").forEach(x=>x.onclick=()=>{const ev=S.events.find(e=>e.id===x.dataset.rev);if(!ev)return;ev.rev=revNext(ev.rev);markDirty(ev.c);renderAll()});
     b.querySelectorAll("[data-del]").forEach(x=>x.onclick=()=>{const id=x.dataset.del,i=S.events.findIndex(e=>e.id===id);if(i<0)return;const [e]=S.events.splice(i,1);
       S.events.forEach(s=>{if(s.ast===id){s.ast=null;markDirty(s.c)}});markDirty(e.c);renderAll()});
   }
@@ -1055,6 +1302,7 @@ function showSetup(m){
   $("#fName").value=m?.name||"";$("#fHome").value=m?.home||"";$("#fAway").value=m?.away||"";
   $("#fHc").value=m?.hc||"#d7263d";$("#fAc").value=m?.ac||"#f2c230";$("#fDir").value=m?.dir||"R";$("#fOff").value=m?fmt(m.offset||0):"";
   $("#fLuH").value=lineupText(m?.lu?.h);$("#fLuA").value=lineupText(m?.lu?.a);
+  sbFillConfig();
   $("#setupDelete").hidden=!m;$("#fHome").focus();
   $("#setupPanel").scrollIntoView({block:"start",behavior:"smooth"});
 }
@@ -1075,6 +1323,36 @@ $("#setupForm").addEventListener("submit",async e=>{
   toast(editing?"Settings saved":"Match created. Start tagging.");
 });
 [["#fLuHFile","#fLuH"],["#fLuAFile","#fLuA"]].forEach(([fi,ta])=>$(fi).addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const o=parseLineup(String(rd.result));$(ta).value=lineupText(o);toast(`Loaded ${Object.keys(o).length} players`)};rd.readAsText(f);e.target.value=""}));
+
+/* ---------- Supabase online squads (club/player DB, read-only anon key) ---------- */
+const SB={
+  cfg(){try{return{url:(localStorage.getItem("pt:sb_url")||"").replace(/\/$/,""),key:localStorage.getItem("pt:sb_key")||"",season:localStorage.getItem("pt:sb_season")||""}}catch(e){return{url:"",key:"",season:""}}},
+  async get(path){const c=SB.cfg();if(!c.url||!c.key)throw new Error("not configured");
+    const r=await fetch(c.url+"/rest/v1/"+path,{headers:{apikey:c.key,Authorization:"Bearer "+c.key}});
+    if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}
+};
+function sbFillConfig(){const c=SB.cfg();if($("#sbUrl")){$("#sbUrl").value=c.url;$("#sbKey").value=c.key;$("#sbSeason").value=c.season}}
+$("#sbSave").onclick=()=>{try{localStorage.setItem("pt:sb_url",$("#sbUrl").value.trim());localStorage.setItem("pt:sb_key",$("#sbKey").value.trim());localStorage.setItem("pt:sb_season",$("#sbSeason").value.trim());toast("Supabase settings saved")}catch(e){toast("Could not save (private window?)")}};
+document.querySelectorAll("[data-sb]").forEach(btn=>btn.onclick=async()=>{
+  const side=btn.dataset.sb, box=$("#sbPick"+side), ta=$(side==="h"?"#fLuH":"#fLuA"), c=SB.cfg();
+  if(!c.url||!c.key){toast("Add your Supabase URL + anon key below, then Save");return}
+  box.innerHTML=`<span class="note">Loading clubs…</span>`;
+  let clubs;try{clubs=await SB.get("clubs?select=id,name,short&order=name")}catch(e){box.innerHTML=`<span class="note" style="color:var(--warn)">Could not reach Supabase (${esc(e.message)}).</span>`;return}
+  if(!clubs.length){box.innerHTML=`<span class="note">No clubs online yet — run <code>club_supabase.py push</code>.</span>`;return}
+  box.innerHTML=`<select class="sbclub"><option value="">Choose club…</option>${clubs.map(cl=>`<option value="${esc(cl.id)}">${esc(cl.name)}${cl.short?" ("+esc(cl.short)+")":""}</option>`).join("")}</select>
+    <input type="text" class="sbseason mono" placeholder="season" style="width:110px" value="${esc(c.season)}">
+    <button class="btn small" type="button">Fill lineup</button>`;
+  box.querySelector("button").onclick=async()=>{
+    const id=box.querySelector(".sbclub").value, season=box.querySelector(".sbseason").value.trim();
+    if(!id){toast("Pick a club");return}
+    let q="players?select=number,name&club_id=eq."+encodeURIComponent(id)+"&order=number";
+    if(season)q+="&season=eq."+encodeURIComponent(season);
+    let ps;try{ps=await SB.get(q)}catch(e){toast("Could not load players ("+e.message+")");return}
+    if(!ps.length){box.innerHTML=`<span class="note">No players for that club/season.</span>`;return}
+    ta.value=ps.map(p=>`${p.number} ${p.name}`).join("\n");
+    box.innerHTML=`<span class="note" style="color:var(--ok)">Loaded ${ps.length} players.</span>`;
+  };
+});
 $("#setupDelete").onclick=()=>{$("#delConfirm").hidden=false};
 $("#delNo").onclick=()=>{$("#delConfirm").hidden=true};
 $("#delYes").onclick=async()=>{
@@ -1087,11 +1365,11 @@ $("#delYes").onclick=async()=>{
 };
 
 /* ---------- CSV ---------- */
-const COLS=["match_id","match_name","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box"];
+const COLS=["match_id","match_name","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box","review"];
 function toCSV(){
   const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
   const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.id||"",S.match?.name||"",e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.team===0?"home":"away",e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
-    e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):""].map(q).join(","));
+    e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):"",e.rev||""].map(q).join(","));
   return COLS.join(",")+"\n"+rows.join("\n")+"\n";
 }
 function csvName(){return(S.match?.name||"match").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_events.csv"}
@@ -1132,6 +1410,7 @@ $("#importIn").addEventListener("change",e=>{
         const ev={id,c:0,half:+g("half")===2?2:1,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
         if(isPassLike(ev))ev.rcv=g("receiver");
         if(type==="shot"){ev.body=g("body_part")==="head"?"head":"foot";ev.sit=["open","fk","pen"].includes(g("situation"))?g("situation"):"open";ev.ast=g("assist_event_id")||null}
+        const rv=g("review");if(["ok","review","wrong"].includes(rv))ev.rev=rv;
         ev.xg=xgOf(ev);ev.c=nextChunk();S.events.push(ev);have.add(id);markDirty(ev.c);n++;});
       const sk=Object.entries(skip).filter(([,v])=>v).map(([k,v])=>`${v} ${({dup:"duplicates",coords:"bad coordinates",team:"unknown team",type:"unknown event/outcome"})[k]}`);
       toast(`Imported ${n} events${sk.length?" · skipped "+sk.join(", "):""}`);renderAll();
@@ -1143,6 +1422,65 @@ function parseCSV(t){const out=[];let row=[],cur="",q=false;for(let i=0;i<t.leng
   if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
   else if(c==='"')q=true;else if(c===","){row.push(cur);cur=""}else if(c==="\n"){row.push(cur);out.push(row);row=[];cur=""}else if(c!=="\r")cur+=c}
   if(cur||row.length){row.push(cur);out.push(row)}return out.filter(r=>r.length>1)}
+
+/* ---------- telestration ---------- */
+var Tele=(()=>{
+  const frame=$("#teleFrame"), draw=$("#teleDraw");
+  let shapes=[], cur=null, tool="arrow", color="#ffd23f", width=5;
+  function drawShape(g,s){
+    g.lineCap="round";g.lineJoin="round";g.strokeStyle=s.color;g.fillStyle=s.color;g.lineWidth=s.w;
+    if(s.tool==="pen"){g.beginPath();s.pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke();return}
+    if(s.tool==="line"){g.beginPath();g.moveTo(s.x0,s.y0);g.lineTo(s.x1,s.y1);g.stroke();return}
+    if(s.tool==="circle"){const r=Math.hypot(s.x1-s.x0,s.y1-s.y0);g.beginPath();g.arc(s.x0,s.y0,Math.max(2,r),0,7);g.stroke();return}
+    if(s.tool==="arrow"){g.beginPath();g.moveTo(s.x0,s.y0);g.lineTo(s.x1,s.y1);g.stroke();
+      const a=Math.atan2(s.y1-s.y0,s.x1-s.x0),h=s.w*3.2+6;g.beginPath();g.moveTo(s.x1,s.y1);
+      g.lineTo(s.x1-h*Math.cos(a-0.4),s.y1-h*Math.sin(a-0.4));g.lineTo(s.x1-h*Math.cos(a+0.4),s.y1-h*Math.sin(a+0.4));g.closePath();g.fill()}
+  }
+  function render(){
+    const g=draw.getContext("2d");g.clearRect(0,0,draw.width,draw.height);
+    const spots=shapes.filter(s=>s.tool==="spot").concat(cur&&cur.tool==="spot"?[cur]:[]);
+    if(spots.length){g.save();g.fillStyle="rgba(0,0,0,.58)";g.fillRect(0,0,draw.width,draw.height);
+      g.globalCompositeOperation="destination-out";
+      spots.forEach(s=>{const r=Math.max(10,Math.hypot(s.x1-s.x0,s.y1-s.y0));g.beginPath();g.arc(s.x0,s.y0,r,0,7);g.fill()});g.restore()}
+    shapes.concat(cur&&cur.tool!=="spot"?[cur]:[]).forEach(s=>drawShape(g,s));
+  }
+  function open(){
+    if(!videoLoaded){toast("Load a video first");return}
+    if(!video.paused)video.pause();
+    const vw=video.videoWidth||1280, vh=video.videoHeight||720, scale=Math.min(1,1280/vw);
+    const w=Math.round(vw*scale), h=Math.round(vh*scale);
+    frame.width=draw.width=w;frame.height=draw.height=h;$("#teleStage").style.aspectRatio=w+"/"+h;
+    try{frame.getContext("2d").drawImage(video,0,0,w,h)}catch(e){toast("Could not read the frame");return}
+    shapes=[];cur=null;render();$("#teleOv").hidden=false;
+  }
+  function close(){$("#teleOv").hidden=true}
+  const cpos=ev=>{const r=draw.getBoundingClientRect();return[(ev.clientX-r.left)/r.width*draw.width,(ev.clientY-r.top)/r.height*draw.height]};
+  draw.addEventListener("pointerdown",ev=>{ev.preventDefault();try{draw.setPointerCapture(ev.pointerId)}catch(e){}const [x,y]=cpos(ev);cur={tool,color,w:width*(draw.width/900),x0:x,y0:y,x1:x,y1:y,pts:[[x,y]]};render()});
+  draw.addEventListener("pointermove",ev=>{if(!cur)return;const [x,y]=cpos(ev);cur.x1=x;cur.y1=y;if(cur.tool==="pen")cur.pts.push([x,y]);render()});
+  const stop=()=>{if(cur){shapes.push(cur);cur=null;render()}};
+  draw.addEventListener("pointerup",stop);draw.addEventListener("pointercancel",stop);
+  $("#teleTools").querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{tool=b.dataset.tool;$("#teleTools").querySelectorAll("[data-tool]").forEach(x=>x.setAttribute("aria-pressed",x===b))});
+  $("#teleColor").oninput=e=>color=e.target.value;
+  $("#teleWidth").oninput=e=>width=+e.target.value;
+  $("#teleUndo").onclick=()=>{shapes.pop();render()};
+  $("#teleClear").onclick=()=>{shapes=[];render()};
+  $("#teleClose").onclick=close;
+  function save(){
+    const out=document.createElement("canvas");out.width=frame.width;out.height=frame.height;
+    const o=out.getContext("2d");o.drawImage(frame,0,0);o.drawImage(draw,0,0);
+    const stamp=fmt((S.match?.offset||0)+video.currentTime).replace(":","");
+    const name=(S.match?.name||"frame").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_"+stamp+".png";
+    out.toBlob(async b=>{
+      if(!b){toast("Could not render the image");return}
+      let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads")}catch(e){}
+      if(dl){try{await dl.save({filename:name,data:b});toast("Image saved");return}catch(err){if(err&&err.code==="declined")return}}
+      const url=URL.createObjectURL(b);const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);toast("Image downloaded");
+    },"image/png");
+  }
+  $("#teleSave").onclick=save;
+  return{open,close};
+})();
+$("#teleBtn").onclick=()=>Tele.open();
 
 /* ---------- boot ---------- */
 loadDemo();numFocus();

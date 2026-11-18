@@ -15,6 +15,11 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — `src/club_db.py` local club/player/match database; Tagger "Load from file" for lineups
 - [x] **Claude** — ChatGPT review round 2: xT play_pattern, match_id, video_seconds, downloader path, storage/assist edge cases, contract (extra-time, tolerance)
 - [x] **Claude** — no-terminal downloader GUI (`src/download_gui.pyw` + `Unduh Video.bat`) with Full / Babak Pertama / Babak Kedua
+- [x] **Claude** — Tagger v3: moment reels (per-player / team-attack / team-defence), confidence flags (unmarked→review→wrong→ok, `review` CSV column), telestration, lineup quick-pick chips
+- [x] **Claude** — Track B cut-list importer in the reel ("Imported (Track B)"): 7-col contract, `label`=confidence, one file per track, multi-load
+- [x] **Claude** — Supabase club/player DB: `supabase/schema.sql` + `src/club_supabase.py` + Tagger "From Supabase" squad loader (anon read-only)
+- [ ] **both** — run Track B `build_player_moments.py` on the 20-min CSV, import the per-track cut-lists into the reel, check player-near-ball and label usefulness
+- [ ] **Claude** — `scrape-ileague` command to pull opponent squads from ileague.id into Supabase (needs a sample club-page URL)
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off
 - [ ] **Claude** — match report page from a finished CSV (one shareable page per match)
 - [ ] **Claude** — export to SPADL so socceraction (VAEP) and mplsoccer work on our data

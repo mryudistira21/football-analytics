@@ -8,7 +8,7 @@ First match: **PERSIBA Bantul vs Gresik United** (Liga Nusantara 2026/27).
 
 | Track | What it gives | How |
 |---|---|---|
-| **A — Manual tagging** | passing, shooting, crossing, xG, xA, xT, progressive passes, pass networks, PPDA, field tilt, shot/pass maps, hot areas | Watch the video and click events on a pitch. Runs in a browser, no GPU. |
+| **A — Manual tagging** | passing, shooting, crossing, xG, xA, xT, progressive passes, pass networks, PPDA, field tilt, shot/pass maps, hot areas, **per-player & team moment reels, telestration, confidence flags** | Watch the video and click events on a pitch. Runs in a browser, no GPU. |
 | **B — Automatic tracking** | player/ball positions, hot areas, later event detection | `roboflow/sports` CV models (players, ball, pitch) on the RTX 2070. |
 
 Track A works today and needs nothing installed. Track B is the harder, GPU-based pipeline we build up over time.
@@ -35,6 +35,7 @@ src/        reusable code (xG + xT models, crop, heatmaps)
 models/     fitted model files (xT grid)
 scripts/    how the models were fitted (re-runnable)
 tagger/     source of the Pitchside Tagger web app
+supabase/   club & player DB schema (online squads, read-only in the app)
 collab/     the hand-off note for ChatGPT, kept up to date
 notebooks/  experiments
 data/       local only — videos, model weights, CSVs (git-ignored)
