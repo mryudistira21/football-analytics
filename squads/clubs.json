@@ -1,6 +1,6 @@
 {
   "season": "2026-27",
-  "note": "Squads for the Pitchside Tagger. In match Settings -> 'Load squads JSON', then 'From squads' on a lineup. Each club: name, short, color (hex, used for tagging — CONFIRM from the broadcast kit), players[] of {number, name, position}. Fill players from the broadcast lineup graphic or ileague.id. Colours below are placeholders.",
+  "note": "Club/player roster DB for the Pitchside Tagger. In match Settings -> 'Load squads JSON', then 'From squads' -> 'Pick XI' selects the starting eleven from the full squad (the Tagger enforces exactly 11 with exactly 1 GK), or 'Whole squad' dumps everyone. Each club: name, short, color (hex kit colour used for tagging — CONFIRM from the broadcast), and players[] = the FULL squad, each {number, name, position}. position marks the role; a goalkeeper must have position GK (or 'Kiper'/'keeper') so the 1-GK rule works. Example player: {\"number\": 1, \"name\": \"Player Name\", \"position\": \"GK\"}. Fill rosters from the broadcast lineup graphic, ileague.id, or build them with src/club_db.py and src/export_squads.py. Colours below are placeholders.",
   "clubs": [
     {
       "name": "PERSIBA Bantul",

@@ -147,9 +147,20 @@ table.grid th.n{text-align:right}
 .method{font-size:12px;color:var(--muted);margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:68ch}
 .method b{color:var(--ink);font-weight:600}
 
-/* squad picker */
+/* squad picker (local JSON, replaces the earlier Supabase loader) */
 .sqpick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
-.sqpick select{max-width:60%}
+.sqpick select{max-width:52%}
+.xi{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface);margin-top:4px;width:100%;max-width:440px}
+.xihead{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.xicount{font-family:var(--font-mono);font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid var(--line)}
+.xicount.ok{color:var(--ok);border-color:var(--ok)} .xicount.bad{color:var(--warn);border-color:var(--warn)}
+.xilist{max-height:240px;overflow:auto;display:flex;flex-direction:column;gap:2px}
+.xirow{display:flex;align-items:center;gap:8px;padding:3px 6px;border-radius:6px;cursor:pointer}
+.xirow:hover{background:var(--surface-2)} .xirow.on{background:color-mix(in srgb,var(--accent) 12%,var(--surface))}
+.xirow .pn{width:22px;text-align:right;color:var(--muted)} .xirow .pnm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ppos{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.ppos.gk{color:var(--warn);border-color:var(--warn)}
+.xifoot{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
 
 /* lineup quick-pick chips */
 .lineupchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
@@ -1341,20 +1352,46 @@ $("#sqFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)retur
   rd.onload=()=>{try{const d=JSON.parse(String(rd.result));if(!d||!Array.isArray(d.clubs))throw 0;Squads.save(d);toast(`Loaded ${d.clubs.length} clubs`)}catch(err){toast("Not a valid squads JSON — needs a clubs array")}sqRefresh()};
   rd.readAsText(f);e.target.value="";});
 $("#sqClear").onclick=()=>{try{localStorage.removeItem("pt:squads")}catch(e){}Squads.data=null;sqRefresh();toast("Squads cleared")};
+const sqIsGK=pos=>/gk|kiper|keeper|goal/i.test(pos||"");
+function sqFillTeam(side,club){
+  const nameEl=$(side==="h"?"#fHome":"#fAway"), colEl=$(side==="h"?"#fHc":"#fAc");
+  if(club.name&&nameEl&&!nameEl.value.trim())nameEl.value=club.name;
+  if(club.color&&colEl&&/^#?[0-9a-fA-F]{6}$/.test(club.color))colEl.value=club.color[0]==="#"?club.color:"#"+club.color;
+}
+function sqOpenXI(side,box,club){
+  const ps=((club&&club.players)||[]).map(p=>({num:String(p.number),name:p.name||"",pos:p.position||""})).sort((a,b)=>(+a.num||999)-(+b.num||999));
+  if(!ps.length){box.innerHTML=`<span class="note">${esc(club.name||"That club")} has no players in the squads file yet — add them to <code>clubs.json</code> (or send me the roster).</span>`;return}
+  const sel=new Set();
+  function render(){
+    const chosen=ps.filter(p=>sel.has(p.num)), gk=chosen.filter(p=>sqIsGK(p.pos)).length, ok=chosen.length===11&&gk===1;
+    const msg=chosen.length!==11?`Pick exactly 11 — ${chosen.length} selected`:gk!==1?`Need exactly 1 goalkeeper — ${gk} selected`:"";
+    box.innerHTML=`<div class="xi">
+      <div class="xihead"><b>${esc(club.name||"Squad")}</b> — starting XI <span class="xicount ${ok?"ok":"bad"}">${chosen.length}/11 · ${gk} GK</span></div>
+      <div class="xilist">${ps.map(p=>`<label class="xirow ${sel.has(p.num)?"on":""}"><input type="checkbox" data-n="${esc(p.num)}" ${sel.has(p.num)?"checked":""}><span class="pn mono">${esc(p.num)}</span><span class="pnm">${esc(p.name)}</span>${p.pos?`<span class="ppos ${sqIsGK(p.pos)?"gk":""}">${esc(p.pos)}</span>`:""}</label>`).join("")}</div>
+      <div class="xifoot"><button class="btn small primary" data-act="set" ${ok?"":"disabled"}>Set starting XI</button>${ok?`<span class="note" style="color:var(--ok)">Ready.</span>`:`<span class="note">${msg}</span>`}</div></div>`;
+    box.querySelectorAll("[data-n]").forEach(cb=>cb.onchange=()=>{cb.checked?sel.add(cb.dataset.n):sel.delete(cb.dataset.n);render()});
+    const sb=box.querySelector("[data-act=set]");
+    if(sb)sb.onclick=()=>{
+      const xi=ps.filter(p=>sel.has(p.num)).sort((a,b)=>(sqIsGK(b.pos)?1:0)-(sqIsGK(a.pos)?1:0)||(+a.num)-(+b.num));
+      $(side==="h"?"#fLuH":"#fLuA").value=xi.map(p=>`${p.num} ${p.name}`).join("\n");
+      sqFillTeam(side,club);
+      const gkn=(xi.filter(p=>sqIsGK(p.pos))[0]||{}).num||"?";
+      box.innerHTML=`<span class="note" style="color:var(--ok)">Starting XI set — 11 players, GK #${esc(gkn)}.</span>`;
+    };
+  }
+  render();
+}
 document.querySelectorAll("[data-sq]").forEach(btn=>btn.onclick=()=>{
-  const side=btn.dataset.sq, box=$("#sqPick"+side), ta=$(side==="h"?"#fLuH":"#fLuA"), clubs=Squads.clubs();
+  const side=btn.dataset.sq, box=$("#sqPick"+side), clubs=Squads.clubs();
   if(!clubs.length){toast("Load a squads JSON first (the field below)");return}
-  box.innerHTML=`<select class="sqclub"><option value="">Choose club…</option>${clubs.map((c,i)=>`<option value="${i}">${esc(c.name||("Club "+(i+1)))}${c.short?" ("+esc(c.short)+")":""}</option>`).join("")}</select><button class="btn small" type="button">Fill lineup</button>`;
-  box.querySelector("button").onclick=()=>{
-    const i=box.querySelector(".sqclub").value;if(i===""){toast("Pick a club");return}
-    const c=Squads.clubs()[+i], ps=((c&&c.players)||[]).slice().sort((a,b)=>(+a.number||999)-(+b.number||999));
+  box.innerHTML=`<select class="sqclub"><option value="">Choose club…</option>${clubs.map((c,i)=>`<option value="${i}">${esc(c.name||("Club "+(i+1)))}${c.short?" ("+esc(c.short)+")":""}</option>`).join("")}</select> <button class="btn small" type="button" data-act="pick">Pick XI</button> <button class="btn small ghost" type="button" data-act="all">Whole squad</button>`;
+  const getClub=()=>{const i=box.querySelector(".sqclub").value;return i===""?null:Squads.clubs()[+i]};
+  box.querySelector("[data-act=pick]").onclick=()=>{const c=getClub();if(!c){toast("Pick a club");return}sqOpenXI(side,box,c)};
+  box.querySelector("[data-act=all]").onclick=()=>{const c=getClub();if(!c){toast("Pick a club");return}
+    const ps=((c.players)||[]).map(p=>({num:String(p.number),name:p.name||""})).sort((a,b)=>(+a.num||999)-(+b.num||999));
     if(!ps.length){box.innerHTML=`<span class="note">That club has no players in the file.</span>`;return}
-    ta.value=ps.map(p=>`${p.number} ${p.name}`).join("\n");
-    const nameEl=$(side==="h"?"#fHome":"#fAway"), colEl=$(side==="h"?"#fHc":"#fAc");
-    if(c.name&&nameEl&&!nameEl.value.trim())nameEl.value=c.name;
-    if(c.color&&colEl&&/^#?[0-9a-fA-F]{6}$/.test(c.color))colEl.value=c.color[0]==="#"?c.color:"#"+c.color;
-    box.innerHTML=`<span class="note" style="color:var(--ok)">Filled ${ps.length} players.</span>`;
-  };
+    $(side==="h"?"#fLuH":"#fLuA").value=ps.map(p=>`${p.num} ${p.name}`).join("\n");sqFillTeam(side,c);
+    box.innerHTML=`<span class="note" style="color:var(--ok)">Loaded ${ps.length} players.</span>`;};
 });
 $("#setupDelete").onclick=()=>{$("#delConfirm").hidden=false};
 $("#delNo").onclick=()=>{$("#delConfirm").hidden=true};
