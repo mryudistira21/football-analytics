@@ -36,6 +36,7 @@ models/     fitted model files (xT grid)
 scripts/    how the models were fitted (re-runnable)
 tagger/     source of the Pitchside Tagger web app
 squads/     club & player squads (clubs.json) for the Tagger's lineup loader
+hub/        League Hub web app (clubs, squads, fixtures, standings, scorers, your analysis)
 collab/     the hand-off note for ChatGPT, kept up to date
 notebooks/  experiments
 data/       local only — videos, model weights, CSVs (git-ignored)

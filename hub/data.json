@@ -1,0 +1,3794 @@
+{
+  "competition": "Liga Nusantara 2026-27",
+  "updated": "2026-11-18",
+  "source": "ileague.id",
+  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "clubs": [
+    {
+      "name": "BATAVIA FC",
+      "short": "BAT",
+      "color": "#c0392b",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "REZA ARDIANSYAH",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "SIMOPIAREF",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "M. KHOSIIN",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "RADIT",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "BRIAN",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "REZA",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "MISBAKHUL",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "M. REVAN",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "FERRY CAHYO",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "FAHAD",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "RAFLY AZIZ",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "FARHAN",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "SAIFUL A.",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "GINTING",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "NOER WAHID",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "FAOZAN TAMAMI",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "A. SIREGAR",
+          "position": ""
+        },
+        {
+          "number": 41,
+          "name": "ARKAAN",
+          "position": ""
+        },
+        {
+          "number": 44,
+          "name": "M. SYUKRON",
+          "position": ""
+        },
+        {
+          "number": 49,
+          "name": "MOTE",
+          "position": ""
+        },
+        {
+          "number": 54,
+          "name": "MARCELL",
+          "position": ""
+        },
+        {
+          "number": 57,
+          "name": "AHMAD MUHAZIR",
+          "position": ""
+        },
+        {
+          "number": 67,
+          "name": "RAFA",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "RAHMAD H.",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "NESTA",
+          "position": ""
+        },
+        {
+          "number": 91,
+          "name": "CHANDRA",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "MIKHAIL",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "ROMEO",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "Donggala United FC",
+      "short": "DON",
+      "color": "#16a085",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 2,
+          "name": "MUHAMMAD IZAM",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "R.LUBIS",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "MERAN",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "SUTAN ZICO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "R. ILLAHI",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "AL MUZANNI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "LUTHFI",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "NUR KHOLIS",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "KAKA",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "M GHOZALI",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "RAKA",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "ALIF EKA RIZKY",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "RENDI ANDIKA",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "AAN DWI SAPUTRA",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "ADITYA",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "VIKRA FAHLEPI",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "BARZHA",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "ISMAWAN",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "RAIHAN",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "M.SYAHRIL",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "BAGAS",
+          "position": ""
+        },
+        {
+          "number": 55,
+          "name": "ZIDANE",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "IMAN",
+          "position": ""
+        },
+        {
+          "number": 90,
+          "name": "MOH YUDHA",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "GALANG KURNIAWAN",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Gresik United FC",
+      "short": "GRS",
+      "color": "#f2c230",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 4,
+          "name": "JATMIKO",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "RAFLI",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "ALIF JAELANI R",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "ALWI FURQON",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "DECO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "RAFI HERLIAN",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "SAYFULLAH K.",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "SYAIFULLAH",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "F. AKBAR",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "SAIHITUAH",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "ILHAM JAYA",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "ALDI",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "CESA S.",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "AFREZA DAVINO",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ABANDA",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "M. DZAKI",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "LALU RIZKI",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "ZAMORANO",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "FAJRI",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "SHANDY",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "BAIHAQI RIFAI",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "DEDI TRI S.",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "JOKO S.",
+          "position": ""
+        },
+        {
+          "number": 46,
+          "name": "WAHYU AGONG",
+          "position": ""
+        },
+        {
+          "number": 47,
+          "name": "N. WANDIK",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "SYAMIL B.",
+          "position": ""
+        },
+        {
+          "number": 85,
+          "name": "DIAN ARDI",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "ANO JONO",
+          "position": ""
+        },
+        {
+          "number": 92,
+          "name": "M. NASSIM",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "OSCAR",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Pasuruan United",
+      "short": "PSU",
+      "color": "#2980b9",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 3,
+          "name": "IZZAN",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "SAIFUL",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "DEVIN. H",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "SHEVA",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "MIDO",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "AFILUDIN",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "LIBERTI",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "ADAM",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "REXA ABDI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "ROSIHAN",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "FAIZAL",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "CLAUDIO",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "H. LESTALUHU",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "DAFFA RASYA",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "FARID. F",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "MUMTAZ",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "APRILIUS A.B.",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "PRADANANTA",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "C. NEMBAFU",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "WOMSIWOR",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "SUGIYANTO",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "NAUFEL.A",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "KAKA",
+          "position": ""
+        },
+        {
+          "number": 43,
+          "name": "DAFFA",
+          "position": ""
+        },
+        {
+          "number": 44,
+          "name": "MARRENDRA",
+          "position": ""
+        },
+        {
+          "number": 45,
+          "name": "SANDI SUTE",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "FAREL AMEDIO",
+          "position": ""
+        },
+        {
+          "number": 85,
+          "name": "JHORDY B.",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "AL ARSYAD",
+          "position": ""
+        },
+        {
+          "number": 93,
+          "name": "AHMAD WAHYUDI",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Pekanbaru FC",
+      "short": "PKB",
+      "color": "#8e44ad",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "DIKA.S",
+          "position": ""
+        },
+        {
+          "number": 2,
+          "name": "BINTANG",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "MUKHLIS",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "SURYA",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "R.SANJAYA",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "YUDHI AP",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "AM.ICHSAN",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "A.ZIDANE",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "DAMA",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "HAIDAR",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "BANI",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "JOJO",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "SYENDIO",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "SYAFRINALDI",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "H.SAPUTRA",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "FEBRIANSYAH.A.",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "VAVA",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "ENRICO",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "ADLY",
+          "position": ""
+        },
+        {
+          "number": 43,
+          "name": "KAICEN",
+          "position": ""
+        },
+        {
+          "number": 47,
+          "name": "CELLO",
+          "position": ""
+        },
+        {
+          "number": 67,
+          "name": "FAJIRA",
+          "position": ""
+        },
+        {
+          "number": 74,
+          "name": "MUH. ADAM",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "WAHYU",
+          "position": ""
+        },
+        {
+          "number": 80,
+          "name": "ENRIYAN",
+          "position": ""
+        },
+        {
+          "number": 84,
+          "name": "MUKHTI",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "ADIF NOR",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "HUSEN",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "Perseden Denpasar",
+      "short": "PSD",
+      "color": "#e67e22",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 4,
+          "name": "KOMANG ARI",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "ARYA",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "A. ARFARID",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "MAHENDRA",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "ANDROW",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "ADINATA",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "DANIL REZA",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "EGY",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "ANDRE",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "KADEK JULI",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "LARSAN",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "JULYO HARAIVA",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "M. RIDHO",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "KADEK YOGA",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "GEDE SUNU",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "JUNIUS BATE",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "MADE ANTHA W",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "EKA DARMA",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "KOMANG AGUS",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "GERRY WILSON",
+          "position": ""
+        },
+        {
+          "number": 35,
+          "name": "MS UMARELLA",
+          "position": ""
+        },
+        {
+          "number": 43,
+          "name": "KOMANG SASKARA",
+          "position": ""
+        },
+        {
+          "number": 52,
+          "name": "J. TUHUTERU",
+          "position": ""
+        },
+        {
+          "number": 56,
+          "name": "BIMA",
+          "position": ""
+        },
+        {
+          "number": 57,
+          "name": "KADEK ARI",
+          "position": ""
+        },
+        {
+          "number": 74,
+          "name": "GUS BRAM",
+          "position": ""
+        },
+        {
+          "number": 81,
+          "name": "AGUS ANDIKA",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "KOMANG DEDI",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "KADEK RIKSA",
+          "position": ""
+        },
+        {
+          "number": 90,
+          "name": "NATHAN",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Persekabpas",
+      "short": "PKP",
+      "color": "#27ae60",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "SOKA",
+          "position": ""
+        },
+        {
+          "number": 2,
+          "name": "JOKO SUSILO",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "ALEXANDRO",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "FRAN",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "DUTRA",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "TEDDY GALIH",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "GALANG",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "TEGAR",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "BETO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "NOFI ATMAJA",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "NURCHAQIQI",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "FIRMAN",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "M FARHAN",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "FANCA AGUNG",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "RAIHAN",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "BERI SANTOSO",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "JUAN EVAN",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "OSVALDO HAAY",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "ZANUAR ARDANI",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "ICKBAL",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "ABDUL HAMID",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "ALI MASHORI",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "MANZILA",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "YUNIAR",
+          "position": ""
+        },
+        {
+          "number": 35,
+          "name": "DEVIT",
+          "position": ""
+        },
+        {
+          "number": 55,
+          "name": "DANDI",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "GILANG PRATAMA",
+          "position": ""
+        },
+        {
+          "number": 84,
+          "name": "DIAZ",
+          "position": ""
+        },
+        {
+          "number": 85,
+          "name": "UCI M RIFKI",
+          "position": ""
+        },
+        {
+          "number": 93,
+          "name": "M. ZIDANE",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Persekat",
+      "short": "PKT",
+      "color": "#2c3e50",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 2,
+          "name": "ALEX S",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "BECKHAM",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "MALIK AKBAR",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "WONDO SULAEMAN",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "D. MUSTAINE",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "IMAM WITOYO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "M. FIRMAN",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "AGUSTI",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "AGUNG PRAS",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "ALBERTA NINO",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "FAYI",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "A.ADITYA",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "R. ZIO",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "BAGAZ",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "R.HADI",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "GIAN F.",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "ZUHDAN",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "LAKSANA PRABU",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "DENNY",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "FARRIZIANO",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "IQBAL M.A",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "ADAM RIZKI",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "FAISAL.R",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "M. AKBAR",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "IMAM BAGUS",
+          "position": ""
+        },
+        {
+          "number": 78,
+          "name": "AMRIN KHANAN",
+          "position": ""
+        },
+        {
+          "number": 81,
+          "name": "JULFIKAR LAING",
+          "position": ""
+        },
+        {
+          "number": 91,
+          "name": "Y . CAVALERA",
+          "position": ""
+        },
+        {
+          "number": 94,
+          "name": "H.RITONGA",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "PERSIBA Bantul",
+      "short": "BTL",
+      "color": "#d7263d",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 3,
+          "name": "WIGANDA.PD",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "TAQUL",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "ANTONI",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "AIDUN",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "REYKI FARIZ",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "ALDITO",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "LORENZO",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "MARCELL JP",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "ARSIL",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "FACHRIZAL",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "RISKY D.A",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "ALWI",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "VENGKO",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "FEBRYANSYAH",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "TEGAR",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "ANDHIKA",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "M TIRTO",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "ALBERT",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "DHARMAJATI",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "RIAN TAMOL",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "ALEXANDER",
+          "position": ""
+        },
+        {
+          "number": 35,
+          "name": "TSABITAH",
+          "position": ""
+        },
+        {
+          "number": 54,
+          "name": "VICTORY NANUNG",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "BIMASATRIA",
+          "position": ""
+        },
+        {
+          "number": 73,
+          "name": "DALIMUNTHE",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "SANDI SAMOSIR",
+          "position": ""
+        },
+        {
+          "number": 81,
+          "name": "YOGI",
+          "position": ""
+        },
+        {
+          "number": 86,
+          "name": "ELVATEEH VA",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "AHMAD RIFAL",
+          "position": ""
+        },
+        {
+          "number": 98,
+          "name": "ZULHILMI",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persibangga Purbalingga",
+      "short": "PBG",
+      "color": "#1abc9c",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 2,
+          "name": "KHOIRUL",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "FATHUR YAN",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "LU'AY ABIYU",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "E. ADHYAKSA",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "DHAMAR LINTANG",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "ALFANDI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "ARDYA MALIK",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "RIZKY WP",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "MADE OTO",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "AZHRIL S.F",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "AFIF",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "USAMA",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ICHWAN",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "NAJA NAUFAL",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "TUASALAMONY",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "NOVIAN",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "THEO",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "F. ARYA",
+          "position": ""
+        },
+        {
+          "number": 44,
+          "name": "RESTU SETYA",
+          "position": ""
+        },
+        {
+          "number": 47,
+          "name": "ALIYYU",
+          "position": ""
+        },
+        {
+          "number": 72,
+          "name": "ADI SATRIO",
+          "position": ""
+        },
+        {
+          "number": 76,
+          "name": "HUSEIN A",
+          "position": ""
+        },
+        {
+          "number": 79,
+          "name": "JORRY",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "ILHAM IRHAZ",
+          "position": ""
+        },
+        {
+          "number": 91,
+          "name": "FAJAR",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persibo Bojonegoro",
+      "short": "PBO",
+      "color": "#006400",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "ALFATH",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "ANGGER",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "DIDIK. S",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "SHEVANTON",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "SEHABUDIN",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "MARVIN",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "KAKA",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "IQBAL",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "RIFALDI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "FUAD",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "RANGGA",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "A. FERNANDI",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "ZULKIFLI",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "M.SYAHRIL",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "REVALDO",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "DIAZ",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "DIOS D. A",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "AARON Y",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "RIO VALENTINO",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "ROMEO",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "J LATUCONSINA",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "O. CHANIGIO",
+          "position": ""
+        },
+        {
+          "number": 34,
+          "name": "KAFKA",
+          "position": ""
+        },
+        {
+          "number": 37,
+          "name": "WIRAJA",
+          "position": ""
+        },
+        {
+          "number": 38,
+          "name": "DECO",
+          "position": ""
+        },
+        {
+          "number": 58,
+          "name": "ADI PURNAMA",
+          "position": ""
+        },
+        {
+          "number": 59,
+          "name": "FAHAD",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "ODHI",
+          "position": ""
+        },
+        {
+          "number": 76,
+          "name": "JOJO",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "PUTRA CHANIAGO",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persika Karanganyar",
+      "short": "PKA",
+      "color": "#1d5fc4",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "M . FAZA",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "DHANU",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "ABI DEFA",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "IFAN",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "RAGIL",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "REXO DOLBY",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "YOGIEK",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "RAYYAN",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "REYHAN F",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "RONI SUGENG",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "ARIF A.M",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "LIONEL",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "M. RIO",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "SYAIFUL",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "IBNUL M",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "FABIAN",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "W.FEBRIYANTO",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "YULFIKAR MANSUR",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "M.IQBAL",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "NURI AGUS",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "FADHIL",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "SHEKA",
+          "position": ""
+        },
+        {
+          "number": 36,
+          "name": "RELOSA RIVAN",
+          "position": ""
+        },
+        {
+          "number": 38,
+          "name": "MUSRIL",
+          "position": ""
+        },
+        {
+          "number": 52,
+          "name": "AZIZ",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "UMAR",
+          "position": ""
+        },
+        {
+          "number": 79,
+          "name": "RIFA'I",
+          "position": ""
+        },
+        {
+          "number": 91,
+          "name": "FEBRIAN",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "YUDA E P",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persikota Kota Tangerang",
+      "short": "PKO",
+      "color": "#e84393",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 3,
+          "name": "DAFFA",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "BRIANTAMA",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "VIER",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "REKSA",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "RAMADANI",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "NANDO SEBO",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "SAMSUDIN",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "ZULIANUR",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "MARZUKI",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "RISKI RAMADHAN",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "R. SARAGIH",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "SANDI",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "HENRY. R",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "FIORE",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "RABBANI",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ADAM",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "M.RIDWAN",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "CRESPO",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "DAVID LALY",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "RIFAI",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "B. RADHYTIA",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "YUDISTIRA",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "ARGAPURA",
+          "position": ""
+        },
+        {
+          "number": 37,
+          "name": "RAFA I",
+          "position": ""
+        },
+        {
+          "number": 52,
+          "name": "PERMANA",
+          "position": ""
+        },
+        {
+          "number": 58,
+          "name": "SATRIA",
+          "position": ""
+        },
+        {
+          "number": 62,
+          "name": "BENI OKTO",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "DIMAS TIAR",
+          "position": ""
+        },
+        {
+          "number": 67,
+          "name": "AMIR HAMZAH",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "REYHAN BS",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "Persikotas Nusantara",
+      "short": "PKN",
+      "color": "#00838f",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 6,
+          "name": "TRAORE",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "ARAY SUHENDRI",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "ANDI SOPIAN",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "R. FAUZI",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "REZA",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "REZAVI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "DAFA PRATAMA",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "NEVY.D",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "ARYA PRATAMA",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "PRINCE B",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "M. FAREL",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "RESA",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "AYUEP",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "MOISE",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "WAWAN SUMADI",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ABDUL LATIF",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "AZIZ",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "FAHMI",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "NOVAL. F",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "IQBAL GIO",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "FAIRUZ ZIDAN",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "RAKHA",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "M. HAIKAL",
+          "position": ""
+        },
+        {
+          "number": 61,
+          "name": "DZAKI NURFAIZI",
+          "position": ""
+        },
+        {
+          "number": 69,
+          "name": "FAUZAN. S",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "SALAS",
+          "position": ""
+        },
+        {
+          "number": 80,
+          "name": "EROSS",
+          "position": ""
+        },
+        {
+          "number": 81,
+          "name": "YUDAQUEL",
+          "position": ""
+        },
+        {
+          "number": 96,
+          "name": "BIMA ZAWAWI",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "BISSA",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "Persikutim Patriot United",
+      "short": "PKU",
+      "color": "#d35400",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "RANGGA",
+          "position": ""
+        },
+        {
+          "number": 2,
+          "name": "RYGANDIO",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "ERGUN",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "RAMA",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "ANDHIKA",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "ANUGRAH",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "M.RIVALDI",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "ESCOBAR",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "IYAN SUNUSI",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "DICKY KR",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "AGIP",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "MUH.ALIF SAHRUL",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "HAIRUL PANJUL",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "M.HAJIR",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "ABIM",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "HAFID",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "MUH.FARHAM",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "M.GYMNASTIAR",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "JUANDA",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "M.RIDHO AT",
+          "position": ""
+        },
+        {
+          "number": 36,
+          "name": "ILHAM FAHMI",
+          "position": ""
+        },
+        {
+          "number": 38,
+          "name": "RIVAL",
+          "position": ""
+        },
+        {
+          "number": 55,
+          "name": "TAKWIR",
+          "position": ""
+        },
+        {
+          "number": 63,
+          "name": "MUH FAIZAL",
+          "position": ""
+        },
+        {
+          "number": 70,
+          "name": "FIGO",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "AJI",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "ASHARI A",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "TAUFIQ",
+          "position": ""
+        },
+        {
+          "number": 90,
+          "name": "RYAN",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "RICKY",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Persinab FC",
+      "short": "PNB",
+      "color": "#5d4037",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "ZAKI",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "YULI KOTOUKI",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "MUSA KUBIA",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "ALMAHI AS",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "HASAN",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "KARARBO",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "SAMUEL YOBE",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "HUSNUZHON",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "GLUESEVIC",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "YOSMUS DUDAI",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "GILBER",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "DANIE",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "DONNI MONIM",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "IRWAN",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "WEMPI",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "M. LOGOFF",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "RENDIKA",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "A. UOPDANA",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "SYAFIQ ABDUL",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ANDIKA",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "MELVIS",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "WANDIK",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "ADHITYA RMDHNI",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "ZYAN",
+          "position": ""
+        },
+        {
+          "number": 36,
+          "name": "SULAEMAN",
+          "position": ""
+        },
+        {
+          "number": 69,
+          "name": "DANDI",
+          "position": ""
+        },
+        {
+          "number": 75,
+          "name": "YAN KAYOI",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "G.MAMAGHE",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "ILHAM",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "ARONGGEAR",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Persinga Ngawi",
+      "short": "PNG",
+      "color": "#2e7a4c",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 3,
+          "name": "SYARFUL M",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "RONALD AFFRIZAL",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "REZZA JEPANG",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "DEJAN",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "M. NASRUL",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "YUDHISTIRA",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "DIMAS",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "IKBAL KHADAFI",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "BATHSYA",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "B. AGUNG UTOMO",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "ZAMZAM S.A",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "SAMSUL ALAM",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "MHD ALVIN",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "NANDA HELVRIT",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "ARFAMUZI",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "AKBAR",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "DANAKBAR",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "MUHAMMAD RAFHI",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "EDWARD",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "ADITYA S",
+          "position": ""
+        },
+        {
+          "number": 34,
+          "name": "MSNULLOH",
+          "position": ""
+        },
+        {
+          "number": 49,
+          "name": "YOGA",
+          "position": ""
+        },
+        {
+          "number": 57,
+          "name": "QOYUM.N",
+          "position": ""
+        },
+        {
+          "number": 63,
+          "name": "NICOLAS",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "M. ILHAM",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "FIRMAN",
+          "position": ""
+        },
+        {
+          "number": 96,
+          "name": "IDRIS",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "ZERY SEMBIRING",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "GAOS",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persipa Pati",
+      "short": "PIP",
+      "color": "#7a1fa2",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "ADHIEL",
+          "position": ""
+        },
+        {
+          "number": 2,
+          "name": "RICO N.C",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "MAHMUD",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "RANGGA",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "LESTALUHU .P",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "RIYADI",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "QIS",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "ARMAN",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "RIZKY",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "G. BUGIS",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "YOLTUWU",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "WIBOWO",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "DANYL TUKA",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "AL GHUZAT",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "ARSHAVIN",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "ALFON",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "R. MEHRAN",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "GADA RAMA",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "FABIO",
+          "position": ""
+        },
+        {
+          "number": 36,
+          "name": "EDGARDA",
+          "position": ""
+        },
+        {
+          "number": 44,
+          "name": "RHAGA",
+          "position": ""
+        },
+        {
+          "number": 47,
+          "name": "SCIFO",
+          "position": ""
+        },
+        {
+          "number": 52,
+          "name": "SADDAM .G",
+          "position": ""
+        },
+        {
+          "number": 67,
+          "name": "R. JAMIL",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "AL QADRI",
+          "position": ""
+        },
+        {
+          "number": 86,
+          "name": "YAPAGAIMU",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "DINTIA .P",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "ARIFIN S.",
+          "position": ""
+        },
+        {
+          "number": 94,
+          "name": "DIMAS",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "M. RISAL",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    },
+    {
+      "name": "Persipani Paniai",
+      "short": "PPI",
+      "color": "#c2185b",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "ISAK",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "DUDE",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "TONNY R",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "JAMES",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "KENELAK",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "YAMPIT NAWIPA",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "A. YUMAME",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "IBO",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "TJOE",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "PANGKALI",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "JHON",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "JULIUS",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "KAREL G",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "DANIEL WONDA",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "J. ISIR",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "A.FLASSY",
+          "position": ""
+        },
+        {
+          "number": 23,
+          "name": "KAKA'",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "M.YOKU",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "DEMETOUW",
+          "position": ""
+        },
+        {
+          "number": 28,
+          "name": "GOBAY",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "NUR HUSNAN",
+          "position": ""
+        },
+        {
+          "number": 39,
+          "name": "PETRUS UTI",
+          "position": ""
+        },
+        {
+          "number": 42,
+          "name": "SEWORI",
+          "position": ""
+        },
+        {
+          "number": 45,
+          "name": "A RAMANDEI",
+          "position": ""
+        },
+        {
+          "number": 46,
+          "name": "M DEAL",
+          "position": ""
+        },
+        {
+          "number": 52,
+          "name": "DAVA PRATAMA",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "KEVIN RUMBIAK",
+          "position": ""
+        },
+        {
+          "number": 96,
+          "name": "YAN SAMA",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Persitara Jakarta Utara",
+      "short": "PJU",
+      "color": "#0288d1",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 5,
+          "name": "MIZAN",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "AHMAD IRVANI",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "OBY",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "FIRMANSYAH",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "MUHAMMAD.K",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "NAUFAL A.C",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "ALWINO",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "ALFREDO",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "FAISA MAHARDIKA",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ORLEN ISLAMI",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "MUHAMMAD ZAHID",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "DALMIANSYAH",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "FADHIL",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "MISBAH",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "AJI",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "EMIR",
+          "position": ""
+        },
+        {
+          "number": 33,
+          "name": "DAFFA AL",
+          "position": ""
+        },
+        {
+          "number": 39,
+          "name": "R.KUNIAWAN",
+          "position": ""
+        },
+        {
+          "number": 53,
+          "name": "GESANG",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "A.FIBRYAN",
+          "position": ""
+        },
+        {
+          "number": 69,
+          "name": "RISAL",
+          "position": ""
+        },
+        {
+          "number": 71,
+          "name": "R.PAMUNGKAS",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "FAHREZI",
+          "position": ""
+        },
+        {
+          "number": 88,
+          "name": "IBNU SINA",
+          "position": ""
+        },
+        {
+          "number": 89,
+          "name": "KAKANG",
+          "position": ""
+        },
+        {
+          "number": 91,
+          "name": "W.KURNIAWAN",
+          "position": ""
+        },
+        {
+          "number": 95,
+          "name": "REIGI",
+          "position": ""
+        },
+        {
+          "number": 96,
+          "name": "WERKUDORO",
+          "position": ""
+        },
+        {
+          "number": 97,
+          "name": "YADI MULYADI",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "ABDULLAH.J",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "Pesik Kuningan",
+      "short": "PSK",
+      "color": "#558b2f",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 9,
+          "name": "DIEGO BANOWO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "SUPRIATNA",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "NOVA.H",
+          "position": ""
+        },
+        {
+          "number": 13,
+          "name": "FAARIS SILVA",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "ZIDANE",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "M.BAIHAQI",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "TORES",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "RIAN LASUT",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "DEDYJAENUWAR",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "ILHAM MAULANA",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "M REZA",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "R. HARDIANTO",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "AKMAL JP",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "KHALIL",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "DAUD KOTULUS",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "DANI SORMIN",
+          "position": ""
+        },
+        {
+          "number": 31,
+          "name": "TOFANI",
+          "position": ""
+        },
+        {
+          "number": 32,
+          "name": "DONI SETIAWAN",
+          "position": ""
+        },
+        {
+          "number": 35,
+          "name": "DONI SORMIN",
+          "position": ""
+        },
+        {
+          "number": 39,
+          "name": "RA.SUHARTO",
+          "position": ""
+        },
+        {
+          "number": 50,
+          "name": "KITO CHANDRA",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "ACHMAD NUR AFANDI",
+          "position": ""
+        },
+        {
+          "number": 68,
+          "name": "YOGASANJAYA",
+          "position": ""
+        },
+        {
+          "number": 72,
+          "name": "MARDANI",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "ARDIANSYAH",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "IRFAN",
+          "position": ""
+        }
+      ],
+      "group": "A"
+    },
+    {
+      "name": "PS Ngada",
+      "short": "NGA",
+      "color": "#ad1457",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "ILHAM",
+          "position": ""
+        },
+        {
+          "number": 2,
+          "name": "BRUNO HALEK",
+          "position": ""
+        },
+        {
+          "number": 3,
+          "name": "FANDY LOKE",
+          "position": ""
+        },
+        {
+          "number": 4,
+          "name": "ASKON BAJO",
+          "position": ""
+        },
+        {
+          "number": 5,
+          "name": "EUSDOSI",
+          "position": ""
+        },
+        {
+          "number": 6,
+          "name": "JOSHUA",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "R. PADILAH",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "MOLO DOPO",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "YOKO",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "ALDON LALU",
+          "position": ""
+        },
+        {
+          "number": 16,
+          "name": "ARJUN WEDO",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "US BHARA",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "M. SYIFA",
+          "position": ""
+        },
+        {
+          "number": 19,
+          "name": "NOUVAL",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "BENO",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "ADAM ABY",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "TIAN WEDJO",
+          "position": ""
+        },
+        {
+          "number": 25,
+          "name": "CRESPO HALE",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "GERRY MICHAEL",
+          "position": ""
+        },
+        {
+          "number": 37,
+          "name": "BAGUS",
+          "position": ""
+        },
+        {
+          "number": 53,
+          "name": "GAVIO",
+          "position": ""
+        },
+        {
+          "number": 55,
+          "name": "BASTEN DUE",
+          "position": ""
+        },
+        {
+          "number": 61,
+          "name": "DIEGO LINA",
+          "position": ""
+        },
+        {
+          "number": 66,
+          "name": "ARYA BAYU",
+          "position": ""
+        },
+        {
+          "number": 77,
+          "name": "RIZKY DZULKIFLI",
+          "position": ""
+        }
+      ],
+      "group": "C"
+    },
+    {
+      "name": "Putra Sang Fajar FC",
+      "short": "PSF",
+      "color": "#f57f17",
+      "source": "ileague.id",
+      "players": [
+        {
+          "number": 1,
+          "name": "M. IQBAL SEPTIAN",
+          "position": ""
+        },
+        {
+          "number": 7,
+          "name": "RIDWAN. A",
+          "position": ""
+        },
+        {
+          "number": 8,
+          "name": "FREZY AL HUDAIFI",
+          "position": ""
+        },
+        {
+          "number": 9,
+          "name": "ATHALLAH. A",
+          "position": ""
+        },
+        {
+          "number": 10,
+          "name": "KOMAR",
+          "position": ""
+        },
+        {
+          "number": 11,
+          "name": "M. ALEX SANDRO",
+          "position": ""
+        },
+        {
+          "number": 12,
+          "name": "FIGO. F",
+          "position": ""
+        },
+        {
+          "number": 14,
+          "name": "DIFO PRASETYA",
+          "position": ""
+        },
+        {
+          "number": 15,
+          "name": "SURYA. M",
+          "position": ""
+        },
+        {
+          "number": 17,
+          "name": "I. FAUZAN",
+          "position": ""
+        },
+        {
+          "number": 18,
+          "name": "DONA S.",
+          "position": ""
+        },
+        {
+          "number": 20,
+          "name": "DAVA SIREGAR",
+          "position": ""
+        },
+        {
+          "number": 21,
+          "name": "FIRMANSYAH",
+          "position": ""
+        },
+        {
+          "number": 22,
+          "name": "FAJAR. I",
+          "position": ""
+        },
+        {
+          "number": 24,
+          "name": "F. YUSUF BAIHAQI",
+          "position": ""
+        },
+        {
+          "number": 26,
+          "name": "C. G. RUMAROPEN",
+          "position": ""
+        },
+        {
+          "number": 27,
+          "name": "Z. A. ZIZOU. L",
+          "position": ""
+        },
+        {
+          "number": 29,
+          "name": "FAHRI AKBAR",
+          "position": ""
+        },
+        {
+          "number": 30,
+          "name": "OKY. K",
+          "position": ""
+        },
+        {
+          "number": 40,
+          "name": "M. FAHRUL ROJDI",
+          "position": ""
+        },
+        {
+          "number": 44,
+          "name": "M. FADLY",
+          "position": ""
+        },
+        {
+          "number": 51,
+          "name": "AIRLANGGA",
+          "position": ""
+        },
+        {
+          "number": 75,
+          "name": "RIO FERNANDO",
+          "position": ""
+        },
+        {
+          "number": 76,
+          "name": "RADITYA. I",
+          "position": ""
+        },
+        {
+          "number": 86,
+          "name": "WAHYU TRI. N",
+          "position": ""
+        },
+        {
+          "number": 87,
+          "name": "F. IHSAN",
+          "position": ""
+        },
+        {
+          "number": 90,
+          "name": "JOHAN YOGA",
+          "position": ""
+        },
+        {
+          "number": 99,
+          "name": "KEVIN. A",
+          "position": ""
+        }
+      ],
+      "group": "B"
+    }
+  ],
+  "standings": {
+    "A": [
+      {
+        "short": "PKB",
+        "name": "Pekanbaru FC",
+        "pts": 6,
+        "rank": 1
+      },
+      {
+        "short": "PSK",
+        "name": "Pesik Kuningan",
+        "pts": 3,
+        "rank": 2
+      },
+      {
+        "short": "BAT",
+        "name": "BATAVIA FC",
+        "pts": 3,
+        "rank": 3
+      },
+      {
+        "short": "PKT",
+        "name": "Persekat",
+        "pts": 3,
+        "rank": 4
+      },
+      {
+        "short": "PKO",
+        "name": "Persikota Kota Tangerang",
+        "pts": 3,
+        "rank": 5
+      },
+      {
+        "short": "PKN",
+        "name": "Persikotas Nusantara",
+        "pts": 0,
+        "rank": 6
+      },
+      {
+        "short": "PJU",
+        "name": "Persitara Jakarta Utara",
+        "pts": 0,
+        "rank": 7
+      }
+    ],
+    "B": [
+      {
+        "short": "PSF",
+        "name": "Putra Sang Fajar FC",
+        "pts": 6,
+        "rank": 1
+      },
+      {
+        "short": "PKA",
+        "name": "Persika Karanganyar",
+        "pts": 4,
+        "rank": 2
+      },
+      {
+        "short": "PBG",
+        "name": "Persibangga Purbalingga",
+        "pts": 3,
+        "rank": 3
+      },
+      {
+        "short": "BTL",
+        "name": "PERSIBA Bantul",
+        "pts": 2,
+        "rank": 4
+      },
+      {
+        "short": "PIP",
+        "name": "Persipa Pati",
+        "pts": 2,
+        "rank": 5
+      },
+      {
+        "short": "GRS",
+        "name": "Gresik United FC",
+        "pts": 2,
+        "rank": 6
+      },
+      {
+        "short": "PBO",
+        "name": "Persibo Bojonegoro",
+        "pts": 1,
+        "rank": 7
+      },
+      {
+        "short": "PNG",
+        "name": "Persinga Ngawi",
+        "pts": 0,
+        "rank": 8
+      }
+    ],
+    "C": [
+      {
+        "short": "PKP",
+        "name": "Persekabpas",
+        "pts": 6,
+        "rank": 1
+      },
+      {
+        "short": "PSD",
+        "name": "Perseden Denpasar",
+        "pts": 4,
+        "rank": 2
+      },
+      {
+        "short": "PSU",
+        "name": "Pasuruan United",
+        "pts": 3,
+        "rank": 3
+      },
+      {
+        "short": "NGA",
+        "name": "PS Ngada",
+        "pts": 2,
+        "rank": 4
+      },
+      {
+        "short": "PPI",
+        "name": "Persipani Paniai",
+        "pts": 2,
+        "rank": 5
+      },
+      {
+        "short": "PKU",
+        "name": "Persikutim Patriot United",
+        "pts": 1,
+        "rank": 6
+      },
+      {
+        "short": "DON",
+        "name": "Donggala United FC",
+        "pts": 1,
+        "rank": 7
+      },
+      {
+        "short": "PNB",
+        "name": "Persinab FC",
+        "pts": 1,
+        "rank": 8
+      }
+    ]
+  },
+  "scorers": [
+    {
+      "name": "JOHAN YOGA",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC",
+      "goals": 3
+    },
+    {
+      "name": "FARID. F",
+      "club": "PSU",
+      "clubName": "Pasuruan United",
+      "goals": 2
+    },
+    {
+      "name": "BETO",
+      "club": "PKP",
+      "clubName": "Persekabpas",
+      "goals": 2
+    },
+    {
+      "name": "A. SIREGAR",
+      "club": "BAT",
+      "clubName": "BATAVIA FC",
+      "goals": 2
+    },
+    {
+      "name": "DANYL TUKA",
+      "club": "PIP",
+      "clubName": "Persipa Pati",
+      "goals": 2
+    }
+  ],
+  "fixtures": [
+    {
+      "date": "2026-11-17",
+      "home": "PKN",
+      "hg": 0,
+      "ag": 2,
+      "away": "PKB",
+      "venue": "Stadion Galuh Ciamis",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PKT",
+      "hg": 1,
+      "ag": 0,
+      "away": "PKO",
+      "venue": "Trisanja",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PSK",
+      "hg": 3,
+      "ag": 0,
+      "away": "PJU",
+      "venue": "Kebogiro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PIP",
+      "hg": 2,
+      "ag": 2,
+      "away": "BTL",
+      "venue": "Moch. Soebroto",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "GRS",
+      "hg": 1,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 2,
+      "away": "PSF",
+      "venue": "Stadion Ketonggo Ngawi",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PBG",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBO",
+      "venue": "Trisanja",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PSU",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKP",
+      "venue": "UNS",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNB",
+      "hg": 1,
+      "ag": 1,
+      "away": "PSD",
+      "venue": "Brawijaya",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "NGA",
+      "hg": 3,
+      "ag": 3,
+      "away": "DON",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PKU",
+      "hg": 1,
+      "ag": 1,
+      "away": "PPI",
+      "venue": "Kudungga Sangatta",
+      "round": "Pekan 2"
+    }
+  ]
+}

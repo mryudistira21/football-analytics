@@ -19,7 +19,9 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — Track B cut-list importer in the reel ("Imported (Track B)"): 7-col contract, `label`=confidence, one file per track, multi-load
 - [x] **Claude** — local JSON club/player DB: `squads/clubs.json` + `src/export_squads.py` + Tagger "Load squads JSON" / "From squads" lineup loader (no cloud)
 - [ ] **both** — run Track B `build_player_moments.py` on the 20-min CSV, import the per-track cut-lists into the reel, check player-near-ball and label usefulness
-- [ ] **Claude** — `scrape-ileague` command to pull opponent squads from ileague.id into `squads/clubs.json` (needs a sample club-page URL)
+- [x] **Claude** — scraped all 23 Liga Nusantara clubs / 660 players from ileague.id into `squads/clubs.json` (`scripts/build_clubs_json.py`)
+- [x] **Claude** — League Hub web app (`hub/`): standings, fixtures, clubs, squads, player search, scorers + import-a-Tagger-CSV analysis (score/xG/shot map), `scripts/build_hub_data.py`
+- [ ] **Claude** — refresh hub data as the season goes (re-scrape standings/fixtures/scorers); add W/D/L if ileague ever exposes it
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off
 - [ ] **Claude** — match report page from a finished CSV (one shareable page per match)
 - [ ] **Claude** — export to SPADL so socceraction (VAEP) and mplsoccer work on our data

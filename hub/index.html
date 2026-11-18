@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Liga Nusantara Hub</title>
+<meta name="description" content="Clubs, squads, fixtures, standings, scorers and your own match analysis for Liga Nusantara 2026-27.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#eef2ee;--surface:#ffffff;--surface-2:#f5f8f5;--ink:#15211b;--muted:#5a6a61;--line:#d3dcd5;
+  --accent:#1d5fc4;--accent-ink:#fff;--warn:#b4541a;--ok:#1f7a4a;--turf:#2e7a4c;--turf-2:#2a7146;--chalk:rgba(255,255,255,.82);
+  --fd:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--fb:"IBM Plex Sans",system-ui,-apple-system,sans-serif;--fm:"IBM Plex Mono",ui-monospace,Menlo,monospace;--r:8px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1310;--surface:#151d19;--surface-2:#1b2520;--ink:#e5ece7;--muted:#93a39a;--line:#28342d;
+  --accent:#7aa7ff;--accent-ink:#0d1310;--warn:#f0a35e;--ok:#6fd39a;--turf:#24603d;--turf-2:#215838;--chalk:rgba(255,255,255,.7);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1310;--surface:#151d19;--surface-2:#1b2520;--ink:#e5ece7;--muted:#93a39a;--line:#28342d;
+  --accent:#7aa7ff;--accent-ink:#0d1310;--warn:#f0a35e;--ok:#6fd39a;--turf:#24603d;--turf-2:#215838;--chalk:rgba(255,255,255,.7);color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:14px;line-height:1.45;margin:0;
+  padding:14px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+h1,h2,h3{font-family:var(--fd);font-weight:700;margin:0;letter-spacing:.01em}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--fm);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+.wrap{max-width:1100px;margin:0 auto}
+.top{display:flex;align-items:baseline;gap:12px 16px;flex-wrap:wrap;margin-bottom:12px}
+.top h1{font-size:28px;text-transform:uppercase}
+.top .sub{font-size:12px;color:var(--muted)}
+.top .spacer{flex:1}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin-bottom:16px;overflow-x:auto}
+.tabs button{border:0;background:transparent;padding:9px 11px;font-family:var(--fd);font-size:17px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.swatch{width:12px;height:12px;border-radius:3px;flex:none;border:1px solid rgba(0,0,0,.25);display:inline-block;vertical-align:-1px}
+.btn{border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:6px 10px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;color:inherit;display:inline-flex;gap:6px;align-items:center}
+.btn:hover{border-color:var(--muted)}.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.small{padding:3px 8px;font-size:12px}
+input[type=text],input[type=search]{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 10px;font:inherit;color:inherit;width:100%}
+.me{color:var(--warn);font-weight:700}
+.badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted)}
+.badge.on{color:var(--ok);border-color:var(--ok)}
+.grid-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.clubcard{display:flex;align-items:center;gap:10px;cursor:pointer}
+.clubcard .bar{width:5px;align-self:stretch;border-radius:3px;flex:none}
+.clubcard h3{font-size:16px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{font-family:var(--fb);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;font-family:var(--fm);font-variant-numeric:tabular-nums}
+tr.clickable{cursor:pointer}tr.clickable:hover td{background:var(--surface-2)}
+.stand{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.grp h2{font-size:18px;text-transform:uppercase;margin-bottom:6px}
+.pos{width:26px;text-align:center;color:var(--muted);font-family:var(--fm)}
+.fx{display:flex;flex-direction:column;gap:6px}
+.fxday{font-family:var(--fd);text-transform:uppercase;font-size:14px;color:var(--muted);margin:10px 0 2px}
+.fxrow{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.fxrow .h{text-align:right}.fxrow .sc{font-family:var(--fd);font-size:20px;padding:0 8px;white-space:nowrap}
+.fxrow .tm{display:inline-flex;align-items:center;gap:6px}.fxrow .h .tm{flex-direction:row-reverse}
+.fxmeta{grid-column:1/-1;display:flex;justify-content:center;gap:10px;align-items:center;font-size:11px;color:var(--muted)}
+.back{margin-bottom:10px}
+.squadgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px}
+.pl{display:flex;align-items:center;gap:8px;padding:4px 8px;border-radius:6px}
+.pl:hover{background:var(--surface-2)}.pl .num{width:26px;text-align:right;color:var(--muted);font-family:var(--fm)}
+.note{font-size:12px;color:var(--muted)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.pitch{display:block;width:100%;max-width:420px;height:auto;border-radius:6px}
+.anrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface);margin-bottom:8px;cursor:pointer}
+.empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px}
+.kv{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0}
+.kv .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.kv .v{font-family:var(--fd);font-size:22px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:6px;font-size:13px;z-index:20}
+@media (max-width:560px){.top h1{font-size:23px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Liga Nusantara</h1>
+    <span class="sub" id="sub"></span>
+    <span class="spacer"></span>
+    <a class="btn small" id="taggerLink" href="#" target="_blank" rel="noopener">Pitchside Tagger ↗</a>
+  </header>
+  <nav class="tabs" id="tabs" role="tablist">
+    <button role="tab" data-tab="standings" aria-selected="true">Standings</button>
+    <button role="tab" data-tab="fixtures" aria-selected="false">Fixtures</button>
+    <button role="tab" data-tab="clubs" aria-selected="false">Clubs</button>
+    <button role="tab" data-tab="players" aria-selected="false">Players</button>
+    <button role="tab" data-tab="scorers" aria-selected="false">Scorers</button>
+    <button role="tab" data-tab="analysis" aria-selected="false">My analysis</button>
+  </nav>
+  <main id="body"><div class="empty">Loading league data…</div></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+<script>
+(()=>{
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const PL=105,PW=68,MYCLUB="BTL",TAGGER="https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp";
+let toastT;const toast=m=>{const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2200)};
+let DATA=null, byShort={}, byName={}, view={tab:"standings"}, analyses=[];
+
+/* ---------- storage for imported analyses ---------- */
+const Store={db:null,
+  async init(){try{if(window.claude&&claude.use){const db=await claude.use("db");if(db){this.db=db;return}}}catch(e){}},
+  async list(){
+    if(this.db){try{const s=await this.db.collection("analyses").get();return s.docs.filter(d=>d.exists).map(d=>({id:d.id,...d.data()}))}catch(e){}}
+    try{return JSON.parse(localStorage.getItem("hub:analyses")||"[]")}catch(e){return[]}
+  },
+  async save(a){
+    if(this.db){try{await this.db.doc("analyses/"+a.id).set(a);return}catch(e){}}
+    try{const l=await this.list();const i=l.findIndex(x=>x.id===a.id);if(i>=0)l[i]=a;else l.push(a);localStorage.setItem("hub:analyses",JSON.stringify(l))}catch(e){}
+  },
+  async del(id){
+    if(this.db){try{await this.db.doc("analyses/"+id).delete()}catch(e){}}
+    try{const l=(await this.list()).filter(x=>x.id!==id);localStorage.setItem("hub:analyses",JSON.stringify(l))}catch(e){}
+  }
+};
+
+/* ---------- boot ---------- */
+(async()=>{
+  $("#taggerLink").href=TAGGER;
+  await Store.init();
+  try{
+    const r=await fetch("data.json");DATA=await r.json();
+  }catch(e){$("#body").innerHTML=`<div class="empty">Could not load <code>data.json</code>. It must sit next to this page.</div>`;return}
+  DATA.clubs.forEach(c=>{byShort[c.short]=c;byName[c.name.toUpperCase()]=c});
+  $("#sub").textContent=`${DATA.competition} · updated ${DATA.updated} · source ${DATA.source}`;
+  analyses=await Store.list();
+  render();
+})();
+
+$("#tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;
+  view={tab:b.dataset.tab};document.querySelectorAll("[data-tab]").forEach(x=>x.setAttribute("aria-selected",x===b));render()});
+
+function render(){
+  const b=$("#body");
+  if(!DATA){return}
+  if(view.club){b.innerHTML=renderClub(view.club);wire();return}
+  if(view.analysis){b.innerHTML=renderAnalysisDetail(view.analysis);wire();return}
+  b.innerHTML=({standings:renderStandings,fixtures:renderFixtures,clubs:renderClubs,players:renderPlayers,scorers:renderScorers,analysis:renderAnalysisTab}[view.tab]||renderStandings)();
+  wire();
+}
+function wire(){
+  document.querySelectorAll("[data-club]").forEach(el=>el.onclick=()=>{view={tab:view.tab||"clubs",club:el.dataset.club};render();window.scrollTo(0,0)});
+  document.querySelectorAll("[data-back]").forEach(el=>el.onclick=()=>{view={tab:el.dataset.back};render()});
+  const ps=$("#playerSearch");if(ps){ps.oninput=()=>renderPlayerRows(ps.value);ps.focus()}
+  const imp=$("#csvIn");if(imp)imp.onchange=onImport;
+  document.querySelectorAll("[data-an]").forEach(el=>el.onclick=()=>{view={tab:"analysis",analysis:el.dataset.an};render();window.scrollTo(0,0)});
+  document.querySelectorAll("[data-del]").forEach(el=>el.onclick=async ev=>{ev.stopPropagation();if(!confirm("Remove this analysis?"))return;await Store.del(el.dataset.del);analyses=await Store.list();render()});
+}
+const teamCell=(short,cls="")=>{const c=byShort[short];return`<span class="tm ${cls}"><span class="swatch" style="background:${c?esc(c.color):"#888"}"></span><span>${c?esc(c.name):esc(short)}</span></span>`};
+
+/* ---------- standings ---------- */
+function renderStandings(){
+  const g=k=>`<div class="grp card"><h2>Group ${k}</h2><table><thead><tr><th class="pos">#</th><th>Club</th><th class="n">Pts</th></tr></thead><tbody>
+    ${DATA.standings[k].map(r=>`<tr class="clickable" data-club="${esc(r.short)}"><td class="pos">${r.rank}</td>
+      <td><span class="swatch" style="background:${esc(byShort[r.short].color)}"></span> <span class="${r.short===MYCLUB?"me":""}">${esc(r.name)}</span></td>
+      <td class="n"><b>${r.pts}</b></td></tr>`).join("")}</tbody></table></div>`;
+  return `<div class="stand">${g("A")}${g("B")}${g("C")}</div>
+    <p class="note" style="margin-top:12px">Points only — ileague.id doesn't publish W/D/L or goal difference, but the order reflects its tiebreak. Tap a club for its squad.</p>`;
+}
+
+/* ---------- fixtures ---------- */
+const MYSCHEDULE=[
+  ["2026-11-21","BTL","PKA","H"],["2026-11-26","PNG","BTL","A"],["2026-11-30","PBG","BTL","A"],
+  ["2026-12-04","PBO","BTL","A"],["2026-12-08","BTL","PSF","H"],["2026-12-12","PKA","BTL","A"],
+  ["2026-12-16","BTL","PBO","H"],["2027-01-06","BTL","PBG","H"],["2027-01-10","PSF","BTL","A"],
+  ["2027-01-16","GRS","BTL","A"],["2027-01-21","BTL","PIP","H"],
+];
+function analysisForFixture(home,away){return analyses.find(a=>(a.homeShort===home&&a.awayShort===away)||(a.homeShort===away&&a.awayShort===home))}
+function fxRow(f){
+  const an=analysisForFixture(f.home,f.away);
+  const played=f.hg!=null;
+  return `<div class="fxrow">
+    <div class="h">${teamCell(f.home)}</div>
+    <div class="sc mono">${played?`${f.hg}–${f.ag}`:"vs"}</div>
+    <div>${teamCell(f.away)}</div>
+    <div class="fxmeta"><span>${esc(f.round||"")}${f.venue?" · "+esc(f.venue):""}</span>${an?`<span class="badge on" data-an="${esc(an.id)}" style="cursor:pointer">Analysed</span>`:""}</div>
+  </div>`;
+}
+function renderFixtures(){
+  const days={};DATA.fixtures.forEach(f=>{(days[f.date]=days[f.date]||[]).push(f)});
+  const dfmt=d=>new Date(d+"T00:00:00").toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+  let s=`<h2 style="font-size:18px;text-transform:uppercase;margin-bottom:4px">Results</h2>`;
+  Object.keys(days).sort().forEach(d=>{s+=`<div class="fxday">${dfmt(d)}</div><div class="fx">${days[d].map(fxRow).join("")}</div>`});
+  // PERSIBA upcoming
+  const up=MYSCHEDULE.filter(([d])=>new Date(d)>=new Date(DATA.updated)).slice(0,8);
+  s+=`<h2 style="font-size:18px;text-transform:uppercase;margin:18px 0 4px"><span class="me">PERSIBA Bantul</span> — upcoming</h2><div class="fx">`;
+  up.forEach(([d,h,a])=>{const an=analysisForFixture(h,a);s+=`<div class="fxrow"><div class="h">${teamCell(h)}</div><div class="sc mono">vs</div><div>${teamCell(a)}</div>
+    <div class="fxmeta"><span>${dfmt(d)}</span>${an?`<span class="badge on" data-an="${esc(an.id)}" style="cursor:pointer">Analysed</span>`:""}</div></div>`});
+  s+=`</div><p class="note" style="margin-top:10px">Results are the Pekan 2 snapshot. Import a tagged match in <b>My analysis</b> and it tags the fixture here.</p>`;
+  return s;
+}
+
+/* ---------- clubs ---------- */
+function renderClubs(){
+  const order=[...DATA.clubs].sort((a,b)=>(a.group+a.name).localeCompare(b.group+b.name));
+  return `<div class="grid-cards">${order.map(c=>`<div class="card clubcard" data-club="${esc(c.short)}">
+    <span class="bar" style="background:${esc(c.color)}"></span>
+    <div><h3 class="${c.short===MYCLUB?"me":""}">${esc(c.name)}</h3>
+      <div class="note">Group ${esc(c.group)} · ${c.players.length} players</div></div></div>`).join("")}</div>`;
+}
+function renderClub(short){
+  const c=byShort[short];if(!c)return`<div class="empty">Club not found.</div>`;
+  const st=(DATA.standings[c.group]||[]).find(r=>r.short===short);
+  const fx=DATA.fixtures.filter(f=>f.home===short||f.away===short);
+  return `<button class="btn small back" data-back="${esc(view.tab||"clubs")}">← Back</button>
+    <div class="card"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <span class="bar swatch" style="width:16px;height:16px;background:${esc(c.color)}"></span>
+      <h2 style="font-size:24px">${esc(c.name)}</h2>
+      <span class="badge">Group ${esc(c.group)}</span>${st?`<span class="badge">#${st.rank} · ${st.pts} pts</span>`:""}
+      <span class="badge">${c.players.length} players</span></div>
+      <div class="kv"></div>
+      ${fx.length?`<p class="note">Result: ${fx.map(f=>`${esc(byShort[f.home].name)} ${f.hg}–${f.ag} ${esc(byShort[f.away].name)}`).join(" · ")}</p>`:""}
+    </div>
+    <h3 style="font-size:17px;text-transform:uppercase;margin:14px 0 6px">Squad</h3>
+    <div class="squadgrid card">${c.players.map(p=>`<div class="pl"><span class="num">${p.number}</span><span>${esc(p.name)}</span>${p.position?`<span class="badge">${esc(p.position)}</span>`:""}</div>`).join("")}</div>
+    <p class="note" style="margin-top:8px">Short names and numbers from ileague.id. Kit colour is a placeholder — set the real one when tagging.</p>`;
+}
+
+/* ---------- players ---------- */
+function allPlayers(){const out=[];DATA.clubs.forEach(c=>c.players.forEach(p=>out.push({...p,club:c.short,clubName:c.name,color:c.color})));return out}
+function renderPlayers(){
+  return `<div class="toolbar"><input type="search" id="playerSearch" placeholder="Search ${allPlayers().length} players by name, number or club…"></div>
+    <div class="card" style="padding:4px"><table><thead><tr><th class="n">#</th><th>Player</th><th>Club</th></tr></thead><tbody id="playerRows"></tbody></table></div>`;
+}
+function renderPlayerRows(q){
+  q=(q||"").trim().toLowerCase();
+  let rows=allPlayers();
+  if(q)rows=rows.filter(p=>p.name.toLowerCase().includes(q)||String(p.number)===q||p.clubName.toLowerCase().includes(q));
+  rows=rows.slice(0,400);
+  $("#playerRows").innerHTML=rows.map(p=>`<tr class="clickable" data-club="${esc(p.club)}"><td class="n">${p.number}</td><td>${esc(p.name)}</td>
+    <td><span class="swatch" style="background:${esc(p.color)}"></span> ${esc(p.clubName)}</td></tr>`).join("")
+    ||`<tr><td colspan="3" class="note" style="padding:14px">No players match “${esc(q)}”.</td></tr>`;
+  document.querySelectorAll("#playerRows [data-club]").forEach(el=>el.onclick=()=>{view={tab:"players",club:el.dataset.club};render();window.scrollTo(0,0)});
+}
+
+/* ---------- scorers ---------- */
+function renderScorers(){
+  return `<div class="card" style="max-width:520px"><table><thead><tr><th class="n">#</th><th>Player</th><th>Club</th><th class="n">Goals</th></tr></thead><tbody>
+    ${DATA.scorers.map((s,i)=>`<tr class="clickable" data-club="${esc(s.club)}"><td class="n">${i+1}</td><td>${esc(s.name)}</td>
+      <td><span class="swatch" style="background:${esc(byShort[s.club].color)}"></span> ${esc(s.clubName)}</td><td class="n"><b>${s.goals}</b></td></tr>`).join("")}
+  </tbody></table></div><p class="note" style="margin-top:10px">Top scorers snapshot from ileague.id.</p>`;
+}
+
+/* ---------- analysis (import Tagger CSV) ---------- */
+function renderAnalysisTab(){
+  return `<div class="toolbar"><label class="btn primary">Import tagged match (CSV)<input type="file" id="csvIn" accept=".csv,text/csv" hidden></label>
+    <span class="note">Export a match from the Pitchside Tagger (Download CSV), then import it here.</span></div>
+    ${analyses.length?analyses.map(a=>`<div class="anrow" data-an="${esc(a.id)}">
+      <div><b>${esc(a.home)} ${a.hg}–${a.ag} ${esc(a.away)}</b> <span class="note">${esc(a.matchName||"")}</span></div>
+      <div class="note mono">xG ${a.homeXg.toFixed(2)}–${a.awayXg.toFixed(2)} · ${a.shots} shots</div>
+      <button class="btn small" data-del="${esc(a.id)}">Remove</button></div>`).join(""):`<div class="empty">No analysed matches yet. Import a Tagger CSV to see the score, xG and shot map here — and it tags the matching fixture.</div>`}`;
+}
+function renderAnalysisDetail(id){
+  const a=analyses.find(x=>x.id===id);if(!a)return`<div class="empty">Analysis not found.</div>`;
+  return `<button class="btn small back" data-back="analysis">← Back</button>
+    <div class="card"><h2 style="font-size:22px">${esc(a.home)} <span class="mono">${a.hg}–${a.ag}</span> ${esc(a.away)}</h2>
+    <div class="note">${esc(a.matchName||"")} · imported ${new Date(a.importedAt).toLocaleDateString()}</div>
+    <div class="kv">
+      <div><div class="k">xG</div><div class="v mono">${a.homeXg.toFixed(2)} – ${a.awayXg.toFixed(2)}</div></div>
+      <div><div class="k">Shots</div><div class="v mono">${a.homeShots} – ${a.awayShots}</div></div>
+      <div><div class="k">On target</div><div class="v mono">${a.homeOn} – ${a.awayOn}</div></div>
+    </div></div>
+    <h3 style="font-size:16px;text-transform:uppercase;margin:12px 0 6px">Shot map</h3>
+    <div class="card">${shotMap(a)}</div>
+    <p class="note" style="margin-top:8px">Circle size = xG, filled = goal. ${esc(a.home)} attacks right, ${esc(a.away)} left. Open the full match in the Pitchside Tagger for passes, xT and reels.</p>`;
+}
+function shotMap(a){
+  const base=`<rect x="-4" y="-4" width="113" height="76" fill="var(--turf)"/>`+
+    `<g fill="none" stroke="var(--chalk)" stroke-width=".35"><rect x="0" y="0" width="105" height="68"/><line x1="52.5" y1="0" x2="52.5" y2="68"/><circle cx="52.5" cy="34" r="9.15"/>`+
+    `<rect x="0" y="13.84" width="16.5" height="40.32"/><rect x="88.5" y="13.84" width="16.5" height="40.32"/></g>`;
+  const dots=(a.shotList||[]).map(s=>{
+    const [x,y]=s.side==="home"?[s.x,s.y]:[PL-s.x,PW-s.y];
+    const col=s.side==="home"?(byShort[a.homeShort]?.color||"#d7263d"):(byShort[a.awayShort]?.color||"#1d5fc4");
+    const r=0.9+Math.sqrt(Math.max(0,s.xg))*4.2,goal=s.goal;
+    return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${goal?col:"none"}" stroke="${col}" stroke-width=".45"><title>${esc(s.side)} xG ${s.xg.toFixed(2)}${goal?" — GOAL":""}</title></circle>`;
+  }).join("");
+  return `<svg class="pitch" viewBox="-4 -4 113 76" role="img" aria-label="Shot map">${base}${dots}</svg>`;
+}
+function parseCSV(t){const out=[];let row=[],cur="",q=false;for(let i=0;i<t.length;i++){const c=t[i];
+  if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+  else if(c==='"')q=true;else if(c===","){row.push(cur);cur=""}else if(c==="\n"){row.push(cur);out.push(row);row=[];cur=""}else if(c!=="\r")cur+=c}
+  if(cur||row.length){row.push(cur);out.push(row)}return out.filter(r=>r.length>1)}
+function resolveShort(name){const u=String(name||"").toUpperCase().trim();if(byName[u])return byName[u].short;
+  for(const c of DATA.clubs){const cn=c.name.toUpperCase();if(cn.includes(u)||u.includes(cn))return c.short}return null}
+function onImport(e){
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=async()=>{try{
+    const rows=parseCSV(String(rd.result));const head=rows.shift().map(h=>h.trim());const ix=n=>head.indexOf(n);
+    if(ix("event")<0){toast("That doesn't look like a Tagger CSV");return}
+    const g=(r,n)=>ix(n)<0?"":String(r[ix(n)]??"").trim();
+    const matchId=g(rows[0],"match_id")||("m"+Date.now()), matchName=g(rows[0],"match_name");
+    const side={home:{xg:0,shots:0,on:0,goals:0,name:""},away:{xg:0,shots:0,on:0,goals:0,name:""}};
+    const shotList=[];
+    rows.forEach(r=>{
+      const sd=g(r,"side")==="away"?"away":"home", team=g(r,"team");
+      if(team)side[sd].name=team;
+      if(g(r,"event")==="shot"){
+        const xg=parseFloat(g(r,"xg"))||0, out=g(r,"outcome"), goal=out==="goal";
+        side[sd].shots++;side[sd].xg+=xg;if(goal||out==="on target")side[sd].on++;if(goal)side[sd].goals++;
+        shotList.push({side:sd,x:parseFloat(g(r,"x"))||0,y:parseFloat(g(r,"y"))||0,xg,goal});
+      }
+    });
+    if(!shotList.length){toast("No shots found in that CSV");return}
+    const a={id:matchId,matchName,home:side.home.name||"Home",away:side.away.name||"Away",
+      homeShort:resolveShort(side.home.name),awayShort:resolveShort(side.away.name),
+      hg:side.home.goals,ag:side.away.goals,homeXg:side.home.xg,awayXg:side.away.xg,
+      homeShots:side.home.shots,awayShots:side.away.shots,homeOn:side.home.on,awayOn:side.away.on,
+      shots:side.home.shots+side.away.shots,shotList,importedAt:Date.now()};
+    await Store.save(a);analyses=await Store.list();
+    toast(`Imported ${a.home} ${a.hg}–${a.ag} ${a.away}`);
+    view={tab:"analysis",analysis:a.id};render();window.scrollTo(0,0);
+  }catch(err){toast("Could not read that CSV")}};
+  rd.readAsText(f);e.target.value="";
+}
+})();
+</script>
+</body>
+</html>
