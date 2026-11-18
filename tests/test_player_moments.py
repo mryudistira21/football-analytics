@@ -15,7 +15,10 @@ from scripts.build_player_moments import (
 from scripts.track_video import classify_segment_status
 
 
-def write_tracking_csv(path: Path, *, include_ball: bool = True, unknown: bool = False):
+def write_tracking_csv(
+    path: Path, *, include_ball: bool = True, unknown: bool = False,
+    player_x: float = 50.0, ball_x: float = 51.0,
+):
     fields = [
         "match_id", "frame", "video_seconds", "period", "track_id",
         "role", "team", "x", "y", "confidence", "camera_state",
@@ -31,7 +34,7 @@ def write_tracking_csv(path: Path, *, include_ball: bool = True, unknown: bool =
                 "video_seconds": round(seconds, 3), "period": 1,
                 "track_id": 17, "role": "player",
                 "team": "unknown" if unknown else "home",
-                "x": 50.0, "y": 34.0, "confidence": 0.9,
+                "x": player_x, "y": 34.0, "confidence": 0.9,
                 "camera_state": "wide",
             })
             if include_ball:
@@ -39,7 +42,7 @@ def write_tracking_csv(path: Path, *, include_ball: bool = True, unknown: bool =
                     "match_id": "match-demo", "frame": frame,
                     "video_seconds": round(seconds, 3), "period": 1,
                     "track_id": 0, "role": "ball", "team": "unknown",
-                    "x": 51.0, "y": 34.0, "confidence": 0.8,
+                    "x": ball_x, "y": 34.0, "confidence": 0.8,
                     "camera_state": "wide",
                 })
 
@@ -162,6 +165,26 @@ def test_build_player_moments_writes_exact_seven_column_cutlist(tmp_path):
     assert manifest["match_id"] == "match-demo"
     assert manifest["tracks"][0]["track_id"] == 17
     assert manifest["tracks"][0]["moments"][0]["team"] == "home"
+
+
+def test_players_far_from_ball_do_not_generate_moments(tmp_path):
+    tracking_csv = tmp_path / "tracking.csv"
+    write_tracking_csv(tracking_csv, player_x=60.0, ball_x=51.0)
+    metadata = {
+        "match_id": "match-demo",
+        "fps": 30.0,
+        "frame_stride": 3,
+        "calibration_median_error_m": 0.64,
+    }
+
+    result = write_moment_cut_lists(
+        tracking_csv, tmp_path / "moments", metadata, ball_distance_m=2.5
+    )
+    assert result["moment_count"] == 0
+
+
+def test_eof_within_sampling_tolerance_can_complete():
+    assert classify_segment_status(100, 900.0, False, 899.9, 0.15) == "complete"
 
 
 def test_missing_ball_observations_produce_no_false_moments(tmp_path):
