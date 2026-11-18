@@ -1,0 +1,38 @@
+{
+  "competition": "Liga Nusantara 2026-27",
+  "updated": "2026-11-18",
+  "source": "ileague.id",
+  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "scorers": [
+    {
+      "name": "JOHAN YOGA",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC",
+      "goals": 3
+    },
+    {
+      "name": "FARID. F",
+      "club": "PSU",
+      "clubName": "Pasuruan United",
+      "goals": 2
+    },
+    {
+      "name": "BETO",
+      "club": "PKP",
+      "clubName": "Persekabpas",
+      "goals": 2
+    },
+    {
+      "name": "A. SIREGAR",
+      "club": "BAT",
+      "clubName": "BATAVIA FC",
+      "goals": 2
+    },
+    {
+      "name": "DANYL TUKA",
+      "club": "PIP",
+      "clubName": "Persipa Pati",
+      "goals": 2
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "competition": "Liga Nusantara 2026-27",
+  "updated": "2026-11-18",
+  "source": "ileague.id",
+  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "fixtures": [
+    {
+      "date": "2026-11-17",
+      "home": "PKN",
+      "hg": 0,
+      "ag": 2,
+      "away": "PKB",
+      "venue": "Stadion Galuh Ciamis",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PKT",
+      "hg": 1,
+      "ag": 0,
+      "away": "PKO",
+      "venue": "Trisanja",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PSK",
+      "hg": 3,
+      "ag": 0,
+      "away": "PJU",
+      "venue": "Kebogiro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PIP",
+      "hg": 2,
+      "ag": 2,
+      "away": "BTL",
+      "venue": "Moch. Soebroto",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-17",
+      "home": "GRS",
+      "hg": 1,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 2,
+      "away": "PSF",
+      "venue": "Stadion Ketonggo Ngawi",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PBG",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBO",
+      "venue": "Trisanja",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PSU",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKP",
+      "venue": "UNS",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNB",
+      "hg": 1,
+      "ag": 1,
+      "away": "PSD",
+      "venue": "Brawijaya",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "NGA",
+      "hg": 3,
+      "ag": 3,
+      "away": "DON",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 2"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PKU",
+      "hg": 1,
+      "ag": 1,
+      "away": "PPI",
+      "venue": "Kudungga Sangatta",
+      "round": "Pekan 2"
+    }
+  ]
+}

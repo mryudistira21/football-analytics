@@ -695,7 +695,7 @@ for name, short, color, block in CLUBS:
     clubs.append({"name": name, "short": short, "color": color,
                   "source": "ileague.id", "players": parse(block)})
 
-out = Path(__file__).resolve().parents[1] / "squads" / "clubs.json"
+out = Path(__file__).resolve().parents[1] / "data" / "clubs.json"
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps({
     "season": SEASON,

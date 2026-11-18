@@ -17,9 +17,9 @@ Status board. `[ ]` open · `[~]` in progress · `[x]` done. Owner in **bold**.
 - [x] **Claude** — no-terminal downloader GUI (`src/download_gui.pyw` + `Unduh Video.bat`) with Full / Babak Pertama / Babak Kedua
 - [x] **Claude** — Tagger v3: moment reels (per-player / team-attack / team-defence), confidence flags (unmarked→review→wrong→ok, `review` CSV column), telestration, lineup quick-pick chips
 - [x] **Claude** — Track B cut-list importer in the reel ("Imported (Track B)"): 7-col contract, `label`=confidence, one file per track, multi-load
-- [x] **Claude** — local JSON club/player DB: `squads/clubs.json` + `src/export_squads.py` + Tagger "Load squads JSON" / "From squads" lineup loader (no cloud)
+- [x] **Claude** — local JSON club/player DB: `data/clubs.json` + `src/export_squads.py` + Tagger "Load squads JSON" / "From squads" lineup loader (no cloud)
 - [ ] **both** — run Track B `build_player_moments.py` on the 20-min CSV, import the per-track cut-lists into the reel, check player-near-ball and label usefulness
-- [x] **Claude** — scraped all 23 Liga Nusantara clubs / 660 players from ileague.id into `squads/clubs.json` (`scripts/build_clubs_json.py`)
+- [x] **Claude** — scraped all 23 Liga Nusantara clubs / 660 players from ileague.id into `data/clubs.json` (`scripts/build_clubs_json.py`)
 - [x] **Claude** — League Hub web app (`hub/`): standings, fixtures, clubs, squads, player search, scorers + import-a-Tagger-CSV analysis (score/xG/shot map), `scripts/build_hub_data.py`
 - [ ] **Claude** — refresh hub data as the season goes (re-scrape standings/fixtures/scorers); add W/D/L if ileague ever exposes it
 - [ ] **Claude** — check the first real CSV: tagging speed, missing receivers, any stat that looks off

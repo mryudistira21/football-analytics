@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-clubs = json.loads((ROOT / "squads" / "clubs.json").read_text())["clubs"]
+DATA = ROOT / "data"
+clubs = json.loads((DATA / "clubs.json").read_text())["clubs"]
 by_short = {c["short"]: c for c in clubs}
 
 # standings snapshot in EXACT ileague order per group (rank = position in the list,
@@ -56,17 +57,23 @@ fixtures = [{"date": d, "home": h, "hg": hg, "ag": ag, "away": a, "venue": v,
 scorers = [{"name": s["name"], "club": s["club"],
             "clubName": by_short[s["club"]]["name"], "goals": s["goals"]} for s in SCORERS]
 
-out = ROOT / "hub" / "data.json"
-out.parent.mkdir(parents=True, exist_ok=True)
-out.write_text(json.dumps({
-    "competition": "Liga Nusantara 2026-27",
-    "updated": "2026-11-18",
-    "source": "ileague.id",
-    "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
-    "clubs": clubs,
-    "standings": standings,
-    "scorers": scorers,
-    "fixtures": fixtures,
-}, ensure_ascii=False, indent=2))
-print(f"Wrote {out} — {len(clubs)} clubs, {sum(len(v) for v in standings.values())} standings rows, "
-      f"{len(fixtures)} fixtures, {len(scorers)} scorers.")
+meta = {"competition": "Liga Nusantara 2026-27", "updated": "2026-11-18", "source": "ileague.id",
+        "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py."}
+players = [{"number": p["number"], "name": p["name"], "position": p.get("position", ""),
+           "club": c["short"], "clubName": c["name"]} for c in clubs for p in c["players"]]
+
+# canonical split files in data/
+def dump(path, obj):
+    path.write_text(json.dumps(obj, ensure_ascii=False, indent=2))
+dump(DATA / "standings.json", {**meta, "standings": standings})
+dump(DATA / "fixtures.json", {**meta, "fixtures": fixtures})
+dump(DATA / "scorers.json", {**meta, "scorers": scorers})
+dump(DATA / "players.json", {**meta, "players": players})
+
+# bundled copy the Hub artifact loads (everything in one file, fetched beside index.html)
+hub = ROOT / "hub" / "data.json"
+hub.parent.mkdir(parents=True, exist_ok=True)
+dump(hub, {**meta, "clubs": clubs, "standings": standings, "scorers": scorers, "fixtures": fixtures})
+
+print(f"Wrote data/{{clubs,standings,fixtures,scorers,players}}.json + hub/data.json — "
+      f"{len(clubs)} clubs, {len(players)} players, {len(fixtures)} fixtures, {len(scorers)} scorers.")

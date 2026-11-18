@@ -35,11 +35,12 @@ src/        reusable code (xG + xT models, crop, heatmaps)
 models/     fitted model files (xT grid)
 scripts/    how the models were fitted (re-runnable)
 tagger/     source of the Pitchside Tagger web app
-squads/     club & player squads (clubs.json) for the Tagger's lineup loader
 hub/        League Hub web app (clubs, squads, fixtures, standings, scorers, your analysis)
 collab/     the hand-off note for ChatGPT, kept up to date
-notebooks/  experiments
-data/       local only — videos, model weights, CSVs (git-ignored)
+notebooks/  Track B Colab notebook
+tests/      Track B unit tests
+data/       league data (clubs/players/fixtures/standings/scorers *.json — tracked)
+            + local media (videos, model weights, CSVs — git-ignored)
 ```
 
 ## Quick start (Track A)
@@ -56,6 +57,9 @@ setx FOOTBALL_VIDEO_DIR D:\Video-Bola-Analis   # videos live outside the repo
 Each match:
 1. Download (720p, 30 fps, no re-encode):
    `python src/download_match.py "URL" --start 17:00 --end 37:00 --name test20`
-2. Squads (optional, local only): `python src/club_db.py add-club ...`, `add-player ...`, then `lineup BTL` → in the Tagger setup click **Load from file**.
+2. Squads: `data/clubs.json` holds all 23 Liga Nusantara rosters (built by `scripts/build_clubs_json.py`; or `python src/export_squads.py` from your own `club_db.py`). In the Tagger setup use **Load squads JSON** → **From squads → Pick XI** (tap GK, pick 11).
 3. Open the Pitchside Tagger, set up the match, choose the video, tag.
-4. Download the CSV. Its format is in `DATA_CONTRACT.md`.
+4. Download the CSV (format in `DATA_CONTRACT.md`), then import it in the **League Hub** (`hub/`) to see the match in the league context.
+
+## Quick start (Track B)
+Automatic video tracking is in [TRACK_B.md](TRACK_B.md): model downloads, the 30-second smoke test, GPU/VRAM settings, CSV output and known limitations. Heavy full-match inference runs on Colab (`notebooks/track_b_colab.ipynb`); Track B then exports per-track cut-lists (`scripts/build_player_moments.py`) that import into the Tagger's Reel ("Imported (Track B)").

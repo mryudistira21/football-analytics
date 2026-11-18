@@ -24,7 +24,7 @@ DB_PATH = Path(os.environ.get("FOOTBALL_DB", "data/football.db"))
 def main():
     ap = argparse.ArgumentParser(description="Export clubs + players to a Tagger squads JSON.")
     ap.add_argument("--season", help="Only include players from this season (e.g. 2026-27).")
-    ap.add_argument("--out", default="squads/clubs.json", help="Output path (default squads/clubs.json).")
+    ap.add_argument("--out", default="data/clubs.json", help="Output path (default data/clubs.json).")
     a = ap.parse_args()
 
     if not DB_PATH.exists():

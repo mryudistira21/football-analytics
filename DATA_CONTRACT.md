@@ -4,6 +4,7 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 
 ## 1. Pitch and coordinates
 - Pitch: **105 × 68 metres**. Units are metres everywhere, never pixels.
+- Track B homography targets must use the **same 32 internal landmark coordinates as Pitchside Tagger**. Do not independently scale Roboflow's 120 × 70 m template axes to 105 × 68 m: that changes penalty-area, goal-area and penalty-spot geometry even when the homography residual is small. The validated mapping is versioned as `pitchside_tagger_105x68_v1` in tracking metadata.
 - `y = 0` is the **top touchline as seen on the broadcast camera**; `y` grows downward (same as the screen and the Tagger).
 - Two frames, never mixed in one column:
 
@@ -18,17 +19,18 @@ The shared format between **Track A** (manual tagging, Claude) and **Track B** (
 ## 2. Time
 | Field | Type | Meaning |
 |---|---|---|
-| `video_seconds` | float | seconds from the start of the **video file** (the join key between tracks). The Tagger records it whenever a video is loaded, in **either** time mode; empty only when no video was loaded, and such events cannot be joined to tracking. |
-| `frame` | int | 0-based frame index in the video file (tracking only) |
-| `fps` | float | video frame rate, stored once per run (tracking metadata) |
+| `video_seconds` | float | presentation time in seconds from the start of the **video file** (the join key between tracks). The Tagger records the video's current time whenever a video is loaded, in **either** time mode; empty only when no video was loaded, and such events cannot be joined to tracking. Tracking should use decoder presentation timestamps (PTS) where available. |
+| `frame` | int | 0-based decoded frame index in the video file (tracking only) |
+| `fps` | float | nominal/average video frame rate, stored once per run (tracking metadata); fallback only for deriving timestamps when PTS is unavailable |
 | `period` | int | 1 = first half, 2 = second half, 3/4 = extra time |
 | `match_seconds` | float | match clock in seconds (as on the scoreboard) |
 
-`video_seconds = frame / fps`. Join events to tracking by `video_seconds`, taking the nearest tracking frame within a tolerance of **one sampling interval**, `frame_stride / fps` (e.g. 30 fps with `frame_stride` 3 → 0.1 s), not a fixed half-second. A tagged event's `video_seconds` is a human click and can lag the true moment by a second or so, so when several candidate players fall inside the window, record the ambiguity rather than forcing one match.
+For constant-frame-rate files, `video_seconds` is approximately `frame / fps`; for variable-frame-rate files, use the frame's presentation timestamp (PTS) rather than assuming a constant frame interval. Join events to tracking by `video_seconds`, taking the nearest tracking frame within one actual sampling interval (approximately `frame_stride / fps` for constant-frame-rate video), not a fixed half-second. A tagged event's `video_seconds` is a human click and can lag the true moment by a second or so, so when several candidate players fall inside the window, record the ambiguity rather than forcing one match.
 
 ## 3. Identity
 - `match_id`: one immutable id per recording/analysis, shared by both tracks. Two recordings of the "same" fixture (e.g. a replay) get different `match_id`s.
-- `team`: always `home` or `away` (names live in match metadata).
+- Event CSV `side`: always `home` or `away`; event CSV `team` is the display name.
+- Tracking CSV `team`: `home`, `away`, or `unknown` (unknown when classification is unavailable or uncertain).
 - `shirt_number` (events) and `track_id` (tracking) are **separate identifiers**. A `track_id` is anonymous and can change after occlusions or camera cuts. They are linked only through an explicit mapping table that a human confirms:
   `track_map.csv`: `match_id, track_id, video_seconds_from, video_seconds_to, team, shirt_number`
 
@@ -51,10 +53,25 @@ One row per detected object per processed frame; coordinates in the **camera** f
 - `role`: `player, goalkeeper, referee, ball`
 - `team`: `home, away, unknown` (`unknown` for referees, ball, unclassified)
 - `x`, `y`: metres; empty when the frame has no valid pitch calibration.
-- `camera_state`: `wide` (usable for positions), `closeup`, `replay`, `graphics`. Only `wide` rows carry `x`, `y`.
-- Metadata file next to it, `<name>.meta.json`: `match_id, video_file, fps, width, height, home_dir_1h, frame_stride, model_versions`.
+- `camera_state`: Track B v1 emits `wide` or `closeup`. `wide` means the frame's pitch-keypoint homography passed calibration validation and its coordinates are usable. `closeup` is the fallback when calibration does not pass; it is **not** a semantic guarantee that the footage is a close-up and may also include replay/graphics frames or weak keypoint detections. Only `wide` rows carry `x`, `y`. Add `replay` or `graphics` only when a future version actually detects and tests those states.
+- Metadata file next to it, `<name>.meta.json`: at minimum `match_id, video_file, fps, width, height, home_dir_1h, home_attacks_right_by_period, frame_stride, model_versions`. It should also record the processed `period`, source-video start/end seconds, completion status, and relevant tracking configuration.
 
-## 6. Resource rules (both tracks)
+## 6. Automatic moment cut-list (Track B → Tagger Reel importer)
+
+Track B can export one cut-list CSV per anonymous `track_id`. The Reel importer accepts exactly these seven columns, with no additional columns:
+
+`moment,start_s,end_s,duration_s,start_clock,events,label`
+
+- `start_s` and `end_s` are source-video `video_seconds` and drive playback. They are the time join key; they are not match-clock seconds.
+- `moment` is unique within the match and uses `track_<track_id>_<sequence>` (for example, `track_137_001`). The importer parses `track_id` from this prefix.
+- `events` is the moment descriptor, such as `near_ball`.
+- `label` is the confidence badge: `ok`, `review`, or `wrong`. Track B v1 assigns only `ok` and `review` automatically; `wrong` is reserved for human correction.
+- `duration_s` is display-only and may be recomputed by the importer. `start_clock` is display-only and is not parsed by the importer.
+- Multiple per-track files may be imported together; the importer deduplicates by `moment`. A sidecar manifest may carry `match_id`, team and diagnostics; it is not required by the importer.
+- This cut-list is distinct from the 26-column event CSV. It does not change the event importer.
+- `track_id` is not `shirt_number`; no player-number identity is implied.
+
+## 7. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.
 - **Process at 720p / 30 fps** (download that way; no need for 60 fps). Use `frame_stride` (e.g. every 2nd or 3rd frame) for position heatmaps.
 - **Annotated videos are opt-in** and short (a few minutes); a full annotated match costs gigabytes.

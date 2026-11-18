@@ -1,0 +1,4628 @@
+{
+  "competition": "Liga Nusantara 2026-27",
+  "updated": "2026-11-18",
+  "source": "ileague.id",
+  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "players": [
+    {
+      "number": 1,
+      "name": "REZA ARDIANSYAH",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 4,
+      "name": "SIMOPIAREF",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 5,
+      "name": "M. KHOSIIN",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 6,
+      "name": "RADIT",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 7,
+      "name": "BRIAN",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 8,
+      "name": "REZA",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 9,
+      "name": "MISBAKHUL",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 10,
+      "name": "M. REVAN",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 11,
+      "name": "FERRY CAHYO",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 15,
+      "name": "FAHAD",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 16,
+      "name": "RAFLY AZIZ",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 18,
+      "name": "FARHAN",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 19,
+      "name": "SAIFUL A.",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 21,
+      "name": "GINTING",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 24,
+      "name": "NOER WAHID",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 25,
+      "name": "FAOZAN TAMAMI",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 31,
+      "name": "A. SIREGAR",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 41,
+      "name": "ARKAAN",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 44,
+      "name": "M. SYUKRON",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 49,
+      "name": "MOTE",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 54,
+      "name": "MARCELL",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 57,
+      "name": "AHMAD MUHAZIR",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 67,
+      "name": "RAFA",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 71,
+      "name": "RAHMAD H.",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 87,
+      "name": "NESTA",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 91,
+      "name": "CHANDRA",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 97,
+      "name": "MIKHAIL",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 99,
+      "name": "ROMEO",
+      "position": "",
+      "club": "BAT",
+      "clubName": "BATAVIA FC"
+    },
+    {
+      "number": 2,
+      "name": "MUHAMMAD IZAM",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 5,
+      "name": "R.LUBIS",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 7,
+      "name": "MERAN",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 9,
+      "name": "SUTAN ZICO",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 10,
+      "name": "R. ILLAHI",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 11,
+      "name": "AL MUZANNI",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 12,
+      "name": "LUTHFI",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 14,
+      "name": "NUR KHOLIS",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 15,
+      "name": "KAKA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 16,
+      "name": "M GHOZALI",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 18,
+      "name": "RAKA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 19,
+      "name": "ALIF EKA RIZKY",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 20,
+      "name": "RENDI ANDIKA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 21,
+      "name": "AAN DWI SAPUTRA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 22,
+      "name": "ADITYA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 24,
+      "name": "VIKRA FAHLEPI",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 27,
+      "name": "BARZHA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 28,
+      "name": "ISMAWAN",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 30,
+      "name": "RAIHAN",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 31,
+      "name": "M.SYAHRIL",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 32,
+      "name": "BAGAS",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 55,
+      "name": "ZIDANE",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 77,
+      "name": "IMAN",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 90,
+      "name": "MOH YUDHA",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 97,
+      "name": "GALANG KURNIAWAN",
+      "position": "",
+      "club": "DON",
+      "clubName": "Donggala United FC"
+    },
+    {
+      "number": 4,
+      "name": "JATMIKO",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 6,
+      "name": "RAFLI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 7,
+      "name": "ALIF JAELANI R",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 8,
+      "name": "ALWI FURQON",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 9,
+      "name": "DECO",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 10,
+      "name": "RAFI HERLIAN",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 11,
+      "name": "SAYFULLAH K.",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 13,
+      "name": "SYAIFULLAH",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 15,
+      "name": "F. AKBAR",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 16,
+      "name": "SAIHITUAH",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 17,
+      "name": "ILHAM JAYA",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 18,
+      "name": "ALDI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 19,
+      "name": "CESA S.",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 20,
+      "name": "AFREZA DAVINO",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 21,
+      "name": "ABANDA",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 22,
+      "name": "M. DZAKI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 23,
+      "name": "LALU RIZKI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 24,
+      "name": "ZAMORANO",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 25,
+      "name": "FAJRI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 28,
+      "name": "SHANDY",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 29,
+      "name": "BAIHAQI RIFAI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 30,
+      "name": "DEDI TRI S.",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 33,
+      "name": "JOKO S.",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 46,
+      "name": "WAHYU AGONG",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 47,
+      "name": "N. WANDIK",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 77,
+      "name": "SYAMIL B.",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 85,
+      "name": "DIAN ARDI",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 88,
+      "name": "ANO JONO",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 92,
+      "name": "M. NASSIM",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 99,
+      "name": "OSCAR",
+      "position": "",
+      "club": "GRS",
+      "clubName": "Gresik United FC"
+    },
+    {
+      "number": 3,
+      "name": "IZZAN",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 4,
+      "name": "SAIFUL",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 5,
+      "name": "DEVIN. H",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 6,
+      "name": "SHEVA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 7,
+      "name": "MIDO",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 8,
+      "name": "AFILUDIN",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 9,
+      "name": "LIBERTI",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 10,
+      "name": "ADAM",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 11,
+      "name": "REXA ABDI",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 12,
+      "name": "ROSIHAN",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 13,
+      "name": "FAIZAL",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 16,
+      "name": "CLAUDIO",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 17,
+      "name": "H. LESTALUHU",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 18,
+      "name": "DAFFA RASYA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 19,
+      "name": "FARID. F",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 21,
+      "name": "MUMTAZ",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 22,
+      "name": "APRILIUS A.B.",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 24,
+      "name": "PRADANANTA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 25,
+      "name": "C. NEMBAFU",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 26,
+      "name": "WOMSIWOR",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 27,
+      "name": "SUGIYANTO",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 28,
+      "name": "NAUFEL.A",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 30,
+      "name": "KAKA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 43,
+      "name": "DAFFA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 44,
+      "name": "MARRENDRA",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 45,
+      "name": "SANDI SUTE",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 66,
+      "name": "FAREL AMEDIO",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 85,
+      "name": "JHORDY B.",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 87,
+      "name": "AL ARSYAD",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 93,
+      "name": "AHMAD WAHYUDI",
+      "position": "",
+      "club": "PSU",
+      "clubName": "Pasuruan United"
+    },
+    {
+      "number": 1,
+      "name": "DIKA.S",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 2,
+      "name": "BINTANG",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 4,
+      "name": "MUKHLIS",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 5,
+      "name": "SURYA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 7,
+      "name": "R.SANJAYA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 9,
+      "name": "YUDHI AP",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 10,
+      "name": "AM.ICHSAN",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 12,
+      "name": "A.ZIDANE",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 14,
+      "name": "DAMA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 16,
+      "name": "HAIDAR",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 17,
+      "name": "BANI",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 18,
+      "name": "JOJO",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 19,
+      "name": "SYENDIO",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 20,
+      "name": "SYAFRINALDI",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 22,
+      "name": "H.SAPUTRA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 23,
+      "name": "FEBRIANSYAH.A.",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 25,
+      "name": "VAVA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 28,
+      "name": "ENRICO",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 30,
+      "name": "ADLY",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 43,
+      "name": "KAICEN",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 47,
+      "name": "CELLO",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 67,
+      "name": "FAJIRA",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 74,
+      "name": "MUH. ADAM",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 77,
+      "name": "WAHYU",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 80,
+      "name": "ENRIYAN",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 84,
+      "name": "MUKHTI",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 97,
+      "name": "ADIF NOR",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 99,
+      "name": "HUSEN",
+      "position": "",
+      "club": "PKB",
+      "clubName": "Pekanbaru FC"
+    },
+    {
+      "number": 4,
+      "name": "KOMANG ARI",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 5,
+      "name": "ARYA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 7,
+      "name": "A. ARFARID",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 8,
+      "name": "MAHENDRA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 12,
+      "name": "ANDROW",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 13,
+      "name": "ADINATA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 14,
+      "name": "DANIL REZA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 15,
+      "name": "EGY",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 16,
+      "name": "ANDRE",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 17,
+      "name": "KADEK JULI",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 18,
+      "name": "LARSAN",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 19,
+      "name": "JULYO HARAIVA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 20,
+      "name": "M. RIDHO",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 21,
+      "name": "KADEK YOGA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 23,
+      "name": "GEDE SUNU",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 25,
+      "name": "JUNIUS BATE",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 26,
+      "name": "MADE ANTHA W",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 27,
+      "name": "EKA DARMA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 28,
+      "name": "KOMANG AGUS",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 29,
+      "name": "GERRY WILSON",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 35,
+      "name": "MS UMARELLA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 43,
+      "name": "KOMANG SASKARA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 52,
+      "name": "J. TUHUTERU",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 56,
+      "name": "BIMA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 57,
+      "name": "KADEK ARI",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 74,
+      "name": "GUS BRAM",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 81,
+      "name": "AGUS ANDIKA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 87,
+      "name": "KOMANG DEDI",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 88,
+      "name": "KADEK RIKSA",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 90,
+      "name": "NATHAN",
+      "position": "",
+      "club": "PSD",
+      "clubName": "Perseden Denpasar"
+    },
+    {
+      "number": 1,
+      "name": "SOKA",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 2,
+      "name": "JOKO SUSILO",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 3,
+      "name": "ALEXANDRO",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 4,
+      "name": "FRAN",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 5,
+      "name": "DUTRA",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 6,
+      "name": "TEDDY GALIH",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 7,
+      "name": "GALANG",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 8,
+      "name": "TEGAR",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 9,
+      "name": "BETO",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 10,
+      "name": "NOFI ATMAJA",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 11,
+      "name": "NURCHAQIQI",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 13,
+      "name": "FIRMAN",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 14,
+      "name": "M FARHAN",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 15,
+      "name": "FANCA AGUNG",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 17,
+      "name": "RAIHAN",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 18,
+      "name": "BERI SANTOSO",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 19,
+      "name": "JUAN EVAN",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 20,
+      "name": "OSVALDO HAAY",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 22,
+      "name": "ZANUAR ARDANI",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 23,
+      "name": "ICKBAL",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 26,
+      "name": "ABDUL HAMID",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 27,
+      "name": "ALI MASHORI",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 28,
+      "name": "MANZILA",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 30,
+      "name": "YUNIAR",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 35,
+      "name": "DEVIT",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 55,
+      "name": "DANDI",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 77,
+      "name": "GILANG PRATAMA",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 84,
+      "name": "DIAZ",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 85,
+      "name": "UCI M RIFKI",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 93,
+      "name": "M. ZIDANE",
+      "position": "",
+      "club": "PKP",
+      "clubName": "Persekabpas"
+    },
+    {
+      "number": 2,
+      "name": "ALEX S",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 5,
+      "name": "BECKHAM",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 6,
+      "name": "MALIK AKBAR",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 7,
+      "name": "WONDO SULAEMAN",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 8,
+      "name": "D. MUSTAINE",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 9,
+      "name": "IMAM WITOYO",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 10,
+      "name": "M. FIRMAN",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 11,
+      "name": "AGUSTI",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 13,
+      "name": "AGUNG PRAS",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 14,
+      "name": "ALBERTA NINO",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 16,
+      "name": "FAYI",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 17,
+      "name": "A.ADITYA",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 18,
+      "name": "R. ZIO",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 19,
+      "name": "BAGAZ",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 20,
+      "name": "R.HADI",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 21,
+      "name": "GIAN F.",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 22,
+      "name": "ZUHDAN",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 23,
+      "name": "LAKSANA PRABU",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 24,
+      "name": "DENNY",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 26,
+      "name": "FARRIZIANO",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 27,
+      "name": "IQBAL M.A",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 30,
+      "name": "ADAM RIZKI",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 32,
+      "name": "FAISAL.R",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 66,
+      "name": "M. AKBAR",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 71,
+      "name": "IMAM BAGUS",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 78,
+      "name": "AMRIN KHANAN",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 81,
+      "name": "JULFIKAR LAING",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 91,
+      "name": "Y . CAVALERA",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 94,
+      "name": "H.RITONGA",
+      "position": "",
+      "club": "PKT",
+      "clubName": "Persekat"
+    },
+    {
+      "number": 3,
+      "name": "WIGANDA.PD",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 6,
+      "name": "TAQUL",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 7,
+      "name": "ANTONI",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 8,
+      "name": "AIDUN",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 10,
+      "name": "REYKI FARIZ",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 11,
+      "name": "ALDITO",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 12,
+      "name": "LORENZO",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 13,
+      "name": "MARCELL JP",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 14,
+      "name": "ARSIL",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 16,
+      "name": "FACHRIZAL",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 17,
+      "name": "RISKY D.A",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 18,
+      "name": "ALWI",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 19,
+      "name": "VENGKO",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 20,
+      "name": "FEBRYANSYAH",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 21,
+      "name": "TEGAR",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 22,
+      "name": "ANDHIKA",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 24,
+      "name": "M TIRTO",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 27,
+      "name": "ALBERT",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 28,
+      "name": "DHARMAJATI",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 29,
+      "name": "RIAN TAMOL",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 33,
+      "name": "ALEXANDER",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 35,
+      "name": "TSABITAH",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 54,
+      "name": "VICTORY NANUNG",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 66,
+      "name": "BIMASATRIA",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 73,
+      "name": "DALIMUNTHE",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 77,
+      "name": "SANDI SAMOSIR",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 81,
+      "name": "YOGI",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 86,
+      "name": "ELVATEEH VA",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 87,
+      "name": "AHMAD RIFAL",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 98,
+      "name": "ZULHILMI",
+      "position": "",
+      "club": "BTL",
+      "clubName": "PERSIBA Bantul"
+    },
+    {
+      "number": 2,
+      "name": "KHOIRUL",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 4,
+      "name": "FATHUR YAN",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 6,
+      "name": "LU'AY ABIYU",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 7,
+      "name": "E. ADHYAKSA",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 8,
+      "name": "DHAMAR LINTANG",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 11,
+      "name": "ALFANDI",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 12,
+      "name": "ARDYA MALIK",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 14,
+      "name": "RIZKY WP",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 15,
+      "name": "MADE OTO",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 16,
+      "name": "AZHRIL S.F",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 17,
+      "name": "AFIF",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 18,
+      "name": "USAMA",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 21,
+      "name": "ICHWAN",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 22,
+      "name": "NAJA NAUFAL",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 25,
+      "name": "TUASALAMONY",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 28,
+      "name": "NOVIAN",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 30,
+      "name": "THEO",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 32,
+      "name": "F. ARYA",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 44,
+      "name": "RESTU SETYA",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 47,
+      "name": "ALIYYU",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 72,
+      "name": "ADI SATRIO",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 76,
+      "name": "HUSEIN A",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 79,
+      "name": "JORRY",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 87,
+      "name": "ILHAM IRHAZ",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 91,
+      "name": "FAJAR",
+      "position": "",
+      "club": "PBG",
+      "clubName": "Persibangga Purbalingga"
+    },
+    {
+      "number": 1,
+      "name": "ALFATH",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 3,
+      "name": "ANGGER",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 4,
+      "name": "DIDIK. S",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 6,
+      "name": "SHEVANTON",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 7,
+      "name": "SEHABUDIN",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 8,
+      "name": "MARVIN",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 9,
+      "name": "KAKA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 10,
+      "name": "IQBAL",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 11,
+      "name": "RIFALDI",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 12,
+      "name": "FUAD",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 13,
+      "name": "RANGGA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 14,
+      "name": "A. FERNANDI",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 15,
+      "name": "ZULKIFLI",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 18,
+      "name": "M.SYAHRIL",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 19,
+      "name": "REVALDO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 20,
+      "name": "DIAZ",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 23,
+      "name": "DIOS D. A",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 25,
+      "name": "AARON Y",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 26,
+      "name": "RIO VALENTINO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 27,
+      "name": "ROMEO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 29,
+      "name": "J LATUCONSINA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 33,
+      "name": "O. CHANIGIO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 34,
+      "name": "KAFKA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 37,
+      "name": "WIRAJA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 38,
+      "name": "DECO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 58,
+      "name": "ADI PURNAMA",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 59,
+      "name": "FAHAD",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 66,
+      "name": "ODHI",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 76,
+      "name": "JOJO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 77,
+      "name": "PUTRA CHANIAGO",
+      "position": "",
+      "club": "PBO",
+      "clubName": "Persibo Bojonegoro"
+    },
+    {
+      "number": 1,
+      "name": "M . FAZA",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 3,
+      "name": "DHANU",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 4,
+      "name": "ABI DEFA",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 5,
+      "name": "IFAN",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 6,
+      "name": "RAGIL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 7,
+      "name": "REXO DOLBY",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 8,
+      "name": "YOGIEK",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 10,
+      "name": "RAYYAN",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 11,
+      "name": "REYHAN F",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 12,
+      "name": "RONI SUGENG",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 14,
+      "name": "ARIF A.M",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 16,
+      "name": "LIONEL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 17,
+      "name": "M. RIO",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 18,
+      "name": "SYAIFUL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 19,
+      "name": "IBNUL M",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 21,
+      "name": "FABIAN",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 23,
+      "name": "W.FEBRIYANTO",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 25,
+      "name": "YULFIKAR MANSUR",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 28,
+      "name": "M.IQBAL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 31,
+      "name": "NURI AGUS",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 32,
+      "name": "FADHIL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 33,
+      "name": "SHEKA",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 36,
+      "name": "RELOSA RIVAN",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 38,
+      "name": "MUSRIL",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 52,
+      "name": "AZIZ",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 77,
+      "name": "UMAR",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 79,
+      "name": "RIFA'I",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 91,
+      "name": "FEBRIAN",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 99,
+      "name": "YUDA E P",
+      "position": "",
+      "club": "PKA",
+      "clubName": "Persika Karanganyar"
+    },
+    {
+      "number": 3,
+      "name": "DAFFA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 5,
+      "name": "BRIANTAMA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 6,
+      "name": "VIER",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 8,
+      "name": "REKSA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 9,
+      "name": "RAMADANI",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 10,
+      "name": "NANDO SEBO",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 11,
+      "name": "SAMSUDIN",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 12,
+      "name": "ZULIANUR",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 13,
+      "name": "MARZUKI",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 14,
+      "name": "RISKI RAMADHAN",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 15,
+      "name": "R. SARAGIH",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 16,
+      "name": "SANDI",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 17,
+      "name": "HENRY. R",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 18,
+      "name": "FIORE",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 19,
+      "name": "RABBANI",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 21,
+      "name": "ADAM",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 22,
+      "name": "M.RIDWAN",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 23,
+      "name": "CRESPO",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 24,
+      "name": "DAVID LALY",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 25,
+      "name": "RIFAI",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 26,
+      "name": "B. RADHYTIA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 27,
+      "name": "YUDISTIRA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 32,
+      "name": "ARGAPURA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 37,
+      "name": "RAFA I",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 52,
+      "name": "PERMANA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 58,
+      "name": "SATRIA",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 62,
+      "name": "BENI OKTO",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 66,
+      "name": "DIMAS TIAR",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 67,
+      "name": "AMIR HAMZAH",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 88,
+      "name": "REYHAN BS",
+      "position": "",
+      "club": "PKO",
+      "clubName": "Persikota Kota Tangerang"
+    },
+    {
+      "number": 6,
+      "name": "TRAORE",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 7,
+      "name": "ARAY SUHENDRI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 8,
+      "name": "ANDI SOPIAN",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 9,
+      "name": "R. FAUZI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 10,
+      "name": "REZA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 11,
+      "name": "REZAVI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 12,
+      "name": "DAFA PRATAMA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 13,
+      "name": "NEVY.D",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 14,
+      "name": "ARYA PRATAMA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 15,
+      "name": "PRINCE B",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 16,
+      "name": "M. FAREL",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 17,
+      "name": "RESA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 18,
+      "name": "AYUEP",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 19,
+      "name": "MOISE",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 20,
+      "name": "WAWAN SUMADI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 21,
+      "name": "ABDUL LATIF",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 22,
+      "name": "AZIZ",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 23,
+      "name": "FAHMI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 24,
+      "name": "NOVAL. F",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 25,
+      "name": "IQBAL GIO",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 26,
+      "name": "FAIRUZ ZIDAN",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 27,
+      "name": "RAKHA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 28,
+      "name": "M. HAIKAL",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 61,
+      "name": "DZAKI NURFAIZI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 69,
+      "name": "FAUZAN. S",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 71,
+      "name": "SALAS",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 80,
+      "name": "EROSS",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 81,
+      "name": "YUDAQUEL",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 96,
+      "name": "BIMA ZAWAWI",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 99,
+      "name": "BISSA",
+      "position": "",
+      "club": "PKN",
+      "clubName": "Persikotas Nusantara"
+    },
+    {
+      "number": 1,
+      "name": "RANGGA",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 2,
+      "name": "RYGANDIO",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 3,
+      "name": "ERGUN",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 4,
+      "name": "RAMA",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 5,
+      "name": "ANDHIKA",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 6,
+      "name": "ANUGRAH",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 8,
+      "name": "M.RIVALDI",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 9,
+      "name": "ESCOBAR",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 10,
+      "name": "IYAN SUNUSI",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 11,
+      "name": "DICKY KR",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 16,
+      "name": "AGIP",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 17,
+      "name": "MUH.ALIF SAHRUL",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 23,
+      "name": "HAIRUL PANJUL",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 25,
+      "name": "M.HAJIR",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 27,
+      "name": "ABIM",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 28,
+      "name": "HAFID",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 29,
+      "name": "MUH.FARHAM",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 30,
+      "name": "M.GYMNASTIAR",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 31,
+      "name": "JUANDA",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 33,
+      "name": "M.RIDHO AT",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 36,
+      "name": "ILHAM FAHMI",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 38,
+      "name": "RIVAL",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 55,
+      "name": "TAKWIR",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 63,
+      "name": "MUH FAIZAL",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 70,
+      "name": "FIGO",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 71,
+      "name": "AJI",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 77,
+      "name": "ASHARI A",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 88,
+      "name": "TAUFIQ",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 90,
+      "name": "RYAN",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 99,
+      "name": "RICKY",
+      "position": "",
+      "club": "PKU",
+      "clubName": "Persikutim Patriot United"
+    },
+    {
+      "number": 1,
+      "name": "ZAKI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 3,
+      "name": "YULI KOTOUKI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 4,
+      "name": "MUSA KUBIA",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 5,
+      "name": "ALMAHI AS",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 6,
+      "name": "HASAN",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 7,
+      "name": "KARARBO",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 8,
+      "name": "SAMUEL YOBE",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 9,
+      "name": "HUSNUZHON",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 10,
+      "name": "GLUESEVIC",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 11,
+      "name": "YOSMUS DUDAI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 12,
+      "name": "GILBER",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 13,
+      "name": "DANIE",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 14,
+      "name": "DONNI MONIM",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 15,
+      "name": "IRWAN",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 16,
+      "name": "WEMPI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 17,
+      "name": "M. LOGOFF",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 18,
+      "name": "RENDIKA",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 19,
+      "name": "A. UOPDANA",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 20,
+      "name": "SYAFIQ ABDUL",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 21,
+      "name": "ANDIKA",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 22,
+      "name": "MELVIS",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 24,
+      "name": "WANDIK",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 25,
+      "name": "ADHITYA RMDHNI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 33,
+      "name": "ZYAN",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 36,
+      "name": "SULAEMAN",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 69,
+      "name": "DANDI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 75,
+      "name": "YAN KAYOI",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 77,
+      "name": "G.MAMAGHE",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 87,
+      "name": "ILHAM",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 97,
+      "name": "ARONGGEAR",
+      "position": "",
+      "club": "PNB",
+      "clubName": "Persinab FC"
+    },
+    {
+      "number": 3,
+      "name": "SYARFUL M",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 4,
+      "name": "RONALD AFFRIZAL",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 7,
+      "name": "REZZA JEPANG",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 8,
+      "name": "DEJAN",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 9,
+      "name": "M. NASRUL",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 10,
+      "name": "YUDHISTIRA",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 11,
+      "name": "DIMAS",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 13,
+      "name": "IKBAL KHADAFI",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 14,
+      "name": "BATHSYA",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 15,
+      "name": "B. AGUNG UTOMO",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 16,
+      "name": "ZAMZAM S.A",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 17,
+      "name": "SAMSUL ALAM",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 18,
+      "name": "MHD ALVIN",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 19,
+      "name": "NANDA HELVRIT",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 20,
+      "name": "ARFAMUZI",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 21,
+      "name": "AKBAR",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 22,
+      "name": "DANAKBAR",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 24,
+      "name": "MUHAMMAD RAFHI",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 25,
+      "name": "EDWARD",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 27,
+      "name": "ADITYA S",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 34,
+      "name": "MSNULLOH",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 49,
+      "name": "YOGA",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 57,
+      "name": "QOYUM.N",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 63,
+      "name": "NICOLAS",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 66,
+      "name": "M. ILHAM",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 77,
+      "name": "FIRMAN",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 96,
+      "name": "IDRIS",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 97,
+      "name": "ZERY SEMBIRING",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 99,
+      "name": "GAOS",
+      "position": "",
+      "club": "PNG",
+      "clubName": "Persinga Ngawi"
+    },
+    {
+      "number": 1,
+      "name": "ADHIEL",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 2,
+      "name": "RICO N.C",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 5,
+      "name": "MAHMUD",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 6,
+      "name": "RANGGA",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 7,
+      "name": "LESTALUHU .P",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 8,
+      "name": "RIYADI",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 9,
+      "name": "QIS",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 10,
+      "name": "ARMAN",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 11,
+      "name": "RIZKY",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 13,
+      "name": "G. BUGIS",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 14,
+      "name": "YOLTUWU",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 15,
+      "name": "WIBOWO",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 16,
+      "name": "DANYL TUKA",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 17,
+      "name": "AL GHUZAT",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 19,
+      "name": "ARSHAVIN",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 24,
+      "name": "ALFON",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 28,
+      "name": "R. MEHRAN",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 30,
+      "name": "GADA RAMA",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 31,
+      "name": "FABIO",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 36,
+      "name": "EDGARDA",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 44,
+      "name": "RHAGA",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 47,
+      "name": "SCIFO",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 52,
+      "name": "SADDAM .G",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 67,
+      "name": "R. JAMIL",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 71,
+      "name": "AL QADRI",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 86,
+      "name": "YAPAGAIMU",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 87,
+      "name": "DINTIA .P",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 88,
+      "name": "ARIFIN S.",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 94,
+      "name": "DIMAS",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 99,
+      "name": "M. RISAL",
+      "position": "",
+      "club": "PIP",
+      "clubName": "Persipa Pati"
+    },
+    {
+      "number": 1,
+      "name": "ISAK",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 4,
+      "name": "DUDE",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 7,
+      "name": "TONNY R",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 8,
+      "name": "JAMES",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 9,
+      "name": "KENELAK",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 10,
+      "name": "YAMPIT NAWIPA",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 11,
+      "name": "A. YUMAME",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 13,
+      "name": "IBO",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 14,
+      "name": "TJOE",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 15,
+      "name": "PANGKALI",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 16,
+      "name": "JHON",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 17,
+      "name": "JULIUS",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 18,
+      "name": "KAREL G",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 19,
+      "name": "DANIEL WONDA",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 20,
+      "name": "J. ISIR",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 22,
+      "name": "A.FLASSY",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 23,
+      "name": "KAKA'",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 25,
+      "name": "M.YOKU",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 27,
+      "name": "DEMETOUW",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 28,
+      "name": "GOBAY",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 31,
+      "name": "NUR HUSNAN",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 39,
+      "name": "PETRUS UTI",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 42,
+      "name": "SEWORI",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 45,
+      "name": "A RAMANDEI",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 46,
+      "name": "M DEAL",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 52,
+      "name": "DAVA PRATAMA",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 88,
+      "name": "KEVIN RUMBIAK",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 96,
+      "name": "YAN SAMA",
+      "position": "",
+      "club": "PPI",
+      "clubName": "Persipani Paniai"
+    },
+    {
+      "number": 5,
+      "name": "MIZAN",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 7,
+      "name": "AHMAD IRVANI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 10,
+      "name": "OBY",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 11,
+      "name": "FIRMANSYAH",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 12,
+      "name": "MUHAMMAD.K",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 13,
+      "name": "NAUFAL A.C",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 17,
+      "name": "ALWINO",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 19,
+      "name": "ALFREDO",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 20,
+      "name": "FAISA MAHARDIKA",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 21,
+      "name": "ORLEN ISLAMI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 22,
+      "name": "MUHAMMAD ZAHID",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 24,
+      "name": "DALMIANSYAH",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 25,
+      "name": "FADHIL",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 26,
+      "name": "MISBAH",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 29,
+      "name": "AJI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 30,
+      "name": "EMIR",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 33,
+      "name": "DAFFA AL",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 39,
+      "name": "R.KUNIAWAN",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 53,
+      "name": "GESANG",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 66,
+      "name": "A.FIBRYAN",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 69,
+      "name": "RISAL",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 71,
+      "name": "R.PAMUNGKAS",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 77,
+      "name": "FAHREZI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 88,
+      "name": "IBNU SINA",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 89,
+      "name": "KAKANG",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 91,
+      "name": "W.KURNIAWAN",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 95,
+      "name": "REIGI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 96,
+      "name": "WERKUDORO",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 97,
+      "name": "YADI MULYADI",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 99,
+      "name": "ABDULLAH.J",
+      "position": "",
+      "club": "PJU",
+      "clubName": "Persitara Jakarta Utara"
+    },
+    {
+      "number": 9,
+      "name": "DIEGO BANOWO",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 10,
+      "name": "SUPRIATNA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 11,
+      "name": "NOVA.H",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 13,
+      "name": "FAARIS SILVA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 14,
+      "name": "ZIDANE",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 15,
+      "name": "M.BAIHAQI",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 16,
+      "name": "TORES",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 17,
+      "name": "RIAN LASUT",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 18,
+      "name": "DEDYJAENUWAR",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 19,
+      "name": "ILHAM MAULANA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 20,
+      "name": "M REZA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 22,
+      "name": "R. HARDIANTO",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 24,
+      "name": "AKMAL JP",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 27,
+      "name": "KHALIL",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 29,
+      "name": "DAUD KOTULUS",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 30,
+      "name": "DANI SORMIN",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 31,
+      "name": "TOFANI",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 32,
+      "name": "DONI SETIAWAN",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 35,
+      "name": "DONI SORMIN",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 39,
+      "name": "RA.SUHARTO",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 50,
+      "name": "KITO CHANDRA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 66,
+      "name": "ACHMAD NUR AFANDI",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 68,
+      "name": "YOGASANJAYA",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 72,
+      "name": "MARDANI",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 77,
+      "name": "ARDIANSYAH",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 99,
+      "name": "IRFAN",
+      "position": "",
+      "club": "PSK",
+      "clubName": "Pesik Kuningan"
+    },
+    {
+      "number": 1,
+      "name": "ILHAM",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 2,
+      "name": "BRUNO HALEK",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 3,
+      "name": "FANDY LOKE",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 4,
+      "name": "ASKON BAJO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 5,
+      "name": "EUSDOSI",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 6,
+      "name": "JOSHUA",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 7,
+      "name": "R. PADILAH",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 9,
+      "name": "MOLO DOPO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 10,
+      "name": "YOKO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 15,
+      "name": "ALDON LALU",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 16,
+      "name": "ARJUN WEDO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 17,
+      "name": "US BHARA",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 18,
+      "name": "M. SYIFA",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 19,
+      "name": "NOUVAL",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 20,
+      "name": "BENO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 21,
+      "name": "ADAM ABY",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 22,
+      "name": "TIAN WEDJO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 25,
+      "name": "CRESPO HALE",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 27,
+      "name": "GERRY MICHAEL",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 37,
+      "name": "BAGUS",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 53,
+      "name": "GAVIO",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 55,
+      "name": "BASTEN DUE",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 61,
+      "name": "DIEGO LINA",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 66,
+      "name": "ARYA BAYU",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 77,
+      "name": "RIZKY DZULKIFLI",
+      "position": "",
+      "club": "NGA",
+      "clubName": "PS Ngada"
+    },
+    {
+      "number": 1,
+      "name": "M. IQBAL SEPTIAN",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 7,
+      "name": "RIDWAN. A",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 8,
+      "name": "FREZY AL HUDAIFI",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 9,
+      "name": "ATHALLAH. A",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 10,
+      "name": "KOMAR",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 11,
+      "name": "M. ALEX SANDRO",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 12,
+      "name": "FIGO. F",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 14,
+      "name": "DIFO PRASETYA",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 15,
+      "name": "SURYA. M",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 17,
+      "name": "I. FAUZAN",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 18,
+      "name": "DONA S.",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 20,
+      "name": "DAVA SIREGAR",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 21,
+      "name": "FIRMANSYAH",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 22,
+      "name": "FAJAR. I",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 24,
+      "name": "F. YUSUF BAIHAQI",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 26,
+      "name": "C. G. RUMAROPEN",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 27,
+      "name": "Z. A. ZIZOU. L",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 29,
+      "name": "FAHRI AKBAR",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 30,
+      "name": "OKY. K",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 40,
+      "name": "M. FAHRUL ROJDI",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 44,
+      "name": "M. FADLY",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 51,
+      "name": "AIRLANGGA",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 75,
+      "name": "RIO FERNANDO",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 76,
+      "name": "RADITYA. I",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 86,
+      "name": "WAHYU TRI. N",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 87,
+      "name": "F. IHSAN",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 90,
+      "name": "JOHAN YOGA",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    },
+    {
+      "number": 99,
+      "name": "KEVIN. A",
+      "position": "",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC"
+    }
+  ]
+}
