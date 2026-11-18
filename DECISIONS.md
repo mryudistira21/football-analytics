@@ -2,6 +2,13 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-19 — Periods (incl. extra time) and analysis-by-half
+- **Tagger periods:** the tagging toggle is now 1st / 2nd / ET1 / ET2 (event `half` = 1–4). Extra-time direction is a separate match setting ("Home attacks in 1st extra-time half", defaults to the 1st-half direction; ET2 flips it) — a fresh coin toss per DATA_CONTRACT `home_attacks_right_by_period`. Injury/added time is tagged under its own half (no separate control needed).
+- **Analysis-by-half:** a single Period selector (Full / 1st / 2nd / ET1 / ET2 / Extra time) above the analysis tabs filters every view (Summary, Players, Shot/Pass maps, Network, Hot areas, Moments, Log, xG race). The scoreboard stays full-match. Replaced the Network tab's own half filter. Implemented via `AEV()` (period-filtered event set).
+- **Hub:** the imported-match view gets a Full / 1st / 2nd / ET toggle that recomputes score, xG, shots and the shot map per half (reads the CSV `half` column).
+- **Downloader GUI:** added Extra Time 1 / Extra Time 2 download modes; the half time-range hint now says to include injury time.
+- **Track B:** periods 3/4 (extra time) go in the notebook `PERIODS` config like 1st/2nd; each period's source-video boundary should include that half's injury time.
+
 ## 2026-11-18 — Tagger v3: moment reels, confidence flags, telestration, lineup chips
 Driven by a peer prototype (midblockstats) doing the same auto-cut + reel concept. Added to the Tagger, all on the manual side so they work for match day without the CV pipeline:
 - **Moments / reel tab.** Pick a team + player (or whole team) and every tagged action becomes a clip; overlapping clips merge (gap ≤ 1.2 s). Play them back-to-back in the video, toggle any off, export a cut list. The **Actions** filter gives per-player, team-attack and team-defence reels. Needs `video_seconds`, so tag with a video loaded.

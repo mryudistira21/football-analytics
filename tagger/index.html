@@ -233,6 +233,7 @@ table.grid th.n{text-align:right}
     <div class="field"><label class="label" for="fHome">Home team</label><div class="inl"><input type="text" id="fHome" placeholder="PERSIBA Bantul"><input type="color" id="fHc" value="#d7263d" aria-label="Home color"></div></div>
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
+    <div class="field"><label class="label" for="fEtDir">Home attacks in 1st extra-time half</label><select id="fEtDir"><option value="">Same as 1st half</option><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select><span class="note">Only matters if the match goes to extra time.</span></div>
     <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
     <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="h">From squads</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sqpick" id="sqPickh"></div></div>
     <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="a">From squads</button><span class="note">Export one with <code>export_squads.py</code>.</span></div><div class="sqpick" id="sqPicka"></div></div>
@@ -286,7 +287,7 @@ table.grid th.n{text-align:right}
       </div>
       <div class="row" style="margin-top:10px">
         <span class="label">Half</span>
-        <div class="seg" role="group" aria-label="Half"><button id="h1" aria-pressed="true">1st</button><button id="h2" aria-pressed="false">2nd</button></div>
+        <div class="seg" role="group" aria-label="Period"><button id="h1" aria-pressed="true">1st</button><button id="h2" aria-pressed="false">2nd</button><button id="h3" aria-pressed="false">ET1</button><button id="h4" aria-pressed="false">ET2</button></div>
         <span class="note" id="dirNote"></span>
       </div>
     </section>
@@ -347,6 +348,9 @@ table.grid th.n{text-align:right}
         <button role="tab" data-tab="moments" aria-selected="false">Moments</button>
         <button role="tab" data-tab="log" aria-selected="false">Log</button>
       </div>
+      <div class="row" style="margin:0 0 10px;gap:8px"><span class="label">Period</span>
+        <select id="periodSel" aria-label="Analysis period"><option value="all">Full match</option><option value="1">1st half</option><option value="2">2nd half</option><option value="3">ET first half</option><option value="4">ET second half</option><option value="et">Extra time (both)</option></select>
+        <span class="note" id="periodNote"></span></div>
       <div id="tabBody"></div>
     </section>
 
@@ -516,7 +520,7 @@ function storeBadge(state){
 /* ---------- state ---------- */
 const S={matches:[],match:null,events:[],half:1,src:"video",team:0,type:"pass",
   tag:{stage:"start"},clock:{running:false,base:0,at:0},tab:"summary",pAuto:false,
-  f:{passTeam:"all",passType:"all",passPlayer:"all",heatTeam:"0",heatKind:"all",sortKey:"xt",sortDir:-1,netTeam:"0",netMin:"2",netHalf:"all",
+  f:{period:"all",passTeam:"all",passType:"all",passPlayer:"all",heatTeam:"0",heatKind:"all",sortKey:"xt",sortDir:-1,netTeam:"0",netMin:"2",
      momTeam:"0",momPlayer:"all",momPad:"4",momKind:"all",momSrc:"events",momTrack:"all"},
   reelOff:new Set(),auto:[],
   pausedByTag:false};
@@ -597,9 +601,12 @@ const pitch=()=>pitchBase()+pitchLines();
 const topLabel=(t,x=52.5)=>`<text x="${x}" y="-1.2" text-anchor="middle" font-size="2.6" fill="var(--chalk)" font-family="IBM Plex Sans, sans-serif">${t}</text>`;
 
 function attacksRight(team,half){
-  const homeR=((half===1)===((S.match?.dir||"R")==="R"));
+  const d=(half>=3?(S.match?.etdir||S.match?.dir||"R"):(S.match?.dir||"R"));
+  const first=(half===1||half===3);           // first sub-half of its segment
+  const homeR=(first===(d==="R"));
   return team===0?homeR:!homeR;
 }
+const PERIODS={1:"1st half",2:"2nd half",3:"ET first half",4:"ET second half"};
 const norm=(team,half,x,y)=>attacksRight(team,half)?[x,y]:[PL-x,PW-y];
 
 /* ---------- time source ---------- */
@@ -638,9 +645,9 @@ function setSrc(s){S.src=s;$("#srcVideo").setAttribute("aria-pressed",s==="video
 $("#srcVideo").onclick=()=>setSrc("video");$("#srcClock").onclick=()=>setSrc("clock");
 $("#clockRun").onclick=()=>{const c=S.clock;if(c.running){c.base=clockNow();c.running=false}else{c.at=Date.now();c.running=true}$("#clockRun").textContent=c.running?"Pause":"Start"};
 $("#clockSetBtn").onclick=()=>{const v=parseClock($("#clockSet").value);if(v==null){toast("Use mm:ss, for example 45:00");return}S.clock.base=v;S.clock.at=Date.now();$("#clockSet").value=""};
-function setHalf(h){S.half=h;$("#h1").setAttribute("aria-pressed",h===1);$("#h2").setAttribute("aria-pressed",h===2);renderDirNote();drawTagPitch()}
-$("#h1").onclick=()=>setHalf(1);$("#h2").onclick=()=>setHalf(2);
-function renderDirNote(){$("#dirNote").textContent=`${teamName(0)} attacking ${attacksRight(0,S.half)?"→ right":"← left"} on screen`}
+function setHalf(h){S.half=h;[1,2,3,4].forEach(n=>$("#h"+n).setAttribute("aria-pressed",h===n));renderDirNote();drawTagPitch()}
+[1,2,3,4].forEach(n=>$("#h"+n).onclick=()=>setHalf(n));
+function renderDirNote(){$("#dirNote").textContent=`${PERIODS[S.half]} · ${teamName(0)} attacking ${attacksRight(0,S.half)?"→ right":"← left"} on screen`}
 
 /* ---------- tagging ---------- */
 function setTeam(t){S.team=t;$("#tHome").setAttribute("aria-pressed",t===0);$("#tAway").setAttribute("aria-pressed",t===1);drawTagPitch();renderHint();if(S.tag.stage==="outcome")openOutcome()}
@@ -867,8 +874,10 @@ document.addEventListener("keydown",e=>{
 $("#pnum").addEventListener("input",()=>{S.pAuto=false;renderHint()});
 
 /* ---------- stats ---------- */
-function teamStats(t){
-  const E=S.events.filter(e=>e.team===t), O=S.events.filter(e=>e.team!==t);
+/* analysis event set — filtered by the period selector (board stays full match) */
+function AEV(){const p=S.f.period;if(!p||p==="all")return S.events;if(p==="et")return S.events.filter(e=>e.half>=3);return S.events.filter(e=>String(e.half)===p)}
+function teamStats(t,evs){const EV=evs||AEV();
+  const E=EV.filter(e=>e.team===t), O=EV.filter(e=>e.team!==t);
   const P=E.filter(e=>e.type==="pass"),C=E.filter(e=>e.type==="cross"),PC=E.filter(isPassLike),Sh=E.filter(e=>e.type==="shot");
   const astIds=new Set(Sh.filter(s=>s.ast).map(s=>s.ast));
   const xg=Sh.reduce((a,s)=>a+s.xg,0);
@@ -889,7 +898,7 @@ function teamStats(t){
 const pct=(a,b)=>b?Math.round(a/b*100)+"%":"–";
 
 function renderBoard(){
-  const a=teamStats(0),b=teamStats(1);
+  const a=teamStats(0,S.events),b=teamStats(1,S.events);
   $("#board").innerHTML=`<span class="tm"><span class="swatch" style="background:${teamColor(0)}"></span><span class="nm">${esc(teamName(0))}</span></span>
    <span class="score mono">${a.goals}–${b.goals}</span>
    <span class="tm"><span class="nm">${esc(teamName(1))}</span><span class="swatch" style="background:${teamColor(1)}"></span></span>
@@ -899,8 +908,8 @@ function renderBoard(){
 }
 
 function xgRace(){
-  const sh=S.events.filter(e=>e.type==="shot").sort((a,b)=>a.clock-b.clock);
-  const last=Math.max(0,...S.events.map(e=>e.clock));
+  const EV=AEV(), sh=EV.filter(e=>e.type==="shot").sort((a,b)=>a.clock-b.clock);
+  const last=Math.max(0,...EV.map(e=>e.clock));
   const maxT=Math.max(5400,Math.ceil(last/300)*300);
   const W=640,H=210,L=36,R=56,T=12,B=26;
   const tot=[0,1].map(t=>sh.filter(s=>s.team===t).reduce((a,s)=>a+s.xg,0));
@@ -923,7 +932,7 @@ function xgRace(){
 }
 
 function renderSummary(){
-  if(!S.events.length)return emptyMsg("No events yet. Tag a pass, shot or tackle and the comparison fills in here.");
+  if(!AEV().length)return emptyMsg(S.events.length?"No events in this period. Switch the period filter above.":"No events yet. Tag a pass, shot or tackle and the comparison fills in here.");
   const a=teamStats(0),b=teamStats(1);
   const row=(m,va,vb,na,nb,lowerBetter)=>{na=na||0;nb=nb||0;if(lowerBetter){const ta=na;na=nb;nb=ta}const tot=na+nb;const w=tot?na/tot*100:50;
     return`<tr><td class="v">${va}</td><td class="m">${m}<div class="splitbar"><span style="width:${w}%;background:${teamColor(0)}"></span><span style="flex:1;background:${teamColor(1)}"></span></div></td><td class="v r">${vb}</td></tr>`};
@@ -965,8 +974,8 @@ function emptyMsg(m){return`<div class="empty">${m}</div>`}
 function playerRows(){
   const M=new Map();
   const get=(t,p)=>{const k=t+"|"+(p||"?");if(!M.has(k))M.set(k,{t,p:p||"?",nm:pName(t,p),pa:0,po:0,rcv:0,prog:0,box:0,xt:0,ca:0,co:0,kp:0,sh:0,g:0,xg:0,xa:0,tk:0,tw:0,int:0,rec:0});return M.get(k)};
-  const byId=new Map(S.events.map(e=>[e.id,e]));
-  S.events.forEach(e=>{const r=get(e.team,e.p);
+  const EV=AEV(), byId=new Map(EV.map(e=>[e.id,e]));
+  EV.forEach(e=>{const r=get(e.team,e.p);
     if(isPassLike(e)){
       if(e.type==="pass"){r.pa++;if(e.out==="ok")r.po++}else{r.ca++;if(e.out==="ok")r.co++}
       r.xt+=xtAdded(e);if(isProgressive(e))r.prog++;if(intoBox(e))r.box++;
@@ -980,7 +989,7 @@ function playerRows(){
   return[...M.values()].map(r=>({...r,pp:r.pa?r.po/r.pa:-1,xgxa:r.xg+r.xa}));
 }
 function renderPlayers(){
-  if(!S.events.length)return emptyMsg("Shirt numbers you type while tagging show up here. Events without a number are grouped as “?”.");
+  if(!AEV().length)return emptyMsg(S.events.length?"No events in this period.":"Shirt numbers you type while tagging show up here. Events without a number are grouped as “?”.");
   const rows=playerRows(),k=S.f.sortKey,d=S.f.sortDir;
   rows.sort((a,b)=>(a[k]>b[k]?1:a[k]<b[k]?-1:0)*d||(b.xt-a.xt));
   const cols=[["t","Team",0],["p","#",0],["nm","Name",0],["pa","Passes",1],["pp","Pass %",1],["rcv","Received",1],["prog","Prog",1],["box","Into box",1],["xt","xT",1],["ca","Crosses",1],["kp","Key passes",1],["sh","Shots",1],["g","Goals",1],["xg","xG",1],["xa","xA",1],["tk","Tackles",1],["int","Int",1],["rec","Rec",1]];
@@ -993,7 +1002,7 @@ function renderPlayers(){
 }
 
 function renderShots(){
-  const sh=S.events.filter(e=>e.type==="shot");
+  const sh=AEV().filter(e=>e.type==="shot");
   let s=pitch();
   s+=topLabel(`← ${esc(teamName(1))} attack`,26)+topLabel(`${esc(teamName(0))} attack →`,79);
   sh.slice().sort((a,b)=>b.xg-a.xg).forEach(e=>{
@@ -1011,8 +1020,9 @@ function renderShots(){
 
 function renderPasses(){
   const f=S.f;
-  const players=[...new Set(S.events.filter(e=>isPassLike(e)&&(f.passTeam==="all"||e.team===+f.passTeam)).map(e=>e.team+"|"+(e.p||"?")))].sort((a,b)=>(+a.split("|")[1]||999)-(+b.split("|")[1]||999));
-  let E=S.events.filter(e=>isPassLike(e)&&e.ex!=null);
+  const PV=AEV();
+  const players=[...new Set(PV.filter(e=>isPassLike(e)&&(f.passTeam==="all"||e.team===+f.passTeam)).map(e=>e.team+"|"+(e.p||"?")))].sort((a,b)=>(+a.split("|")[1]||999)-(+b.split("|")[1]||999));
+  let E=PV.filter(e=>isPassLike(e)&&e.ex!=null);
   if(f.passTeam!=="all")E=E.filter(e=>e.team===+f.passTeam);
   if(f.passType==="pass"||f.passType==="cross")E=E.filter(e=>e.type===f.passType);
   if(f.passType==="prog")E=E.filter(isProgressive);
@@ -1037,7 +1047,7 @@ function renderPasses(){
 
 function renderNetwork(){
   const f=S.f,t=+f.netTeam,minC=+f.netMin;
-  const P=S.events.filter(e=>e.team===t&&isPassLike(e)&&(f.netHalf==="all"||e.half===+f.netHalf));
+  const P=AEV().filter(e=>e.team===t&&isPassLike(e));
   const nodes=new Map(),edges=new Map();
   const node=p=>{if(!nodes.has(p))nodes.set(p,{p,sx:0,sy:0,n:0,inv:0});return nodes.get(p)};
   let missing=0;
@@ -1065,7 +1075,6 @@ function renderNetwork(){
   const top=[...edges.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6);
   return`<div class="filters">
     <select id="nfTeam" aria-label="Team"><option value="0">${esc(teamName(0))}</option><option value="1">${esc(teamName(1))}</option></select>
-    <select id="nfHalf" aria-label="Period"><option value="all">Whole match</option><option value="1">1st half</option><option value="2">2nd half</option></select>
     <select id="nfMin" aria-label="Minimum passes"><option value="1">Show links with 1+ passes</option><option value="2">2+ passes</option><option value="3">3+ passes</option><option value="5">5+ passes</option></select>
   </div>
   <svg class="pitch" viewBox="-4 -4 113 76" role="img" aria-label="Pass network">${s}</svg>
@@ -1077,7 +1086,7 @@ function renderNetwork(){
 function renderHeat(){
   const f=S.f,t=+f.heatTeam,k=f.heatKind;
   const pts=[];
-  S.events.filter(e=>e.team===t).forEach(e=>{
+  AEV().filter(e=>e.team===t).forEach(e=>{
     if(k==="all"||k===e.type||(k==="def"&&DEF.includes(e.type)))pts.push([e.x,e.y]);
     if(k==="recv"&&isPassLike(e)&&e.out==="ok"&&e.ex!=null)pts.push([e.ex,e.ey]);
   });
@@ -1110,8 +1119,8 @@ function renderHeat(){
 }
 
 function renderLog(){
-  if(!S.events.length)return emptyMsg("Every tag is listed here, newest first. Click a time to jump the video there.");
-  const E=S.events.slice().sort((a,b)=>b.clock-a.clock).slice(0,400);
+  if(!AEV().length)return emptyMsg(S.events.length?"No events in this period.":"Every tag is listed here, newest first. Click a time to jump the video there.");
+  const E=AEV().slice().sort((a,b)=>b.clock-a.clock).slice(0,400);
   const detail=e=>{
     if(isPassLike(e))return e.out==="ok"?`→ ${esc(pLabel(e.team,e.rcv))} <span class="muted">xT ${f3(xtAdded(e))}${isProgressive(e)?" · prog":""}${intoBox(e)?" · box":""}</span>`:`<span class="muted">lost</span>`;
     if(e.type==="shot")return`${labelOut(e.out)} <span class="muted">(${e.body==="head"?"head":"foot"}${e.sit==="pen"?", pen":e.sit==="fk"?", FK":""}${e.ast?", assisted":""}) xG ${f2(e.xg)}</span>`;
@@ -1123,18 +1132,18 @@ function renderLog(){
      <td><span class="swatch" style="vertical-align:-1px;background:${teamColor(e.team)}"></span> ${esc(teamName(e.team))}</td>
      <td>${esc(pLabel(e.team,e.p))}</td><td>${TYPES[e.type]||esc(e.type)}</td><td>${detail(e)}</td>
      <td class="act"><button class="btn small ghost ${revCls(e.rev)}" data-rev="${e.id}" title="Cycle confidence: unmarked → review → wrong → OK">${revLabel(e.rev)}</button> <button class="btn small ghost" data-del="${e.id}" aria-label="Delete event">Delete</button></td></tr>`).join("")}
-  </tbody></table></div>${S.events.length>400?`<p class="note">Showing the latest 400 of ${S.events.length} events. Export CSV for all of them.</p>`:""}`;
+  </tbody></table></div>${AEV().length>400?`<p class="note">Showing the latest 400 of ${AEV().length} events. Export CSV for all of them.</p>`:""}`;
 }
 
 /* ---------- moments / reel ---------- */
 const MOMKINDS={def:["tackle","interception","recovery","clearance","foul"]};
 function momentPlayers(team){
   const set=new Set();
-  S.events.forEach(e=>{if(e.team===team&&e.t!=null){if(e.p)set.add(e.p);if(e.rcv)set.add(e.rcv)}});
+  AEV().forEach(e=>{if(e.team===team&&e.t!=null){if(e.p)set.add(e.p);if(e.rcv)set.add(e.rcv)}});
   return [...set].sort((a,b)=>(+a||999)-(+b||999));
 }
 function buildMoments(team,player,pad,kind){
-  let evs=S.events.filter(e=>e.team===team&&e.t!=null);
+  let evs=AEV().filter(e=>e.team===team&&e.t!=null);
   if(player!=="all")evs=evs.filter(e=>e.p===player||e.rcv===player);
   if(kind==="shot")evs=evs.filter(e=>e.type==="shot");
   else if(kind==="attack")evs=evs.filter(e=>["pass","cross","shot"].includes(e.type));
@@ -1237,7 +1246,7 @@ function renderMoments(){
      <p class="note">Auto-moments from Track B. Each plays against the loaded match video using its video_seconds. Confidence badge comes from the file's <code>label</code> column.</p>`;
   }
   const team=+f.momTeam;
-  if(!S.events.some(e=>e.t!=null))return srcSeg+emptyMsg("Moments need video times. Tag with a video loaded — every tag then stores its video_seconds — and per-player clips appear here, ready to play as a reel.");
+  if(!AEV().some(e=>e.t!=null))return srcSeg+emptyMsg("Moments need video times. Tag with a video loaded — every tag then stores its video_seconds — and per-player clips appear here, ready to play as a reel.");
   const players=momentPlayers(team);
   if(f.momPlayer!=="all"&&!players.includes(f.momPlayer))f.momPlayer="all";
   const moments=currentMomentList();
@@ -1260,11 +1269,12 @@ function renderMoments(){
 
 function renderTab(){
   const t=S.tab,b=$("#tabBody");
+  const ps=$("#periodSel");if(ps){ps.value=S.f.period;const pn=$("#periodNote");if(pn)pn.textContent=S.f.period==="all"?"":`${AEV().length} of ${S.events.length} events`;}
   b.innerHTML={summary:renderSummary,players:renderPlayers,shots:renderShots,passes:renderPasses,network:renderNetwork,heat:renderHeat,moments:renderMoments,log:renderLog}[t]();
   const bind=pairs=>pairs.forEach(([s,k,reset])=>{const el=$(s);if(!el)return;el.value=S.f[k];el.onchange=()=>{S.f[k]=el.value;if(reset)S.f[reset]="all";renderTab()}});
   if(t==="players")b.querySelectorAll("[data-sort]").forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(S.f.sortKey===k)S.f.sortDir*=-1;else{S.f.sortKey=k;S.f.sortDir=-1}renderTab()});
   if(t==="passes")bind([["#pfTeam","passTeam","passPlayer"],["#pfType","passType"],["#pfPlayer","passPlayer"]]);
-  if(t==="network")bind([["#nfTeam","netTeam"],["#nfHalf","netHalf"],["#nfMin","netMin"]]);
+  if(t==="network")bind([["#nfTeam","netTeam"],["#nfMin","netMin"]]);
   if(t==="heat")bind([["#hfTeam","heatTeam"],["#hfKind","heatKind"]]);
   if(t==="moments"){
     const me=$("#msEv");if(me)me.onclick=()=>{S.f.momSrc="events";renderTab()};
@@ -1288,6 +1298,7 @@ function renderTab(){
   }
 }
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest("[data-tab]");if(!b)return;S.tab=b.dataset.tab;document.querySelectorAll("[data-tab]").forEach(x=>x.setAttribute("aria-selected",x===b));renderTab()});
+$("#periodSel").onchange=e=>{S.f.period=e.target.value;renderTab()};
 
 let renderQ=0;
 function renderAll(){renderBoard();cancelAnimationFrame(renderQ);renderQ=requestAnimationFrame(renderTab);renderHint();drawTagPitch();renderDirNote();storeBadge();$("#csvOut").hidden=true}
@@ -1313,7 +1324,7 @@ function showSetup(m){
   editing=m||null;$("#setupPanel").hidden=false;$("#delConfirm").hidden=true;
   $("#setupTitle").textContent=m?"Match settings":"New match";
   $("#fName").value=m?.name||"";$("#fHome").value=m?.home||"";$("#fAway").value=m?.away||"";
-  $("#fHc").value=m?.hc||"#d7263d";$("#fAc").value=m?.ac||"#f2c230";$("#fDir").value=m?.dir||"R";$("#fOff").value=m?fmt(m.offset||0):"";
+  $("#fHc").value=m?.hc||"#d7263d";$("#fAc").value=m?.ac||"#f2c230";$("#fDir").value=m?.dir||"R";$("#fEtDir").value=m?.etdir||"";$("#fOff").value=m?fmt(m.offset||0):"";
   $("#fLuH").value=lineupText(m?.lu?.h);$("#fLuA").value=lineupText(m?.lu?.a);
   sqRefresh();
   $("#setupDelete").hidden=!m;$("#fHome").focus();
@@ -1327,7 +1338,7 @@ $("#setupForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const off=parseClock($("#fOff").value);if(off==null){toast("Match clock should look like 15:03");return}
   const home=$("#fHome").value.trim()||"Home",away=$("#fAway").value.trim()||"Away";
-  const m={id:editing?editing.id:"m"+uid(),name:$("#fName").value.trim()||`${home} vs ${away}`,home,away,hc:$("#fHc").value,ac:$("#fAc").value,dir:$("#fDir").value,offset:off,
+  const m={id:editing?editing.id:"m"+uid(),name:$("#fName").value.trim()||`${home} vs ${away}`,home,away,hc:$("#fHc").value,ac:$("#fAc").value,dir:$("#fDir").value,etdir:$("#fEtDir").value,offset:off,
     lu:{h:parseLineup($("#fLuH").value),a:parseLineup($("#fLuA").value)},created:editing?.created||new Date().toISOString()};
   try{await Store.saveMatch(m)}catch(err){toast("Could not save the match. Try again.");return}
   const i=S.matches.findIndex(x=>x.id===m.id);if(i>=0)S.matches[i]=m;else S.matches.push(m);

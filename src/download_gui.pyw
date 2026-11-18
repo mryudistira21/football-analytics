@@ -24,8 +24,10 @@ MODES = [
     ("Full Pertandingan", "full"),
     ("Babak Pertama", "first"),
     ("Babak Kedua", "second"),
+    ("Extra Time 1", "et1"),
+    ("Extra Time 2", "et2"),
 ]
-SUFFIX = {"full": "", "first": "_babak1", "second": "_babak2"}
+SUFFIX = {"full": "", "first": "_babak1", "second": "_babak2", "et1": "_et1", "et2": "_et2"}
 
 
 class App:
@@ -79,7 +81,7 @@ class App:
         self.end.grid(row=0, column=3)
         row += 1
         self.time_hint = ttk.Label(frm, foreground="#666",
-                                   text="Isi waktu babak dari jam di video (mis. 17:00 sampai 62:00).")
+                                   text="Isi waktu babak dari jam di video — termasuk injury time (mis. 00:00 sampai 50:00 untuk babak 1 penuh).")
         self.time_hint.grid(row=row, column=1, columnspan=2, sticky="w", padx=10)
         row += 1
 

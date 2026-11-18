@@ -40,6 +40,7 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .btn{border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:6px 10px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;color:inherit;display:inline-flex;gap:6px;align-items:center}
 .btn:hover{border-color:var(--muted)}.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .btn.small{padding:3px 8px;font-size:12px}
+.btn.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 input[type=text],input[type=search]{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:7px 10px;font:inherit;color:inherit;width:100%}
 .me{color:var(--warn);font-weight:700}
 .badge{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;border:1px solid var(--line);border-radius:999px;padding:1px 7px;color:var(--muted)}
@@ -105,7 +106,7 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const PL=105,PW=68,MYCLUB="BTL",TAGGER="https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp";
 let toastT;const toast=m=>{const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2200)};
-let DATA=null, byShort={}, byName={}, view={tab:"standings"}, analyses=[];
+let DATA=null, byShort={}, byName={}, view={tab:"standings"}, analyses=[], anPeriod="all";
 
 /* ---------- storage for imported analyses ---------- */
 const Store={db:null,
@@ -155,6 +156,7 @@ function wire(){
   const imp=$("#csvIn");if(imp)imp.onchange=onImport;
   document.querySelectorAll("[data-an]").forEach(el=>el.onclick=()=>{view={tab:"analysis",analysis:el.dataset.an};render();window.scrollTo(0,0)});
   document.querySelectorAll("[data-del]").forEach(el=>el.onclick=async ev=>{ev.stopPropagation();if(!confirm("Remove this analysis?"))return;await Store.del(el.dataset.del);analyses=await Store.list();render()});
+  document.querySelectorAll("[data-anper]").forEach(el=>el.onclick=()=>{anPeriod=el.dataset.anper;render()});
 }
 const teamCell=(short,cls="")=>{const c=byShort[short];return`<span class="tm ${cls}"><span class="swatch" style="background:${c?esc(c.color):"#888"}"></span><span>${c?esc(c.name):esc(short)}</span></span>`};
 
@@ -260,25 +262,39 @@ function renderAnalysisTab(){
       <div class="note mono">xG ${a.homeXg.toFixed(2)}–${a.awayXg.toFixed(2)} · ${a.shots} shots</div>
       <button class="btn small" data-del="${esc(a.id)}">Remove</button></div>`).join(""):`<div class="empty">No analysed matches yet. Import a Tagger CSV to see the score, xG and shot map here — and it tags the matching fixture.</div>`}`;
 }
+function anSummary(a,period){
+  const sh=(a.shotList||[]).filter(s=>period==="all"||String(s.half)===period||(period==="et"&&s.half>=3));
+  const o={hg:0,ag:0,hx:0,ax:0,hs:0,as:0,hon:0,aon:0,sh};
+  sh.forEach(s=>{const h=s.side==="home";
+    if(h){o.hs++;o.hx+=s.xg;if(s.goal)o.hg++;if(s.on)o.hon++}else{o.as++;o.ax+=s.xg;if(s.goal)o.ag++;if(s.on)o.aon++}});
+  return o;
+}
 function renderAnalysisDetail(id){
   const a=analyses.find(x=>x.id===id);if(!a)return`<div class="empty">Analysis not found.</div>`;
+  const periods=(a.shotList||[]).some(s=>s.half>=3)?["all","1","2","et"]:["all","1","2"];
+  if(!periods.includes(anPeriod))anPeriod="all";
+  const lbl={all:"Full",1:"1st half","1":"1st half","2":"2nd half",et:"Extra time"};
+  const m=anSummary(a,anPeriod);
+  const seg=`<div class="row" style="margin:0 0 10px;gap:6px">${periods.map(p=>`<button class="btn small ${p===anPeriod?"on":""}" data-anper="${esc(p)}">${esc(lbl[p])}</button>`).join("")}</div>`;
   return `<button class="btn small back" data-back="analysis">← Back</button>
-    <div class="card"><h2 style="font-size:22px">${esc(a.home)} <span class="mono">${a.hg}–${a.ag}</span> ${esc(a.away)}</h2>
+    <div class="card"><h2 style="font-size:22px">${esc(a.home)} <span class="mono">${m.hg}–${m.ag}</span> ${esc(a.away)}</h2>
     <div class="note">${esc(a.matchName||"")} · imported ${new Date(a.importedAt).toLocaleDateString()}</div>
+    ${seg}
     <div class="kv">
-      <div><div class="k">xG</div><div class="v mono">${a.homeXg.toFixed(2)} – ${a.awayXg.toFixed(2)}</div></div>
-      <div><div class="k">Shots</div><div class="v mono">${a.homeShots} – ${a.awayShots}</div></div>
-      <div><div class="k">On target</div><div class="v mono">${a.homeOn} – ${a.awayOn}</div></div>
+      <div><div class="k">xG</div><div class="v mono">${m.hx.toFixed(2)} – ${m.ax.toFixed(2)}</div></div>
+      <div><div class="k">Shots</div><div class="v mono">${m.hs} – ${m.as}</div></div>
+      <div><div class="k">On target</div><div class="v mono">${m.hon} – ${m.aon}</div></div>
     </div></div>
-    <h3 style="font-size:16px;text-transform:uppercase;margin:12px 0 6px">Shot map</h3>
-    <div class="card">${shotMap(a)}</div>
+    <h3 style="font-size:16px;text-transform:uppercase;margin:12px 0 6px">Shot map${anPeriod==="all"?"":" — "+esc(lbl[anPeriod])}</h3>
+    <div class="card">${shotMap(a,m.sh)}</div>
     <p class="note" style="margin-top:8px">Circle size = xG, filled = goal. ${esc(a.home)} attacks right, ${esc(a.away)} left. Open the full match in the Pitchside Tagger for passes, xT and reels.</p>`;
 }
-function shotMap(a){
+function shotMap(a,shots){
+  shots=shots||a.shotList||[];
   const base=`<rect x="-4" y="-4" width="113" height="76" fill="var(--turf)"/>`+
     `<g fill="none" stroke="var(--chalk)" stroke-width=".35"><rect x="0" y="0" width="105" height="68"/><line x1="52.5" y1="0" x2="52.5" y2="68"/><circle cx="52.5" cy="34" r="9.15"/>`+
     `<rect x="0" y="13.84" width="16.5" height="40.32"/><rect x="88.5" y="13.84" width="16.5" height="40.32"/></g>`;
-  const dots=(a.shotList||[]).map(s=>{
+  const dots=shots.map(s=>{
     const [x,y]=s.side==="home"?[s.x,s.y]:[PL-s.x,PW-s.y];
     const col=s.side==="home"?(byShort[a.homeShort]?.color||"#d7263d"):(byShort[a.awayShort]?.color||"#1d5fc4");
     const r=0.9+Math.sqrt(Math.max(0,s.xg))*4.2,goal=s.goal;
@@ -306,8 +322,9 @@ function onImport(e){
       if(team)side[sd].name=team;
       if(g(r,"event")==="shot"){
         const xg=parseFloat(g(r,"xg"))||0, out=g(r,"outcome"), goal=out==="goal";
-        side[sd].shots++;side[sd].xg+=xg;if(goal||out==="on target")side[sd].on++;if(goal)side[sd].goals++;
-        shotList.push({side:sd,x:parseFloat(g(r,"x"))||0,y:parseFloat(g(r,"y"))||0,xg,goal});
+        const on=goal||out==="on target";
+        side[sd].shots++;side[sd].xg+=xg;if(on)side[sd].on++;if(goal)side[sd].goals++;
+        shotList.push({side:sd,x:parseFloat(g(r,"x"))||0,y:parseFloat(g(r,"y"))||0,xg,goal,on,half:parseInt(g(r,"half"))||1});
       }
     });
     if(!shotList.length){toast("No shots found in that CSV");return}
