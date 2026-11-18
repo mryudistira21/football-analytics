@@ -187,6 +187,28 @@ def test_eof_within_sampling_tolerance_can_complete():
     assert classify_segment_status(100, 900.0, False, 899.9, 0.15) == "complete"
 
 
+def test_rerun_removes_only_stale_cutlists_from_previous_manifest(tmp_path):
+    tracking_csv = tmp_path / "tracking.csv"
+    output_dir = tmp_path / "moments"
+    metadata = {
+        "match_id": "match-demo",
+        "fps": 30.0,
+        "frame_stride": 3,
+        "calibration_median_error_m": 0.64,
+    }
+
+    write_tracking_csv(tracking_csv)
+    first = write_moment_cut_lists(tracking_csv, output_dir, metadata)
+    cutlist = output_dir / "track_17_moments.csv"
+    assert first["moment_count"] == 1
+    assert cutlist.is_file()
+
+    write_tracking_csv(tracking_csv, player_x=60.0, ball_x=51.0)
+    second = write_moment_cut_lists(tracking_csv, output_dir, metadata)
+    assert second["moment_count"] == 0
+    assert not cutlist.exists()
+
+
 def test_missing_ball_observations_produce_no_false_moments(tmp_path):
     tracking_csv = tmp_path / "tracking.csv"
     write_tracking_csv(tracking_csv, include_ball=False)
