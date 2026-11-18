@@ -56,7 +56,22 @@ One row per detected object per processed frame; coordinates in the **camera** f
 - `camera_state`: Track B v1 emits `wide` or `closeup`. `wide` means the frame's pitch-keypoint homography passed calibration validation and its coordinates are usable. `closeup` is the fallback when calibration does not pass; it is **not** a semantic guarantee that the footage is a close-up and may also include replay/graphics frames or weak keypoint detections. Only `wide` rows carry `x`, `y`. Add `replay` or `graphics` only when a future version actually detects and tests those states.
 - Metadata file next to it, `<name>.meta.json`: at minimum `match_id, video_file, fps, width, height, home_dir_1h, home_attacks_right_by_period, frame_stride, model_versions`. It should also record the processed `period`, source-video start/end seconds, completion status, and relevant tracking configuration.
 
-## 6. Resource rules (both tracks)
+## 6. Automatic moment cut-list (Track B → Tagger Reel importer)
+
+Track B can export one cut-list CSV per anonymous `track_id`. The Reel importer accepts exactly these seven columns, with no additional columns:
+
+`moment,start_s,end_s,duration_s,start_clock,events,label`
+
+- `start_s` and `end_s` are source-video `video_seconds` and drive playback. They are the time join key; they are not match-clock seconds.
+- `moment` is unique within the match and uses `track_<track_id>_<sequence>` (for example, `track_137_001`). The importer parses `track_id` from this prefix.
+- `events` is the moment descriptor, such as `near_ball`.
+- `label` is the confidence badge: `ok`, `review`, or `wrong`. Track B v1 assigns only `ok` and `review` automatically; `wrong` is reserved for human correction.
+- `duration_s` is display-only and may be recomputed by the importer. `start_clock` is display-only and is not parsed by the importer.
+- Multiple per-track files may be imported together; the importer deduplicates by `moment`. A sidecar manifest may carry `match_id`, team and diagnostics; it is not required by the importer.
+- This cut-list is distinct from the 26-column event CSV. It does not change the event importer.
+- `track_id` is not `shirt_number`; no player-number identity is implied.
+
+## 7. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.
 - **Process at 720p / 30 fps** (download that way; no need for 60 fps). Use `frame_stride` (e.g. every 2nd or 3rd frame) for position heatmaps.
 - **Annotated videos are opt-in** and short (a few minutes); a full annotated match costs gigabytes.
