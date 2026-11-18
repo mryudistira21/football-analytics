@@ -23,7 +23,7 @@ def write_tracking_csv(path: Path, *, include_ball: bool = True, unknown: bool =
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
-        for index in range(7):
+        for index in range(25):
             frame = index * 3
             seconds = 10.0 + index * 0.1
             writer.writerow({
@@ -155,7 +155,7 @@ def test_build_player_moments_writes_exact_seven_column_cutlist(tmp_path):
     assert rows[0]["events"] == "near_ball"
     assert rows[0]["label"] == "ok"
     assert float(rows[0]["start_s"]) == pytest.approx(10.0)
-    assert float(rows[0]["end_s"]) == pytest.approx(10.8)
+    assert float(rows[0]["end_s"]) == pytest.approx(12.5)
 
     manifest_path = output_dir / "tracking_moments.manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
