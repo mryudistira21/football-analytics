@@ -39,6 +39,8 @@ One row per event; coordinates in the **team** frame.
 
 `match_id, match_name, id, half, match_clock, match_seconds, video_seconds, team, side, player, player_name, event, outcome, receiver, receiver_name, x, y, end_x, end_y, body_part, situation, assist_event_id, xg, xt_added, progressive, into_box`
 
+- `half` is the match period: `1` = first half, `2` = second half, `3` = extra-time first half, `4` = extra-time second half. Preserve this integer through Tagger import/export and Hub analysis; do not collapse periods 3 and 4 into period 1 or 2.
+
 - `match_id` is the stable id both tracks share (the Tagger's internal match id, e.g. `m8f3k2ab`); `match_name` is the display name only. Join across tracks on `match_id`, never on the name.
 - `team` is the team name; `side` is `home` or `away` (use `side` to join with tracking).
 - `event`: `pass, cross, shot, tackle, interception, recovery, clearance, foul`
