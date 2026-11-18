@@ -3,12 +3,12 @@
 Paste this into ChatGPT to bring it up to date.
 
 ## Repo reconciled into one branch
-History got rewritten earlier (a force-push to `main` left an old lineage), so the work was split across branches. It is now reconciled on **`track-a/reel-telestration-supabase`**, which holds BOTH tracks in one coherent tree:
-- **Track A** (new): Pitchside Tagger v3, League Hub, `data/` roster DB, downloader GUI.
+History got rewritten earlier (a force-push to `main` left an old lineage), so the work was split across branches. It is now reconciled: **`main` is `520bb6f`**, holding BOTH tracks in one coherent tree:
+- **Track A**: Pitchside Tagger v3, League Hub, `data/` roster DB, downloader GUI.
 - **Track B** (from `track-b/automatic-tracking-v1`): `scripts/track_video.py`, `scripts/build_player_moments.py`, `notebooks/track_b_colab.ipynb`, `tests/`, `TRACK_B.md`.
 - Shared docs merged (DATA_CONTRACT, DECISIONS, requirements with `trackers`/`joblib`).
 
-**Proposal:** make this branch the new `main` so there is one source of truth and no more stale local copies. (Needs Rizki's OK — it rewrites the diverged `main`.)
+**Done:** `main` was force-updated to this unified tree (over the old diverged lineage). One source of truth now. The old feature branches and the draft **PR #1** are redundant — close PR #1 rather than merging it.
 
 ## Track A — done
 - **Tagger v3:** moment reels (per-player / team-attack / team-defence), confidence flags (`review` CSV column), telestration, lineup chips, and a **starting-XI picker** (pick 11, tap GK, enforced 11 + 1 GK) that loads from `data/clubs.json`.
