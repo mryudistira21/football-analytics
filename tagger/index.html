@@ -147,9 +147,9 @@ table.grid th.n{text-align:right}
 .method{font-size:12px;color:var(--muted);margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:68ch}
 .method b{color:var(--ink);font-weight:600}
 
-/* supabase squad picker */
-.sbpick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
-.sbpick select{max-width:60%}
+/* squad picker */
+.sqpick{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px}
+.sqpick select{max-width:60%}
 
 /* lineup quick-pick chips */
 .lineupchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
@@ -221,9 +221,9 @@ table.grid th.n{text-align:right}
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
     <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
-    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sb="h">From Supabase</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sbpick" id="sbPickh"></div></div>
-    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sb="a">From Supabase</button><span class="note">Export one with <code>club_db.py lineup</code>.</span></div><div class="sbpick" id="sbPicka"></div></div>
-    <div class="field" style="grid-column:1/-1"><label class="label">Supabase (optional — online squads)</label><div class="inl" style="flex-wrap:wrap"><input type="text" id="sbUrl" placeholder="https://xxxx.supabase.co" style="flex:1 1 220px"><input type="text" id="sbKey" placeholder="anon public key" style="flex:1 1 220px"><input type="text" id="sbSeason" placeholder="season e.g. 2026-27" class="mono" style="width:130px"><button class="btn small" type="button" id="sbSave">Save</button></div><span class="note">Saved in this browser only. The anon key is read-only (safe here); never paste the service key. Then use “From Supabase” on a lineup.</span></div>
+    <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="h">From squads</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sqpick" id="sqPickh"></div></div>
+    <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="a">From squads</button><span class="note">Export one with <code>export_squads.py</code>.</span></div><div class="sqpick" id="sqPicka"></div></div>
+    <div class="field" style="grid-column:1/-1"><label class="label">Squads file (optional — JSON)</label><div class="inl" style="flex-wrap:wrap"><label class="btn small" for="sqFile">Load squads JSON</label><input type="file" id="sqFile" accept=".json,application/json" hidden><button class="btn small ghost" type="button" id="sqClear" hidden>Clear</button><span class="note" id="sqStatus">No squads loaded.</span></div><span class="note">A clubs.json with teams + players (see <code>squads/clubs.json</code>). Remembered in this browser; then “From squads” fills a lineup and sets the team name/colour.</span></div>
     <div class="field" style="justify-content:flex-end"><div class="row"><button class="btn primary" type="submit" id="setupSave">Save match</button><button class="btn" type="button" id="setupCancel">Cancel</button><button class="btn ghost" type="button" id="setupDelete" hidden style="color:var(--warn)">Delete match</button></div></div>
   </form>
   <div class="row" id="delConfirm" hidden style="margin-top:10px"><span>Delete this match and all its tagged events?</span><button class="btn small" id="delYes" style="color:var(--warn)">Delete</button><button class="btn small" id="delNo">Keep</button></div>
@@ -1302,7 +1302,7 @@ function showSetup(m){
   $("#fName").value=m?.name||"";$("#fHome").value=m?.home||"";$("#fAway").value=m?.away||"";
   $("#fHc").value=m?.hc||"#d7263d";$("#fAc").value=m?.ac||"#f2c230";$("#fDir").value=m?.dir||"R";$("#fOff").value=m?fmt(m.offset||0):"";
   $("#fLuH").value=lineupText(m?.lu?.h);$("#fLuA").value=lineupText(m?.lu?.a);
-  sbFillConfig();
+  sqRefresh();
   $("#setupDelete").hidden=!m;$("#fHome").focus();
   $("#setupPanel").scrollIntoView({block:"start",behavior:"smooth"});
 }
@@ -1324,33 +1324,36 @@ $("#setupForm").addEventListener("submit",async e=>{
 });
 [["#fLuHFile","#fLuH"],["#fLuAFile","#fLuA"]].forEach(([fi,ta])=>$(fi).addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{const o=parseLineup(String(rd.result));$(ta).value=lineupText(o);toast(`Loaded ${Object.keys(o).length} players`)};rd.readAsText(f);e.target.value=""}));
 
-/* ---------- Supabase online squads (club/player DB, read-only anon key) ---------- */
-const SB={
-  cfg(){try{return{url:(localStorage.getItem("pt:sb_url")||"").replace(/\/$/,""),key:localStorage.getItem("pt:sb_key")||"",season:localStorage.getItem("pt:sb_season")||""}}catch(e){return{url:"",key:"",season:""}}},
-  async get(path){const c=SB.cfg();if(!c.url||!c.key)throw new Error("not configured");
-    const r=await fetch(c.url+"/rest/v1/"+path,{headers:{apikey:c.key,Authorization:"Bearer "+c.key}});
-    if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}
+/* ---------- Squads from a local JSON file (clubs + players, no cloud) ---------- */
+const Squads={data:null,
+  load(){try{const raw=localStorage.getItem("pt:squads");this.data=raw?JSON.parse(raw):null}catch(e){this.data=null}return this.data},
+  save(d){this.data=d;try{localStorage.setItem("pt:squads",JSON.stringify(d))}catch(e){}},
+  clubs(){return(this.data&&Array.isArray(this.data.clubs))?this.data.clubs:[]}
 };
-function sbFillConfig(){const c=SB.cfg();if($("#sbUrl")){$("#sbUrl").value=c.url;$("#sbKey").value=c.key;$("#sbSeason").value=c.season}}
-$("#sbSave").onclick=()=>{try{localStorage.setItem("pt:sb_url",$("#sbUrl").value.trim());localStorage.setItem("pt:sb_key",$("#sbKey").value.trim());localStorage.setItem("pt:sb_season",$("#sbSeason").value.trim());toast("Supabase settings saved")}catch(e){toast("Could not save (private window?)")}};
-document.querySelectorAll("[data-sb]").forEach(btn=>btn.onclick=async()=>{
-  const side=btn.dataset.sb, box=$("#sbPick"+side), ta=$(side==="h"?"#fLuH":"#fLuA"), c=SB.cfg();
-  if(!c.url||!c.key){toast("Add your Supabase URL + anon key below, then Save");return}
-  box.innerHTML=`<span class="note">Loading clubs…</span>`;
-  let clubs;try{clubs=await SB.get("clubs?select=id,name,short&order=name")}catch(e){box.innerHTML=`<span class="note" style="color:var(--warn)">Could not reach Supabase (${esc(e.message)}).</span>`;return}
-  if(!clubs.length){box.innerHTML=`<span class="note">No clubs online yet — run <code>club_supabase.py push</code>.</span>`;return}
-  box.innerHTML=`<select class="sbclub"><option value="">Choose club…</option>${clubs.map(cl=>`<option value="${esc(cl.id)}">${esc(cl.name)}${cl.short?" ("+esc(cl.short)+")":""}</option>`).join("")}</select>
-    <input type="text" class="sbseason mono" placeholder="season" style="width:110px" value="${esc(c.season)}">
-    <button class="btn small" type="button">Fill lineup</button>`;
-  box.querySelector("button").onclick=async()=>{
-    const id=box.querySelector(".sbclub").value, season=box.querySelector(".sbseason").value.trim();
-    if(!id){toast("Pick a club");return}
-    let q="players?select=number,name&club_id=eq."+encodeURIComponent(id)+"&order=number";
-    if(season)q+="&season=eq."+encodeURIComponent(season);
-    let ps;try{ps=await SB.get(q)}catch(e){toast("Could not load players ("+e.message+")");return}
-    if(!ps.length){box.innerHTML=`<span class="note">No players for that club/season.</span>`;return}
+function sqRefresh(){
+  Squads.load();const n=Squads.clubs().length;const st=$("#sqStatus"),cl=$("#sqClear");
+  const season=Squads.data&&Squads.data.season?` (${esc(Squads.data.season)})`:"";
+  if(st)st.textContent=n?`${n} clubs loaded${season}.`:"No squads loaded.";
+  if(cl)cl.hidden=!n;
+  ["h","a"].forEach(s=>{const b=$("#sqPick"+s);if(b)b.innerHTML=""});
+}
+$("#sqFile").addEventListener("change",e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{const d=JSON.parse(String(rd.result));if(!d||!Array.isArray(d.clubs))throw 0;Squads.save(d);toast(`Loaded ${d.clubs.length} clubs`)}catch(err){toast("Not a valid squads JSON — needs a clubs array")}sqRefresh()};
+  rd.readAsText(f);e.target.value="";});
+$("#sqClear").onclick=()=>{try{localStorage.removeItem("pt:squads")}catch(e){}Squads.data=null;sqRefresh();toast("Squads cleared")};
+document.querySelectorAll("[data-sq]").forEach(btn=>btn.onclick=()=>{
+  const side=btn.dataset.sq, box=$("#sqPick"+side), ta=$(side==="h"?"#fLuH":"#fLuA"), clubs=Squads.clubs();
+  if(!clubs.length){toast("Load a squads JSON first (the field below)");return}
+  box.innerHTML=`<select class="sqclub"><option value="">Choose club…</option>${clubs.map((c,i)=>`<option value="${i}">${esc(c.name||("Club "+(i+1)))}${c.short?" ("+esc(c.short)+")":""}</option>`).join("")}</select><button class="btn small" type="button">Fill lineup</button>`;
+  box.querySelector("button").onclick=()=>{
+    const i=box.querySelector(".sqclub").value;if(i===""){toast("Pick a club");return}
+    const c=Squads.clubs()[+i], ps=((c&&c.players)||[]).slice().sort((a,b)=>(+a.number||999)-(+b.number||999));
+    if(!ps.length){box.innerHTML=`<span class="note">That club has no players in the file.</span>`;return}
     ta.value=ps.map(p=>`${p.number} ${p.name}`).join("\n");
-    box.innerHTML=`<span class="note" style="color:var(--ok)">Loaded ${ps.length} players.</span>`;
+    const nameEl=$(side==="h"?"#fHome":"#fAway"), colEl=$(side==="h"?"#fHc":"#fAc");
+    if(c.name&&nameEl&&!nameEl.value.trim())nameEl.value=c.name;
+    if(c.color&&colEl&&/^#?[0-9a-fA-F]{6}$/.test(c.color))colEl.value=c.color[0]==="#"?c.color:"#"+c.color;
+    box.innerHTML=`<span class="note" style="color:var(--ok)">Filled ${ps.length} players.</span>`;
   };
 });
 $("#setupDelete").onclick=()=>{$("#delConfirm").hidden=false};
@@ -1483,7 +1486,7 @@ var Tele=(()=>{
 $("#teleBtn").onclick=()=>Tele.open();
 
 /* ---------- boot ---------- */
-loadDemo();numFocus();
+Squads.load();loadDemo();numFocus();
 (async()=>{
   await Store.init();
   try{S.matches=(await Store.listMatches()).sort((a,b)=>String(a.created).localeCompare(String(b.created)))}catch(e){S.matches=[]}

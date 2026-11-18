@@ -1,0 +1,41 @@
+{
+  "season": "2026-27",
+  "note": "Squads for the Pitchside Tagger. In match Settings -> 'Load squads JSON', then 'From squads' on a lineup. Each club: name, short, color (hex, used for tagging — CONFIRM from the broadcast kit), players[] of {number, name, position}. Fill players from the broadcast lineup graphic or ileague.id. Colours below are placeholders.",
+  "clubs": [
+    {
+      "name": "PERSIBA Bantul",
+      "short": "BTL",
+      "color": "#d7263d",
+      "group": "C",
+      "players": []
+    },
+    {
+      "name": "Gresik United FC",
+      "short": "GRS",
+      "color": "#f2c230",
+      "group": "C",
+      "players": []
+    },
+    {
+      "name": "PERSIKA Karanganyar",
+      "short": "PKA",
+      "color": "#1d5fc4",
+      "group": "C",
+      "players": []
+    },
+    {
+      "name": "PERSINGA Ngawi",
+      "short": "PNG",
+      "color": "#2e7a4c",
+      "group": "C",
+      "players": []
+    },
+    {
+      "name": "PERSIPA Pati",
+      "short": "PIP",
+      "color": "#7a1fa2",
+      "group": "C",
+      "players": []
+    }
+  ]
+}

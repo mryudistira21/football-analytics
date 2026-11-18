@@ -35,7 +35,7 @@ src/        reusable code (xG + xT models, crop, heatmaps)
 models/     fitted model files (xT grid)
 scripts/    how the models were fitted (re-runnable)
 tagger/     source of the Pitchside Tagger web app
-supabase/   club & player DB schema (online squads, read-only in the app)
+squads/     club & player squads (clubs.json) for the Tagger's lineup loader
 collab/     the hand-off note for ChatGPT, kept up to date
 notebooks/  experiments
 data/       local only — videos, model weights, CSVs (git-ignored)
