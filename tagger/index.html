@@ -233,7 +233,7 @@ table.grid th.n{text-align:right}
     <div class="field"><label class="label" for="fHome">Home team</label><div class="inl"><input type="text" id="fHome" placeholder="PERSIBA Bantul"><input type="color" id="fHc" value="#d7263d" aria-label="Home color"></div></div>
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
-    <div class="field"><label class="label" for="fEtDir">Home attacks in 1st extra-time half</label><select id="fEtDir"><option value="">Same as 1st half</option><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select><span class="note">Only matters if the match goes to extra time.</span></div>
+    <div class="field"><label class="label" for="fEtDir">Home attacks in 1st extra-time half</label><select id="fEtDir"><option value="">Choose only if extra time is played</option><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select><span class="note">Extra time has its own direction; select it before tagging ET1 or ET2.</span></div>
     <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
     <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="h">From squads</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sqpick" id="sqPickh"></div></div>
     <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="a">From squads</button><span class="note">Export one with <code>export_squads.py</code>.</span></div><div class="sqpick" id="sqPicka"></div></div>
@@ -645,7 +645,7 @@ function setSrc(s){S.src=s;$("#srcVideo").setAttribute("aria-pressed",s==="video
 $("#srcVideo").onclick=()=>setSrc("video");$("#srcClock").onclick=()=>setSrc("clock");
 $("#clockRun").onclick=()=>{const c=S.clock;if(c.running){c.base=clockNow();c.running=false}else{c.at=Date.now();c.running=true}$("#clockRun").textContent=c.running?"Pause":"Start"};
 $("#clockSetBtn").onclick=()=>{const v=parseClock($("#clockSet").value);if(v==null){toast("Use mm:ss, for example 45:00");return}S.clock.base=v;S.clock.at=Date.now();$("#clockSet").value=""};
-function setHalf(h){S.half=h;[1,2,3,4].forEach(n=>$("#h"+n).setAttribute("aria-pressed",h===n));renderDirNote();drawTagPitch()}
+function setHalf(h){if(h>=3&&!S.match?.etdir){toast("Set the extra-time attack direction in Match settings first.");showSetup(S.match);return}S.half=h;[1,2,3,4].forEach(n=>$("#h"+n).setAttribute("aria-pressed",h===n));renderDirNote();drawTagPitch()}
 [1,2,3,4].forEach(n=>$("#h"+n).onclick=()=>setHalf(n));
 function renderDirNote(){$("#dirNote").textContent=`${PERIODS[S.half]} · ${teamName(0)} attacking ${attacksRight(0,S.half)?"→ right":"← left"} on screen`}
 
@@ -1128,7 +1128,7 @@ function renderLog(){
     return"";
   };
   return`<div class="log tablewrap"><table class="grid"><thead><tr><th>Time</th><th>Team</th><th>Player</th><th>Event</th><th>Detail</th><th></th></tr></thead><tbody>
-   ${E.map(e=>`<tr><td>${e.t!=null&&videoLoaded?`<button class="btn small ghost mono" data-seek="${e.t}">${fmt(e.clock)}</button>`:`<span class="mono">${fmt(e.clock)}</span>`} <span class="muted" style="font-size:11px">${e.half===2?"2H":"1H"}</span></td>
+   ${E.map(e=>`<tr><td>${e.t!=null&&videoLoaded?`<button class="btn small ghost mono" data-seek="${e.t}">${fmt(e.clock)}</button>`:`<span class="mono">${fmt(e.clock)}</span>`} <span class="muted" style="font-size:11px">${({1:"1H",2:"2H",3:"ET1",4:"ET2"}[e.half]||"1H")}</span></td>
      <td><span class="swatch" style="vertical-align:-1px;background:${teamColor(e.team)}"></span> ${esc(teamName(e.team))}</td>
      <td>${esc(pLabel(e.team,e.p))}</td><td>${TYPES[e.type]||esc(e.type)}</td><td>${detail(e)}</td>
      <td class="act"><button class="btn small ghost ${revCls(e.rev)}" data-rev="${e.id}" title="Cycle confidence: unmarked → review → wrong → OK">${revLabel(e.rev)}</button> <button class="btn small ghost" data-del="${e.id}" aria-label="Delete event">Delete</button></td></tr>`).join("")}
@@ -1464,7 +1464,8 @@ $("#importIn").addEventListener("change",e=>{
         let out=outMap[g("outcome")]||g("outcome");if(INSTANT.includes(type))out="ok";
         if(!OUTS[type].includes(out)){skip.type++;return}
         const ms=numOrNull(g("match_seconds")),vt=numOrNull(g("video_seconds"));
-        const ev={id,c:0,half:+g("half")===2?2:1,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
+        const rawHalf=Number(g("half"));const half=Number.isInteger(rawHalf)&&rawHalf>=1&&rawHalf<=4?rawHalf:1;
+        const ev={id,c:0,half,clock:Number.isFinite(ms)&&ms!=null?ms:(parseClock(g("match_clock"))||0),t:Number.isFinite(vt)?vt:null,team,type,p:g("player"),x,y,ex,ey,out};
         if(isPassLike(ev))ev.rcv=g("receiver");
         if(type==="shot"){ev.body=g("body_part")==="head"?"head":"foot";ev.sit=["open","fk","pen"].includes(g("situation"))?g("situation"):"open";ev.ast=g("assist_event_id")||null}
         const rv=g("review");if(["ok","review","wrong"].includes(rv))ev.rev=rv;

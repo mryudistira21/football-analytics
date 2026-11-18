@@ -100,6 +100,10 @@ Check `status: complete` and `complete: true` in metadata, along with actual sta
 
 The current script assigns one period value per run. For a full 90-minute file, run each half separately with source-video time ranges. For a file that already contains only one half, omit the range flags.
 
+For a real broadcast, **measure each period from the actual source-video whistle boundaries**. `start` and `end` are elapsed seconds from the beginning of the video file, not match-clock values. Include first-half and second-half injury time through the actual whistle; the next period starts at its actual kick-off. A broadcast may also contain pre-match or half-time footage, so neither period 1 nor period 2 is guaranteed to begin at 0 or 2700 seconds. The familiar 0–2700 / 2700–5400 ranges below are only a simplified illustration, not defaults to copy.
+
+The Colab `PERIODS` list uses the same shape for periods 1–4. Periods 1 and 2 are required; add periods 3 and 4 only when extra time is played. Give every active period its actual source-video `start` and `end`; periods 3 and 4 also require their own explicit `period_direction: "R"` or `"L"`. Never infer extra-time direction from period 1.
+
 Example for a 90-minute video (assuming the half-time boundary is at 45:00):
 
 ```powershell

@@ -6,18 +6,20 @@ x, y are metres on a 105 x 68 pitch in the CAMERA frame (x = 0 is the goal on
 the left of the broadcast picture). Rows with role other than player /
 goalkeeper are skipped when a `role` column exists.
 
-Each team is flipped to attack left -> right, using which way the home team
-attacks in the 1st half (they swap at half-time):
+Each team is flipped to attack left -> right. Periods 1 and 2 can use
+--home-dir R/L. Extra time requires an explicit direction map:
     python src/heatmap_from_positions.py tracking.csv --home-dir R
-    python src/heatmap_from_positions.py tracking.csv --home-dir L --out data/heat
+    python src/heatmap_from_positions.py tracking.csv --home-attacks-right-by-period '{"1": true, "2": false, "3": false, "4": true}'
 
 Memory stays flat on long matches: the CSV is read in chunks and only a small
 histogram is kept, never the whole table.
 """
 from __future__ import annotations
 import argparse
+import json
 import sys
 from pathlib import Path
+from typing import Mapping
 
 import numpy as np
 import pandas as pd
@@ -42,13 +44,59 @@ def draw_pitch(ax):
         ax.add_patch(plt.Rectangle((x0, 13.84), 16.5, 40.32, fill=False, color="white", lw=1.2, zorder=3))
 
 
-def attacks_right(team: str, period: int, home_dir: str) -> bool:
-    home_right_1h = home_dir.upper() == "R"
-    home_right = home_right_1h if period == 1 else not home_right_1h
+def attacks_right(
+    team: str,
+    period: int,
+    home_dir: str | Mapping[str, bool] | None,
+) -> bool:
+    """Return whether this team's attack direction is rightward on screen.
+
+    A mapping is explicit: {period_number_as_string: home_attacks_right}.
+    A legacy R/L string is retained for ordinary periods 1 and 2 only.
+    Extra-time periods 3 and 4 are never inferred from regulation time.
+    """
+    if team not in {"home", "away"}:
+        raise ValueError(f"Unknown team side: {team!r}")
+    if period not in {1, 2, 3, 4}:
+        raise ValueError(f"Unsupported period {period}; expected 1..4")
+
+    if isinstance(home_dir, Mapping):
+        key = str(period)
+        if key not in home_dir:
+            raise ValueError(
+                f"Home attack direction for period {period} is missing; "
+                "extra-time direction must not be inferred."
+            )
+        home_right = home_dir[key]
+        if not isinstance(home_right, bool):
+            raise ValueError(f"Direction for period {period} must be a boolean.")
+    elif isinstance(home_dir, str):
+        if period >= 3:
+            raise ValueError(
+                f"Direction for period {period} must be supplied explicitly; "
+                "extra-time direction must not be inferred."
+            )
+        direction = home_dir.upper()
+        if direction not in {"R", "L"}:
+            raise ValueError("home_dir must be 'R' or 'L'.")
+        home_right_1h = direction == "R"
+        home_right = home_right_1h if period == 1 else not home_right_1h
+    elif home_dir is None:
+        raise ValueError(
+            f"Direction for period {period} is unavailable; "
+            "extra-time direction must not be inferred."
+        )
+    else:
+        raise TypeError("home_dir must be 'R', 'L', a per-period mapping, or None.")
+
     return home_right if team == "home" else not home_right
 
 
-def accumulate(csv: Path, home_dir: str | None, chunksize: int = 200_000):
+def accumulate(
+    csv: Path,
+    home_dir: str | Mapping[str, bool] | None,
+    chunksize: int = 200_000,
+):
     hists: dict[str, np.ndarray] = {}
     counts: dict[str, int] = {}
     cols = ["period", "team", "x", "y", "role"]
@@ -91,17 +139,34 @@ def save_heatmap(h: np.ndarray, title: str, out: Path):
 def main() -> int:
     ap = argparse.ArgumentParser(description="Hot-area maps from a tracking CSV.")
     ap.add_argument("csv", type=Path)
-    ap.add_argument("--home-dir", choices=["R", "L"], help="which way home attacks on screen in the 1st half")
+    ap.add_argument("--home-dir", choices=["R", "L"], help="which way home attacks on screen in the 1st half; infers period 2 only")
+    ap.add_argument(
+        "--home-attacks-right-by-period",
+        help='JSON object mapping periods to whether home attacks right, e.g. \'{"1": true, "2": false, "3": false, "4": true}\' (required for extra time)',
+    )
     ap.add_argument("--out", default="data/heat", help="output path prefix")
     a = ap.parse_args()
 
-    hists, counts = accumulate(a.csv, a.home_dir)
+    if a.home_dir and a.home_attacks_right_by_period:
+        ap.error("Use either --home-dir or --home-attacks-right-by-period, not both.")
+    if a.home_attacks_right_by_period:
+        try:
+            direction_map = json.loads(a.home_attacks_right_by_period)
+        except json.JSONDecodeError as exc:
+            ap.error(f"Invalid direction JSON: {exc}")
+        if not isinstance(direction_map, dict):
+            ap.error("--home-attacks-right-by-period must be a JSON object.")
+        home_directions = direction_map
+    else:
+        home_directions = a.home_dir
+
+    hists, counts = accumulate(a.csv, home_directions)
     if not hists:
         print("No usable rows found.")
         return 1
     prefix = Path(a.out)
     prefix.parent.mkdir(parents=True, exist_ok=True)
-    note = "attacking →" if a.home_dir else "camera view"
+    note = "attacking →" if home_directions else "camera view"
     for team, h in hists.items():
         safe = "".join(ch for ch in team if ch.isalnum() or ch in "-_")
         save_heatmap(h, f"Hot areas — {team} ({counts[team]:,} positions, {note})",

@@ -271,9 +271,11 @@ function anSummary(a,period){
 }
 function renderAnalysisDetail(id){
   const a=analyses.find(x=>x.id===id);if(!a)return`<div class="empty">Analysis not found.</div>`;
-  const periods=(a.shotList||[]).some(s=>s.half>=3)?["all","1","2","et"]:["all","1","2"];
+  const seen=new Set((a.shotList||[]).map(s=>String(s.half)));
+  const periods=["all","1","2",...["3","4"].filter(p=>seen.has(p))];
+  if(seen.has("3")||seen.has("4"))periods.push("et");
   if(!periods.includes(anPeriod))anPeriod="all";
-  const lbl={all:"Full",1:"1st half","1":"1st half","2":"2nd half",et:"Extra time"};
+  const lbl={all:"Full","1":"1st half","2":"2nd half","3":"ET first half","4":"ET second half",et:"Extra time"};
   const m=anSummary(a,anPeriod);
   const seg=`<div class="row" style="margin:0 0 10px;gap:6px">${periods.map(p=>`<button class="btn small ${p===anPeriod?"on":""}" data-anper="${esc(p)}">${esc(lbl[p])}</button>`).join("")}</div>`;
   return `<button class="btn small back" data-back="analysis">← Back</button>
