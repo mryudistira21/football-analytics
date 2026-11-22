@@ -33,3 +33,14 @@ def test_match_colab_notebook_cells_compile():
         code = "\n".join(line for line in source.splitlines() if not line.lstrip().startswith("!"))
         compile(code, f"{path.name}:cell-{index}", "exec")
         assert "import torch" not in source, "the notebook kernel must not load PyTorch"
+
+
+def test_kaggle_notebook_cells_compile():
+    path = Path(__file__).resolve().parents[1] / "notebooks" / "match_kaggle.ipynb"
+    notebook = json.loads(path.read_text(encoding="utf-8"))
+    code_cells = [c for c in notebook["cells"] if c.get("cell_type") == "code"]
+    assert len(code_cells) == 4
+    for index, cell in enumerate(code_cells):
+        source = "".join(cell.get("source", []))
+        compile(source, f"{path.name}:cell-{index}", "exec")
+        assert "import torch" not in source

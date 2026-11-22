@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-22 (c) — Unattended runs (Kaggle, laptop)
+- **`scripts/run_queue.py`:** several matches, one worker per GPU (`--gpus 0,1`), smoke test (only when no team state yet) + full run each, per-match logs and `queue/status.json`. `--matches ready` = every match with a video URL and both period times.
+- **`notebooks/match_kaggle.ipynb`:** Kaggle commits run with the browser closed; 2 × T4 → two matches in parallel. Videos and scratch live in `/tmp` (not saved); runs, bundles, stills and logs in `/kaggle/working`. Resume by attaching the previous version's output. Uploaded mp4 datasets are picked up when YouTube blocks the download.
+- **`--video-dir`** on the driver: where masters live; when set, no second local copy is made and downloads land there directly.
+- Colab background execution is a Pro+ feature only, so Kaggle or the laptop are the "close the browser" options.
+
 ## 2026-11-22 (b) — Track B parity, team-colour fit, scouting
 - **PR #1 is fully contained in `main`.** Every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose one extra feature (read `home_attacks_right_by_period` from `<csv>.meta.json`) is now ported. PR #1 closed as superseded.
 - **Team-colour fit spread over the 1st half:** ~100 frames (every 15 s across up to 25 min, reached by seeking), up to 10 player crops each, max 600 crops — instead of the first 4 minutes, which are often walk-outs, close-ups and replays. New `--team-sample-start`; intervals ≥ 2 s seek instead of decoding every frame.

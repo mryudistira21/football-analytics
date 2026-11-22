@@ -89,3 +89,10 @@ def test_chunk_done_and_combine_with_team_swap(tmp_path):
     teams = [r["team"] for r in csv.DictReader(out.open())]
     assert teams == ["away", "home", "unknown"]
     assert meta["rows"] == 3 and meta["teams_swapped_at_combine"] is True
+
+
+def test_queue_only_runs_matches_with_both_halves():
+    from scripts.run_queue import has_periods
+    assert has_periods({"periods": {"1": ["0:10", "45:00"], "2": ["60:00", "105:00"]}})
+    assert not has_periods({"periods": {"1": ["0:10", "45:00"], "2": None}})
+    assert not has_periods({})

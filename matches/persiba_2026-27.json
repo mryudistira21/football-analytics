@@ -83,7 +83,7 @@
         0,
         1
       ],
-      "video_url": null,
+      "video_url": "https://www.youtube.com/watch?v=4u7t742kGsU",
       "periods": {
         "1": null,
         "2": null
@@ -138,6 +138,25 @@
           "1:10:10",
           "1:59:21"
         ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    },
+    {
+      "match_id": "persinga_psf_20261118",
+      "scope": "scouting",
+      "round": "Pekan 2",
+      "date": "2026-11-18",
+      "home": "Persinga Ngawi",
+      "away": "Putra Sang Fajar FC",
+      "score": [
+        1,
+        2
+      ],
+      "video_url": "https://www.youtube.com/watch?v=FUOhJTwq5a8",
+      "periods": {
+        "1": null,
+        "2": null
       },
       "home_dir_1h": null,
       "swap_teams": false

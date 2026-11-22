@@ -6,7 +6,7 @@ One page to analyse a match end to end. Track B (automatic tracking) and Track A
 |---|---|---|---|---|
 | `persiba_gresik_20261113` | PERSIBA – Gresik United (H), Pekan 1 | 0–0 | [nCVF6TTJGXw](https://www.youtube.com/watch?v=nCVF6TTJGXw) | filled |
 | `persipa_persiba_20261117` | Persipa Pati – PERSIBA (A), Pekan 2 | 2–2 | [v3LlHgczPZA](https://www.youtube.com/watch?v=v3LlHgczPZA) | filled |
-| `persiba_persika_20261121` | PERSIBA – Persika Karanganyar (H), Pekan 3 | 0–1 | add `video_url` | to fill |
+| `persiba_persika_20261121` | PERSIBA – Persika Karanganyar (H), Pekan 3 | 0–1 | [4u7t742kGsU](https://www.youtube.com/watch?v=4u7t742kGsU) | to fill |
 
 Opponent scouting (same config, `"scope": "scouting"`):
 
@@ -14,6 +14,7 @@ Opponent scouting (same config, `"scope": "scouting"`):
 |---|---|---|---|---|
 | `persika_persinga_20261113` | Persika – Persinga Ngawi | 1–0 | [wSEbj4TNGr4](https://www.youtube.com/watch?v=wSEbj4TNGr4) | filled |
 | `gresik_persika_20261117` | Gresik United – Persika | 1–1 | [1IYP9I4Atyo](https://www.youtube.com/watch?v=1IYP9I4Atyo) | filled |
+| `persinga_psf_20261118` | Persinga – Putra Sang Fajar | 1–2 | [FUOhJTwq5a8](https://www.youtube.com/watch?v=FUOhJTwq5a8) | to fill |
 | `persinga_persibangga_20261122` | Persinga – Persibangga | — | add `video_url` | to fill |
 
 Next opponent: **Persinga Ngawi (away, 26 Nov)**.
@@ -60,6 +61,22 @@ python scripts\run_match.py --config matches\persiba_2026-27.json --match persib
 ```
 
 8 GB VRAM is enough (two YOLO models + SigLIP ≈ 3 GB). If it ever runs out, add `--batch 4`.
+
+## A2 · Runs that keep going with the browser closed
+
+| Where | Cost | Background | Notes |
+|---|---|---|---|
+| **Kaggle** — `notebooks/match_kaggle.ipynb` | free (weekly GPU quota) | yes: *Save Version → Save & Run All (Commit)* | 2 × T4 → two matches at once; ≤ 12 h per run; needs a phone-verified account for Internet + GPU |
+| **Laptop (RTX 2070)** — `scripts/run_queue.py` | free | yes, as long as the laptop is on | no quota, no time limit; best overnight |
+| Colab Pro+ | paid | yes (Pro+ only) | the Colab notebook as is |
+
+Kaggle, step by step: import `match_kaggle.ipynb` → *Session options*: GPU T4 x2, Internet On → edit cell 1 (match ids, period times) → **Save Version → Save & Run All (Commit)** → close the tab. Results: the version's *Output* → `deliverables/` (bundle zips, smoke stills, logs). To resume a failed run, add the previous version's output as an input and commit again.
+
+Laptop overnight (all matches that have period times; resumable):
+
+```powershell
+python scripts\run_queue.py --config matches\persiba_2026-27.json --matches ready --root D:\Video-Bola-Analis --download
+```
 
 ## B · Track A tagging — [Pitchside Tagger](https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp)
 

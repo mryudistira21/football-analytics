@@ -185,7 +185,7 @@ def copy_if_needed(src: Path, dst: Path) -> None:
     if dst.exists() and dst.stat().st_size == src.stat().st_size:
         return
     dst.parent.mkdir(parents=True, exist_ok=True)
-    tmp = dst.with_name(dst.name + ".copying")
+    tmp = dst.with_name(f"{dst.name}.{os.getpid()}.copying")  # unique: parallel workers may copy at once
     shutil.copyfile(src, tmp)
     tmp.replace(dst)
 
@@ -197,10 +197,11 @@ def youtube_id(url: str) -> str | None:
 
 
 # ---------------------------------------------------------------- steps
-def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool) -> Path:
+def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool,
+                 video_dir: Path | None = None) -> Path:
     """Persistent copy in root/videos; a local working copy in work/ for fast decoding."""
     mid = match["match_id"]
-    vids = root / "videos"
+    vids = video_dir or root / "videos"
     persistent = next((p for p in sorted(vids.glob(mid + ".*"))
                        if p.suffix.lower() in (".mp4", ".mkv", ".webm", ".mov")), None) if vids.exists() else None
     if persistent is None and vids.exists():
@@ -218,7 +219,7 @@ def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool) 
         url = match.get("video_url")
         if not url:
             raise SystemExit(f"{mid}: set video_url in the config first.")
-        stage = work / "videos"
+        stage = vids if video_dir is not None else work / "videos"
         log(f"Downloading {url} (720p, <=30 fps, no re-encode) ...")
         r = subprocess.run([sys.executable, str(DOWNLOADER), url, "--height", "720", "--fps", "30",
                             "--name", mid, "--out", str(stage)])
@@ -229,6 +230,8 @@ def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool) 
         if persistent.resolve() != got.resolve():
             log(f"Saving the master to {persistent} ...")
             copy_if_needed(got, persistent)
+    if video_dir is not None:
+        return persistent  # --video-dir is already fast local disk (Kaggle/laptop): no second copy
     local = work / "videos" / persistent.name
     if local.resolve() != persistent.resolve():
         if not (local.exists() and local.stat().st_size == persistent.stat().st_size):
@@ -445,6 +448,9 @@ def main() -> int:
     ap.add_argument("--match", required=True, help="match_id from the config")
     ap.add_argument("--root", type=Path, required=True, help="persistent folder (Drive on Colab)")
     ap.add_argument("--work", type=Path, help="fast local scratch (default: --root)")
+    ap.add_argument("--video-dir", type=Path,
+                    help="where master videos are kept (default: <root>/videos). On Kaggle use local disk "
+                         "so 2 GB videos don't count against the saved output.")
     ap.add_argument("--download", action="store_true", help="download the video if it is missing")
     ap.add_argument("--download-only", action="store_true",
                     help="only fetch the video (+ models) into --root; no GPU needed")
@@ -471,7 +477,7 @@ def main() -> int:
     for d in (run / "chunks", run / "logs", work):
         d.mkdir(parents=True, exist_ok=True)
     if a.download_only:
-        video = ensure_video(match, root, work, True)
+        video = ensure_video(match, root, work, True, a.video_dir)
         duration, fps = video_info(video)
         ensure_models(root)
         log(f"Ready: {video} ({fmt_clock(duration)}, {fps:.2f} fps). "
@@ -497,7 +503,7 @@ def main() -> int:
     log(f"  {len(chunks)} chunks of <= {settings['chunk_seconds'] / 60:.0f} min | {resources()}")
 
     if not a.post_only:
-        video = ensure_video(match, root, work, a.download)
+        video = ensure_video(match, root, work, a.download, a.video_dir)
         duration, fps = video_info(video)
         last_end = max(p["end"] for p in periods)
         if duration and last_end > duration + 1:
