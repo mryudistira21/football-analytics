@@ -230,11 +230,13 @@ table.grid th.n{text-align:right}
   <div class="panel-h"><h2 id="setupTitle">New match</h2><span class="note">Team names, colors and lineups appear in every chart.</span></div>
   <form id="setupForm" class="setup">
     <div class="field"><label class="label" for="fName">Match name</label><input type="text" id="fName" placeholder="PERSIBA Bantul vs Gresik United"></div>
+    <div class="field"><label class="label" for="fMid">Match ID</label><input type="text" id="fMid" class="mono" placeholder="persiba_gresik_20261113" autocomplete="off" spellcheck="false"><span class="note" id="fMidNote">Optional. Use the match_id from <code>matches/*.json</code> so the Tagger CSV and Track B line up. Blank = automatic. Fixed once the match is created.</span></div>
     <div class="field"><label class="label" for="fHome">Home team</label><div class="inl"><input type="text" id="fHome" placeholder="PERSIBA Bantul"><input type="color" id="fHc" value="#d7263d" aria-label="Home color"></div></div>
     <div class="field"><label class="label" for="fAway">Away team</label><div class="inl"><input type="text" id="fAway" placeholder="Gresik United"><input type="color" id="fAc" value="#f2c230" aria-label="Away color"></div></div>
     <div class="field"><label class="label" for="fDir">Home attacks in 1st half</label><select id="fDir"><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select></div>
     <div class="field"><label class="label" for="fEtDir">Home attacks in 1st extra-time half</label><select id="fEtDir"><option value="">Choose only if extra time is played</option><option value="R">Left → right on screen</option><option value="L">Right → left on screen</option></select><span class="note">Extra time has its own direction; select it before tagging ET1 or ET2.</span></div>
-    <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Read the scoreboard at the start of your video. A full replay is usually 00:00.</span></div>
+    <div class="field"><label class="label" for="fK1">Kick-off times in the video</label><div class="inl"><input type="text" id="fK1" placeholder="1st half e.g. 17:00" class="mono" aria-label="1st-half kick-off, video time"><input type="text" id="fK2" placeholder="2nd half e.g. 1:20:26" class="mono" aria-label="2nd-half kick-off, video time"></div><span class="note">Full broadcasts: the elapsed video time of each kick-off (same as the period start in <code>matches/*.json</code>). The match clock then skips the pre-match and half-time, and the 1st/2nd half switches by itself. Leave blank for a clip and use the box below.</span></div>
+    <div class="field"><label class="label" for="fOff">Match clock at video 0:00</label><input type="text" id="fOff" placeholder="00:00" class="mono"><span class="note">Only when no kick-off times are set. Read the scoreboard at the start of your clip; a clip from kick-off is 00:00.</span></div>
     <div class="field"><label class="label" for="fLuH">Home lineup</label><textarea id="fLuH" placeholder="1 Goalkeeper name&#10;10 Playmaker name&#10;9 Striker name"></textarea><div class="row"><label class="btn small" for="fLuHFile">Load from file</label><input type="file" id="fLuHFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="h">From squads</button><span class="note">One player per line: number, then name. Optional.</span></div><div class="sqpick" id="sqPickh"></div></div>
     <div class="field"><label class="label" for="fLuA">Away lineup</label><textarea id="fLuA" placeholder="1 Goalkeeper name&#10;15 Midfielder name"></textarea><div class="row"><label class="btn small" for="fLuAFile">Load from file</label><input type="file" id="fLuAFile" accept=".txt,.csv" hidden><button class="btn small" type="button" data-sq="a">From squads</button><span class="note">Export one with <code>export_squads.py</code>.</span></div><div class="sqpick" id="sqPicka"></div></div>
     <div class="field" style="grid-column:1/-1"><label class="label">Squads file (optional — JSON)</label><div class="inl" style="flex-wrap:wrap"><label class="btn small" for="sqFile">Load squads JSON</label><input type="file" id="sqFile" accept=".json,application/json" hidden><button class="btn small ghost" type="button" id="sqClear" hidden>Clear</button><span class="note" id="sqStatus">No squads loaded.</span></div><span class="note">A clubs.json with teams + players (see <code>data/clubs.json</code>). Remembered in this browser; then “From squads” fills a lineup and sets the team name/colour.</span></div>
@@ -411,6 +413,12 @@ const PL=105, PW=68;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=s=>{if(s==null||isNaN(s))return"--:--";s=Math.max(0,Math.floor(s));const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,"0")+":"+String(x).padStart(2,"0")};
+const parseHms=v=>{v=String(v||"").trim();if(!v)return null;const p=v.split(":").map(Number);if(p.some(n=>isNaN(n)||n<0)||p.length>3)return undefined;return p.reduce((a,b)=>a*60+b,0)};
+const hms=s=>{s=Math.max(0,Math.round(s||0));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return(h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")};
+/* Match clock from video time. With kick-off times (k1, k2) the clock is right for a full
+   broadcast (pre-match, half-time break); without them it is offset + video time. */
+function matchClockAt(t){const m=S.match||{};if(m.k1!=null){if(m.k2!=null&&t>=m.k2)return 2700+(t-m.k2);return Math.max(0,t-m.k1)}return(m.offset||0)+t}
+function halfAt(t){const m=S.match||{};if(m.k2!=null&&t>=m.k2)return 2;if(m.k1!=null)return 1;return null}
 const parseClock=v=>{v=String(v||"").trim();if(!v)return 0;const p=v.split(":").map(Number);if(p.some(isNaN))return null;return p.length===1?p[0]*60:p[0]*60+p[1]};
 const uid=()=>Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4);
 const f2=n=>(Math.round(n*100)/100).toFixed(2);
@@ -617,12 +625,13 @@ function nowTimes(){
   // video_seconds (t) is recorded whenever a video is loaded, in either time mode,
   // so events stay joinable to tracking data. The match clock still follows the chosen source.
   const t=videoLoaded?video.currentTime:null;
-  if(S.src==="video"&&videoLoaded)return{t,clock:(S.match?.offset||0)+t};
+  if(S.src==="video"&&videoLoaded)return{t,clock:matchClockAt(t)};
   return{t,clock:clockNow()};
 }
 setInterval(()=>{
   $("#clockFace").textContent=fmt(clockNow());
-  if(videoLoaded) $("#nowV").textContent=`match ${fmt((S.match?.offset||0)+video.currentTime)} · video ${fmt(video.currentTime)}`;
+  if(videoLoaded){$("#nowV").textContent=`match ${fmt(matchClockAt(video.currentTime))} · video ${hms(video.currentTime)}`;
+    const h=halfAt(video.currentTime);if(h&&S.half<=2&&S.half!==h)setHalf(h)}
 },250);
 $("#fileIn").addEventListener("change",e=>{
   const f=e.target.files[0];if(!f)return;
@@ -1178,7 +1187,7 @@ async function reelExport(){
   const who=f.momPlayer==="all"?"team":("p"+f.momPlayer);
   const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
   const cols=["moment","start_s","end_s","duration_s","start_clock","events","label"];
-  const rows=on.map((m,i)=>[i+1,m.start.toFixed(1),m.end.toFixed(1),(m.end-m.start).toFixed(1),fmt((S.match?.offset||0)+m.start),m.events.length,momentLabel(m)].map(q).join(","));
+  const rows=on.map((m,i)=>[i+1,m.start.toFixed(1),m.end.toFixed(1),(m.end-m.start).toFixed(1),fmt(matchClockAt(m.start)),m.events.length,momentLabel(m)].map(q).join(","));
   const csv=cols.join(",")+"\n"+rows.join("\n")+"\n";
   const name=(S.match?.name||"match").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_"+who+"_reel.csv";
   let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads")}catch(e){}
@@ -1324,6 +1333,8 @@ function showSetup(m){
   editing=m||null;$("#setupPanel").hidden=false;$("#delConfirm").hidden=true;
   $("#setupTitle").textContent=m?"Match settings":"New match";
   $("#fName").value=m?.name||"";$("#fHome").value=m?.home||"";$("#fAway").value=m?.away||"";
+  $("#fMid").value=m?.id||"";$("#fMid").readOnly=!!m;
+  $("#fK1").value=m?.k1!=null?hms(m.k1):"";$("#fK2").value=m?.k2!=null?hms(m.k2):"";
   $("#fHc").value=m?.hc||"#d7263d";$("#fAc").value=m?.ac||"#f2c230";$("#fDir").value=m?.dir||"R";$("#fEtDir").value=m?.etdir||"";$("#fOff").value=m?fmt(m.offset||0):"";
   $("#fLuH").value=lineupText(m?.lu?.h);$("#fLuA").value=lineupText(m?.lu?.a);
   sqRefresh();
@@ -1338,7 +1349,15 @@ $("#setupForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const off=parseClock($("#fOff").value);if(off==null){toast("Match clock should look like 15:03");return}
   const home=$("#fHome").value.trim()||"Home",away=$("#fAway").value.trim()||"Away";
-  const m={id:editing?editing.id:"m"+uid(),name:$("#fName").value.trim()||`${home} vs ${away}`,home,away,hc:$("#fHc").value,ac:$("#fAc").value,dir:$("#fDir").value,etdir:$("#fEtDir").value,offset:off,
+  const k1=parseHms($("#fK1").value),k2=parseHms($("#fK2").value);
+  if(k1===undefined||k2===undefined){toast("Kick-off times look like 17:00 or 1:20:26");return}
+  if(k2!=null&&(k1==null||k2<=k1)){toast("Set the 1st-half kick-off, earlier than the 2nd-half one");return}
+  let newId="m"+uid();
+  if(!editing){const want=$("#fMid").value.trim();
+    if(want){if(!/^[A-Za-z0-9_-]{3,64}$/.test(want)){toast("Match ID: 3-64 letters, digits, _ or -");return}
+      if(S.matches.some(x=>x.id===want)){toast("A match with that ID already exists");return}
+      newId=want}}
+  const m={id:editing?editing.id:newId,name:$("#fName").value.trim()||`${home} vs ${away}`,home,away,hc:$("#fHc").value,ac:$("#fAc").value,dir:$("#fDir").value,etdir:$("#fEtDir").value,offset:off,k1,k2,
     lu:{h:parseLineup($("#fLuH").value),a:parseLineup($("#fLuA").value)},created:editing?.created||new Date().toISOString()};
   try{await Store.saveMatch(m)}catch(err){toast("Could not save the match. Try again.");return}
   const i=S.matches.findIndex(x=>x.id===m.id);if(i>=0)S.matches[i]=m;else S.matches.push(m);
@@ -1526,7 +1545,7 @@ var Tele=(()=>{
   function save(){
     const out=document.createElement("canvas");out.width=frame.width;out.height=frame.height;
     const o=out.getContext("2d");o.drawImage(frame,0,0);o.drawImage(draw,0,0);
-    const stamp=fmt((S.match?.offset||0)+video.currentTime).replace(":","");
+    const stamp=fmt(matchClockAt(video.currentTime)).replace(":","");
     const name=(S.match?.name||"frame").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_"+stamp+".png";
     out.toBlob(async b=>{
       if(!b){toast("Could not render the image");return}

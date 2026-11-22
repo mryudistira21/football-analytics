@@ -1,29 +1,30 @@
-# Collaboration status — 18 November 2026
+# Collaboration status — 22 November 2026
 
 Paste this into ChatGPT to bring it up to date.
 
-## Repo reconciled into one branch
-History got rewritten earlier (a force-push to `main` left an old lineage), so the work was split across branches. It is now reconciled: **`main` is `520bb6f`**, holding BOTH tracks in one coherent tree:
-- **Track A**: Pitchside Tagger v3, League Hub, `data/` roster DB, downloader GUI.
-- **Track B** (from `track-b/automatic-tracking-v1`): `scripts/track_video.py`, `scripts/build_player_moments.py`, `notebooks/track_b_colab.ipynb`, `tests/`, `TRACK_B.md`.
-- Shared docs merged (DATA_CONTRACT, DECISIONS, requirements with `trackers`/`joblib`).
+## What changed (main)
+- **PR #2 merged** (fast-forward): four-period Tagger/Hub/heatmap work is on `main`.
+- **Production runner:** `scripts/run_match.py` + `matches/persiba_2026-27.json` + `notebooks/match_colab.ipynb`. One command per match: download → models → tracking in 10-min chunks (each a subprocess, resumable via chunk metadata) → combine → `build_player_moments.py` → `scripts/team_report.py` → bundle zip. Same driver runs on Colab and on Rizki's RTX 2070. The runbook is `MATCH_WORKFLOW.md`.
+- The pilot notebooks shared in chat (download / split-halves / T4 / memory-safe variants) are **superseded** by `match_colab.ipynb`. `notebooks/track_b_colab.ipynb` stays for reference.
+- **Periods:** the "P3/P4" ranges in the pilot were stoppage time (2–3 min after each half), not extra time. Merged into periods 1 and 2 in the config. League matches use 1–2 only.
+- **`track_video.py` (schema unchanged):** `grab()`/`retrieve()` so skipped frames aren't converted; batched YOLO (`--batch`, auto 8 on CUDA, FP16); `--pitch-every N` reuses the last homography between pitch-model calls (default 1 = unchanged). New metadata keys `batch`, `pitch_every`.
+- **Frame stride auto** = round(fps/10). Your 20-min pilot clip was **58 fps**, so stride 3 sampled ~19/s (twice the work).
+- **Track IDs** = `chunk × 100000 + n` (deterministic; replaces scanning previous CSVs for the max).
+- **Home/away swap and attack direction moved to post-processing** (`swap_teams`, `home_dir_1h` in the config) — no GPU rerun to fix either.
+- **Team report** `trackb_team_report_v1`: per period possession proxy (ball proximity ≤ 3 m), territory thirds, block height overall / in / out of possession, back line (drops the single deepest player per frame — keepers often come through as `player`), width, length, 21×14 heatmaps, data-quality shares. Hub imports it beside the Tagger CSV.
+- CI now also runs on pushes to `main`; new tests `test_run_match.py`, `test_team_report.py`, notebook compile test.
 
-**Done:** `main` was force-updated to this unified tree (over the old diverged lineage). One source of truth now. The old feature branches and the draft **PR #1** are redundant — close PR #1 rather than merging it.
+## The three matches
+| match_id | Fixture | Score |
+|---|---|---|
+| `persiba_gresik_20261113` | PERSIBA – Gresik United | 0–0 |
+| `persipa_persiba_20261117` | Persipa Pati – PERSIBA | 2–2 |
+| `persiba_persika_20261121` | PERSIBA – Persika Karanganyar | 0–1 |
 
-## Track A — done
-- **Tagger v3:** moment reels (per-player / team-attack / team-defence), confidence flags (`review` CSV column), telestration, lineup chips, and a **starting-XI picker** (pick 11, tap GK, enforced 11 + 1 GK) that loads from `data/clubs.json`.
-- **Cut-list importer** in the reel ("Imported (Track B)") — accepts your exact 7-column format. Ready for your moment CSVs now.
-- **League Hub** — a Liga Nusantara browser (standings, fixtures, clubs, squads, 660-player search, scorers) that also imports a tagged-match CSV to show score/xG/shot map. Data scraped from ileague.id into `data/*.json`.
+## Useful next Track B work (pick any)
+1. **Team classification quality.** In the pilot, ~43% of tracks ended `unknown`. Ideas: fit crops sampled across the whole first half (not only the first 4 min), exclude goalkeeper/referee crops from the fit, and vote by majority over more refreshes. Keep the CLI and schema.
+2. **Throughput numbers** from the first real T4 run (`runs/<id>/logs/*.log` + chunk timings printed by the driver) to set expectations per match.
+3. **Defensive moments** in `build_player_moments.py` (ball in own third, nearest defenders), same 7-column cut-list.
+4. Later: shirt-number OCR → `track_map.csv`.
 
-## Track B — next steps
-1. **Cheap first test (no GPU):** run `scripts/build_player_moments.py` on the existing 20-min combined CSV → per-track cut-lists → Rizki imports them into the Tagger reel. Validates the A↔B loop. This is the priority.
-2. **Full match:** first real match is **PERSIBA Bantul vs Gresik United (13 Nov, `nCVF6TTJGXw`)** — process the full match on Colab (two periods), not the 20-min clip.
-3. **Team mapping gate:** make a short `--annotated-output` segment, confirm PERSIBA (home) = cluster side; flip `--cluster-0-side` if swapped.
-4. Later: **2D pitch radar/minimap** (Phase 2), **defensive moments** (ball-far / defensive-third pressing, not just near-ball), **shirt-number OCR** → `track_map.csv` (Phase 3).
-
-## Video download — 30 fps is correct
-Download **720p at 30 fps** (yt-dlp, no re-encode) — confirmed as the standard for both tracks. 60 fps doubles frames for no tagging or tracking benefit; 30 fps source with `--frame-stride 3` gives ~10 fps effective sampling, which is plenty. Use the downloader GUI (full match) for PERSIBA–Gresik.
-
-## Open gates before merging the Track B PR
-- Team home/away mapping verified against real jerseys.
-- A real full-match run (the 20-min clip only validated the pipeline, not a match).
+Please don't change the cut-list columns, the tracking CSV columns, or the report schema without a note here.

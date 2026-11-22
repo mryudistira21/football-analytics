@@ -2,6 +2,18 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-22 — Production run for the PERSIBA matches (Pekan 1–3)
+- **One driver, one notebook.** `scripts/run_match.py` runs a whole match from `matches/persiba_2026-27.json`: download → models → tracking in 10-min chunks → combine → moments → team report → bundle zip. Resumable (finished chunks are skipped, checked against their metadata). Same command on Colab and on the RTX 2070. `notebooks/match_colab.ipynb` is a thin front end; it supersedes the pilot notebooks that were passed around (download/split/T4/memory-safe variants).
+- **Stoppage time stays in its half.** The pilot "P3/P4" ranges were 2–3 min of added time, not extra time; merged into periods 1 and 2. League matches use periods 1–2 only.
+- **Memory/GPU:** the notebook kernel never imports torch; each chunk is a subprocess; skipped frames are `grab()`bed (no BGR decode); YOLO runs batched (`--batch`, auto 8 on CUDA) in FP16; `--pitch-every` can thin the pitch model; `MALLOC_ARENA_MAX=2`, `expandable_segments`; CUDA OOM retries the chunk at batch 2. No re-encoding anywhere — half clips are stream copies.
+- **Frame stride `auto`** = round(fps/10): the pilot clip was 58 fps, where stride 3 meant ~19 samples/s (double the work).
+- **Track IDs** are `chunk × 100000 + n` — deterministic, so a resumed run never collides.
+- **Direction and team swap are post-processing.** Tracking doesn't need `home_dir_1h`; the report does. A swapped home/away cluster is fixed with `swap_teams` at combine time — no GPU rerun.
+- **Team fit once per match** (`team-state.joblib`, from the first ~4 min of P1, made by the smoke test) and reused by all chunks.
+- **Team report** (`scripts/team_report.py`, schema `trackb_team_report_v1`): per period — ball-proximity share (possession proxy), territory thirds, block height overall / in / out of possession, back line (deepest outfield after dropping the single deepest per frame — keepers are often detected as players), width, length, 21×14 heatmaps, plus data-quality shares. Wide-camera frames only. Proxies, for comparing halves/matches.
+- **Hub** imports the report JSON next to the Tagger CSV; same match (id or fixture) merges into one entry.
+- **Tagger:** optional *Match ID* on new matches (use the config id), and *kick-off times in the video* — the match clock then skips pre-match and half-time on a full broadcast, and the 1st/2nd half button follows the video.
+
 ## 2026-11-19 — Periods (incl. extra time) and analysis-by-half
 - **Tagger periods:** the tagging toggle is now 1st / 2nd / ET1 / ET2 (event `half` = 1–4). Extra-time direction is a separate match setting ("Home attacks in 1st extra-time half", defaults to the 1st-half direction; ET2 flips it) — a fresh coin toss per DATA_CONTRACT `home_attacks_right_by_period`. Injury/added time is tagged under its own half (no separate control needed).
 - **Analysis-by-half:** a single Period selector (Full / 1st / 2nd / ET1 / ET2 / Extra time) above the analysis tabs filters every view (Summary, Players, Shot/Pass maps, Network, Hot areas, Moments, Log, xG race). The scoreboard stays full-match. Replaced the Network tab's own half filter. Implemented via `AEV()` (period-filtered event set).

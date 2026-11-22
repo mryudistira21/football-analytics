@@ -228,10 +228,13 @@ def sample_team_crops(
     frame_no = max(0, int(round(start_seconds * fps)))
     try:
         while len(crops) < limit:
-            ok, frame = cap.read()
-            if not ok or frame_no / fps >= start_seconds + seconds:
+            if not cap.grab() or frame_no / fps >= start_seconds + seconds:
                 break
             if frame_no % step == 0:
+                ok, frame = cap.retrieve()
+                if not ok or frame is None:
+                    frame_no += 1
+                    continue
                 result = model.predict(frame, imgsz=imgsz, conf=0.25, device=device,
                                        verbose=False)[0]
                 detections = __import__("supervision").Detections.from_ultralytics(result)
@@ -344,6 +347,11 @@ def main() -> int:
         help="explicit period direction override; required for periods 3 and 4",
     )
     parser.add_argument("--frame-stride", type=int, default=3)
+    parser.add_argument("--batch", type=int, default=0,
+                        help="frames per YOLO call; 0 = auto (8 on CUDA, 1 on CPU)")
+    parser.add_argument("--pitch-every", type=int, default=1,
+                        help="run the pitch-keypoint model on every Nth sampled frame and reuse "
+                             "the last calibration in between (1 = every frame; 2 halves pitch cost)")
     parser.add_argument("--imgsz", type=int, default=960)
     parser.add_argument("--pitch-imgsz", type=int, default=960)
     parser.add_argument("--start-seconds", type=float, default=0.0,
@@ -371,7 +379,7 @@ def main() -> int:
     parser.add_argument("--overwrite", action="store_true")
     args = parser.parse_args()
 
-    if args.frame_stride < 1 or args.team_classify_every < 1:
+    if args.frame_stride < 1 or args.team_classify_every < 1 or args.pitch_every < 1 or args.batch < 0:
         parser.error("frame stride and team classification interval must be positive")
     if args.team_reclassify_after < 1 or args.team_min_free_vram_gb < 0:
         parser.error("team reclassification interval must be positive and VRAM threshold non-negative")
@@ -432,6 +440,7 @@ def main() -> int:
         print("CUDA selected but torch.cuda.is_available() is false.", file=sys.stderr)
         return 1
     half = device.startswith("cuda")
+    batch_size = args.batch or (8 if half else 1)
 
     cap = cv2.VideoCapture(str(video))
     if not cap.isOpened():
@@ -466,6 +475,8 @@ def main() -> int:
         "home_dir_1h": args.home_dir_1h,
         "home_attacks_right_by_period": period_dirs,
         "frame_stride": args.frame_stride,
+        "batch": batch_size,
+        "pitch_every": args.pitch_every,
         "imgsz": args.imgsz,
         "pitch_imgsz": args.pitch_imgsz,
         "period": args.period,
@@ -605,6 +616,7 @@ def main() -> int:
         write_meta()
 
         processed = 0
+        read_count = 0
         last_timestamp = -1.0
         last_decoded_timestamp: float | None = None
         first_processed_timestamp: float | None = None
@@ -613,17 +625,222 @@ def main() -> int:
         rows_written = 0
         camera_counts: Counter[str] = Counter()
         errors: list[float] = []
+        last_matrix: np.ndarray | None = None
+        last_stats: dict[str, Any] = {"median_error_m": None, "inliers": 0}
 
-        with temporary_csv.open("w", newline="", encoding="utf-8") as fp:
-            out = csv.DictWriter(fp, fieldnames=FIELDS)
+        def team_of(tid: int) -> str:
+            if not votes[tid]:
+                return "unknown"
+            ordered = votes[tid].most_common()
+            if len(ordered) == 1 or ordered[0][1] > ordered[1][1]:
+                return ordered[0][0]
+            return "unknown"
+
+        def handle_frame(
+            frame: np.ndarray, frame_index: int, timestamp: float,
+            result: Any, pitch_result: Any, out: Any,
+        ) -> None:
+            """Post-process one sampled frame (detections already computed)."""
+            nonlocal processed, rows_written, last_matrix, last_stats
+            processed += 1
+            detections = sv.Detections.from_ultralytics(result)
+            if detections.class_id is None:
+                detections = sv.Detections(
+                    xyxy=np.empty((0, 4), dtype=np.float32),
+                    confidence=np.empty((0,), dtype=np.float32),
+                    class_id=np.empty((0,), dtype=int),
+                )
+            else:
+                keep_ids = np.array(list(class_ids.values()), dtype=int)
+                confidence = (
+                    detections.confidence
+                    if detections.confidence is not None
+                    else np.ones(len(detections), dtype=np.float32)
+                )
+                thresholds = np.where(detections.class_id == class_ids["ball"], 0.08, 0.25)
+                keep = np.isin(detections.class_id, keep_ids) & (confidence >= thresholds)
+                detections = detections[keep]
+
+            people = detections[np.isin(
+                detections.class_id,
+                [class_ids["player"], class_ids["goalkeeper"], class_ids["referee"]],
+            )]
+            tracked = tracker.update(people, timestamp=timestamp)
+            # ByteTrackTracker uses -1 for tentative/unmatched detections.
+            if tracked.tracker_id is not None and len(tracked):
+                tracked = tracked[tracked.tracker_id >= 0]
+
+            if pitch_result is not None:
+                matrix = None
+                stats: dict[str, Any] = {"median_error_m": None, "inliers": 0}
+                keypoints = getattr(pitch_result, "keypoints", None)
+                if keypoints is not None and keypoints.xy is not None and len(keypoints.xy):
+                    xy = keypoints.xy[0].detach().cpu().numpy()
+                    conf = (
+                        keypoints.conf[0].detach().cpu().numpy()
+                        if keypoints.conf is not None else None
+                    )
+                    matrix, stats = fit_homography(xy, pitch_vertices, conf)
+                last_matrix, last_stats = matrix, stats
+                if stats["median_error_m"] is not None:
+                    errors.append(float(stats["median_error_m"]))
+            else:
+                # --pitch-every > 1: reuse the most recent calibration (<= N-1 samples old).
+                matrix = last_matrix
+            camera_state = "wide" if matrix is not None else "closeup"
+            camera_counts[camera_state] += 1
+
+            # Extract SigLIP features only for new tracks, delayed validation,
+            # or tracks whose accumulated team votes remain unstable.
+            if (
+                team_classifier is not None
+                and processed % args.team_classify_every == 0
+                and tracked.tracker_id is not None
+                and tracked.class_id is not None
+            ):
+                players = tracked[tracked.class_id == class_ids["player"]]
+                crops_now, tids = [], []
+                for box, tid in zip(players.xyxy, players.tracker_id):
+                    if tid is None:
+                        continue
+                    tid_int = int(tid)
+                    if not should_refresh_team_embedding(
+                        votes[tid_int], last_embedding_refresh.get(tid_int), processed,
+                        args.team_reclassify_after, args.team_stability_ratio,
+                    ):
+                        continue
+                    crop = extract_crop(frame, box)
+                    if crop is not None:
+                        crops_now.append(crop)
+                        tids.append(tid_int)
+                if crops_now:
+                    features = np.asarray(team_classifier.extract_features(crops_now), dtype=np.float32)
+                    clusters = team_clusters_from_embeddings(team_classifier, features)
+                    for tid, feature, cluster in zip(tids, features, clusters):
+                        team_embeddings[tid] = feature.copy()
+                        last_embedding_refresh[tid] = processed
+                        votes[tid][cluster_to_side[int(cluster)]] += 1
+
+            positions = (
+                map_points(tracked.get_anchors_coordinates(anchor=sv.Position.BOTTOM_CENTER), matrix)
+                if matrix is not None and len(tracked)
+                else np.full((len(tracked), 2), np.nan, dtype=np.float32)
+            )
+
+            rows = []
+            if tracked.tracker_id is not None and tracked.class_id is not None:
+                for i, (tid, cid) in enumerate(zip(tracked.tracker_id, tracked.class_id)):
+                    if tid is None:
+                        continue
+                    role = (
+                        "goalkeeper" if int(cid) == class_ids["goalkeeper"]
+                        else "referee" if int(cid) == class_ids["referee"]
+                        else "player"
+                    )
+                    team = team_of(int(tid)) if role != "referee" else "unknown"
+                    x, y = positions[i]
+                    rows.append({
+                        "match_id": args.match_id, "frame": frame_index,
+                        "video_seconds": round(timestamp, 3), "period": args.period,
+                        "track_id": int(tid) + args.track_id_offset, "role": role, "team": team,
+                        "x": round(float(x), 2) if np.isfinite(x) else "",
+                        "y": round(float(y), 2) if np.isfinite(y) else "",
+                        "confidence": round(float(tracked.confidence[i]), 4)
+                        if tracked.confidence is not None else 1.0,
+                        "camera_state": camera_state,
+                    })
+
+            ball = ball_tracker.update(detections[detections.class_id == class_ids["ball"]])
+            if len(ball):
+                ball_pixel = ball.get_anchors_coordinates(anchor=sv.Position.CENTER)
+                ball_xy = map_points(ball_pixel, matrix)[0] if matrix is not None else [np.nan, np.nan]
+                rows.append({
+                    "match_id": args.match_id, "frame": frame_index,
+                    "video_seconds": round(timestamp, 3), "period": args.period,
+                    "track_id": 0, "role": "ball", "team": "unknown",
+                    "x": round(float(ball_xy[0]), 2) if np.isfinite(ball_xy[0]) else "",
+                    "y": round(float(ball_xy[1]), 2) if np.isfinite(ball_xy[1]) else "",
+                    "confidence": round(float(ball.confidence[0]), 4)
+                    if ball.confidence is not None else 1.0,
+                    "camera_state": camera_state,
+                })
+
+            out.writerows(rows)
+            rows_written += len(rows)
+            if processed % 100 == 0:
+                print(f"frames {processed:,}; video {timestamp:.1f}s; rows {rows_written:,}; camera={camera_state}",
+                      flush=True)
+
+            if (
+                writer.isOpened()
+                and timestamp - args.start_seconds <= args.annotated_max_seconds
+            ):
+                annotated = frame.copy()
+                if tracked.tracker_id is not None and tracked.class_id is not None:
+                    for box, tid, cid in zip(tracked.xyxy, tracked.tracker_id, tracked.class_id):
+                        if tid is None:
+                            continue
+                        role = (
+                            "GK" if int(cid) == class_ids["goalkeeper"]
+                            else "REF" if int(cid) == class_ids["referee"]
+                            else "P"
+                        )
+                        team = team_of(int(tid)) if role != "REF" else "unknown"
+                        color = (
+                            (40, 210, 70) if team == "home"
+                            else (40, 145, 255) if team == "away"
+                            else (175, 175, 175)
+                        )
+                        if role == "REF":
+                            color = (190, 190, 190)
+                        x1, y1, x2, y2 = np.asarray(box, dtype=int)
+                        cv2.rectangle(annotated, (x1, y1), (x2, y2), color, 2)
+                        label = f"{role} {int(tid) + args.track_id_offset} {team}"
+                        cv2.putText(annotated, label, (x1, max(15, y1 - 5)),
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1, cv2.LINE_AA)
+                if len(ball):
+                    ball_center = ball.get_anchors_coordinates(anchor=sv.Position.CENTER)[0].astype(int)
+                    cv2.circle(annotated, tuple(ball_center), 7, (40, 40, 240), 2, cv2.LINE_AA)
+                    cv2.putText(annotated, "BALL", (int(ball_center[0]) + 8, int(ball_center[1]) - 8),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (40, 40, 240), 1, cv2.LINE_AA)
+                cv2.putText(annotated, f"CAMERA: {camera_state.upper()}  GREEN=home  ORANGE=away", (12, 28),
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+                writer.write(annotated)
+
+        def flush_batch(pending: list[tuple[np.ndarray, int, float, bool]], out: Any) -> None:
+            """Run both detectors on a batch of sampled frames, then post-process in order."""
+            if not pending:
+                return
+            frames = [p[0] for p in pending]
+            results = player_model.predict(
+                frames, imgsz=args.imgsz, conf=0.08, device=device,
+                quantize="fp16" if half else None, verbose=False,
+            )
+            need = [i for i, p in enumerate(pending) if p[3]]
+            pitch_out = (
+                pitch_model.predict(
+                    [frames[i] for i in need], imgsz=args.pitch_imgsz, conf=0.10, device=device,
+                    quantize="fp16" if half else None, verbose=False,
+                ) if need else []
+            )
+            pitch_by_index = dict(zip(need, pitch_out))
+            for i, (frame, frame_index, timestamp, _) in enumerate(pending):
+                handle_frame(frame, frame_index, timestamp, results[i], pitch_by_index.get(i), out)
+            pending.clear()
+            out_fp.flush()
+
+        with temporary_csv.open("w", newline="", encoding="utf-8") as out_fp:
+            out = csv.DictWriter(out_fp, fieldnames=FIELDS)
             out.writeheader()
             decoded_count = max(0, int(round(args.start_seconds * fps)))
+            pending: list[tuple[np.ndarray, int, float, bool]] = []
             try:
                 while True:
-                    ok, frame = cap.read()
-                    if not ok:
+                    # grab() decodes without the BGR conversion/copy; retrieve() only
+                    # the frames we actually sample (1 in --frame-stride).
+                    if not cap.grab():
                         break
-                    # POS_FRAMES reports the next frame after read.
+                    # POS_FRAMES reports the next frame after grab.
                     raw_frame_pos = cap.get(cv2.CAP_PROP_POS_FRAMES)
                     frame_index = max(0, int(raw_frame_pos) - 1) if raw_frame_pos > 0 else decoded_count
                     decoded_count += 1
@@ -642,215 +859,17 @@ def main() -> int:
                         break
                     if frame_index % args.frame_stride:
                         continue
-                    processed += 1
+                    ok, frame = cap.retrieve()
+                    if not ok or frame is None:
+                        continue
                     if first_processed_timestamp is None:
                         first_processed_timestamp = timestamp
                     last_processed_timestamp = timestamp
-
-                    result = player_model.predict(
-                        frame, imgsz=args.imgsz, conf=0.08,
-                        device=device, quantize="fp16" if half else None, verbose=False,
-                    )[0]
-                    detections = sv.Detections.from_ultralytics(result)
-                    if detections.class_id is None:
-                        detections = sv.Detections(
-                            xyxy=np.empty((0, 4), dtype=np.float32),
-                            confidence=np.empty((0,), dtype=np.float32),
-                            class_id=np.empty((0,), dtype=int),
-                        )
-                    else:
-                        keep_ids = np.array(list(class_ids.values()), dtype=int)
-                        confidence = (
-                            detections.confidence
-                            if detections.confidence is not None
-                            else np.ones(len(detections), dtype=np.float32)
-                        )
-                        thresholds = np.where(
-                            detections.class_id == class_ids["ball"], 0.08, 0.25
-                        )
-                        keep = np.isin(detections.class_id, keep_ids) & (confidence >= thresholds)
-                        detections = detections[keep]
-
-                    people = detections[np.isin(
-                        detections.class_id,
-                        [class_ids["player"], class_ids["goalkeeper"], class_ids["referee"]],
-                    )]
-                    tracked = tracker.update(people, timestamp=timestamp)
-                    # ByteTrackTracker uses -1 for tentative/unmatched detections.
-                    # Do not export those as if they were persistent player identities.
-                    if tracked.tracker_id is not None and len(tracked):
-                        tracked = tracked[tracked.tracker_id >= 0]
-
-                    pitch_result = pitch_model.predict(
-                        frame, imgsz=args.pitch_imgsz, conf=0.10,
-                        device=device, quantize="fp16" if half else None, verbose=False,
-                    )[0]
-                    matrix = None
-                    stats = {"median_error_m": None, "inliers": 0}
-                    keypoints = getattr(pitch_result, "keypoints", None)
-                    if keypoints is not None and keypoints.xy is not None and len(keypoints.xy):
-                        xy = keypoints.xy[0].detach().cpu().numpy()
-                        conf = (
-                            keypoints.conf[0].detach().cpu().numpy()
-                            if keypoints.conf is not None else None
-                        )
-                        matrix, stats = fit_homography(xy, pitch_vertices, conf)
-                    camera_state = "wide" if matrix is not None else "closeup"
-                    camera_counts[camera_state] += 1
-                    if stats["median_error_m"] is not None:
-                        errors.append(float(stats["median_error_m"]))
-
-                    # Extract SigLIP features only for new tracks, delayed validation,
-                    # or tracks whose accumulated team votes remain unstable.
-                    if (
-                        team_classifier is not None
-                        and processed % args.team_classify_every == 0
-                        and tracked.tracker_id is not None
-                        and tracked.class_id is not None
-                    ):
-                        players = tracked[tracked.class_id == class_ids["player"]]
-                        crops_now, tids = [], []
-                        for box, tid in zip(players.xyxy, players.tracker_id):
-                            if tid is None:
-                                continue
-                            tid_int = int(tid)
-                            if not should_refresh_team_embedding(
-                                votes[tid_int],
-                                last_embedding_refresh.get(tid_int),
-                                processed,
-                                args.team_reclassify_after,
-                                args.team_stability_ratio,
-                            ):
-                                continue
-                            crop = extract_crop(frame, box)
-                            if crop is not None:
-                                crops_now.append(crop)
-                                tids.append(tid_int)
-                        if crops_now:
-                            features = np.asarray(
-                                team_classifier.extract_features(crops_now),
-                                dtype=np.float32,
-                            )
-                            clusters = team_clusters_from_embeddings(
-                                team_classifier, features
-                            )
-                            for tid, feature, cluster in zip(tids, features, clusters):
-                                team_embeddings[tid] = feature.copy()
-                                last_embedding_refresh[tid] = processed
-                                votes[tid][cluster_to_side[int(cluster)]] += 1
-
-                    positions = (
-                        map_points(tracked.get_anchors_coordinates(
-                            anchor=sv.Position.BOTTOM_CENTER
-                        ), matrix)
-                        if matrix is not None and len(tracked)
-                        else np.full((len(tracked), 2), np.nan, dtype=np.float32)
-                    )
-
-                    rows = []
-                    if tracked.tracker_id is not None and tracked.class_id is not None:
-                        for i, (tid, cid) in enumerate(zip(tracked.tracker_id, tracked.class_id)):
-                            if tid is None:
-                                continue
-                            role = (
-                                "goalkeeper" if int(cid) == class_ids["goalkeeper"]
-                                else "referee" if int(cid) == class_ids["referee"]
-                                else "player"
-                            )
-                            team = "unknown"
-                            if role != "referee" and votes[int(tid)]:
-                                ordered = votes[int(tid)].most_common()
-                                if len(ordered) == 1 or ordered[0][1] > ordered[1][1]:
-                                    team = ordered[0][0]
-                            x, y = positions[i]
-                            row = {
-                                "match_id": args.match_id, "frame": frame_index,
-                                "video_seconds": round(timestamp, 3), "period": args.period,
-                                "track_id": int(tid) + args.track_id_offset, "role": role, "team": team,
-                                "x": round(float(x), 2) if np.isfinite(x) else "",
-                                "y": round(float(y), 2) if np.isfinite(y) else "",
-                                "confidence": round(float(tracked.confidence[i]), 4)
-                                if tracked.confidence is not None else 1.0,
-                                "camera_state": camera_state,
-                            }
-                            rows.append(row)
-
-                    ball = ball_tracker.update(
-                        detections[detections.class_id == class_ids["ball"]]
-                    )
-                    if len(ball):
-                        ball_pixel = ball.get_anchors_coordinates(anchor=sv.Position.CENTER)
-                        ball_xy = map_points(ball_pixel, matrix)[0] if matrix is not None else [np.nan, np.nan]
-                        rows.append({
-                            "match_id": args.match_id, "frame": frame_index,
-                            "video_seconds": round(timestamp, 3), "period": args.period,
-                            "track_id": 0, "role": "ball", "team": "unknown",
-                            "x": round(float(ball_xy[0]), 2) if np.isfinite(ball_xy[0]) else "",
-                            "y": round(float(ball_xy[1]), 2) if np.isfinite(ball_xy[1]) else "",
-                            "confidence": round(float(ball.confidence[0]), 4)
-                            if ball.confidence is not None else 1.0,
-                            "camera_state": camera_state,
-                        })
-
-                    out.writerows(rows)
-                    rows_written += len(rows)
-                    if processed % 25 == 0:
-                        fp.flush()
-                    if processed % 100 == 0:
-                        print(f"frames {processed:,}; video {timestamp:.1f}s; rows {rows_written:,}; camera={camera_state}")
-
-                    if (
-                        writer.isOpened()
-                        and timestamp >= args.start_seconds
-                        and timestamp - args.start_seconds <= args.annotated_max_seconds
-                    ):
-                        annotated = frame.copy()
-                        if tracked.tracker_id is not None and tracked.class_id is not None:
-                            for box, tid, cid in zip(tracked.xyxy, tracked.tracker_id, tracked.class_id):
-                                if tid is None:
-                                    continue
-                                role = (
-                                    "GK" if int(cid) == class_ids["goalkeeper"]
-                                    else "REF" if int(cid) == class_ids["referee"]
-                                    else "P"
-                                )
-                                team = "unknown"
-                                if role != "REF" and votes[int(tid)]:
-                                    ordered = votes[int(tid)].most_common()
-                                    if len(ordered) == 1 or ordered[0][1] > ordered[1][1]:
-                                        team = ordered[0][0]
-                                color = (
-                                    (40, 210, 70) if team == "home"
-                                    else (40, 145, 255) if team == "away"
-                                    else (175, 175, 175)
-                                )
-                                if role == "REF":
-                                    color = (190, 190, 190)
-                                x1, y1, x2, y2 = np.asarray(box, dtype=int)
-                                cv2.rectangle(annotated, (x1, y1), (x2, y2), color, 2)
-                                label = f"{role} {int(tid) + args.track_id_offset} {team}"
-                                cv2.putText(
-                                    annotated, label, (x1, max(15, y1 - 5)),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1,
-                                    cv2.LINE_AA,
-                                )
-                        if len(ball):
-                            ball_center = ball.get_anchors_coordinates(
-                                anchor=sv.Position.CENTER
-                            )[0].astype(int)
-                            cv2.circle(
-                                annotated, tuple(ball_center), 7,
-                                (40, 40, 240), 2, cv2.LINE_AA,
-                            )
-                            cv2.putText(
-                                annotated, "BALL", (int(ball_center[0]) + 8, int(ball_center[1]) - 8),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.45, (40, 40, 240), 1,
-                                cv2.LINE_AA,
-                            )
-                        cv2.putText(annotated, f"CAMERA: {camera_state.upper()}", (12, 28),
-                                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-                        writer.write(annotated)
-
+                    pending.append((frame, frame_index, timestamp, read_count % args.pitch_every == 0))
+                    read_count += 1
+                    if len(pending) >= batch_size:
+                        flush_batch(pending, out)
+                flush_batch(pending, out)
             finally:
                 cap.release()
                 if writer.isOpened():

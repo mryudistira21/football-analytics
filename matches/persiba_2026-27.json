@@ -1,0 +1,67 @@
+{
+  "season": "LIGA_NUSANTARA_2026-27",
+  "focus_team": "PERSIBA Bantul",
+  "notes": [
+    "Period times are elapsed time in the ORIGINAL downloaded video (H:MM:SS or MM:SS), from the real kick-off to the real final whistle of each half, stoppage time included.",
+    "League matches have no extra time: stoppage time belongs to its own half, so only periods 1 and 2 are used here.",
+    "home_dir_1h: which way the HOME team attacks on screen in the 1st half (R = left to right, L = right to left). Only the report needs it; tracking runs without it.",
+    "swap_teams: set true if the smoke-test preview shows the home team labelled 'away'. No GPU rerun is needed; labels are swapped when the chunks are combined.",
+    "frame_stride auto = about 10 samples per second (3 on a 30 fps video, 6 on 60 fps). YouTube live replays are often 60 fps only.",
+    "match_id is shared with the Pitchside Tagger: type the same id in the Tagger's Match ID field when you create the match."
+  ],
+  "defaults": {
+    "frame_stride": "auto",
+    "imgsz": 960,
+    "pitch_imgsz": 960,
+    "pitch_every": 1,
+    "batch": 0,
+    "chunk_seconds": 600
+  },
+  "matches": [
+    {
+      "match_id": "persiba_gresik_20261113",
+      "round": "Pekan 1",
+      "date": "2026-11-13",
+      "home": "PERSIBA Bantul",
+      "away": "Gresik United FC",
+      "score": [0, 0],
+      "video_url": "https://www.youtube.com/watch?v=nCVF6TTJGXw",
+      "periods": {
+        "1": ["17:00", "1:04:41"],
+        "2": ["1:20:26", "2:07:27"]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    },
+    {
+      "match_id": "persipa_persiba_20261117",
+      "round": "Pekan 2",
+      "date": "2026-11-17",
+      "home": "Persipa Pati",
+      "away": "PERSIBA Bantul",
+      "score": [2, 2],
+      "video_url": "https://www.youtube.com/watch?v=v3LlHgczPZA",
+      "periods": {
+        "1": ["07:30", "54:39"],
+        "2": ["1:01:31", "1:59:42"]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    },
+    {
+      "match_id": "persiba_persika_20261121",
+      "round": "Pekan 3",
+      "date": "2026-11-21",
+      "home": "PERSIBA Bantul",
+      "away": "Persika Karanganyar",
+      "score": [0, 1],
+      "video_url": null,
+      "periods": {
+        "1": null,
+        "2": null
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    }
+  ]
+}

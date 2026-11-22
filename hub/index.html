@@ -73,6 +73,10 @@ tr.clickable{cursor:pointer}tr.clickable:hover td{background:var(--surface-2)}
 .anrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface);margin-bottom:8px;cursor:pointer}
 .empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:8px}
 .kv{display:flex;gap:16px;flex-wrap:wrap;margin:8px 0}
+.tb{width:100%;border-collapse:collapse;font-size:14px}.tb td,.tb th{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}.tb td.n,.tb th.n{text-align:right;font-variant-numeric:tabular-nums}
+.terr{display:flex;height:22px;border-radius:6px;overflow:hidden;font-size:12px;color:#fff;margin:6px 0}.terr div{display:flex;align-items:center;justify-content:center;min-width:0;white-space:nowrap}
+.heat2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.qual{font-size:12px;color:var(--muted);margin:2px 0 8px}
 .kv .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .kv .v{font-family:var(--fd);font-size:22px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;background:var(--ink);color:var(--surface);padding:8px 14px;border-radius:6px;font-size:13px;z-index:20}
@@ -255,12 +259,12 @@ function renderScorers(){
 
 /* ---------- analysis (import Tagger CSV) ---------- */
 function renderAnalysisTab(){
-  return `<div class="toolbar"><label class="btn primary">Import tagged match (CSV)<input type="file" id="csvIn" accept=".csv,text/csv" hidden></label>
-    <span class="note">Export a match from the Pitchside Tagger (Download CSV), then import it here.</span></div>
+  return `<div class="toolbar"><label class="btn primary">Import match file<input type="file" id="csvIn" accept=".csv,.json,text/csv,application/json" multiple hidden></label>
+    <span class="note">Tagger CSV (Download CSV) for shots and xG, and/or the Track B <code>*_team_report.json</code> for team shape per half. Same match → one entry.</span></div>
     ${analyses.length?analyses.map(a=>`<div class="anrow" data-an="${esc(a.id)}">
       <div><b>${esc(a.home)} ${a.hg}–${a.ag} ${esc(a.away)}</b> <span class="note">${esc(a.matchName||"")}</span></div>
-      <div class="note mono">xG ${a.homeXg.toFixed(2)}–${a.awayXg.toFixed(2)} · ${a.shots} shots</div>
-      <button class="btn small" data-del="${esc(a.id)}">Remove</button></div>`).join(""):`<div class="empty">No analysed matches yet. Import a Tagger CSV to see the score, xG and shot map here — and it tags the matching fixture.</div>`}`;
+      <div class="note mono">${a.shots?`xG ${a.homeXg.toFixed(2)}–${a.awayXg.toFixed(2)} · ${a.shots} shots`:"no tagging yet"}${a.tracking?" · Track B report":""}</div>
+      <button class="btn small" data-del="${esc(a.id)}">Remove</button></div>`).join(""):`<div class="empty">No analysed matches yet. Import a Tagger CSV (score, xG, shot map) or a Track B team report (team shape per half) — it tags the matching fixture too.</div>`}`;
 }
 function anSummary(a,period){
   const sh=(a.shotList||[]).filter(s=>period==="all"||String(s.half)===period||(period==="et"&&s.half>=3));
@@ -272,24 +276,68 @@ function anSummary(a,period){
 function renderAnalysisDetail(id){
   const a=analyses.find(x=>x.id===id);if(!a)return`<div class="empty">Analysis not found.</div>`;
   const seen=new Set((a.shotList||[]).map(s=>String(s.half)));
+  Object.keys(a.tracking?.periods||{}).forEach(k=>{if(k!=="all")seen.add(k)});
   const periods=["all","1","2",...["3","4"].filter(p=>seen.has(p))];
   if(seen.has("3")||seen.has("4"))periods.push("et");
   if(!periods.includes(anPeriod))anPeriod="all";
   const lbl={all:"Full","1":"1st half","2":"2nd half","3":"ET first half","4":"ET second half",et:"Extra time"};
-  const m=anSummary(a,anPeriod);
+  const m=anSummary(a,anPeriod);const tagged=(a.shotList||[]).length>0;
+  if(!tagged&&anPeriod==="all"){m.hg=a.hg;m.ag=a.ag}
+  const score=(!tagged&&anPeriod!=="all")?"–":`${m.hg}–${m.ag}`;
   const seg=`<div class="row" style="margin:0 0 10px;gap:6px">${periods.map(p=>`<button class="btn small ${p===anPeriod?"on":""}" data-anper="${esc(p)}">${esc(lbl[p])}</button>`).join("")}</div>`;
   return `<button class="btn small back" data-back="analysis">← Back</button>
-    <div class="card"><h2 style="font-size:22px">${esc(a.home)} <span class="mono">${m.hg}–${m.ag}</span> ${esc(a.away)}</h2>
+    <div class="card"><h2 style="font-size:22px">${esc(a.home)} <span class="mono">${score}</span> ${esc(a.away)}</h2>
     <div class="note">${esc(a.matchName||"")} · imported ${new Date(a.importedAt).toLocaleDateString()}</div>
     ${seg}
-    <div class="kv">
+    ${tagged?`<div class="kv">
       <div><div class="k">xG</div><div class="v mono">${m.hx.toFixed(2)} – ${m.ax.toFixed(2)}</div></div>
       <div><div class="k">Shots</div><div class="v mono">${m.hs} – ${m.as}</div></div>
       <div><div class="k">On target</div><div class="v mono">${m.hon} – ${m.aon}</div></div>
-    </div></div>
-    <h3 style="font-size:16px;text-transform:uppercase;margin:12px 0 6px">Shot map${anPeriod==="all"?"":" — "+esc(lbl[anPeriod])}</h3>
+    </div>`:`<p class="note">Not tagged yet — import the Tagger CSV for shots and xG.</p>`}</div>
+    ${tagged?`<h3 style="font-size:16px;text-transform:uppercase;margin:12px 0 6px">Shot map${anPeriod==="all"?"":" — "+esc(lbl[anPeriod])}</h3>
     <div class="card">${shotMap(a,m.sh)}</div>
-    <p class="note" style="margin-top:8px">Circle size = xG, filled = goal. ${esc(a.home)} attacks right, ${esc(a.away)} left. Open the full match in the Pitchside Tagger for passes, xT and reels.</p>`;
+    <p class="note" style="margin-top:8px">Circle size = xG, filled = goal. ${esc(a.home)} attacks right, ${esc(a.away)} left. Open the full match in the Pitchside Tagger for passes, xT and reels.</p>`:""}
+    ${trackingSection(a,anPeriod,lbl)}`;
+}
+function pct(v){return v==null?"—":Math.round(v*100)+"%"}
+function mtr(v){return v==null?"—":(+v).toFixed(1)+" m"}
+function trackingSection(a,period,lbl){
+  const T=a.tracking;if(!T)return"";
+  if(period==="et")return`<p class="note" style="margin-top:12px">Track B report: pick ET first half or ET second half.</p>`;
+  const b=T.periods?.[period];
+  if(!b)return`<p class="note" style="margin-top:12px">No Track B data for ${esc(lbl[period]||period)}.</p>`;
+  const H=b.home||{},A=b.away||{},q=b.quality||{},t=b.territory_home_view||{};
+  const hc=byShort[a.homeShort]?.color||"#d7263d",ac=byShort[a.awayShort]?.color||"#1d5fc4";
+  const row=(label,k,f)=>`<tr><td>${label}</td><td class="n">${f(H[k])}</td><td class="n">${f(A[k])}</td></tr>`;
+  const seg=(w,c,txt)=>w>0?`<div style="flex:${w};background:${c}" title="${esc(txt)}">${w>=0.12?esc(txt):""}</div>`:"";
+  return `<h3 style="font-size:16px;text-transform:uppercase;margin:16px 0 6px">Team shape — Track B${period==="all"?"":" · "+esc(lbl[period])}</h3>
+  <div class="card">
+    <div class="qual">Data quality: wide camera ${pct(q.wide_share)} · team known ${pct(q.known_team_share)} · ball visible ${pct(q.ball_visible_share)} · ${q.ball_near_frames??0} ball-near samples</div>
+    <div class="tablewrap"><table class="tb"><thead><tr><th></th><th class="n"><span class="swatch" style="background:${hc}"></span> ${esc(a.home)}</th><th class="n"><span class="swatch" style="background:${ac}"></span> ${esc(a.away)}</th></tr></thead><tbody>
+      ${row("Ball-proximity share (possession proxy)","ball_proximity_share",pct)}
+      ${row("Block height (from own goal)","block_height_m",mtr)}
+      ${row("· in possession","block_height_in_possession_m",mtr)}
+      ${row("· out of possession","block_height_out_of_possession_m",mtr)}
+      ${row("Back line","def_line_m",mtr)}
+      ${row("Width","width_m",mtr)}
+      ${row("Length","length_m",mtr)}
+    </tbody></table></div>
+    <div class="k" style="margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Where the ball was (${esc(a.home)} attacking →)</div>
+    <div class="terr">${seg(t.def_third||0,"#6b7280",`own third ${pct(t.def_third)}`)}${seg(t.middle||0,"#8a8f98",`middle ${pct(t.middle)}`)}${seg(t.att_third||0,hc,`attacking third ${pct(t.att_third)}`)}</div>
+  </div>
+  <div class="heat2" style="margin-top:12px">
+    <div class="card"><div class="note" style="margin-bottom:6px">${esc(a.home)} — positions, attacking →</div>${heatSvg(H.heatmap,T.grid,hc)}</div>
+    <div class="card"><div class="note" style="margin-bottom:6px">${esc(a.away)} — positions, attacking →</div>${heatSvg(A.heatmap,T.grid,ac)}</div>
+  </div>
+  <p class="note" style="margin-top:8px">${esc(T.method?.caveat||"")} Block height and back line are metres from the team's own goal line.</p>`;
+}
+function heatSvg(h,grid,col){
+  if(!h||!h.length)return`<div class="empty">No positions.</div>`;
+  const nx=grid?.[0]||h.length,ny=grid?.[1]||h[0].length,cw=PL/nx,ch=PW/ny;let cells="";
+  for(let i=0;i<nx;i++)for(let j=0;j<ny;j++){const v=h[i]?.[j]||0;if(v<0.04)continue;
+    cells+=`<rect x="${(i*cw).toFixed(2)}" y="${(j*ch).toFixed(2)}" width="${(cw+.05).toFixed(2)}" height="${(ch+.05).toFixed(2)}" fill="${col}" fill-opacity="${(0.12+0.78*Math.sqrt(v)).toFixed(2)}"/>`}
+  return `<svg class="pitch" viewBox="-4 -4 113 76" role="img" aria-label="Position heatmap"><rect x="-4" y="-4" width="113" height="76" fill="var(--turf)"/>${cells}
+    <g fill="none" stroke="var(--chalk)" stroke-width=".35"><rect x="0" y="0" width="105" height="68"/><line x1="52.5" y1="0" x2="52.5" y2="68"/><circle cx="52.5" cy="34" r="9.15"/><rect x="0" y="13.84" width="16.5" height="40.32"/><rect x="88.5" y="13.84" width="16.5" height="40.32"/></g></svg>`;
 }
 function shotMap(a,shots){
   shots=shots||a.shotList||[];
@@ -311,9 +359,25 @@ function parseCSV(t){const out=[];let row=[],cur="",q=false;for(let i=0;i<t.leng
 function resolveShort(name){const u=String(name||"").toUpperCase().trim();if(byName[u])return byName[u].short;
   for(const c of DATA.clubs){const cn=c.name.toUpperCase();if(cn.includes(u)||u.includes(cn))return c.short}return null}
 function onImport(e){
-  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
-  rd.onload=async()=>{try{
-    const rows=parseCSV(String(rd.result));const head=rows.shift().map(h=>h.trim());const ix=n=>head.indexOf(n);
+  const files=[...e.target.files];e.target.value="";
+  (async()=>{for(const f of files){const text=await f.text();
+    if(/\.json$/i.test(f.name)||text.trimStart().startsWith("{"))await importReport(text);else await importCsv(text)}})();
+}
+async function importReport(text){
+  let rep;try{rep=JSON.parse(text)}catch(e){toast("Could not read that JSON");return}
+  if(rep.schema!=="trackb_team_report_v1"){toast("That JSON is not a Track B team report");return}
+  const hs=resolveShort(rep.home),as=resolveShort(rep.away);
+  let a=analyses.find(x=>x.id===rep.match_id)||analyses.find(x=>x.homeShort&&x.homeShort===hs&&x.awayShort===as);
+  if(!a)a={id:rep.match_id,matchName:[rep.round,rep.date].filter(Boolean).join(" · "),home:rep.home,away:rep.away,
+    homeShort:hs,awayShort:as,hg:rep.score?.[0]??0,ag:rep.score?.[1]??0,homeXg:0,awayXg:0,homeShots:0,awayShots:0,homeOn:0,awayOn:0,shots:0,shotList:[]};
+  a={...a,tracking:rep,importedAt:Date.now()};
+  await Store.save(a);analyses=await Store.list();
+  toast(`Track B report added: ${a.home} vs ${a.away}`);
+  view={tab:"analysis",analysis:a.id};render();window.scrollTo(0,0);
+}
+async function importCsv(text){
+  try{
+    const rows=parseCSV(String(text));const head=rows.shift().map(h=>h.trim());const ix=n=>head.indexOf(n);
     if(ix("event")<0){toast("That doesn't look like a Tagger CSV");return}
     const g=(r,n)=>ix(n)<0?"":String(r[ix(n)]??"").trim();
     const matchId=g(rows[0],"match_id")||("m"+Date.now()), matchName=g(rows[0],"match_name");
@@ -335,11 +399,12 @@ function onImport(e){
       hg:side.home.goals,ag:side.away.goals,homeXg:side.home.xg,awayXg:side.away.xg,
       homeShots:side.home.shots,awayShots:side.away.shots,homeOn:side.home.on,awayOn:side.away.on,
       shots:side.home.shots+side.away.shots,shotList,importedAt:Date.now()};
+    const prev=analyses.find(x=>x.id===a.id)||analyses.find(x=>x.homeShort&&x.homeShort===a.homeShort&&x.awayShort===a.awayShort);
+    if(prev?.tracking){a.tracking=prev.tracking;if(prev.id!==a.id)await Store.del(prev.id)}
     await Store.save(a);analyses=await Store.list();
     toast(`Imported ${a.home} ${a.hg}–${a.ag} ${a.away}`);
     view={tab:"analysis",analysis:a.id};render();window.scrollTo(0,0);
-  }catch(err){toast("Could not read that CSV")}};
-  rd.readAsText(f);e.target.value="";
+  }catch(err){toast("Could not read that CSV")}
 }
 })();
 </script>
