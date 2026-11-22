@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-22 (b) — Track B parity, team-colour fit, scouting
+- **PR #1 is fully contained in `main`.** Every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose one extra feature (read `home_attacks_right_by_period` from `<csv>.meta.json`) is now ported. PR #1 closed as superseded.
+- **Team-colour fit spread over the 1st half:** ~100 frames (every 15 s across up to 25 min, reached by seeking), up to 10 player crops each, max 600 crops — instead of the first 4 minutes, which are often walk-outs, close-ups and replays. New `--team-sample-start`; intervals ≥ 2 s seek instead of decoding every frame.
+- **New tracks are coloured sooner:** `team_classify_every` 10 sampled frames (≈1 s) instead of 30. Only tracks without a stable vote are re-embedded, so the cost stays small. Aims at the ~43% `unknown` tracks seen in the pilot.
+- **Opponent scouting** lives in the same config (`"scope": "scouting"`); the Hub club page aggregates every imported Track B report for that club (own perspective, averages, half-to-half change, average heatmap). No extra file format.
+
 ## 2026-11-22 — Production run for the PERSIBA matches (Pekan 1–3)
 - **One driver, one notebook.** `scripts/run_match.py` runs a whole match from `matches/persiba_2026-27.json`: download → models → tracking in 10-min chunks → combine → moments → team report → bundle zip. Resumable (finished chunks are skipped, checked against their metadata). Same command on Colab and on the RTX 2070. `notebooks/match_colab.ipynb` is a thin front end; it supersedes the pilot notebooks that were passed around (download/split/T4/memory-safe variants).
 - **Stoppage time stays in its half.** The pilot "P3/P4" ranges were 2–3 min of added time, not extra time; merged into periods 1 and 2. League matches use periods 1–2 only.

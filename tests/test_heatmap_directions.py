@@ -17,3 +17,14 @@ def test_extra_time_direction_is_not_inferred():
         assert "must not be inferred" in str(exc)
     else:
         raise AssertionError("period 3 should need its own direction")
+
+
+def test_directions_are_read_from_tracking_metadata(tmp_path):
+    import json
+    from src.heatmap_from_positions import directions_from_meta
+    meta = tmp_path / "t.meta.json"
+    meta.write_text(json.dumps({"home_attacks_right_by_period": {"1": False, "2": "R"}}))
+    assert directions_from_meta(meta) == {"1": False, "2": True}
+    meta.write_text(json.dumps({"home_dir_1h": "L"}))
+    assert directions_from_meta(meta) == {"1": False, "2": True}
+    assert directions_from_meta(tmp_path / "missing.json") is None

@@ -216,11 +216,19 @@ def sample_team_crops(
     imgsz: int,
     start_seconds: float = 0.0,
 ) -> list[np.ndarray]:
-    """Bounded first pass: keep <= limit crops, never keep frames or full video in RAM."""
+    """Bounded first pass: keep <= limit crops, never keep frames or full video in RAM.
+
+    With a long interval (>= 2 s) each sample is reached by seeking, so a fit spread
+    over a whole half costs a few dozen decodes instead of decoding every frame.
+    """
     cap = cv2.VideoCapture(str(video))
     if not cap.isOpened():
         raise RuntimeError(f"Cannot open video: {video}")
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    if interval >= 2.0:
+        cap.release()
+        return _sample_team_crops_seek(video, model, device, class_id, seconds, interval,
+                                       limit, imgsz, start_seconds)
     step = max(1, int(round(fps * interval)))
     if start_seconds > 0:
         cap.set(cv2.CAP_PROP_POS_MSEC, start_seconds * 1000.0)
@@ -255,6 +263,41 @@ def sample_team_crops(
     return crops
 
 
+
+
+def _crops_from_frame(frame: np.ndarray, model: Any, device: str, class_id: int,
+                      imgsz: int, per_frame: int = 8) -> list[np.ndarray]:
+    result = model.predict(frame, imgsz=imgsz, conf=0.25, device=device, verbose=False)[0]
+    detections = __import__("supervision").Detections.from_ultralytics(result)
+    if detections.class_id is None:
+        return []
+    boxes = detections[detections.class_id == class_id].xyxy
+    if len(boxes) > per_frame:
+        boxes = boxes[np.linspace(0, len(boxes) - 1, per_frame, dtype=int)]
+    out = []
+    for box in boxes:
+        crop = extract_crop(frame, box)
+        if crop is not None:
+            out.append(crop)
+    return out
+
+
+def _sample_team_crops_seek(video: Path, model: Any, device: str, class_id: int, seconds: float,
+                            interval: float, limit: int, imgsz: int, start_seconds: float) -> list[np.ndarray]:
+    cap = cv2.VideoCapture(str(video))
+    crops: list[np.ndarray] = []
+    try:
+        t = start_seconds
+        while t < start_seconds + seconds and len(crops) < limit:
+            cap.set(cv2.CAP_PROP_POS_MSEC, t * 1000.0)
+            ok, frame = cap.read()
+            if ok and frame is not None:
+                crops.extend(_crops_from_frame(frame, model, device, class_id, imgsz, per_frame=10))
+            t += interval
+    finally:
+        cap.release()
+        gc.collect()
+    return crops[:limit]
 
 
 def choose_team_device(
@@ -362,6 +405,9 @@ def main() -> int:
                         help="maximum processing duration from --start-seconds (smoke test)")
     parser.add_argument("--no-team-classification", action="store_true")
     parser.add_argument("--team-sample-seconds", type=float, default=240)
+    parser.add_argument("--team-sample-start", type=float,
+                        help="source time to start the team-colour sample (default: --start-seconds). "
+                             "With this set the sample may reach beyond this run's own end time.")
     parser.add_argument("--team-sample-interval", type=float, default=1.5)
     parser.add_argument("--team-sample-max-crops", type=int, default=300)
     parser.add_argument("--team-classify-every", type=int, default=30)
@@ -465,7 +511,8 @@ def main() -> int:
         stop_at = min(stop_at, duration_limit) if stop_at is not None else duration_limit
 
     team_sample_seconds = args.team_sample_seconds
-    if stop_at is not None:
+    team_sample_start = args.team_sample_start if args.team_sample_start is not None else args.start_seconds
+    if stop_at is not None and args.team_sample_start is None:
         team_sample_seconds = min(team_sample_seconds, max(0.0, stop_at - args.start_seconds))
 
     period_dirs = directions
@@ -488,6 +535,7 @@ def main() -> int:
         "team_stability_ratio": args.team_stability_ratio,
         "team_sample_seconds_requested": args.team_sample_seconds,
         "team_sample_interval": args.team_sample_interval,
+        "team_sample_start": team_sample_start,
         "team_sample_max_crops": args.team_sample_max_crops,
         "source_start_seconds": args.start_seconds,
         "source_end_seconds": args.end_seconds,
@@ -546,7 +594,7 @@ def main() -> int:
                     video, player_model, device, class_ids["player"],
                     team_sample_seconds, args.team_sample_interval,
                     args.team_sample_max_crops, args.imgsz,
-                    start_seconds=args.start_seconds,
+                    start_seconds=team_sample_start,
                 )
                 if len(crops) >= 30:
                     # Choose the classifier device after crop inference has completed,

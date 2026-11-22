@@ -227,9 +227,45 @@ function renderClub(short){
       <div class="kv"></div>
       ${fx.length?`<p class="note">Result: ${fx.map(f=>`${esc(byShort[f.home].name)} ${f.hg}–${f.ag} ${esc(byShort[f.away].name)}`).join(" · ")}</p>`:""}
     </div>
+    ${clubProfile(short)}
     <h3 style="font-size:17px;text-transform:uppercase;margin:14px 0 6px">Squad</h3>
     <div class="squadgrid card">${c.players.map(p=>`<div class="pl"><span class="num">${p.number}</span><span>${esc(p.name)}</span>${p.position?`<span class="badge">${esc(p.position)}</span>`:""}</div>`).join("")}</div>
     <p class="note" style="margin-top:8px">Short names and numbers from ileague.id. Kit colour is a placeholder — set the real one when tagging.</p>`;
+}
+
+/* ---------- scouting profile from stored Track B reports ---------- */
+function clubProfile(short){
+  const ms=analyses.filter(a=>a.tracking&&(a.homeShort===short||a.awayShort===short))
+    .sort((a,b)=>String(a.tracking.date||"").localeCompare(String(b.tracking.date||"")));
+  if(!ms.length)return"";
+  const col=byShort[short]?.color||"#1d5fc4";
+  const per=(a,k)=>{const sd=a.homeShort===short?"home":"away",op=sd==="home"?"away":"home",b=a.tracking.periods?.[k];
+    if(!b)return null;const t=b.territory_home_view||{};
+    return{me:b[sd]||{},opp:b[op]||{},att:sd==="home"?t.att_third:t.def_third,own:sd==="home"?t.def_third:t.att_third}};
+  const avg=(xs)=>{xs=xs.filter(v=>v!=null&&isFinite(v));return xs.length?xs.reduce((a,b)=>a+b,0)/xs.length:null};
+  const rows=ms.map(a=>{const sd=a.homeShort===short?"home":"away",p=per(a,"all")||{me:{},opp:{}};
+    const gf=sd==="home"?a.hg:a.ag,ga=sd==="home"?a.ag:a.hg,opp=sd==="home"?a.away:a.home;
+    return{a,sd,p,gf,ga,opp}});
+  const cell=(v,f)=>`<td class="n">${f(v)}</td>`;
+  const half=k=>{const ps=ms.map(a=>per(a,k)).filter(Boolean);return{
+    poss:avg(ps.map(p=>p.me.ball_proximity_share)),blk:avg(ps.map(p=>p.me.block_height_m)),
+    oop:avg(ps.map(p=>p.me.block_height_out_of_possession_m)),line:avg(ps.map(p=>p.me.def_line_m)),n:ps.length}};
+  const h1=half("1"),h2=half("2");
+  // average own heatmap (each match normalised to its own max first)
+  let heat=null,grid=null;
+  ms.forEach(a=>{const h=per(a,"all")?.me?.heatmap;if(!h)return;grid=a.tracking.grid;
+    if(!heat)heat=h.map(c=>c.map(()=>0));h.forEach((c,i)=>c.forEach((v,j)=>heat[i][j]+=v/ms.length))});
+  if(heat){const mx=Math.max(...heat.flat())||1;heat=heat.map(c=>c.map(v=>v/mx))}
+  const d=(x,y,f)=>x==null||y==null?"—":((y-x)>=0?"+":"")+f(y-x);
+  return `<h3 style="font-size:17px;text-transform:uppercase;margin:14px 0 6px">Scouting profile — Track B (${ms.length} match${ms.length>1?"es":""})</h3>
+  <div class="card"><div class="tablewrap"><table class="tb"><thead><tr><th>Match</th><th class="n">Score</th><th class="n">Poss. proxy</th><th class="n">Block</th><th class="n">Block out of poss.</th><th class="n">Back line</th><th class="n">Width</th><th class="n">Ball in att. third</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr class="clickable" data-an="${esc(r.a.id)}"><td>${r.sd==="home"?"vs":"@"} ${esc(r.opp)} <span class="note">${esc(r.a.tracking.date||"")}</span></td><td class="n mono">${r.gf}–${r.ga}</td>
+      ${cell(r.p.me.ball_proximity_share,pct)}${cell(r.p.me.block_height_m,mtr)}${cell(r.p.me.block_height_out_of_possession_m,mtr)}${cell(r.p.me.def_line_m,mtr)}${cell(r.p.me.width_m,mtr)}${cell(r.p.att,pct)}</tr>`).join("")}
+    <tr><td><b>Average</b></td><td></td>${cell(avg(rows.map(r=>r.p.me.ball_proximity_share)),pct)}${cell(avg(rows.map(r=>r.p.me.block_height_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.block_height_out_of_possession_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.def_line_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.width_m)),mtr)}${cell(avg(rows.map(r=>r.p.att)),pct)}</tr>
+  </tbody></table></div>
+  <p class="note" style="margin-top:8px">1st → 2nd half: possession proxy ${d(h1.poss,h2.poss,v=>Math.round(v*100)+" pts")}, block ${d(h1.blk,h2.blk,v=>v.toFixed(1)+" m")}, block out of possession ${d(h1.oop,h2.oop,v=>v.toFixed(1)+" m")}, back line ${d(h1.line,h2.line,v=>v.toFixed(1)+" m")}. Metres from own goal; + = higher up the pitch.</p>
+  ${heat?`<div style="max-width:560px;margin-top:10px"><div class="note" style="margin-bottom:6px">Average positions, attacking →</div>${heatSvg(heat,grid,col)}</div>`:""}
+  <p class="note" style="margin-top:6px">Built from the Track B reports imported in My analysis. Proxies from broadcast tracking — read trends, not exact values.</p></div>`;
 }
 
 /* ---------- players ---------- */

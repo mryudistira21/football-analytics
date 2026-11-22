@@ -6,8 +6,11 @@ x, y are metres on a 105 x 68 pitch in the CAMERA frame (x = 0 is the goal on
 the left of the broadcast picture). Rows with role other than player /
 goalkeeper are skipped when a `role` column exists.
 
-Each team is flipped to attack left -> right. Periods 1 and 2 can use
---home-dir R/L. Extra time requires an explicit direction map:
+Each team is flipped to attack left -> right. By default the per-period map is
+read from the tracking metadata next to the CSV (<csv>.meta.json, key
+home_attacks_right_by_period — run_match.py writes it). Otherwise periods 1 and 2
+can use --home-dir R/L, and extra time requires an explicit direction map:
+    python src/heatmap_from_positions.py tracking.csv
     python src/heatmap_from_positions.py tracking.csv --home-dir R
     python src/heatmap_from_positions.py tracking.csv --home-attacks-right-by-period '{"1": true, "2": false, "3": false, "4": true}'
 
@@ -136,6 +139,26 @@ def save_heatmap(h: np.ndarray, title: str, out: Path):
     print("wrote", out)
 
 
+def directions_from_meta(meta_path: Path) -> dict[str, bool] | None:
+    """home_attacks_right_by_period from tracking metadata (bool or "R"/"L" values)."""
+    if not meta_path.is_file():
+        return None
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    raw = meta.get("home_attacks_right_by_period")
+    if isinstance(raw, dict) and raw:
+        out: dict[str, bool] = {}
+        for period, value in raw.items():
+            if isinstance(value, bool):
+                out[str(period)] = value
+            elif str(value).upper() in ("R", "L"):
+                out[str(period)] = str(value).upper() == "R"
+        return out or None
+    if meta.get("home_dir_1h") in ("R", "L"):
+        right = meta["home_dir_1h"] == "R"
+        return {"1": right, "2": not right}
+    return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Hot-area maps from a tracking CSV.")
     ap.add_argument("csv", type=Path)
@@ -144,6 +167,7 @@ def main() -> int:
         "--home-attacks-right-by-period",
         help='JSON object mapping periods to whether home attacks right, e.g. \'{"1": true, "2": false, "3": false, "4": true}\' (required for extra time)',
     )
+    ap.add_argument("--meta", type=Path, help="tracking metadata JSON (default: <csv>.meta.json)")
     ap.add_argument("--out", default="data/heat", help="output path prefix")
     a = ap.parse_args()
 
@@ -157,8 +181,12 @@ def main() -> int:
         if not isinstance(direction_map, dict):
             ap.error("--home-attacks-right-by-period must be a JSON object.")
         home_directions = direction_map
-    else:
+    elif a.home_dir:
         home_directions = a.home_dir
+    else:
+        home_directions = directions_from_meta(a.meta or a.csv.with_suffix(".meta.json"))
+        if home_directions is None and "period" in pd.read_csv(a.csv, nrows=0).columns:
+            print("No direction in the tracking metadata and no --home-dir: drawing in camera view.")
 
     hists, counts = accumulate(a.csv, home_directions)
     if not hists:

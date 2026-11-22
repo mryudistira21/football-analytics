@@ -320,6 +320,13 @@ def tracker_cmd(video: Path, models: Path, cache: Path, mid: str, c: dict[str, A
         "--pitch-imgsz", str(settings["pitch_imgsz"]), "--pitch-every", str(settings["pitch_every"]),
         "--batch", str(batch), "--team-model-state", str(team_state),
         "--cluster-0-side", "home", "--track-id-offset", str(c["k"] * TRACK_ID_BLOCK),
+        # Team colours are fitted once (first run without a saved state) from crops spread
+        # over the first half, then reused by every chunk.
+        "--team-sample-start", str(settings["_team_sample_start"]),
+        "--team-sample-seconds", str(settings["_team_sample_seconds"]),
+        "--team-sample-interval", str(settings.get("team_sample_interval", 15)),
+        "--team-sample-max-crops", str(settings.get("team_sample_max_crops", 600)),
+        "--team-classify-every", str(settings.get("team_classify_every", 10)),
         "--output", str(out_csv), "--overwrite", *extra,
     ]
 
@@ -477,6 +484,10 @@ def main() -> int:
     cache = work / "hf-cache"
     team_state = run / "team-state.joblib"
     chunks = plan_chunks(periods, float(settings["chunk_seconds"]))
+    first = min(periods, key=lambda x: x["start"])
+    settings["_team_sample_start"] = round(first["start"], 3)
+    settings["_team_sample_seconds"] = round(min(first["end"] - first["start"],
+                                                 float(settings.get("team_sample_span_seconds", 1500))), 3)
     combined = run / f"{mid}_tracking.csv"
 
     log(f"{match['home']} vs {match['away']} ({match.get('date', '')}) -> {run}")
@@ -507,7 +518,7 @@ def main() -> int:
             cmd = tracker_cmd(video, models, cache, mid, c, settings, out_csv, team_state,
                               int(settings["batch"]), home_dir,
                               ["--annotated-output", str(preview), "--annotated-max-seconds", str(a.smoke_seconds), *no_teams])
-            log("Smoke test (fits the team colours on the first ~4 min if not fitted yet) ...")
+            log("Smoke test (first run also fits the team colours from frames spread over the 1st half) ...")
             t0 = time.time()
             code, tail = run_logged(cmd, run / "logs" / "smoke.log", env)
             if code != 0:

@@ -8,6 +8,16 @@ One page to analyse a match end to end. Track B (automatic tracking) and Track A
 | `persipa_persiba_20261117` | Persipa Pati – PERSIBA (A), Pekan 2 | 2–2 | [v3LlHgczPZA](https://www.youtube.com/watch?v=v3LlHgczPZA) | filled |
 | `persiba_persika_20261121` | PERSIBA – Persika Karanganyar (H), Pekan 3 | 0–1 | add `video_url` | to fill |
 
+Opponent scouting (same config, `"scope": "scouting"`):
+
+| match_id | Fixture | Score | Video | Period times |
+|---|---|---|---|---|
+| `persika_persinga_20261113` | Persika – Persinga Ngawi | 1–0 | [wSEbj4TNGr4](https://www.youtube.com/watch?v=wSEbj4TNGr4) | filled |
+| `gresik_persika_20261117` | Gresik United – Persika | 1–1 | [1IYP9I4Atyo](https://www.youtube.com/watch?v=1IYP9I4Atyo) | filled |
+| `persinga_persibangga_20261122` | Persinga – Persibangga | — | add `video_url` | to fill |
+
+Next opponent: **Persinga Ngawi (away, 26 Nov)**.
+
 Config: [`matches/persiba_2026-27.json`](matches/persiba_2026-27.json). On Colab the live copy is `MyDrive/football-analysis/matches/persiba_2026-27.json` (step 2 of the notebook edits it).
 
 ## Rules that keep the data joinable
@@ -71,6 +81,8 @@ python scripts\run_match.py --config matches\persiba_2026-27.json --match persib
 
 Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any order — same match merges into one entry). Per half: score, xG, shot map (Track A); possession proxy, block height in/out of possession, back line, width/length, territory and position heatmaps (Track B), each with a data-quality line.
 
+**Scouting an opponent:** open the club in the Hub (Clubs → club). Every imported Track B report involving that club is combined into a *Scouting profile*: per-match row from that club's point of view, averages, 1st→2nd half change, and an average position heatmap. Run Track B on 2–3 of the opponent's matches (they don't need tagging) and import the reports.
+
 **Reading the Track B numbers**: they are proxies from a broadcast camera — compare halves and matches, not official stats. If a team's back line comes out near 5–10 m and its block very deep for the whole match, check `home_dir_1h` first (a wrong direction mirrors everything).
 
 ## Troubleshooting
@@ -79,7 +91,7 @@ Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any o
 |---|---|
 | `fill periods 1 and 2 in the config` | Step 2: enter P1/P2 start and end |
 | Home team shown in orange on the stills | Step 2: `SWAP_TEAMS = yes`, then step 7 if the run is already done |
-| Team colours wrong (both teams one colour, keepers dominate) | Delete `runs/<id>/team-state.joblib`, rerun step 4 (fits on the first 4 min of P1) |
+| Team colours wrong (both teams one colour, keepers dominate) | Delete `runs/<id>/team-state.joblib`, rerun step 4 (re-fits from ~100 frames spread over the 1st half) |
 | `Period end ... is past the video end` | The period time is wrong or the download is incomplete |
 | Chunk failed | The last log lines are printed; full log in `runs/<id>/logs/`. Re-run step 5 |
 | Report skipped | Set `home_dir_1h`, run step 7 |

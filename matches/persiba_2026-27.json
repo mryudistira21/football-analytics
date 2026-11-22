@@ -7,7 +7,8 @@
     "home_dir_1h: which way the HOME team attacks on screen in the 1st half (R = left to right, L = right to left). Only the report needs it; tracking runs without it.",
     "swap_teams: set true if the smoke-test preview shows the home team labelled 'away'. No GPU rerun is needed; labels are swapped when the chunks are combined.",
     "frame_stride auto = about 10 samples per second (3 on a 30 fps video, 6 on 60 fps). YouTube live replays are often 60 fps only.",
-    "match_id is shared with the Pitchside Tagger: type the same id in the Tagger's Match ID field when you create the match."
+    "match_id is shared with the Pitchside Tagger: type the same id in the Tagger's Match ID field when you create the match.",
+    "Opponent scouting matches (scope: 'scouting') sit in the same file; the Hub's club page aggregates every imported Track B report for that club."
   ],
   "defaults": {
     "frame_stride": "auto",
@@ -15,7 +16,11 @@
     "pitch_imgsz": 960,
     "pitch_every": 1,
     "batch": 0,
-    "chunk_seconds": 600
+    "chunk_seconds": 600,
+    "team_sample_span_seconds": 1500,
+    "team_sample_interval": 15,
+    "team_sample_max_crops": 600,
+    "team_classify_every": 10
   },
   "matches": [
     {
@@ -24,14 +29,24 @@
       "date": "2026-11-13",
       "home": "PERSIBA Bantul",
       "away": "Gresik United FC",
-      "score": [0, 0],
+      "score": [
+        0,
+        0
+      ],
       "video_url": "https://www.youtube.com/watch?v=nCVF6TTJGXw",
       "periods": {
-        "1": ["17:00", "1:04:41"],
-        "2": ["1:20:26", "2:07:27"]
+        "1": [
+          "17:00",
+          "1:04:41"
+        ],
+        "2": [
+          "1:20:26",
+          "2:07:27"
+        ]
       },
       "home_dir_1h": null,
-      "swap_teams": false
+      "swap_teams": false,
+      "scope": "persiba"
     },
     {
       "match_id": "persipa_persiba_20261117",
@@ -39,14 +54,24 @@
       "date": "2026-11-17",
       "home": "Persipa Pati",
       "away": "PERSIBA Bantul",
-      "score": [2, 2],
+      "score": [
+        2,
+        2
+      ],
       "video_url": "https://www.youtube.com/watch?v=v3LlHgczPZA",
       "periods": {
-        "1": ["07:30", "54:39"],
-        "2": ["1:01:31", "1:59:42"]
+        "1": [
+          "07:30",
+          "54:39"
+        ],
+        "2": [
+          "1:01:31",
+          "1:59:42"
+        ]
       },
       "home_dir_1h": null,
-      "swap_teams": false
+      "swap_teams": false,
+      "scope": "persiba"
     },
     {
       "match_id": "persiba_persika_20261121",
@@ -54,7 +79,77 @@
       "date": "2026-11-21",
       "home": "PERSIBA Bantul",
       "away": "Persika Karanganyar",
-      "score": [0, 1],
+      "score": [
+        0,
+        1
+      ],
+      "video_url": null,
+      "periods": {
+        "1": null,
+        "2": null
+      },
+      "home_dir_1h": null,
+      "swap_teams": false,
+      "scope": "persiba"
+    },
+    {
+      "match_id": "persika_persinga_20261113",
+      "scope": "scouting",
+      "round": "Pekan 1",
+      "date": "2026-11-13",
+      "home": "Persika Karanganyar",
+      "away": "Persinga Ngawi",
+      "score": [
+        1,
+        0
+      ],
+      "video_url": "https://www.youtube.com/watch?v=wSEbj4TNGr4",
+      "periods": {
+        "1": [
+          "08:05",
+          "54:30"
+        ],
+        "2": [
+          "1:09:48",
+          "2:01:00"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    },
+    {
+      "match_id": "gresik_persika_20261117",
+      "scope": "scouting",
+      "round": "Pekan 2",
+      "date": "2026-11-17",
+      "home": "Gresik United FC",
+      "away": "Persika Karanganyar",
+      "score": [
+        1,
+        1
+      ],
+      "video_url": "https://www.youtube.com/watch?v=1IYP9I4Atyo",
+      "periods": {
+        "1": [
+          "07:30",
+          "54:41"
+        ],
+        "2": [
+          "1:10:10",
+          "1:59:21"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false
+    },
+    {
+      "match_id": "persinga_persibangga_20261122",
+      "scope": "scouting",
+      "round": "Pekan 3",
+      "date": "2026-11-22",
+      "home": "Persinga Ngawi",
+      "away": "Persibangga Purbalingga",
+      "score": null,
       "video_url": null,
       "periods": {
         "1": null,
