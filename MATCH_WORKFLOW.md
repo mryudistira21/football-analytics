@@ -60,7 +60,7 @@ python scripts\run_match.py --config matches\persiba_2026-27.json --match persib
 python scripts\run_match.py --config matches\persiba_2026-27.json --match persiba_gresik_20261113 --root D:\Video-Bola-Analis --download
 ```
 
-8 GB VRAM is enough (two YOLO models + SigLIP ≈ 3 GB). If it ever runs out, add `--batch 4`.
+8 GB VRAM is enough (two YOLO models + SigLIP ≈ 3 GB). To keep the PC usable meanwhile, see *Laptop: keep the PC usable* below.
 
 ## A2 · Runs that keep going with the browser closed
 
@@ -72,11 +72,21 @@ python scripts\run_match.py --config matches\persiba_2026-27.json --match persib
 
 Kaggle, step by step: import `match_kaggle.ipynb` → *Session options*: GPU T4 x2, Internet On → edit cell 1 (match ids, period times) → **Save Version → Save & Run All (Commit)** → close the tab. Results: the version's *Output* → `deliverables/` (bundle zips, smoke stills, logs). To resume a failed run, add the previous version's output as an input and commit again.
 
-Laptop overnight (all matches that have period times; resumable):
+### Laptop: keep the PC usable while it runs
+
+Double-click **`Jalankan Track B.bat`** (repo root): it runs every match that has period times with the **light** profile and can be minimised; close it any time and double-click again to resume. Or from PowerShell:
 
 ```powershell
-python scripts\run_queue.py --config matches\persiba_2026-27.json --matches ready --root D:\Video-Bola-Analis --download
+python scripts\run_queue.py --config matches\persiba_2026-27.json --matches ready --root D:\Video-Bola-Analis --download --profile light
 ```
+
+| Profile | CPU | GPU | RAM | Use when |
+|---|---|---|---|---|
+| `light` | 2 threads on 2 cores, **idle priority** (yields to anything you open) | batch 2, max 50% VRAM, 0.25 s rest after each batch | stops a chunk above 45% of total RAM, retries at batch 1 | you are working on the PC |
+| `balanced` | 4 threads, half the cores, below-normal priority | batch 4, max 70% VRAM, 0.05 s rest | stop at 60% | light use (browsing) |
+| `full` (default) | all | batch 8, no cap | no stop | overnight / Colab / Kaggle |
+
+Fine-tune any value on top of a profile: `--cpu-threads`, `--cpu-cores`, `--priority normal|below|idle`, `--vram-fraction 0.4`, `--gpu-pause 0.5`, `--max-ram-gb 6`. Each finished chunk prints its peak RAM, so you can set `--max-ram-gb` from real numbers. GPU *load* itself can't be hard-capped on a GeForce card; the rests between batches are what keep it (and the fan) down. Expect `light` to take roughly 2–3× longer than `full`.
 
 ## B · Track A tagging — [Pitchside Tagger](https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp)
 

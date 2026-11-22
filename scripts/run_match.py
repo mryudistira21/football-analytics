@@ -133,7 +133,51 @@ def log(msg: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
 
 
-def child_env(models: Path, cache: Path) -> dict[str, str]:
+# Resource profiles for running on a PC you are also using.
+#   full      everything for speed (Colab / Kaggle / a PC you are not using)
+#   balanced  noticeably lighter; fine to browse and type while it runs
+#   light     background mode: idle CPU priority, 2 cores, half the VRAM, GPU rests between batches
+PROFILES: dict[str, dict[str, Any]] = {
+    "full":     {"batch": 0, "cpu_threads": 0, "cpu_cores": 0, "priority": "normal",
+                 "vram_fraction": 0.0, "gpu_pause": 0.0, "max_ram_share": 0.0},
+    "balanced": {"batch": 4, "cpu_threads": 4, "cpu_cores": -50, "priority": "below",
+                 "vram_fraction": 0.7, "gpu_pause": 0.05, "max_ram_share": 0.6},
+    "light":    {"batch": 2, "cpu_threads": 2, "cpu_cores": 2, "priority": "idle",
+                 "vram_fraction": 0.5, "gpu_pause": 0.25, "max_ram_share": 0.45},
+}
+
+
+def resolve_limits(profile: str, overrides: dict[str, Any]) -> dict[str, Any]:
+    """Profile values with explicit flags on top. cpu_cores < 0 means that percent of the logical CPUs."""
+    lim = {**PROFILES[profile], **{k: v for k, v in overrides.items() if v is not None}}
+    if lim["cpu_cores"] < 0:
+        lim["cpu_cores"] = max(1, (os.cpu_count() or 2) * -lim["cpu_cores"] // 100)
+    lim["max_ram_gb"] = overrides.get("max_ram_gb")
+    if lim["max_ram_gb"] is None and lim["max_ram_share"] > 0:
+        try:
+            import psutil
+            lim["max_ram_gb"] = round(psutil.virtual_memory().total / 2**30 * lim["max_ram_share"], 1)
+        except ImportError:
+            lim["max_ram_gb"] = None
+    return lim
+
+
+def limit_args(lim: dict[str, Any]) -> list[str]:
+    out = []
+    if lim["cpu_threads"]:
+        out += ["--cpu-threads", str(lim["cpu_threads"])]
+    if lim["cpu_cores"]:
+        out += ["--cpu-cores", str(lim["cpu_cores"])]
+    if lim["priority"] != "normal":
+        out += ["--priority", lim["priority"]]
+    if lim["vram_fraction"]:
+        out += ["--vram-fraction", str(lim["vram_fraction"])]
+    if lim["gpu_pause"]:
+        out += ["--gpu-pause", str(lim["gpu_pause"])]
+    return out
+
+
+def child_env(models: Path, cache: Path, threads: int = 0) -> dict[str, str]:
     env = dict(os.environ)
     env.update({
         "FOOTBALL_MODEL_DIR": str(models),
@@ -145,6 +189,9 @@ def child_env(models: Path, cache: Path) -> dict[str, str]:
         "PYTORCH_CUDA_ALLOC_CONF": "expandable_segments:True",
         "PYTHONUNBUFFERED": "1",
     })
+    if threads:
+        for var in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+            env[var] = str(threads)
     return env
 
 
@@ -334,14 +381,49 @@ def tracker_cmd(video: Path, models: Path, cache: Path, mid: str, c: dict[str, A
     ]
 
 
-def run_logged(cmd: list[str], log_path: Path, env: dict[str, str]) -> tuple[int, str]:
+RAM_EXCEEDED = 75  # exit code used when the RAM watchdog stops a chunk
+LAST_PEAK_GB: dict[str, float] = {}
+
+
+def watch_ram(proc: subprocess.Popen, max_gb: float, flag: dict[str, Any]) -> None:
+    """Kill the child (and its children) if its resident memory passes max_gb."""
+    try:
+        import psutil
+    except ImportError:
+        return
+    import threading
+    def loop() -> None:
+        try:
+            p = psutil.Process(proc.pid)
+            while proc.poll() is None:
+                try:
+                    rss = p.memory_info().rss + sum(c.memory_info().rss for c in p.children(recursive=True))
+                except psutil.Error:
+                    rss = 0
+                flag["peak_gb"] = max(flag.get("peak_gb", 0.0), rss / 2**30)
+                if rss / 2**30 > max_gb:
+                    flag["killed"] = True
+                    for c in p.children(recursive=True):
+                        c.kill()
+                    p.kill()
+                    return
+                time.sleep(2)
+        except psutil.Error:
+            return
+    threading.Thread(target=loop, daemon=True).start()
+
+
+def run_logged(cmd: list[str], log_path: Path, env: dict[str, str],
+               max_ram_gb: float | None = None) -> tuple[int, str]:
     """Run a child, tee a few progress lines, keep the full log on disk."""
     log_path.parent.mkdir(parents=True, exist_ok=True)
     tail: list[str] = []
+    flag: dict[str, Any] = {}
     with log_path.open("w", encoding="utf-8") as fh:
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                 text=True, env=env, cwd=str(REPO), bufsize=1)
         assert proc.stdout is not None
+        watch_ram(proc, max_ram_gb or float("inf"), flag)  # always measures; kills only with a limit
         n = 0
         for line in proc.stdout:
             fh.write(line)
@@ -354,6 +436,12 @@ def run_logged(cmd: list[str], log_path: Path, env: dict[str, str]) -> tuple[int
             elif any(k in line for k in ("Error", "error", "Traceback", "Team classifier", "Loaded team", "Saved team")):
                 print("    " + line.rstrip(), flush=True)
         proc.wait()
+        LAST_PEAK_GB["value"] = flag.get("peak_gb", 0.0)
+        if flag.get("killed"):
+            msg = f"RAM limit {max_ram_gb} GB reached (peak {flag['peak_gb']:.1f} GB): chunk stopped.\n"
+            fh.write(msg)
+            tail.append(msg)
+            return RAM_EXCEEDED, "".join(tail)
     return proc.returncode, "".join(tail)
 
 
@@ -459,6 +547,15 @@ def main() -> int:
     ap.add_argument("--post-only", action="store_true", help="skip tracking; rebuild combine/moments/report")
     ap.add_argument("--chunk-seconds", type=float)
     ap.add_argument("--batch", type=int, help="frames per YOLO call (0 = auto)")
+    lg = ap.add_argument_group("resource limits (for running on a PC you are using)")
+    lg.add_argument("--profile", choices=list(PROFILES), default="full",
+                    help="full (default) | balanced | light — see PROFILES in this file")
+    lg.add_argument("--cpu-threads", type=int, help="max CPU threads")
+    lg.add_argument("--cpu-cores", type=int, help="use only N logical CPUs")
+    lg.add_argument("--priority", choices=["normal", "below", "idle"])
+    lg.add_argument("--vram-fraction", type=float, help="cap GPU memory share, e.g. 0.5")
+    lg.add_argument("--gpu-pause", type=float, help="seconds of GPU rest after each batch")
+    lg.add_argument("--max-ram-gb", type=float, help="stop a chunk whose RAM use passes this")
     ap.add_argument("--no-teams", action="store_true",
                     help="skip home/away classification (faster; team = unknown everywhere)")
     ap.add_argument("--max-chunks", type=int, help="stop after this many new chunks (budget control)")
@@ -469,7 +566,13 @@ def main() -> int:
         settings["chunk_seconds"] = a.chunk_seconds
     if a.batch is not None:
         settings["batch"] = a.batch
+    lim = resolve_limits(a.profile, {"cpu_threads": a.cpu_threads, "cpu_cores": a.cpu_cores,
+                                     "priority": a.priority, "vram_fraction": a.vram_fraction,
+                                     "gpu_pause": a.gpu_pause, "max_ram_gb": a.max_ram_gb})
+    if a.batch is None and lim["batch"]:
+        settings["batch"] = lim["batch"]
     no_teams = ["--no-team-classification"] if a.no_teams else []
+    no_teams += limit_args(lim)  # passed to every tracker run
     mid = match["match_id"]
     root = a.root.expanduser().resolve()
     work = (a.work or a.root).expanduser().resolve()
@@ -512,7 +615,13 @@ def main() -> int:
         log(f"Video {fmt_clock(duration)} at {fps:.2f} fps -> sampling every {settings['frame_stride']} frames "
             f"(~{fps / settings['frame_stride']:.1f} per second)")
         models = ensure_models(root)
-        env = child_env(models, cache)
+        env = child_env(models, cache, lim["cpu_threads"])
+        if a.profile != "full" or any(v is not None for v in (a.cpu_threads, a.cpu_cores, a.priority,
+                                                              a.vram_fraction, a.gpu_pause, a.max_ram_gb)):
+            log(f"Limits ({a.profile}): batch {settings['batch'] or 'auto'}, CPU threads {lim['cpu_threads'] or 'all'}, "
+                f"cores {lim['cpu_cores'] or 'all'}, priority {lim['priority']}, "
+                f"VRAM {int(lim['vram_fraction'] * 100) or 100}%, GPU rest {lim['gpu_pause']} s/batch, "
+                f"RAM stop at {lim['max_ram_gb'] or 'no limit'} GB")
 
         if a.smoke:
             sm = run / "smoke"
@@ -526,7 +635,7 @@ def main() -> int:
                               ["--annotated-output", str(preview), "--annotated-max-seconds", str(a.smoke_seconds), *no_teams])
             log("Smoke test (first run also fits the team colours from frames spread over the 1st half) ...")
             t0 = time.time()
-            code, tail = run_logged(cmd, run / "logs" / "smoke.log", env)
+            code, tail = run_logged(cmd, run / "logs" / "smoke.log", env, lim["max_ram_gb"])
             if code != 0:
                 print(tail)
                 raise SystemExit("Smoke test failed; full log in runs/<match>/logs/smoke.log")
@@ -563,14 +672,19 @@ def main() -> int:
                 t0 = time.time()
                 code, tail = run_logged(
                     tracker_cmd(video, models, cache, mid, c, settings, local_csv, team_state, batch, home_dir, no_teams),
-                    run / "logs" / (name + ".log"), env)
+                    run / "logs" / (name + ".log"), env, lim["max_ram_gb"])
                 if code == 0:
                     break
-                oom = "out of memory" in tail.lower() or "cuda error" in tail.lower() or code in (-9, 137)
-                if attempt == 1 and oom:
-                    batch = 2
-                    log("Out of memory -> retrying this chunk with batch 2.")
+                oom = ("out of memory" in tail.lower() or "cuda error" in tail.lower()
+                       or code in (-9, 137, RAM_EXCEEDED))
+                if attempt == 1 and oom and batch != 1:
+                    batch = 1 if code == RAM_EXCEEDED else 2
+                    log(f"Memory limit hit -> retrying this chunk with batch {batch}.")
                     continue
+                if code == RAM_EXCEEDED:
+                    print(tail)
+                    raise SystemExit(f"Chunk {name} needs more RAM than --max-ram-gb allows even at batch 1. "
+                                     "Close other programs or raise the limit, then re-run to resume.")
                 print(tail)
                 raise SystemExit(f"Chunk {name} failed (exit {code}). Log: {run / 'logs' / (name + '.log')}. "
                                  "Re-run the same command to resume.")
@@ -582,7 +696,9 @@ def main() -> int:
             el = time.time() - t0
             rate = (c["end"] - c["start"]) / el if el else 0
             left = sum(x["end"] - x["start"] for x in todo[todo.index(c) + 1:])
-            log(f"  done in {el / 60:.1f} min ({rate:.2f}x real time); ~{left / max(rate, 1e-6) / 60:.0f} min left")
+            peak = LAST_PEAK_GB.get("value") or 0
+            log(f"  done in {el / 60:.1f} min ({rate:.2f}x real time, peak RAM {peak:.1f} GB); "
+                f"~{left / max(rate, 1e-6) / 60:.0f} min left")
         log(f"Tracking finished: {new} new chunks in {(time.time() - t_start) / 60:.1f} min.")
 
     else:

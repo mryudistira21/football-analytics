@@ -96,3 +96,16 @@ def test_queue_only_runs_matches_with_both_halves():
     assert has_periods({"periods": {"1": ["0:10", "45:00"], "2": ["60:00", "105:00"]}})
     assert not has_periods({"periods": {"1": ["0:10", "45:00"], "2": None}})
     assert not has_periods({})
+
+
+def test_resource_profiles_resolve():
+    from scripts.run_match import limit_args, resolve_limits
+    full = resolve_limits("full", {})
+    assert limit_args(full) == [] and full["max_ram_gb"] is None
+    light = resolve_limits("light", {"max_ram_gb": 6})
+    args = limit_args(light)
+    assert ["--priority", "idle"] == args[args.index("--priority"):args.index("--priority") + 2]
+    assert light["max_ram_gb"] == 6 and light["batch"] == 2
+    bal = resolve_limits("balanced", {"cpu_cores": 3})
+    assert bal["cpu_cores"] == 3
+    assert resolve_limits("balanced", {})["cpu_cores"] >= 1

@@ -2,6 +2,12 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-22 (d) — Resource limits for running on Rizki's own PC
+- **Profiles** in `run_match.py` (`--profile full|balanced|light`, passed through by `run_queue.py`): CPU threads (env + `torch.set_num_threads` + `cv2.setNumThreads`), CPU affinity, process priority (Windows IDLE / BELOW_NORMAL; Linux nice 19 / 10), `torch.cuda.set_per_process_memory_fraction`, a GPU rest after each batch, and a RAM watchdog (psutil) that stops a chunk above the limit and retries it at batch 1. Limits are applied inside `track_video.py` before thread pools start, and recorded in each chunk's metadata (`resource_limits`).
+- GPU utilisation can't be hard-capped on consumer NVIDIA cards; the duty-cycle pause is the lever. Power limits (`nvidia-smi -pl`) need admin and are often locked on laptops, so not used.
+- `Jalankan Track B.bat`: double-click runner, light profile, all ready matches, resumable.
+- `psutil` added to requirements.
+
 ## 2026-11-22 (c) — Unattended runs (Kaggle, laptop)
 - **`scripts/run_queue.py`:** several matches, one worker per GPU (`--gpus 0,1`), smoke test (only when no team state yet) + full run each, per-match logs and `queue/status.json`. `--matches ready` = every match with a video URL and both period times.
 - **`notebooks/match_kaggle.ipynb`:** Kaggle commits run with the browser closed; 2 × T4 → two matches in parallel. Videos and scratch live in `/tmp` (not saved); runs, bundles, stills and logs in `/kaggle/working`. Resume by attaching the previous version's output. Uploaded mp4 datasets are picked up when YouTube blocks the download.

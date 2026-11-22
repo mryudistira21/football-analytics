@@ -9,6 +9,7 @@ import math
 import os
 import joblib
 import sys
+import time
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -375,6 +376,37 @@ def save_team_cluster_state(path: Path, team_classifier: Any, cluster_0_side: st
     temporary.replace(path)
 
 
+def apply_cpu_limits(threads: int, cores: int, priority: str) -> dict[str, Any]:
+    """Limit this process before the heavy libraries start their thread pools.
+
+    threads: max worker threads for PyTorch / OpenCV / BLAS (0 = library default)
+    cores:   pin the process to the first N logical CPUs (0 = all)
+    priority: normal | below | idle  (idle = only uses CPU nobody else wants)
+    """
+    applied: dict[str, Any] = {}
+    if threads > 0:
+        for var in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
+            os.environ[var] = str(threads)
+        cv2.setNumThreads(threads)
+        applied["threads"] = threads
+    try:
+        import psutil
+        proc = psutil.Process()
+        if cores > 0 and hasattr(proc, "cpu_affinity"):
+            allowed = proc.cpu_affinity()[:cores]
+            proc.cpu_affinity(allowed)
+            applied["cpu_affinity"] = allowed
+        if priority != "normal":
+            if os.name == "nt":
+                proc.nice(psutil.IDLE_PRIORITY_CLASS if priority == "idle" else psutil.BELOW_NORMAL_PRIORITY_CLASS)
+            else:
+                proc.nice(19 if priority == "idle" else 10)
+            applied["priority"] = priority
+    except Exception as exc:  # psutil missing or not permitted: run unthrottled rather than fail
+        applied["limit_error"] = str(exc)
+    return applied
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Track football players and ball on broadcast video.")
     parser.add_argument("--input", type=Path, required=True)
@@ -423,7 +455,16 @@ def main() -> int:
     parser.add_argument("--annotated-output", type=Path)
     parser.add_argument("--annotated-max-seconds", type=float, default=180)
     parser.add_argument("--overwrite", action="store_true")
+    limits = parser.add_argument_group("resource limits (keep the PC usable)")
+    limits.add_argument("--cpu-threads", type=int, default=0, help="max CPU threads (0 = default)")
+    limits.add_argument("--cpu-cores", type=int, default=0, help="use only the first N logical CPUs (0 = all)")
+    limits.add_argument("--priority", choices=["normal", "below", "idle"], default="normal")
+    limits.add_argument("--vram-fraction", type=float, default=0.0,
+                        help="cap PyTorch GPU memory at this share of VRAM, e.g. 0.5 (0 = no cap)")
+    limits.add_argument("--gpu-pause", type=float, default=0.0,
+                        help="seconds to rest after each batch; lowers GPU load and heat (0 = none)")
     args = parser.parse_args()
+    applied_limits = apply_cpu_limits(args.cpu_threads, args.cpu_cores, args.priority)
 
     if args.frame_stride < 1 or args.team_classify_every < 1 or args.pitch_every < 1 or args.batch < 0:
         parser.error("frame stride and team classification interval must be positive")
@@ -486,6 +527,13 @@ def main() -> int:
         print("CUDA selected but torch.cuda.is_available() is false.", file=sys.stderr)
         return 1
     half = device.startswith("cuda")
+    if args.cpu_threads > 0:
+        torch.set_num_threads(args.cpu_threads)
+    if half and 0 < args.vram_fraction < 1:
+        torch.cuda.set_per_process_memory_fraction(args.vram_fraction, 0)
+        applied_limits["vram_fraction"] = args.vram_fraction
+    if args.gpu_pause > 0:
+        applied_limits["gpu_pause_s"] = args.gpu_pause
     batch_size = args.batch or (8 if half else 1)
 
     cap = cv2.VideoCapture(str(video))
@@ -523,6 +571,7 @@ def main() -> int:
         "home_attacks_right_by_period": period_dirs,
         "frame_stride": args.frame_stride,
         "batch": batch_size,
+        "resource_limits": applied_limits,
         "pitch_every": args.pitch_every,
         "imgsz": args.imgsz,
         "pitch_imgsz": args.pitch_imgsz,
@@ -876,6 +925,8 @@ def main() -> int:
                 handle_frame(frame, frame_index, timestamp, results[i], pitch_by_index.get(i), out)
             pending.clear()
             out_fp.flush()
+            if args.gpu_pause > 0:
+                time.sleep(args.gpu_pause)
 
         with temporary_csv.open("w", newline="", encoding="utf-8") as out_fp:
             out = csv.DictWriter(out_fp, fieldnames=FIELDS)

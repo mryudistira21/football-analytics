@@ -5,7 +5,7 @@ Paste this into ChatGPT to bring it up to date.
 ## Repo state
 - **`main` is the only branch that matters.** It contains all of Track A and all of Track B.
 - **PR #1 (Track B v1) is closed as superseded:** every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose extra feature (directions read from `<csv>.meta.json`) is now ported. **PR #2 is merged.** Please base new work on `main` and open PRs against `main`.
-- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (45 tests).
+- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (46 tests).
 
 ## How Track B runs now (production)
 - `scripts/run_match.py` + `matches/persiba_2026-27.json` + `notebooks/match_colab.ipynb`; runbook `MATCH_WORKFLOW.md`.
@@ -13,6 +13,7 @@ Paste this into ChatGPT to bring it up to date.
 - `track_video.py` (CSV schema unchanged): `grab()`/`retrieve()` for skipped frames; batched FP16 YOLO (`--batch`, auto 8 on CUDA); `--pitch-every N`; `--team-sample-start` with seek-based sampling for intervals ≥ 2 s. Output is byte-identical to the previous version at batch 1 on a test clip.
 - Driver defaults: frame stride `auto` = round(fps/10) (the pilot clip was 58 fps); team fit from ~100 frames spread over the 1st half (every 15 s, up to 25 min, ≤ 600 crops); `--team-classify-every 10`; track IDs `chunk × 100000 + n`; CUDA OOM → retry at batch 2.
 - **Unattended runs:** `scripts/run_queue.py` (one worker per GPU) + `notebooks/match_kaggle.ipynb` (Kaggle commit, 2 × T4, two matches at once). Smoke outputs land in `deliverables/<match>_still_*.jpg` and `<match>_smoke_summary.json`.
+- **Resource profiles** for local runs: `--profile light|balanced|full` (CPU threads/cores/priority, VRAM fraction, GPU rest per batch, RAM watchdog). Chunk metadata records `resource_limits`; the driver logs peak RAM per chunk.
 - Home/away swap (`swap_teams`) and attack direction (`home_dir_1h`) are applied **after** tracking — no GPU rerun to fix them.
 - Stoppage time stays in its half (the pilot's "P3/P4" were added time, now merged into periods 1–2).
 

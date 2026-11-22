@@ -10,9 +10,11 @@ Matches without period times are skipped with a message.
         --matches persiba_persika_20261121,persika_persinga_20261113 \
         --root /kaggle/working/fa --work /tmp/work --video-dir /tmp/videos --gpus 0,1 --download
 
-    # Laptop overnight (one GPU, all matches that have period times)
+    # Laptop (one GPU, all matches that have period times), light on the PC while you use it
     python scripts/run_queue.py --config matches/persiba_2026-27.json --matches ready \
-        --root D:/Video-Bola-Analis --download
+        --root D:/Video-Bola-Analis --download --profile light
+
+Any extra flag (e.g. --profile, --max-ram-gb, --gpu-pause) is passed to scripts/run_match.py.
 
 Progress: <root>/queue/<match>.log per match and <root>/queue/status.json.
 """
@@ -49,7 +51,7 @@ def main() -> int:
     ap.add_argument("--download", action="store_true")
     ap.add_argument("--no-smoke", action="store_true", help="skip the 60 s smoke test")
     ap.add_argument("--no-teams", action="store_true", help="pass --no-teams to every run (testing)")
-    a = ap.parse_args()
+    a, passthrough = ap.parse_known_args()  # e.g. --profile light --max-ram-gb 6 go to every run
 
     cfg = json.loads(a.config.read_text(encoding="utf-8"))
     by_id = {m["match_id"]: m for m in cfg["matches"]}
@@ -85,6 +87,7 @@ def main() -> int:
         common += ["--download"]
     if a.no_teams:
         common += ["--no-teams"]
+    common += passthrough
 
     jobs: queue.Queue[str] = queue.Queue()
     for i in todo:
