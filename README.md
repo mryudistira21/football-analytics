@@ -63,7 +63,7 @@ Each match:
 4. Download the CSV (format in `DATA_CONTRACT.md`), then import it in the **League Hub** (`hub/`) to see the match in the league context.
 
 ## Quick start (Track B)
-**On your own PC without slowing it down:** double-click `Jalankan Track B.bat` (light profile, resumable).
+**On your own PC:** `Setup Track B.bat` once → `Jalankan Track B.bat` (light profile, resumable) → review in the Tagger's *Review (Track B)* tab → `Simpan ke Database.bat` (SQLite `football.db`).
 **Real matches:** follow [MATCH_WORKFLOW.md](MATCH_WORKFLOW.md) — `notebooks/match_colab.ipynb` on Colab, or `scripts/run_match.py` locally, driven by `matches/persiba_2026-27.json`.
 
 Automatic video tracking is in [TRACK_B.md](TRACK_B.md): model downloads, the 30-second smoke test, GPU/VRAM settings, CSV output and known limitations. Heavy full-match inference runs on Colab (`notebooks/track_b_colab.ipynb`); Track B then exports per-track cut-lists (`scripts/build_player_moments.py`) that import into the Tagger's Reel ("Imported (Track B)").

@@ -37,7 +37,9 @@ For constant-frame-rate files, `video_seconds` is approximately `frame / fps`; f
 ## 4. Event CSV (Track A, Pitchside Tagger export)
 One row per event; coordinates in the **team** frame.
 
-`match_id, match_name, id, half, match_clock, match_seconds, video_seconds, team, side, player, player_name, event, outcome, receiver, receiver_name, x, y, end_x, end_y, body_part, situation, assist_event_id, xg, xt_added, progressive, into_box`
+`match_id, match_name, id, half, match_clock, match_seconds, video_seconds, team, side, player, player_name, event, outcome, receiver, receiver_name, x, y, end_x, end_y, body_part, situation, assist_event_id, xg, xt_added, progressive, into_box, review, source, candidate_id, track_id, track_to`
+
+- `source`: `manual` (tagged by hand) or `trackb` (an accepted Track B candidate). `candidate_id`, `track_id`, `track_to` link a `trackb` event back to its candidate and Track B tracks. The Tagger downloads this as `<match_id>_events.csv`.
 
 - `half` is the match period: `1` = first half, `2` = second half, `3` = extra-time first half, `4` = extra-time second half. Preserve this integer through Tagger import/export and Hub analysis; do not collapse periods 3 and 4 into period 1 or 2.
 
@@ -72,6 +74,26 @@ Track B can export one cut-list CSV per anonymous `track_id`. The Reel importer 
 - Multiple per-track files may be imported together; the importer deduplicates by `moment`. A sidecar manifest may carry `match_id`, team and diagnostics; it is not required by the importer.
 - This cut-list is distinct from the 26-column event CSV. It does not change the event importer.
 - `track_id` is not `shirt_number`; no player-number identity is implied.
+
+## 6b. Event candidates (Track B → Tagger Review tab) — v1
+
+`<match_id>_candidates.csv`, built by `scripts/build_event_candidates.py` from the combined tracking CSV once `home_dir_1h` is known:
+
+`cand_id, period, t, t_end, side, type, outcome, track_id, track_to, x, y, ex, ey, confidence, reason`
+
+- `type` uses the Tagger's event names (`pass, cross, shot, tackle, interception, recovery, clearance`); `outcome` uses the Tagger's internal codes (`ok, fail, on, won`; empty = the reviewer picks).
+- `t` = `video_seconds` of the action (release for passes, gain for interceptions/tackles/recoveries); `t_end` = when the ball arrived.
+- `x, y, ex, ey`: **team frame** metres (the acting `side` attacks left → right), so an accepted candidate becomes an event unchanged.
+- `track_id` = acting track, `track_to` = receiver (passes) or the player who lost it (tackles). Anonymous Track B ids, not shirt numbers.
+- `confidence`: `ok` or `review`; `reason` is a short human explanation.
+
+## 6c. Tagger review export — `<match_id>_review.json`
+
+`{"schema": "tagger_review_v1", "match_id": ..., "track_map": {"<track_id>": {"team": 0|1, "p": "<shirt>"}}, "candidates": [{"cand_id", "status": "accepted|rejected|pending", "event_id"}]}` — `team` 0 = home, 1 = away.
+
+## 6d. Database — `<root>/football.db` (SQLite)
+
+Built by `scripts/save_to_db.py` (called by `run_match.py` at the end of a local run). Tables: `matches, tracking, moments, candidates (+ review_status, event_id), track_map, events, team_metrics, team_heatmaps, ingests`; views `v_review_progress, v_player_events, v_team_half`. Re-saving a match replaces that match's rows. Column names follow sections 4–6c.
 
 ## 7. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.

@@ -29,7 +29,7 @@ jobs:
 
       - name: Compile Track B Python sources
         run: |
-          python -m compileall -q scripts/track_video.py scripts/run_match.py scripts/team_report.py scripts/download_sports_models.py src/heatmap_from_positions.py tests
+          python -m compileall -q scripts/track_video.py scripts/run_match.py scripts/run_queue.py scripts/team_report.py scripts/build_event_candidates.py scripts/save_to_db.py scripts/download_sports_models.py src/heatmap_from_positions.py tests
 
       - name: Run unit tests
         run: python -m pytest tests -q

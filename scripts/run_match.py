@@ -52,6 +52,8 @@ REPO = Path(__file__).resolve().parents[1]
 TRACKER = REPO / "scripts" / "track_video.py"
 MOMENTS = REPO / "scripts" / "build_player_moments.py"
 REPORT = REPO / "scripts" / "team_report.py"
+CANDIDATES = REPO / "scripts" / "build_event_candidates.py"
+SAVE_DB = REPO / "scripts" / "save_to_db.py"
 DOWNLOADER = REPO / "src" / "download_match.py"
 MODELS_SCRIPT = REPO / "scripts" / "download_sports_models.py"
 MODEL_FILES = ("football-player-detection.pt", "football-pitch-detection.pt")
@@ -537,9 +539,10 @@ def bundle(run: Path, mid: str) -> Path:
             for f in sorted((run / sub).glob("*")) if (run / sub).exists() else []:
                 if f.is_file():
                     zf.write(f, f"{sub}/{f.name}")
-        meta = run / f"{mid}_tracking.meta.json"
-        if meta.exists():
-            zf.write(meta, meta.name)
+        for name in (f"{mid}_tracking.meta.json", f"{mid}_candidates.csv", f"{mid}_tracking.csv"):
+            f = run / name
+            if f.exists():   # the tracking CSV compresses ~5x, so the whole match travels in one file
+                zf.write(f, f.name)
     return z
 
 
@@ -559,6 +562,8 @@ def main() -> int:
     ap.add_argument("--smoke", action="store_true", help="60 s check with preview + stills, then stop")
     ap.add_argument("--smoke-seconds", type=float, default=60)
     ap.add_argument("--post-only", action="store_true", help="skip tracking; rebuild combine/moments/report")
+    ap.add_argument("--no-db", action="store_true",
+                    help="don't save into <root>/football.db at the end (Colab/Kaggle: build the DB on your PC)")
     ap.add_argument("--chunk-seconds", type=float)
     ap.add_argument("--batch", type=int, help="frames per YOLO call (0 = auto)")
     lg = ap.add_argument_group("resource limits (for running on a PC you are using)")
@@ -733,13 +738,21 @@ def main() -> int:
                     "--output-dir", str(run / "moments")], check=True, cwd=str(REPO))
 
     if dirs is None:
-        log("Team report skipped: set home_dir_1h (R or L) for this match in the config, then run with --post-only.")
+        log("Team report and event candidates skipped: set home_dir_1h (R or L) for this match in the config, "
+            "then run with --post-only.")
     else:
         log("Building the team report ...")
         subprocess.run([sys.executable, str(REPORT), "--input", str(combined), "--config", str(a.config),
                         "--match", mid, "--output-dir", str(run / "report")], check=True, cwd=str(REPO))
+        log("Building event candidates for review in the Tagger ...")
+        subprocess.run([sys.executable, str(CANDIDATES), "--input", str(combined), "--config", str(a.config),
+                        "--match", mid, "--output", str(run / f"{mid}_candidates.csv")], check=True, cwd=str(REPO))
     z = bundle(run, mid)
     log(f"Bundle: {z}  ({z.stat().st_size / 2**20:.1f} MB)")
+    if not a.no_db:
+        log("Saving into the database ...")
+        subprocess.run([sys.executable, str(SAVE_DB), "--config", str(a.config), "--root", str(root),
+                        "--match", mid], check=True, cwd=str(REPO))
     return 0
 
 

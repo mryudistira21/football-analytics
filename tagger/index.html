@@ -189,6 +189,7 @@ table.grid th.n{text-align:right}
 .sw{position:relative;width:38px;height:22px;border-radius:999px;background:var(--line);border:0;flex:none;transition:background .15s}
 .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
 .sw[aria-pressed="true"]{background:var(--ok)} .sw[aria-pressed="true"]::after{left:18px}
+@media (max-width:640px){.rvgrid{grid-template-columns:1fr!important}}
 .reelbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 2px}
 .reelbar .big{font-family:var(--font-display);font-size:16px}
 
@@ -348,6 +349,7 @@ table.grid th.n{text-align:right}
         <button role="tab" data-tab="network" aria-selected="false">Network</button>
         <button role="tab" data-tab="heat" aria-selected="false">Hot areas</button>
         <button role="tab" data-tab="moments" aria-selected="false">Moments</button>
+        <button role="tab" data-tab="review" aria-selected="false">Review (Track B)</button>
         <button role="tab" data-tab="log" aria-selected="false">Log</button>
       </div>
       <div class="row" style="margin:0 0 10px;gap:8px"><span class="label">Period</span>
@@ -361,6 +363,7 @@ table.grid th.n{text-align:right}
       <div class="row">
         <button class="btn" id="exportBtn">Download CSV</button>
         <button class="btn" id="copyBtn">Copy CSV</button>
+        <button class="btn" id="reviewExportBtn" title="Your Track B review decisions and track → player numbers, for the database">Download review (JSON)</button>
         <label class="btn" for="importIn">Import CSV</label><input type="file" id="importIn" accept=".csv,text/csv" hidden>
       </div>
       <textarea id="csvOut" class="csvout" hidden readonly aria-label="CSV text"></textarea>
@@ -481,7 +484,7 @@ const Store={mode:"memory",db:null,
   },
   async deleteMatch(id,chunks){
     if(this.mode==="db"){for(const c of chunks)await this.db.doc(`matches/${id}/chunks/c${c}`).delete();await this.db.doc("matches/"+id).delete();return}
-    if(this.mode==="local"){try{const l=(await this.listMatches()).filter(x=>x.id!==id);localStorage.setItem("pt:matches",JSON.stringify(l));localStorage.removeItem("pt:ev:"+id)}catch(e){}}
+    if(this.mode==="local"){try{const l=(await this.listMatches()).filter(x=>x.id!==id);localStorage.setItem("pt:matches",JSON.stringify(l));localStorage.removeItem("pt:ev:"+id);localStorage.removeItem("pt:cand:"+id)}catch(e){}}
   },
   async loadEvents(id){
     if(this.mode==="db"){const s=await this.db.collection(`matches/${id}/chunks`).get();const out=[];s.docs.forEach(d=>{const b=d.data();if(b&&Array.isArray(b.events))out.push(...b.events)});return out}
@@ -530,7 +533,7 @@ const S={matches:[],match:null,events:[],half:1,src:"video",team:0,type:"pass",
   tag:{stage:"start"},clock:{running:false,base:0,at:0},tab:"summary",pAuto:false,
   f:{period:"all",passTeam:"all",passType:"all",passPlayer:"all",heatTeam:"0",heatKind:"all",sortKey:"xt",sortDir:-1,netTeam:"0",netMin:"2",
      momTeam:"0",momPlayer:"all",momPad:"4",momKind:"all",momSrc:"events",momTrack:"all"},
-  reelOff:new Set(),auto:[],
+  reelOff:new Set(),auto:[],cand:[],
   pausedByTag:false};
 var Reel={list:[],i:-1,active:false};
 
@@ -850,6 +853,7 @@ document.addEventListener("keydown",e=>{
   const inNum=["pnum","rnum"].includes(e.target.id);
   if(["input","textarea","select"].includes(tag)&&!(inNum&&["Enter","Escape"].includes(e.key)))return;
   if(e.metaKey||e.ctrlKey||e.altKey)return;
+  if(rvKey(e))return;
   const k=e.key.toLowerCase(),g=S.tag;
   const rcvMode=g.stage==="outcome"&&isPassLike({type:S.type});
   if(/^[0-9]$/.test(e.key)){
@@ -1276,10 +1280,185 @@ function renderMoments(){
    <p class="note">Each tagged action becomes a clip; overlapping ones merge. Switch a moment off to drop it from the reel. “Cut list” exports the on-moments as start/end times for ffmpeg or a video editor.</p>`;
 }
 
+/* ---------- Review: confirm / fix / reject Track B event candidates ---------- */
+const RV_TYPES=["pass","cross","shot","tackle","interception","recovery","clearance","foul"];
+const RV_ST={p:"pending",a:"accepted",r:"rejected"};
+const RV={i:0,f:{st:"p",type:"all",side:"all",conf:"all"},saveT:null,dirtyC:new Set()};
+const CAND_CHUNK=400;
+Object.assign(Store,{
+  async loadCands(id){
+    if(this.mode==="db"){const s=await this.db.collection(`matches/${id}/cands`).get();const out=[];s.docs.forEach(d=>{const b=d.data();if(b&&Array.isArray(b.c))out.push(...b.c)});return out.sort((a,b)=>a.t-b.t||String(a.id).localeCompare(String(b.id)))}
+    if(this.mode==="local"){try{return JSON.parse(localStorage.getItem("pt:cand:"+id)||"[]")}catch(e){return[]}}
+    return [];
+  },
+  async saveCandChunk(id,k,list){if(this.mode==="db")return this.db.doc(`matches/${id}/cands/c${k}`).set({c:list})},
+  async clearCands(id,n){if(this.mode==="db"){for(let k=0;k<n;k++)await this.db.doc(`matches/${id}/cands/c${k}`).delete()}else if(this.mode==="local")localStorage.removeItem("pt:cand:"+id)}
+});
+function rvSave(all){
+  if(!S.match||S.match.demo)return;
+  if(all)for(let k=0;k*CAND_CHUNK<S.cand.length;k++)RV.dirtyC.add(k);
+  clearTimeout(RV.saveT);RV.saveT=setTimeout(async()=>{
+    const mid=S.match.id,ks=[...RV.dirtyC];RV.dirtyC.clear();
+    try{
+      if(Store.mode==="local")localStorage.setItem("pt:cand:"+mid,JSON.stringify(S.cand));
+      else if(Store.mode==="db")for(const k of ks)await Store.saveCandChunk(mid,k,S.cand.slice(k*CAND_CHUNK,(k+1)*CAND_CHUNK));
+      await Store.saveMatch(S.match);
+    }catch(e){ks.forEach(k=>RV.dirtyC.add(k));toast("Review not saved yet — will retry")}
+  },800);
+}
+function rvMark(c){RV.dirtyC.add(Math.floor(S.cand.indexOf(c)/CAND_CHUNK));rvSave(false)}
+function parseCandidates(text){
+  const rows=parseCSV(text);const head=(rows.shift()||[]).map(h=>h.trim());const ix=n=>head.indexOf(n);
+  if(ix("cand_id")<0||ix("type")<0||ix("t")<0)throw new Error("not a candidates CSV");
+  const num=v=>v===""||v==null?null:(Number.isFinite(+v)?+v:null);
+  return rows.map(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
+    return{id:g("cand_id"),period:+g("period")||1,t:+g("t"),te:num(g("t_end")),side:g("side")==="away"?"away":"home",type:RV_TYPES.includes(g("type"))?g("type"):"pass",
+      out:g("outcome"),tr:g("track_id"),to:g("track_to"),x:num(g("x")),y:num(g("y")),ex:num(g("ex")),ey:num(g("ey")),conf:g("confidence")||"review",why:g("reason"),st:"p",ev:null}})
+    .filter(c=>c.id&&Number.isFinite(c.t)&&c.x!=null&&c.y!=null);
+}
+function importCandidates(file){
+  if(!S.match||S.match.demo){toast("Open your match first, then import its candidates");return}
+  const rd=new FileReader();rd.onload=async()=>{
+    let list;try{list=parseCandidates(String(rd.result))}catch(e){toast("That file isn't a Track B candidates CSV");return}
+    const old=new Map(S.cand.map(c=>[c.id,c]));
+    list.forEach(c=>{const o=old.get(c.id);if(o){c.st=o.st;c.ev=o.ev}});   // re-import keeps your decisions
+    const n0=S.cand.length;S.cand=list.sort((a,b)=>a.t-b.t);
+    if(Store.mode==="db"&&n0>S.cand.length)await Store.clearCands(S.match.id,Math.ceil(n0/CAND_CHUNK));
+    RV.i=0;rvSave(true);toast(`${list.length} candidates loaded`);renderTab();
+  };rd.readAsText(file);
+}
+function rvTmap(){S.match.tmap=S.match.tmap||{};return S.match.tmap}
+function rvList(){const f=RV.f;return S.cand.filter(c=>(f.st==="all"||c.st===f.st)&&(f.type==="all"||c.type===f.type)&&(f.side==="all"||c.side===f.side)&&(f.conf==="all"||c.conf===f.conf))}
+function rvCur(){const l=rvList();if(!l.length)return null;RV.i=Math.max(0,Math.min(RV.i,l.length-1));return l[RV.i]}
+function rvClock(t){return Math.round(matchClockAt(t)*10)/10}
+function rvMini(c,team){
+  const col=teamColor(team);let s=pitch();
+  const p=(x,y)=>`${(+x).toFixed(1)},${(+y).toFixed(1)}`;
+  if(c.ex!=null&&c.ey!=null)s+=`<line x1="${c.x}" y1="${c.y}" x2="${c.ex}" y2="${c.ey}" stroke="${col}" stroke-width=".9" marker-end="url(#rvArrow)"/>`;
+  s+=`<circle cx="${c.x}" cy="${c.y}" r="1.6" fill="${col}" stroke="#fff" stroke-width=".4"/>`;
+  return`<svg class="pitch" viewBox="-4 -4 113 76" role="img" aria-label="Candidate on the pitch, ${esc(teamName(team))} attacking right"><defs><marker id="rvArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0L10 5L0 10z" fill="${col}"/></marker></defs>${s}${topLabel(esc(teamName(team))+" attacking →")}</svg>`;
+}
+function renderReview(){
+  const imp=`<div class="reelbar"><label class="btn small" for="candIn">⤒ Import candidates CSV</label><input type="file" id="candIn" accept=".csv,text/csv" hidden>
+    ${S.cand.length?`<button class="btn small" id="rvBulk">Accept mapped OK passes</button><button class="btn small ghost" id="rvClear">Clear candidates</button>`:""}</div>`;
+  if(!S.match||S.match.demo)return emptyMsg("Open your match (not the demo) to review Track B candidates.");
+  if(!S.cand.length)return imp+emptyMsg("Import <code>&lt;match_id&gt;_candidates.csv</code> from the Track B bundle. Each row is a proposed pass, cross, shot, tackle, interception, recovery or clearance with its time and pitch position. Accept it, fix it, or reject it — then tag anything Track B missed with the normal tagging panel. Load the same match video so <b>Play clip</b> works.");
+  const n=S.cand.length,a=S.cand.filter(c=>c.st==="a").length,r=S.cand.filter(c=>c.st==="r").length,done=a+r;
+  const prog=`<div class="note" style="margin:6px 0">Reviewed <b>${done}</b> / ${n} · accepted ${a} · rejected ${r} · track map ${Object.keys(rvTmap()).length} tracks</div>
+    <div style="height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;margin-bottom:10px"><div style="height:100%;width:${(done/n*100).toFixed(1)}%;background:var(--ok)"></div></div>`;
+  const opt=(v,l,cur)=>`<option value="${v}" ${v===cur?"selected":""}>${l}</option>`;
+  const f=RV.f;
+  const filt=`<div class="filters"><select id="rvSt" aria-label="Status">${[["p","Pending"],["all","All"],["a","Accepted"],["r","Rejected"]].map(([v,l])=>opt(v,l,f.st)).join("")}</select>
+    <select id="rvTy" aria-label="Type">${opt("all","All types",f.type)}${RV_TYPES.map(t=>opt(t,TYPES[t],f.type)).join("")}</select>
+    <select id="rvSd" aria-label="Team">${opt("all","Both teams",f.side)}${opt("home",esc(teamName(0)),f.side)}${opt("away",esc(teamName(1)),f.side)}</select>
+    <select id="rvCf" aria-label="Confidence">${opt("all","Any confidence",f.conf)}${opt("ok","Track B: ok",f.conf)}${opt("review","Track B: review",f.conf)}</select></div>`;
+  const l=rvList(),c=rvCur();
+  if(!c)return imp+prog+filt+emptyMsg(f.st==="p"?"Nothing pending with these filters — all reviewed.":"No candidates match these filters.");
+  const team=c.side==="away"?1:0,tm=rvTmap(),mp=tm[c.tr],mr=c.to?tm[c.to]:null;
+  const pPre=c.ev?(S.events.find(e=>e.id===c.ev)?.p||""):(mp&&mp.team===team?mp.p:"");
+  const rPre=c.ev?(S.events.find(e=>e.id===c.ev)?.rcv||""):(mr&&mr.team===team?mr.p:"");
+  const ev=c.ev?S.events.find(e=>e.id===c.ev):null;
+  const type=ev?ev.type:c.type,out=ev?ev.out:(c.out||OUTS[c.type][0]);
+  const card=`<div class="card" style="border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px">
+    <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline">
+      <div><b>${TYPES[c.type]}</b> · <span class="swatch" style="vertical-align:-1px;background:${teamColor(team)}"></span> ${esc(teamName(team))} · ${PERIODS[c.period]||"Period "+c.period} ${fmt(rvClock(c.t))} <span class="muted mono" style="font-size:12px">video ${hms(c.t)}</span></div>
+      <div class="muted" style="font-size:12px">${esc(c.id)} · ${RV.i+1}/${l.length} · <span class="chip">${esc(RV_ST[c.st])}</span> · Track B ${esc(c.conf)}${c.why?" — "+esc(c.why):""}</div></div>
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:12px;margin-top:10px" class="rvgrid">
+      <div>${rvMini(c,team)}</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn" id="rvPlay">▶ Play clip <kbd>V</kbd></button>
+        <label class="label">Team<select id="rvTeam">${opt("0",esc(teamName(0)),String(team))}${opt("1",esc(teamName(1)),String(team))}</select></label>
+        <label class="label">Event<select id="rvType">${RV_TYPES.map(t=>opt(t,TYPES[t],type)).join("")}</select></label>
+        <label class="label">Outcome<select id="rvOut">${OUTS[type].map(o=>opt(o,labelOut(o),out)).join("")}</select></label>
+        <label class="label">Player # <span class="muted" style="font-size:11px">track ${esc(c.tr||"?")}${mp?` = #${esc(mp.p)} (map)`:""}</span><input type="text" id="rvP" class="mono" inputmode="numeric" value="${esc(pPre)}" autocomplete="off"></label>
+        <label class="label" id="rvRWrap" ${["pass","cross"].includes(type)?"":"hidden"}>Receiver # <span class="muted" style="font-size:11px">${c.to?`track ${esc(c.to)}${mr?` = #${esc(mr.p)} (map)`:""}`:""}</span><input type="text" id="rvR" class="mono" inputmode="numeric" value="${esc(rPre)}" autocomplete="off"></label>
+      </div></div>
+    <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap">
+      <button class="btn primary" id="rvAcc">✓ Accept <kbd>Enter</kbd></button>
+      <button class="btn" id="rvRej">✗ Reject <kbd>X</kbd></button>
+      <button class="btn ghost" id="rvPrev">← Back <kbd>B</kbd></button>
+      <button class="btn ghost" id="rvNext">Skip → <kbd>N</kbd></button>
+      <button class="btn ghost" id="rvMiss" title="Jump the video here and tag a missed event with the tagging panel">+ Tag something missed here</button>
+    </div>
+    <p class="note" style="margin-top:6px">Numbers you type are remembered per Track B track, so the next candidates from the same track come pre-filled. Wrong team? Change it — the position flips with it.</p></div>`;
+  const start=Math.max(0,RV.i-3),rows=l.slice(start,start+25).map((x,j)=>{const k=start+j;const tt=x.side==="away"?1:0;
+    return`<tr data-rvgo="${k}" style="cursor:pointer;${k===RV.i?"outline:2px solid var(--accent)":""}"><td class="mono">${fmt(rvClock(x.t))}</td><td>${PERIODS[x.period]?.replace(" half","")||x.period}</td><td><span class="swatch" style="background:${teamColor(tt)}"></span> ${esc(teamName(tt))}</td><td>${TYPES[x.type]}</td><td>${esc(x.out||"")}</td><td>${esc(x.conf)}</td><td><span class="chip">${RV_ST[x.st]}</span></td></tr>`}).join("");
+  const table=`<div class="tablewrap"><table class="grid"><thead><tr><th>Clock</th><th>Half</th><th>Team</th><th>Event</th><th>Out</th><th>Track B</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  return imp+prog+filt+card+table;
+}
+function rvFlip(c,team){const orig=c.side==="away"?1:0;if(team===orig)return{x:c.x,y:c.y,ex:c.ex,ey:c.ey};
+  return{x:PL-c.x,y:PW-c.y,ex:c.ex==null?null:PL-c.ex,ey:c.ey==null?null:PW-c.ey}}
+function rvAccept(cIn,vals){
+  const c=cIn||rvCur();if(!c)return false;
+  const v=vals||{team:+$("#rvTeam").value,type:$("#rvType").value,out:$("#rvOut").value,p:$("#rvP").value.trim(),rcv:($("#rvR")?.value||"").trim()};
+  if(!OUTS[v.type].includes(v.out)){toast("Pick an outcome");return false}
+  const pos=rvFlip(c,v.team),pl=isPassLike({type:v.type});
+  if(pl&&pos.ex==null){toast("No end point from Track B — tag this one with the tagging panel");return false}
+  const tm=rvTmap();
+  if(v.p&&c.tr)tm[c.tr]={team:v.team,p:v.p};
+  if(pl&&v.out==="ok"&&v.rcv&&c.to)tm[c.to]={team:v.team,p:v.rcv};
+  const r1=n=>n==null?null:Math.round(n*10)/10;
+  const base={half:c.period,clock:rvClock(c.t),t:r1(c.t),team:v.team,type:v.type,p:v.p,x:r1(pos.x),y:r1(pos.y),
+    ex:pl?r1(pos.ex):null,ey:pl?r1(pos.ey):null,out:v.out,src:"trackb",cand:c.id,tr:c.tr||null,tro:c.to||null,rev:"ok"};
+  if(pl)base.rcv=v.out==="ok"?v.rcv:"";
+  if(v.type==="shot"){base.body="foot";base.sit="open";base.ast=null}
+  let e=c.ev?S.events.find(x=>x.id===c.ev):null;
+  if(e){Object.assign(e,base)}else{e={id:uid(),c:nextChunk(),...base};S.events.push(e)}
+  e.xg=xgOf(e);markDirty(e.c);c.st="a";c.ev=e.id;rvMark(c);return true;
+}
+function rvReject(){
+  const c=rvCur();if(!c)return;
+  if(c.ev){const i=S.events.findIndex(e=>e.id===c.ev);if(i>=0){const [e]=S.events.splice(i,1);S.events.forEach(s=>{if(s.ast===e.id){s.ast=null;markDirty(s.c)}});markDirty(e.c)}c.ev=null}
+  c.st="r";rvMark(c);rvAdvance();
+}
+function rvAdvance(){if(RV.f.st!=="p")RV.i++;renderAll()}   // with the Pending filter the list shrinks by itself
+function rvPlay(){const c=rvCur();if(!c)return;if(!videoLoaded){toast("Load the match video first");return}
+  playOne({key:"rv",start:Math.max(0,c.t-3),end:(c.te!=null?c.te:c.t)+2})}
+function rvBulk(){
+  const tm=rvTmap();
+  const ok=S.cand.filter(c=>c.st==="p"&&c.conf==="ok"&&c.type==="pass"&&c.out==="ok"&&c.ex!=null&&tm[c.tr]&&tm[c.to]&&tm[c.tr].team===tm[c.to].team&&(c.side==="away"?1:0)===tm[c.tr].team);
+  if(!ok.length){toast("None yet: accept a few passes first so tracks get player numbers");return}
+  if(!confirm(`Accept ${ok.length} OK passes whose passer and receiver tracks already have numbers?`))return;
+  ok.forEach(c=>rvAccept(c,{team:tm[c.tr].team,type:"pass",out:"ok",p:tm[c.tr].p,rcv:tm[c.to].p}));
+  toast(`${ok.length} passes accepted`);renderAll();
+}
+function bindReview(){
+  const ci=$("#candIn");if(ci)ci.onchange=e=>{if(e.target.files[0])importCandidates(e.target.files[0]);e.target.value=""};
+  const cl=$("#rvClear");if(cl)cl.onclick=async()=>{if(!confirm("Remove the imported candidates? Accepted events stay in the log."))return;const n=S.cand.length;S.cand=[];await Store.clearCands(S.match.id,Math.ceil(n/CAND_CHUNK));renderTab()};
+  const bk=$("#rvBulk");if(bk)bk.onclick=rvBulk;
+  [["#rvSt","st"],["#rvTy","type"],["#rvSd","side"],["#rvCf","conf"]].forEach(([s,k])=>{const el=$(s);if(el)el.onchange=()=>{RV.f[k]=el.value;RV.i=0;renderTab()}});
+  const ty=$("#rvType");if(ty)ty.onchange=()=>{const t=ty.value;$("#rvOut").innerHTML=OUTS[t].map(o=>`<option value="${o}">${labelOut(o)}</option>`).join("");$("#rvRWrap").hidden=!isPassLike({type:t})};
+  const on=(id,fn)=>{const el=$(id);if(el)el.onclick=fn};
+  on("#rvPlay",rvPlay);on("#rvAcc",()=>{if(rvAccept()){rvAdvance()}});on("#rvRej",rvReject);
+  on("#rvNext",()=>{RV.i++;renderTab()});on("#rvPrev",()=>{RV.i=Math.max(0,RV.i-1);renderTab()});
+  on("#rvMiss",()=>{const c=rvCur();if(c&&videoLoaded){Reel.active=false;video.currentTime=c.t;video.pause();setSrc("video");$("#tagPitch").scrollIntoView({block:"center",behavior:"smooth"});toast("Video is here — tag the missed event on the pitch")}});
+  ["#rvP","#rvR"].forEach(s=>{const el=$(s);if(el)el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(rvAccept())rvAdvance()}})});
+  document.querySelectorAll("[data-rvgo]").forEach(tr=>tr.onclick=()=>{RV.i=+tr.dataset.rvgo;renderTab()});
+}
+function rvKey(e){   // shortcuts while the Review tab is open and no tag is in progress
+  if(S.tab!=="review"||S.tag.stage!=="start"||!S.cand.length)return false;
+  const k=e.key.toLowerCase();
+  if(e.key==="Enter"){e.preventDefault();if(rvAccept())rvAdvance();return true}
+  if(k==="x"){rvReject();return true}
+  if(k==="n"){RV.i++;renderTab();return true}
+  if(k==="b"){RV.i=Math.max(0,RV.i-1);renderTab();return true}
+  if(k==="v"){rvPlay();return true}
+  return false;
+}
+async function reviewExport(){
+  if(!S.match||!S.cand.length){toast("No candidates to export");return}
+  const data=JSON.stringify({schema:"tagger_review_v1",match_id:S.match.id,exported:new Date().toISOString(),
+    track_map:rvTmap(),candidates:S.cand.map(c=>({cand_id:c.id,status:RV_ST[c.st],event_id:c.ev||null}))},null,1);
+  let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads")}catch(e){}
+  if(!dl){const t=$("#csvOut");t.value=data;t.hidden=false;t.select();toast("Copy the review JSON below");return}
+  try{await dl.save({filename:`${S.match.id}_review.json`,data});toast("Review saved")}catch(err){if(err&&err.code!=="declined")toast("Download didn't work here")}
+}
+
 function renderTab(){
   const t=S.tab,b=$("#tabBody");
   const ps=$("#periodSel");if(ps){ps.value=S.f.period;const pn=$("#periodNote");if(pn)pn.textContent=S.f.period==="all"?"":`${AEV().length} of ${S.events.length} events`;}
-  b.innerHTML={summary:renderSummary,players:renderPlayers,shots:renderShots,passes:renderPasses,network:renderNetwork,heat:renderHeat,moments:renderMoments,log:renderLog}[t]();
+  b.innerHTML={summary:renderSummary,players:renderPlayers,shots:renderShots,passes:renderPasses,network:renderNetwork,heat:renderHeat,moments:renderMoments,review:renderReview,log:renderLog}[t]();
+  if(t==="review")bindReview();
   const bind=pairs=>pairs.forEach(([s,k,reset])=>{const el=$(s);if(!el)return;el.value=S.f[k];el.onchange=()=>{S.f[k]=el.value;if(reset)S.f[reset]="all";renderTab()}});
   if(t==="players")b.querySelectorAll("[data-sort]").forEach(th=>th.onclick=()=>{const k=th.dataset.sort;if(S.f.sortKey===k)S.f.sortDir*=-1;else{S.f.sortKey=k;S.f.sortDir=-1}renderTab()});
   if(t==="passes")bind([["#pfTeam","passTeam","passPlayer"],["#pfType","passType"],["#pfPlayer","passPlayer"]]);
@@ -1324,9 +1503,10 @@ async function openMatch(m){
   if(dirty.size){clearTimeout(saveTimer);flush();await saveChain}
   S.match=m;S.events=[];S.loadFailed=false;$("#demoBanner").hidden=true;fillMatchSel();resetTag();renderAll();
   try{S.events=(await Store.loadEvents(m.id)).map(e=>({...e,xg:xgOf(e)}))}catch(err){S.loadFailed=true;toast("Could not load this match's events — not shown, and not overwritten. Export a backup.");}
+  S.cand=[];RV.i=0;try{S.cand=await Store.loadCands(m.id)}catch(err){toast("Could not load the Track B candidates for this match")}
   renderAll();
 }
-function loadDemo(){S.match=DEMO;S.events=demoEvents();$("#demoBanner").hidden=false;fillMatchSel();renderAll()}
+function loadDemo(){S.match=DEMO;S.events=demoEvents();S.cand=[];$("#demoBanner").hidden=false;fillMatchSel();renderAll()}
 
 let editing=null;
 function showSetup(m){
@@ -1441,14 +1621,15 @@ $("#delYes").onclick=async()=>{
 };
 
 /* ---------- CSV ---------- */
-const COLS=["match_id","match_name","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box","review"];
+const COLS=["match_id","match_name","id","half","match_clock","match_seconds","video_seconds","team","side","player","player_name","event","outcome","receiver","receiver_name","x","y","end_x","end_y","body_part","situation","assist_event_id","xg","xt_added","progressive","into_box","review","source","candidate_id","track_id","track_to"];
 function toCSV(){
   const q=v=>{v=v==null?"":String(v);return/[",\n]/.test(v)?`"${v.replace(/"/g,'""')}"`:v};
   const rows=S.events.slice().sort((a,b)=>a.clock-b.clock).map(e=>[S.match?.id||"",S.match?.name||"",e.id,e.half,fmt(e.clock),e.clock,e.t,teamName(e.team),e.team===0?"home":"away",e.p,pName(e.team,e.p),e.type,labelOut(e.out),e.rcv||"",pName(e.team,e.rcv),
-    e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):"",e.rev||""].map(q).join(","));
+    e.x,e.y,e.ex,e.ey,e.type==="shot"?e.body:"",e.type==="shot"?e.sit:"",e.ast||"",e.type==="shot"?e.xg.toFixed(3):"",isPassLike(e)?xtAdded(e).toFixed(4):"",isPassLike(e)?(isProgressive(e)?1:0):"",isPassLike(e)?(intoBox(e)?1:0):"",e.rev||"",e.src||"manual",e.cand||"",e.tr||"",e.tro||""].map(q).join(","));
   return COLS.join(",")+"\n"+rows.join("\n")+"\n";
 }
-function csvName(){return(S.match?.name||"match").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_")+"_events.csv"}
+function csvName(){return(S.match&&!S.match.demo?S.match.id:(S.match?.name||"match").replace(/[^\w\- ]+/g,"").trim().replace(/\s+/g,"_"))+"_events.csv"}
+$("#reviewExportBtn").onclick=reviewExport;
 $("#exportBtn").onclick=async()=>{
   if(!S.events.length){toast("No events to export yet");return}
   let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use("downloads")}catch(e){}
@@ -1488,6 +1669,7 @@ $("#importIn").addEventListener("change",e=>{
         if(isPassLike(ev))ev.rcv=g("receiver");
         if(type==="shot"){ev.body=g("body_part")==="head"?"head":"foot";ev.sit=["open","fk","pen"].includes(g("situation"))?g("situation"):"open";ev.ast=g("assist_event_id")||null}
         const rv=g("review");if(["ok","review","wrong"].includes(rv))ev.rev=rv;
+        if(g("source")==="trackb"){ev.src="trackb";ev.cand=g("candidate_id")||null;ev.tr=g("track_id")||null;ev.tro=g("track_to")||null}
         ev.xg=xgOf(ev);ev.c=nextChunk();S.events.push(ev);have.add(id);markDirty(ev.c);n++;});
       const sk=Object.entries(skip).filter(([,v])=>v).map(([k,v])=>`${v} ${({dup:"duplicates",coords:"bad coordinates",team:"unknown team",type:"unknown event/outcome"})[k]}`);
       toast(`Imported ${n} events${sk.length?" · skipped "+sk.join(", "):""}`);renderAll();
@@ -1567,6 +1749,7 @@ Squads.load();loadDemo();numFocus();
   if(S.matches.length)await openMatch(S.matches[S.matches.length-1]);
   else{fillMatchSel();storeBadge()}
 })();
-window.addEventListener("beforeunload",()=>{if(dirty.size){clearTimeout(saveTimer);flush()}});
+window.addEventListener("beforeunload",()=>{if(dirty.size){clearTimeout(saveTimer);flush()}
+  if(RV.saveT&&S.match&&!S.match.demo&&Store.mode==="local"){clearTimeout(RV.saveT);try{localStorage.setItem("pt:cand:"+S.match.id,JSON.stringify(S.cand));Store.saveMatch(S.match)}catch(e){}}});
 })();
 </script>

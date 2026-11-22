@@ -1,5 +1,15 @@
 # Match workflow — PERSIBA 2026-27 (production)
 
+**The pipeline:** get the video → Track B tracks it automatically → Track A reviews Track B's proposals in the Tagger, fixes them and adds what it missed → results in the Tagger and the League Hub → everything saved in `football.db`.
+
+| Step | Tool | Output |
+|---|---|---|
+| 1 Video | `run_match.py --download` (any runner) | `videos/<match_id>.mp4` |
+| 2 Track B | laptop (`Jalankan Track B.bat`), Kaggle or Colab | tracking, moments, team report, **event candidates**, bundle zip |
+| 3 Track A review | Tagger → **Review (Track B)** tab | `<match_id>_events.csv`, `<match_id>_review.json` |
+| 4 Results | Tagger analysis tabs; League Hub *My analysis* + club *Scouting profile* | |
+| 5 Database | `Simpan ke Database.bat` | `D:\Video-Bola-Analis\football.db` |
+
 One page to analyse a match end to end. Track B (automatic tracking) and Track A (manual tagging) run in parallel on the **same original video**, joined on `video_seconds` and `match_id`.
 
 | match_id | Fixture | Score | Video | Period times |
@@ -80,21 +90,25 @@ python scripts\run_queue.py --config matches\persiba_2026-27.json --matches read
 
 Fine-tune any value on top of a profile: `--cpu-threads`, `--cpu-cores`, `--priority normal|below|idle`, `--vram-fraction 0.4`, `--gpu-pause 0.5`, `--max-ram-gb 6`. Each finished chunk prints its peak RAM, so you can set `--max-ram-gb` from real numbers. GPU *load* itself can't be hard-capped on a GeForce card; the rests between batches are what keep it (and the fan) down. Expect `light` to take roughly 2–3× longer than `full`.
 
-## B · Track A tagging — [Pitchside Tagger](https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp)
+## B · Track A: review Track B, then fill the gaps — [Pitchside Tagger](https://claude.ai/artifact/9d6kEj3CJLuLTadYPLgNBp)
 
 1. **New match** → *Match ID* = the config `match_id`; teams; *Home attacks in 1st half*; **Kick-off times in the video** = the period starts from the config (e.g. `17:00` and `1:20:26`). The match clock then skips pre-match and half-time, and the 1st/2nd-half button switches by itself as the video plays.
-2. Lineups: **From squads → Pick XI** (11 players, tap the keeper).
-3. Load the master video. Tag in three levels — stop at the level time allows:
+2. Lineups: **From squads → Pick XI** (11 players, tap the keeper). Load the master video.
+3. **Review (Track B)** tab → *Import candidates CSV* → `<match_id>_candidates.csv` from the bundle. For each proposal (pass, cross, shot, tackle, interception, recovery, clearance):
+   - **V** plays the clip (3 s before → 2 s after), the mini pitch shows Track B's start/end.
+   - Type the shirt number(s), fix team / event / outcome if needed → **Enter** = accept. **X** = reject (not a real event), **N** = skip, **B** = back.
+   - Numbers are remembered per Track B track, so later candidates from the same track arrive pre-filled. Once a few tracks are mapped, **Accept mapped OK passes** clears the easy ones in bulk.
+   - **+ Tag something missed here** jumps the video to that moment; tag it with the normal panel (shots, fouls, anything Track B can't see).
+4. Optional extra pass: **Moments → Imported (Track B)** with `moments/track_*_moments.csv` to watch a player's ball-near moments.
+5. **Download CSV** (`<match_id>_events.csv`) and **Download review (JSON)** (`<match_id>_review.json`). Both land in Downloads; the database step picks them up from there.
 
-| Level | Tag | Gives you | Time / match |
-|---|---|---|---|
-| 1 | every **shot** + the **pass/cross** that set it up | xG, xA, shot map, chance creators | 30–45 min |
-| 2 | + all **crosses**, **recoveries/interceptions** | crossing map, where PERSIBA wins the ball | +45 min |
-| 3 | + all passes | pass network, xT, progressive passes | 3–4 h |
+Track B finds roughly half of the real on-ball actions (the ball is often not visible), so expect to accept/fix most candidates and still add some by hand. Fastest order: shots first (filter *Type = Shot*), then passes in the final third, then the rest.
 
-   Use 1.5–2× playback outside the final third; set the half buttons (1st/2nd) correctly — stoppage time stays in its half.
-4. **Reel → Imported (Track B)**: load `moments/track_*_moments.csv` from the bundle to jump through ball-near moments; mark wrong ones.
-5. **Download CSV**.
+## D · Save to the database
+
+Double-click **`Simpan ke Database.bat`**. It writes every match into **`D:\Video-Bola-Analis\football.db`** (SQLite: one file, nothing to install — it is part of Python). It reads the Track B results (run folder, or a `*_trackb_bundle.zip` from Kaggle/Colab placed in Downloads) and your two Tagger downloads. Run it again after more review; each match is replaced, never duplicated.
+
+Tables: `matches, tracking, moments, candidates (with your accept/reject), track_map, events, team_metrics, team_heatmaps`. Ready-made views: `v_player_events` (per player and event: count, xG, xT), `v_team_half`, `v_review_progress`. To look inside: *DB Browser for SQLite* (free), or Python `pandas.read_sql`. Local laptop runs save Track B into it automatically at the end.
 
 ## C · Bring it together — [League Hub](https://claude.ai/artifact/8cgsEsf9yeqHh2fmrnkLCT) → My analysis
 
