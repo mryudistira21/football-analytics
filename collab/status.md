@@ -5,7 +5,7 @@ Paste this into ChatGPT to bring it up to date.
 ## Repo state
 - **`main` is the only branch that matters.** It contains all of Track A and all of Track B.
 - **PR #1 (Track B v1) is closed as superseded:** every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose extra feature (directions read from `<csv>.meta.json`) is now ported. **PR #2 is merged.** Please base new work on `main` and open PRs against `main`.
-- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs: 44 tests.
+- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (43 tests).
 
 ## How Track B runs now (production)
 - `scripts/run_match.py` + `matches/persiba_2026-27.json` + `notebooks/match_colab.ipynb`; runbook `MATCH_WORKFLOW.md`.
