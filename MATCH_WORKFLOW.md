@@ -51,16 +51,8 @@ Config: [`matches/persiba_2026-27.json`](matches/persiba_2026-27.json). On Colab
 
 **Saving compute units**: do steps 1–3 on a CPU runtime; switch to GPU only for 4–5. `--max-chunks N` (driver flag) stops after N chunks if you want to spread a match over two sessions.
 
-**Local alternative (no Colab limits)**: the RTX 2070 laptop runs the same driver overnight:
-
-```powershell
-cd D:\Codingan\football-analytics
-.\.venv\Scripts\Activate.ps1      # Track B venv: torch cu118 + requirements.txt + roboflow/sports
-python scripts\run_match.py --config matches\persiba_2026-27.json --match persiba_gresik_20261113 --root D:\Video-Bola-Analis --download --smoke
-python scripts\run_match.py --config matches\persiba_2026-27.json --match persiba_gresik_20261113 --root D:\Video-Bola-Analis --download
-```
-
-8 GB VRAM is enough (two YOLO models + SigLIP ≈ 3 GB). To keep the PC usable meanwhile, see *Laptop: keep the PC usable* below.
+**Local alternative (no Colab limits)**: the RTX 2070 laptop runs the same driver.
+One-time setup: double-click **`Setup Track B.bat`** (Python 3.10 venv, PyTorch CUDA 11.8, packages, FFmpeg/Deno, models — all on D:, safe to re-run). Earlier downloads in `D:\Video-Bola-Analis` (`<slug>.mp4` from the PowerShell pilot) are found through `video_aliases` in the config, so nothing is downloaded twice. See *Laptop: keep the PC usable* below for running it.
 
 ## A2 · Runs that keep going with the browser closed
 
@@ -82,8 +74,8 @@ python scripts\run_queue.py --config matches\persiba_2026-27.json --matches read
 
 | Profile | CPU | GPU | RAM | Use when |
 |---|---|---|---|---|
-| `light` | 2 threads on 2 cores, **idle priority** (yields to anything you open) | batch 2, max 50% VRAM, 0.25 s rest after each batch | stops a chunk above 45% of total RAM, retries at batch 1 | you are working on the PC |
-| `balanced` | 4 threads, half the cores, below-normal priority | batch 4, max 70% VRAM, 0.05 s rest | stop at 60% | light use (browsing) |
+| `light` | 2 threads on 2 cores, **idle priority** (yields to anything you open) | batch 2, max 50% VRAM, 0.25 s rest after each batch | stops a chunk above total RAM − 3.5 GB (4.5 GB on an 8 GB laptop), retries at batch 1; team-colour model kept on the GPU | you are working on the PC |
+| `balanced` | 4 threads, half the cores, below-normal priority | batch 4, max 70% VRAM, 0.05 s rest | stop at total − 2.5 GB | light use (browsing) |
 | `full` (default) | all | batch 8, no cap | no stop | overnight / Colab / Kaggle |
 
 Fine-tune any value on top of a profile: `--cpu-threads`, `--cpu-cores`, `--priority normal|below|idle`, `--vram-fraction 0.4`, `--gpu-pause 0.5`, `--max-ram-gb 6`. Each finished chunk prints its peak RAM, so you can set `--max-ram-gb` from real numbers. GPU *load* itself can't be hard-capped on a GeForce card; the rests between batches are what keep it (and the fan) down. Expect `light` to take roughly 2–3× longer than `full`.

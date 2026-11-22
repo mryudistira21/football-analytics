@@ -46,7 +46,10 @@
       },
       "home_dir_1h": null,
       "swap_teams": false,
-      "scope": "persiba"
+      "scope": "persiba",
+      "video_aliases": [
+        "persiba_vs_gresik_2026-11-13"
+      ]
     },
     {
       "match_id": "persipa_persiba_20261117",
@@ -71,7 +74,11 @@
       },
       "home_dir_1h": null,
       "swap_teams": false,
-      "scope": "persiba"
+      "scope": "persiba",
+      "video_aliases": [
+        "persipa_vs_persiba_2026-11-17",
+        "persiba_vs_persipa_2026-11-17"
+      ]
     },
     {
       "match_id": "persiba_persika_20261121",
@@ -115,7 +122,10 @@
         ]
       },
       "home_dir_1h": null,
-      "swap_teams": false
+      "swap_teams": false,
+      "video_aliases": [
+        "persika_vs_persinga_2026-11-13"
+      ]
     },
     {
       "match_id": "gresik_persika_20261117",
@@ -140,7 +150,10 @@
         ]
       },
       "home_dir_1h": null,
-      "swap_teams": false
+      "swap_teams": false,
+      "video_aliases": [
+        "gresik_vs_persika_2026-11-17"
+      ]
     },
     {
       "match_id": "persinga_psf_20261118",

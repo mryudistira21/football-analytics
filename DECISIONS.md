@@ -7,6 +7,9 @@ Short log of choices, so neither AI re-opens a settled question. Newest first.
 - GPU utilisation can't be hard-capped on consumer NVIDIA cards; the duty-cycle pause is the lever. Power limits (`nvidia-smi -pl`) need admin and are often locked on laptops, so not used.
 - `Jalankan Track B.bat`: double-click runner, light profile, all ready matches, resumable.
 - `psutil` added to requirements.
+- **8 GB laptop:** RAM stop = total − reserve (light 3.5 GB → 4.5 GB stop; balanced 2.5 GB) instead of a share; light/balanced put SigLIP on the GPU (`--team-min-free-vram-gb 1.5`) to keep ~1 GB out of system RAM.
+- **`Setup Track B.bat` / `setup_track_b.ps1`:** one-click, re-runnable Windows setup (PS 5.1-safe), pip temp/cache on D:, torch pinned via a constraints file so pip can't swap in the CPU-only wheel, GPU check, models.
+- **No duplicate video copies on a single disk** (`--work` = `--root` → use the master in place); `video_aliases` find the pilot downloads by their old names.
 
 ## 2026-11-22 (c) — Unattended runs (Kaggle, laptop)
 - **`scripts/run_queue.py`:** several matches, one worker per GPU (`--gpus 0,1`), smoke test (only when no team state yet) + full run each, per-match logs and `queue/status.json`. `--matches ready` = every match with a video URL and both period times.

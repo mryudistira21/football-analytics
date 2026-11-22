@@ -139,11 +139,11 @@ def log(msg: str) -> None:
 #   light     background mode: idle CPU priority, 2 cores, half the VRAM, GPU rests between batches
 PROFILES: dict[str, dict[str, Any]] = {
     "full":     {"batch": 0, "cpu_threads": 0, "cpu_cores": 0, "priority": "normal",
-                 "vram_fraction": 0.0, "gpu_pause": 0.0, "max_ram_share": 0.0},
+                 "vram_fraction": 0.0, "gpu_pause": 0.0, "ram_reserve_gb": 0.0},
     "balanced": {"batch": 4, "cpu_threads": 4, "cpu_cores": -50, "priority": "below",
-                 "vram_fraction": 0.7, "gpu_pause": 0.05, "max_ram_share": 0.6},
+                 "vram_fraction": 0.7, "gpu_pause": 0.05, "ram_reserve_gb": 2.5},
     "light":    {"batch": 2, "cpu_threads": 2, "cpu_cores": 2, "priority": "idle",
-                 "vram_fraction": 0.5, "gpu_pause": 0.25, "max_ram_share": 0.45},
+                 "vram_fraction": 0.5, "gpu_pause": 0.25, "ram_reserve_gb": 3.5},
 }
 
 
@@ -152,11 +152,14 @@ def resolve_limits(profile: str, overrides: dict[str, Any]) -> dict[str, Any]:
     lim = {**PROFILES[profile], **{k: v for k, v in overrides.items() if v is not None}}
     if lim["cpu_cores"] < 0:
         lim["cpu_cores"] = max(1, (os.cpu_count() or 2) * -lim["cpu_cores"] // 100)
+    # RAM stop = total RAM minus a reserve for Windows and your own programs (never below 3 GB).
+    # 8 GB laptop: light -> 4.5 GB, balanced -> 5.5 GB.
     lim["max_ram_gb"] = overrides.get("max_ram_gb")
-    if lim["max_ram_gb"] is None and lim["max_ram_share"] > 0:
+    if lim["max_ram_gb"] is None and lim["ram_reserve_gb"] > 0:
         try:
             import psutil
-            lim["max_ram_gb"] = round(psutil.virtual_memory().total / 2**30 * lim["max_ram_share"], 1)
+            total = psutil.virtual_memory().total / 2**30
+            lim["max_ram_gb"] = round(max(3.0, total - lim["ram_reserve_gb"]), 1)
         except ImportError:
             lim["max_ram_gb"] = None
     return lim
@@ -174,6 +177,10 @@ def limit_args(lim: dict[str, Any]) -> list[str]:
         out += ["--vram-fraction", str(lim["vram_fraction"])]
     if lim["gpu_pause"]:
         out += ["--gpu-pause", str(lim["gpu_pause"])]
+    if lim["ram_reserve_gb"]:
+        # Put the team-colour model (SigLIP) on the GPU even with little free VRAM,
+        # so its ~1 GB of weights stay out of system RAM.
+        out += ["--team-min-free-vram-gb", "1.5"]
     return out
 
 
@@ -251,15 +258,22 @@ def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool,
     vids = video_dir or root / "videos"
     persistent = next((p for p in sorted(vids.glob(mid + ".*"))
                        if p.suffix.lower() in (".mp4", ".mkv", ".webm", ".mov")), None) if vids.exists() else None
-    if persistent is None and vids.exists():
-        # Re-use an earlier download named after the YouTube id (e.g. videos/pilot_2026/<slug>/<id>.mp4).
-        yid = youtube_id(match.get("video_url") or "")
-        if yid:
-            hits = [p for p in vids.rglob(yid + ".*")
-                    if p.suffix.lower() in (".mp4", ".mkv", ".webm", ".mov") and "clips" not in p.parts]
-            if hits:
-                persistent = max(hits, key=lambda p: p.stat().st_size)
-                log(f"Using the earlier download {persistent}")
+    if persistent is None:
+        # Re-use an earlier download: named after the YouTube id (Colab pilot:
+        # videos/pilot_2026/<slug>/<id>.mp4) or one of the config's video_aliases
+        # (PowerShell pilot: D:\Video-Bola-Analis\<slug>.mp4).
+        stems = [s for s in [youtube_id(match.get("video_url") or "")] + list(match.get("video_aliases") or []) if s]
+        hits = []
+        for d in {vids, vids.parent, root}:
+            if not d.exists():
+                continue
+            for stem in stems:
+                pattern = d.rglob(stem + ".*") if d == vids else d.glob(stem + ".*")
+                hits += [p for p in pattern if p.suffix.lower() in (".mp4", ".mkv", ".webm", ".mov")
+                         and "clips" not in p.parts and not p.name.endswith(".part")]
+        if hits:
+            persistent = max(hits, key=lambda p: p.stat().st_size)
+            log(f"Using the earlier download {persistent}")
     if persistent is None:
         if not download:
             raise SystemExit(f"No video for {mid} in {vids}. Pass --download or put {mid}.mp4 there.")
@@ -277,8 +291,8 @@ def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool,
         if persistent.resolve() != got.resolve():
             log(f"Saving the master to {persistent} ...")
             copy_if_needed(got, persistent)
-    if video_dir is not None:
-        return persistent  # --video-dir is already fast local disk (Kaggle/laptop): no second copy
+    if video_dir is not None or work.resolve() == root.resolve():
+        return persistent  # already on local disk (laptop, Kaggle): no second copy
     local = work / "videos" / persistent.name
     if local.resolve() != persistent.resolve():
         if not (local.exists() and local.stat().st_size == persistent.stat().st_size):
