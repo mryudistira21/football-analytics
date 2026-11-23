@@ -1283,7 +1283,7 @@ function renderMoments(){
 /* ---------- Review: confirm / fix / reject Track B event candidates ---------- */
 const RV_TYPES=["pass","cross","shot","tackle","interception","recovery","clearance","foul"];
 const RV_ST={p:"pending",a:"accepted",r:"rejected"};
-const RV={i:0,f:{st:"p",type:"all",side:"all",conf:"all"},saveT:null,dirtyC:new Set()};
+const RV={i:0,f:{st:"p",type:"all",side:"all",conf:"all",pr:"main"},saveT:null,dirtyC:new Set(),kids:null,kidsOf:null};
 const CAND_CHUNK=400;
 Object.assign(Store,{
   async loadCands(id){
@@ -1313,7 +1313,7 @@ function parseCandidates(text){
   const num=v=>v===""||v==null?null:(Number.isFinite(+v)?+v:null);
   return rows.map(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
     return{id:g("cand_id"),period:+g("period")||1,t:+g("t"),te:num(g("t_end")),side:g("side")==="away"?"away":"home",type:RV_TYPES.includes(g("type"))?g("type"):"pass",
-      out:g("outcome"),tr:g("track_id"),to:g("track_to"),x:num(g("x")),y:num(g("y")),ex:num(g("ex")),ey:num(g("ey")),conf:g("confidence")||"review",why:g("reason"),tp:g("track_player"),tpto:g("track_to_player"),st:"p",ev:null}})
+      out:g("outcome"),tr:g("track_id"),to:g("track_to"),x:num(g("x")),y:num(g("y")),ex:num(g("ex")),ey:num(g("ey")),conf:g("confidence")||"review",why:g("reason"),tp:g("track_player"),tpto:g("track_to_player"),pr:Math.min(3,Math.max(1,+g("priority")||2)),lk:g("linked"),st:"p",ev:null}})
     .filter(c=>c.id&&Number.isFinite(c.t)&&c.x!=null&&c.y!=null);
 }
 function importCandidates(file){
@@ -1328,7 +1328,12 @@ function importCandidates(file){
   };rd.readAsText(file);
 }
 function rvTmap(){S.match.tmap=S.match.tmap||{};return S.match.tmap}
-function rvList(){const f=RV.f;return S.cand.filter(c=>(f.st==="all"||c.st===f.st)&&(f.type==="all"||c.type===f.type)&&(f.side==="all"||c.side===f.side)&&(f.conf==="all"||c.conf===f.conf))}
+/* linked candidates: an interception carries the cand_id of the failed pass / clearance it answers
+   and is decided together with it (one card instead of two) */
+function rvKids(){if(RV.kidsOf!==S.cand){const ids=new Set(S.cand.map(c=>c.id));RV.kids=new Map();
+  S.cand.forEach(c=>{if(c.lk&&ids.has(c.lk))RV.kids.set(c.lk,c)});RV.kidsOf=S.cand}return RV.kids}
+function rvList(){const f=RV.f,kids=new Set(rvKids().values());return S.cand.filter(c=>(f.st==="all"||c.st===f.st)&&(f.type==="all"||c.type===f.type)&&(f.side==="all"||c.side===f.side)&&(f.conf==="all"||c.conf===f.conf)
+  &&(f.pr==="all"||(f.pr==="main"?(c.pr||2)<=2:(c.pr||2)===3))&&(f.type==="interception"||!kids.has(c)))}
 function rvCur(){const l=rvList();if(!l.length)return null;RV.i=Math.max(0,Math.min(RV.i,l.length-1));return l[RV.i]}
 function rvClock(t){return Math.round(matchClockAt(t)*10)/10}
 function rvMini(c,team){
@@ -1351,7 +1356,9 @@ function renderReview(){
   const filt=`<div class="filters"><select id="rvSt" aria-label="Status">${[["p","Pending"],["all","All"],["a","Accepted"],["r","Rejected"]].map(([v,l])=>opt(v,l,f.st)).join("")}</select>
     <select id="rvTy" aria-label="Type">${opt("all","All types",f.type)}${RV_TYPES.map(t=>opt(t,TYPES[t],f.type)).join("")}</select>
     <select id="rvSd" aria-label="Team">${opt("all","Both teams",f.side)}${opt("home",esc(teamName(0)),f.side)}${opt("away",esc(teamName(1)),f.side)}</select>
-    <select id="rvCf" aria-label="Confidence">${opt("all","Any confidence",f.conf)}${opt("ok","Track B: ok",f.conf)}${opt("review","Track B: review",f.conf)}</select></div>`;
+    <select id="rvCf" aria-label="Confidence">${opt("all","Any confidence",f.conf)}${opt("ok","Track B: ok",f.conf)}${opt("review","Track B: review",f.conf)}</select>
+    <select id="rvPr" aria-label="Priority">${(()=>{const kids=new Set(rvKids().values()),n=pr=>S.cand.filter(c=>!kids.has(c)&&(pr===3?c.pr===3:(c.pr||2)<=2)).length;
+      return opt("main",`Main queue (${n(2)} cards)`,f.pr)+opt("low",`Low priority (${n(3)})`,f.pr)})()}${opt("all","All priorities",f.pr)}</select></div>`;
   const l=rvList(),c=rvCur();
   if(!c)return imp+prog+filt+emptyMsg(f.st==="p"?"Nothing pending with these filters — all reviewed.":"No candidates match these filters.");
   const team=c.side==="away"?1:0,tm=rvTmap(),mp=tm[c.tr],mr=c.to?tm[c.to]:null;
@@ -1359,10 +1366,12 @@ function renderReview(){
   const rPre=c.ev?(S.events.find(e=>e.id===c.ev)?.rcv||""):(mr&&mr.team===team?mr.p:(c.tpto||""));
   const ev=c.ev?S.events.find(e=>e.id===c.ev):null;
   const type=ev?ev.type:c.type,out=ev?ev.out:(c.out||OUTS[c.type][0]);
+  const kid=rvKids().get(c.id),kt=kid?(kid.side==="away"?1:0):null,km=kid?tm[kid.tr]:null;
+  const kPre=kid?(kid.ev?(S.events.find(e=>e.id===kid.ev)?.p||""):(km&&km.team===kt?km.p:(kid.tp||""))):"";
   const card=`<div class="card" style="border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px">
     <div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline">
       <div><b>${TYPES[c.type]}</b> · <span class="swatch" style="vertical-align:-1px;background:${teamColor(team)}"></span> ${esc(teamName(team))} · ${PERIODS[c.period]||"Period "+c.period} ${fmt(rvClock(c.t))} <span class="muted mono" style="font-size:12px">video ${hms(c.t)}</span></div>
-      <div class="muted" style="font-size:12px">${esc(c.id)} · ${RV.i+1}/${l.length} · <span class="chip">${esc(RV_ST[c.st])}</span> · Track B ${esc(c.conf)}${c.why?" — "+esc(c.why):""}</div></div>
+      <div class="muted" style="font-size:12px">${esc(c.id)} · ${RV.i+1}/${l.length} · <span class="chip">${esc(RV_ST[c.st])}</span> · Track B ${esc(c.conf)}${c.pr===3?" · low priority":""}${c.why?" — "+esc(c.why):""}</div></div>
     <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:12px;margin-top:10px" class="rvgrid">
       <div>${rvMini(c,team)}</div>
       <div style="display:flex;flex-direction:column;gap:8px">
@@ -1371,7 +1380,8 @@ function renderReview(){
         <label class="label">Event<select id="rvType">${RV_TYPES.map(t=>opt(t,TYPES[t],type)).join("")}</select></label>
         <label class="label">Outcome<select id="rvOut">${OUTS[type].map(o=>opt(o,labelOut(o),out)).join("")}</select></label>
         <label class="label">Player # <span class="muted" style="font-size:11px">track ${esc(c.tr||"?")}${mp?` = #${esc(mp.p)} (map)`:(c.tp?` · OCR suggests #${esc(c.tp)}`:"")}</span><input type="text" id="rvP" class="mono" inputmode="numeric" value="${esc(pPre)}" autocomplete="off"></label>
-        <label class="label" id="rvRWrap" ${["pass","cross"].includes(type)?"":"hidden"}>Receiver # <span class="muted" style="font-size:11px">${c.to?`track ${esc(c.to)}${mr?` = #${esc(mr.p)} (map)`:""}`:""}</span><input type="text" id="rvR" class="mono" inputmode="numeric" value="${esc(rPre)}" autocomplete="off"></label>
+        ${kid?`<label class="label">${c.type==="clearance"?"Picked up":"Intercepted"} by # <span class="muted" style="font-size:11px">${esc(teamName(kt))} · track ${esc(kid.tr||"?")}${km?` = #${esc(km.p)} (map)`:(kid.tp?` · OCR suggests #${esc(kid.tp)}`:"")} · decided with this card</span><input type="text" id="rvL" class="mono" inputmode="numeric" value="${esc(kPre)}" autocomplete="off"></label>`:""}
+        <label class="label" id="rvRWrap" ${["pass","cross"].includes(type)&&!(kid&&out==="fail")?"":"hidden"}>Receiver # <span class="muted" style="font-size:11px">${c.to?`track ${esc(c.to)}${mr?` = #${esc(mr.p)} (map)`:""}`:""}</span><input type="text" id="rvR" class="mono" inputmode="numeric" value="${esc(rPre)}" autocomplete="off"></label>
       </div></div>
     <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap">
       <button class="btn primary" id="rvAcc">✓ Accept <kbd>Enter</kbd></button>
@@ -1382,7 +1392,7 @@ function renderReview(){
     </div>
     <p class="note" style="margin-top:6px">Numbers you type are remembered per Track B track, so the next candidates from the same track come pre-filled. Wrong team? Change it — the position flips with it.</p></div>`;
   const start=Math.max(0,RV.i-3),rows=l.slice(start,start+25).map((x,j)=>{const k=start+j;const tt=x.side==="away"?1:0;
-    return`<tr data-rvgo="${k}" style="cursor:pointer;${k===RV.i?"outline:2px solid var(--accent)":""}"><td class="mono">${fmt(rvClock(x.t))}</td><td>${PERIODS[x.period]?.replace(" half","")||x.period}</td><td><span class="swatch" style="background:${teamColor(tt)}"></span> ${esc(teamName(tt))}</td><td>${TYPES[x.type]}</td><td>${esc(x.out||"")}</td><td>${esc(x.conf)}</td><td><span class="chip">${RV_ST[x.st]}</span></td></tr>`}).join("");
+    return`<tr data-rvgo="${k}" style="cursor:pointer;${k===RV.i?"outline:2px solid var(--accent)":""}"><td class="mono">${fmt(rvClock(x.t))}</td><td>${PERIODS[x.period]?.replace(" half","")||x.period}</td><td><span class="swatch" style="background:${teamColor(tt)}"></span> ${esc(teamName(tt))}</td><td>${TYPES[x.type]}</td><td>${esc(x.out||"")}${rvKids().has(x.id)?" + int.":""}</td><td>${esc(x.conf)}${x.pr===3?" · low":""}</td><td><span class="chip">${RV_ST[x.st]}</span></td></tr>`}).join("");
   const table=`<div class="tablewrap"><table class="grid"><thead><tr><th>Clock</th><th>Half</th><th>Team</th><th>Event</th><th>Out</th><th>Track B</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   return imp+prog+filt+card+table;
 }
@@ -1390,7 +1400,7 @@ function rvFlip(c,team){const orig=c.side==="away"?1:0;if(team===orig)return{x:c
   return{x:PL-c.x,y:PW-c.y,ex:c.ex==null?null:PL-c.ex,ey:c.ey==null?null:PW-c.ey}}
 function rvAccept(cIn,vals){
   const c=cIn||rvCur();if(!c)return false;
-  const v=vals||{team:+$("#rvTeam").value,type:$("#rvType").value,out:$("#rvOut").value,p:$("#rvP").value.trim(),rcv:($("#rvR")?.value||"").trim()};
+  const v=vals||{team:+$("#rvTeam").value,type:$("#rvType").value,out:$("#rvOut").value,p:$("#rvP").value.trim(),rcv:($("#rvR")?.value||"").trim(),lp:$("#rvL")?($("#rvL").value||"").trim():undefined};
   if(!OUTS[v.type].includes(v.out)){toast("Pick an outcome");return false}
   const pos=rvFlip(c,v.team),pl=isPassLike({type:v.type});
   if(pl&&pos.ex==null){toast("No end point from Track B — tag this one with the tagging panel");return false}
@@ -1404,12 +1414,24 @@ function rvAccept(cIn,vals){
   if(v.type==="shot"){base.body="foot";base.sit="open";base.ast=null}
   let e=c.ev?S.events.find(x=>x.id===c.ev):null;
   if(e){Object.assign(e,base)}else{e={id:uid(),c:nextChunk(),...base};S.events.push(e)}
-  e.xg=xgOf(e);markDirty(e.c);c.st="a";c.ev=e.id;rvMark(c);return true;
+  e.xg=xgOf(e);markDirty(e.c);c.st="a";c.ev=e.id;rvMark(c);
+  const kid=rvKids().get(c.id);
+  if(kid&&kid!==c){   // the linked interception follows: kept for a turnover, dropped otherwise
+    const turnover=v.type==="clearance"||(pl&&v.out==="fail");
+    if(turnover){const kt=1-v.team,km=tm[kid.tr];
+      const kp=v.lp!==undefined?v.lp:(km&&km.team===kt?km.p:(kid.tp||""));
+      rvAccept(kid,{team:kt,type:"interception",out:"ok",p:kp,rcv:""})}
+    else rvDrop(kid);
+  }
+  return true;
+}
+function rvDrop(c){
+  if(c.ev){const i=S.events.findIndex(e=>e.id===c.ev);if(i>=0){const [e]=S.events.splice(i,1);S.events.forEach(s=>{if(s.ast===e.id){s.ast=null;markDirty(s.c)}});markDirty(e.c)}c.ev=null}
+  c.st="r";rvMark(c);
 }
 function rvReject(){
   const c=rvCur();if(!c)return;
-  if(c.ev){const i=S.events.findIndex(e=>e.id===c.ev);if(i>=0){const [e]=S.events.splice(i,1);S.events.forEach(s=>{if(s.ast===e.id){s.ast=null;markDirty(s.c)}});markDirty(e.c)}c.ev=null}
-  c.st="r";rvMark(c);rvAdvance();
+  rvDrop(c);const kid=rvKids().get(c.id);if(kid)rvDrop(kid);rvAdvance();
 }
 function rvAdvance(){if(RV.f.st!=="p")RV.i++;renderAll()}   // with the Pending filter the list shrinks by itself
 function rvPlay(){const c=rvCur();if(!c)return;if(!videoLoaded){toast("Load the match video first");return}
@@ -1426,13 +1448,14 @@ function bindReview(){
   const ci=$("#candIn");if(ci)ci.onchange=e=>{if(e.target.files[0])importCandidates(e.target.files[0]);e.target.value=""};
   const cl=$("#rvClear");if(cl)cl.onclick=async()=>{if(!confirm("Remove the imported candidates? Accepted events stay in the log."))return;const n=S.cand.length;S.cand=[];await Store.clearCands(S.match.id,Math.ceil(n/CAND_CHUNK));renderTab()};
   const bk=$("#rvBulk");if(bk)bk.onclick=rvBulk;
-  [["#rvSt","st"],["#rvTy","type"],["#rvSd","side"],["#rvCf","conf"]].forEach(([s,k])=>{const el=$(s);if(el)el.onchange=()=>{RV.f[k]=el.value;RV.i=0;renderTab()}});
-  const ty=$("#rvType");if(ty)ty.onchange=()=>{const t=ty.value;$("#rvOut").innerHTML=OUTS[t].map(o=>`<option value="${o}">${labelOut(o)}</option>`).join("");$("#rvRWrap").hidden=!isPassLike({type:t})};
+  [["#rvSt","st"],["#rvTy","type"],["#rvSd","side"],["#rvCf","conf"],["#rvPr","pr"]].forEach(([s,k])=>{const el=$(s);if(el)el.onchange=()=>{RV.f[k]=el.value;RV.i=0;renderTab()}});
+  const ty=$("#rvType");if(ty)ty.onchange=()=>{const t=ty.value;$("#rvOut").innerHTML=OUTS[t].map(o=>`<option value="${o}">${labelOut(o)}</option>`).join("");$("#rvRWrap").hidden=!isPassLike({type:t})||(!!$("#rvL")&&$("#rvOut").value==="fail")};
+  const ro=$("#rvOut");if(ro)ro.onchange=()=>{$("#rvRWrap").hidden=!isPassLike({type:$("#rvType").value})||(!!$("#rvL")&&ro.value==="fail")};
   const on=(id,fn)=>{const el=$(id);if(el)el.onclick=fn};
   on("#rvPlay",rvPlay);on("#rvAcc",()=>{if(rvAccept()){rvAdvance()}});on("#rvRej",rvReject);
   on("#rvNext",()=>{RV.i++;renderTab()});on("#rvPrev",()=>{RV.i=Math.max(0,RV.i-1);renderTab()});
   on("#rvMiss",()=>{const c=rvCur();if(c&&videoLoaded){Reel.active=false;video.currentTime=c.t;video.pause();setSrc("video");$("#tagPitch").scrollIntoView({block:"center",behavior:"smooth"});toast("Video is here — tag the missed event on the pitch")}});
-  ["#rvP","#rvR"].forEach(s=>{const el=$(s);if(el)el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(rvAccept())rvAdvance()}})});
+  ["#rvP","#rvR","#rvL"].forEach(s=>{const el=$(s);if(el)el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(rvAccept())rvAdvance()}})});
   document.querySelectorAll("[data-rvgo]").forEach(tr=>tr.onclick=()=>{RV.i=+tr.dataset.rvgo;renderTab()});
 }
 function rvKey(e){   // shortcuts while the Review tab is open and no tag is in progress

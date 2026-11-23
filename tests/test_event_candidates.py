@@ -74,3 +74,33 @@ def test_candidates_pick_up_track_map_numbers(tmp_path):
     p = next(r for r in rows if r["type"] == "pass")
     assert p["track_player"] == "10"        # track 5, confident -> suggested
     assert p["track_to_player"] == ""        # track 6 below the confidence/vote floor -> no suggestion
+
+
+def test_contested_ball_is_not_two_turnovers():
+    seq = []
+    seq += [(30.0, 34.0, [(1, "home", 30.5, 34.0), (3, "away", 40.0, 34.0)])] * 6
+    seq += [(33.0, 34.0, [(1, "home", 31.0, 34.0), (3, "away", 33.3, 34.0)])] * 2   # 0.2 s blip
+    seq += [(30.6, 34.0, [(1, "home", 30.5, 34.0), (3, "away", 40.0, 34.0)])] * 6
+    cands = build(_rows(seq), {1: True, 2: False})
+    assert not [c for c in cands if c["type"] in ("tackle", "interception")]
+
+
+def test_priority_and_linked_interception():
+    seq = []
+    seq += [(40.0, 34.0, [(1, "home", 40.5, 34.0), (3, "away", 60.0, 34.0)])] * 5
+    seq += [(50.0, 34.0, [(1, "home", 41.0, 34.0), (3, "away", 60.0, 34.0)])] * 3
+    seq += [(59.8, 34.0, [(1, "home", 41.0, 34.0), (3, "away", 60.0, 34.0)])] * 5
+    cands = build(_rows(seq), {1: True, 2: False})
+    fail = next(c for c in cands if c["type"] == "pass" and c["outcome"] == "fail")
+    inter = next(c for c in cands if c["type"] == "interception")
+    assert inter["linked"] == fail["cand_id"] and fail["linked"] == ""
+    assert fail["priority"] == 1 and inter["priority"] == 1          # confident: both priority 1
+
+
+def test_out_of_view_recovery_is_low_priority():
+    seq = [(30.0, 34.0, [(1, "home", 30.5, 34.0), (3, "away", 60.0, 34.0)])] * 5
+    seq += [(float("nan"), float("nan"), [(1, "home", 30.5, 34.0), (3, "away", 60.0, 34.0)])] * 60
+    seq += [(59.8, 34.0, [(1, "home", 31.0, 34.0), (3, "away", 60.0, 34.0)])] * 5
+    df = _rows(seq).dropna(subset=["x"])
+    rec = [c for c in build(df, {1: True, 2: False}) if c["type"] == "recovery"]
+    assert rec and rec[0]["priority"] == 3

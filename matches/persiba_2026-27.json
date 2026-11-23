@@ -4,7 +4,7 @@
   "notes": [
     "Period times are elapsed time in the ORIGINAL downloaded video (H:MM:SS or MM:SS), from the real kick-off to the real final whistle of each half, stoppage time included.",
     "League matches have no extra time: stoppage time belongs to its own half, so only periods 1 and 2 are used here.",
-    "home_dir_1h: which way the HOME team attacks on screen in the 1st half (R = left to right, L = right to left). Only the report needs it; tracking runs without it.",
+    "home_dir_1h: which way the HOME team attacks on screen in the 1st half (R = left to right, L = right to left). Leave null: run_match reads it from the tracking (kick-off positions + possession shift) and prints what it found. Set it only to override; a confident disagreement is printed as a WARNING.",
     "swap_teams: set true if the smoke-test preview shows the home team labelled 'away'. No GPU rerun is needed; labels are swapped when the chunks are combined.",
     "frame_stride auto = about 10 samples per second (3 on a 30 fps video, 6 on 60 fps). YouTube live replays are often 60 fps only.",
     "match_id is shared with the Pitchside Tagger: type the same id in the Tagger's Match ID field when you create the match.",
@@ -101,7 +101,7 @@
           "122:34"
         ]
       },
-      "home_dir_1h": "L",
+      "home_dir_1h": "R",
       "swap_teams": true,
       "scope": "persiba"
     },

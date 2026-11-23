@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS moments (
 CREATE TABLE IF NOT EXISTS candidates (
   match_id TEXT, cand_id TEXT, period INTEGER, t REAL, t_end REAL, side TEXT, type TEXT,
   outcome TEXT, track_id TEXT, track_to TEXT, x REAL, y REAL, ex REAL, ey REAL,
-  confidence TEXT, reason TEXT, review_status TEXT, event_id TEXT,
+  confidence TEXT, reason TEXT, review_status TEXT, event_id TEXT, priority INTEGER, linked TEXT,
   PRIMARY KEY (match_id, cand_id));
 CREATE TABLE IF NOT EXISTS track_map (
   match_id TEXT, track_id TEXT, side TEXT, player TEXT, source TEXT, confidence REAL, votes INTEGER,
@@ -240,6 +240,14 @@ def save_report(con: sqlite3.Connection, src: Sources) -> None:
     log_ingest(con, src.mid, "team_report", name, len(mrows))
 
 
+def migrate(con: sqlite3.Connection) -> None:
+    """Add columns introduced after a database was first created (no data loss)."""
+    have = {r[1] for r in con.execute("PRAGMA table_info(candidates)")}
+    for col, typ in (("priority", "INTEGER"), ("linked", "TEXT")):
+        if col not in have:
+            con.execute(f"ALTER TABLE candidates ADD COLUMN {col} {typ}")
+
+
 def save_candidates(con: sqlite3.Connection, src: Sources, review: dict[str, Any] | None) -> None:
     opened = src.open_text(f"{src.mid}_candidates.csv")
     if not opened:
@@ -252,8 +260,9 @@ def save_candidates(con: sqlite3.Connection, src: Sources, review: dict[str, Any
         for r in csv.DictReader(fh):
             st, ev = status.get(r["cand_id"], ("pending", None))
             rows.append((src.mid, *[num(r.get(c)) if c not in ("cand_id", "track_id", "track_to") else r.get(c)
-                                    for c in CAND_COLS], st, ev))
-    con.executemany(f"INSERT OR REPLACE INTO candidates VALUES ({','.join('?' * 18)})", rows)
+                                    for c in CAND_COLS], st, ev, num(r.get("priority")), r.get("linked") or None))
+    cols = ["match_id", *CAND_COLS, "review_status", "event_id", "priority", "linked"]
+    con.executemany(f"INSERT OR REPLACE INTO candidates ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})", rows)
     log_ingest(con, src.mid, "candidates", name, len(rows))
 
 
@@ -337,6 +346,7 @@ def main() -> int:
     db.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(db)
     con.executescript(SCHEMA)
+    migrate(con)
     con.execute("PRAGMA journal_mode=WAL")
     saved = 0
     for mid in ids:

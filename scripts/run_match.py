@@ -53,6 +53,7 @@ TRACKER = REPO / "scripts" / "track_video.py"
 MOMENTS = REPO / "scripts" / "build_player_moments.py"
 REPORT = REPO / "scripts" / "team_report.py"
 CANDIDATES = REPO / "scripts" / "build_event_candidates.py"
+DIRECTION = REPO / "scripts" / "resolve_direction.py"
 SAVE_DB = REPO / "scripts" / "save_to_db.py"
 DOWNLOADER = REPO / "src" / "download_match.py"
 MODELS_SCRIPT = REPO / "scripts" / "download_sports_models.py"
@@ -570,7 +571,8 @@ def bundle(run: Path, mid: str) -> Path:
             for f in sorted((run / sub).glob("*")) if (run / sub).exists() else []:
                 if f.is_file():
                     zf.write(f, f"{sub}/{f.name}")
-        for name in (f"{mid}_tracking.meta.json", f"{mid}_candidates.csv", f"{mid}_track_map.csv", f"{mid}_tracking.csv"):
+        for name in (f"{mid}_tracking.meta.json", f"{mid}_direction.json", f"{mid}_candidates.csv", f"{mid}_track_map.csv",
+                     f"{mid}_tracking.csv"):
             f = run / name
             if f.exists():   # the tracking CSV compresses ~5x, so the whole match travels in one file
                 zf.write(f, f.name)
@@ -770,21 +772,30 @@ def main() -> int:
     meta = combine(run, mid, chunks, bool(match.get("swap_teams")), combined, periods, dirs)
     log(f"  {meta['rows']:,} rows -> {combined}")
 
+    log("Checking attack direction and goalkeeper teams ...")
+    res = subprocess.run([sys.executable, str(DIRECTION), "--input", str(combined), "--config", str(a.config),
+                          "--match", mid], check=True, cwd=str(REPO), capture_output=True, text=True)
+    for line in (res.stdout.strip().splitlines()[:-1] + res.stderr.strip().splitlines()):
+        log("  " + line)
+    used_dir = (res.stdout.strip().splitlines() or ["?"])[-1].strip()
+
     log("Building moment cut-lists ...")
     subprocess.run([sys.executable, str(MOMENTS), "--input", str(combined),
                     "--metadata", str(combined.with_suffix(".meta.json")),
                     "--output-dir", str(run / "moments")], check=True, cwd=str(REPO))
 
-    if dirs is None:
-        log("Team report and event candidates skipped: set home_dir_1h (R or L) for this match in the config, "
-            "then run with --post-only.")
+    if used_dir not in ("R", "L"):
+        log("Team report and event candidates skipped: the attack direction could not be read from the data. "
+            "Set home_dir_1h (R or L) for this match in the config, then run with --post-only.")
     else:
         log("Building the team report ...")
         subprocess.run([sys.executable, str(REPORT), "--input", str(combined), "--config", str(a.config),
-                        "--match", mid, "--output-dir", str(run / "report")], check=True, cwd=str(REPO))
+                        "--match", mid, "--output-dir", str(run / "report"), "--home-dir", used_dir],
+                       check=True, cwd=str(REPO))
         log("Building event candidates for review in the Tagger ...")
         subprocess.run([sys.executable, str(CANDIDATES), "--input", str(combined), "--config", str(a.config),
-                        "--match", mid, "--output", str(run / f"{mid}_candidates.csv")], check=True, cwd=str(REPO))
+                        "--match", mid, "--output", str(run / f"{mid}_candidates.csv"), "--home-dir", used_dir],
+                       check=True, cwd=str(REPO))
     z = bundle(run, mid)
     log(f"Bundle: {z}  ({z.stat().st_size / 2**20:.1f} MB)")
     if not a.no_db:

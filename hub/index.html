@@ -248,7 +248,7 @@ function clubProfile(short){
     return{a,sd,p,gf,ga,opp}});
   const cell=(v,f)=>`<td class="n">${f(v)}</td>`;
   const half=k=>{const ps=ms.map(a=>per(a,k)).filter(Boolean);return{
-    poss:avg(ps.map(p=>p.me.ball_proximity_share)),blk:avg(ps.map(p=>p.me.block_height_m)),
+    poss:avg(ps.map(p=>possOf(p.me))),blk:avg(ps.map(p=>p.me.block_height_m)),
     oop:avg(ps.map(p=>p.me.block_height_out_of_possession_m)),line:avg(ps.map(p=>p.me.def_line_m)),n:ps.length}};
   const h1=half("1"),h2=half("2");
   // average own heatmap (each match normalised to its own max first)
@@ -258,12 +258,12 @@ function clubProfile(short){
   if(heat){const mx=Math.max(...heat.flat())||1;heat=heat.map(c=>c.map(v=>v/mx))}
   const d=(x,y,f)=>x==null||y==null?"—":((y-x)>=0?"+":"")+f(y-x);
   return `<h3 style="font-size:17px;text-transform:uppercase;margin:14px 0 6px">Scouting profile — Track B (${ms.length} match${ms.length>1?"es":""})</h3>
-  <div class="card"><div class="tablewrap"><table class="tb"><thead><tr><th>Match</th><th class="n">Score</th><th class="n">Poss. proxy</th><th class="n">Block</th><th class="n">Block out of poss.</th><th class="n">Back line</th><th class="n">Width</th><th class="n">Ball in att. third</th></tr></thead><tbody>
+  <div class="card"><div class="tablewrap"><table class="tb"><thead><tr><th>Match</th><th class="n">Score</th><th class="n">Possession</th><th class="n">Block</th><th class="n">Block out of poss.</th><th class="n">Back line</th><th class="n">Width</th><th class="n">Ball in att. third</th></tr></thead><tbody>
     ${rows.map(r=>`<tr class="clickable" data-an="${esc(r.a.id)}"><td>${r.sd==="home"?"vs":"@"} ${esc(r.opp)} <span class="note">${esc(r.a.tracking.date||"")}</span></td><td class="n mono">${r.gf}–${r.ga}</td>
-      ${cell(r.p.me.ball_proximity_share,pct)}${cell(r.p.me.block_height_m,mtr)}${cell(r.p.me.block_height_out_of_possession_m,mtr)}${cell(r.p.me.def_line_m,mtr)}${cell(r.p.me.width_m,mtr)}${cell(r.p.att,pct)}</tr>`).join("")}
-    <tr><td><b>Average</b></td><td></td>${cell(avg(rows.map(r=>r.p.me.ball_proximity_share)),pct)}${cell(avg(rows.map(r=>r.p.me.block_height_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.block_height_out_of_possession_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.def_line_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.width_m)),mtr)}${cell(avg(rows.map(r=>r.p.att)),pct)}</tr>
+      ${cell(possOf(r.p.me),pct)}${cell(r.p.me.block_height_m,mtr)}${cell(r.p.me.block_height_out_of_possession_m,mtr)}${cell(r.p.me.def_line_m,mtr)}${cell(r.p.me.width_m,mtr)}${cell(r.p.att,pct)}</tr>`).join("")}
+    <tr><td><b>Average</b></td><td></td>${cell(avg(rows.map(r=>possOf(r.p.me))),pct)}${cell(avg(rows.map(r=>r.p.me.block_height_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.block_height_out_of_possession_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.def_line_m)),mtr)}${cell(avg(rows.map(r=>r.p.me.width_m)),mtr)}${cell(avg(rows.map(r=>r.p.att)),pct)}</tr>
   </tbody></table></div>
-  <p class="note" style="margin-top:8px">1st → 2nd half: possession proxy ${d(h1.poss,h2.poss,v=>Math.round(v*100)+" pts")}, block ${d(h1.blk,h2.blk,v=>v.toFixed(1)+" m")}, block out of possession ${d(h1.oop,h2.oop,v=>v.toFixed(1)+" m")}, back line ${d(h1.line,h2.line,v=>v.toFixed(1)+" m")}. Metres from own goal; + = higher up the pitch.</p>
+  <p class="note" style="margin-top:8px">1st → 2nd half: possession ${d(h1.poss,h2.poss,v=>Math.round(v*100)+" pts")}, block ${d(h1.blk,h2.blk,v=>v.toFixed(1)+" m")}, block out of possession ${d(h1.oop,h2.oop,v=>v.toFixed(1)+" m")}, back line ${d(h1.line,h2.line,v=>v.toFixed(1)+" m")}. Metres from own goal; + = higher up the pitch.</p>
   ${heat?`<div style="max-width:560px;margin-top:10px"><div class="note" style="margin-bottom:6px">Average positions, attacking →</div>${heatSvg(heat,grid,col)}</div>`:""}
   <p class="note" style="margin-top:6px">Built from the Track B reports imported in My analysis. Proxies from broadcast tracking — read trends, not exact values.</p></div>`;
 }
@@ -348,9 +348,11 @@ function trackingSection(a,period,lbl){
   const seg=(w,c,txt)=>w>0?`<div style="flex:${w};background:${c}" title="${esc(txt)}">${w>=0.12?esc(txt):""}</div>`:"";
   return `<h3 style="font-size:16px;text-transform:uppercase;margin:16px 0 6px">Team shape — Track B${period==="all"?"":" · "+esc(lbl[period])}</h3>
   <div class="card">
+    ${(T.warnings||[]).map(w=>`<div class="qual" style="color:var(--bad,#b42318);font-weight:600">⚠ ${esc(w)}</div>`).join("")}
     <div class="qual">Data quality: wide camera ${pct(q.wide_share)} · team known ${pct(q.known_team_share)} · ball visible ${pct(q.ball_visible_share)} · ${q.ball_near_frames??0} ball-near samples</div>
     <div class="tablewrap"><table class="tb"><thead><tr><th></th><th class="n"><span class="swatch" style="background:${hc}"></span> ${esc(a.home)}</th><th class="n"><span class="swatch" style="background:${ac}"></span> ${esc(a.away)}</th></tr></thead><tbody>
-      ${row("Ball-proximity share (possession proxy)","ball_proximity_share",pct)}
+      ${H.possession_share!=null?row("Possession (time share)","possession_share",pct):""}
+      ${row(H.possession_share!=null?"Ball-proximity share (diagnostic)":"Ball-proximity share (possession proxy)","ball_proximity_share",pct)}
       ${row("Block height (from own goal)","block_height_m",mtr)}
       ${row("· in possession","block_height_in_possession_m",mtr)}
       ${row("· out of possession","block_height_out_of_possession_m",mtr)}
@@ -367,6 +369,7 @@ function trackingSection(a,period,lbl){
   </div>
   <p class="note" style="margin-top:8px">${esc(T.method?.caveat||"")} Block height and back line are metres from the team's own goal line.</p>`;
 }
+function possOf(me){return me?(me.possession_share!=null?me.possession_share:me.ball_proximity_share):null}   // older reports: proximity proxy
 function heatSvg(h,grid,col){
   if(!h||!h.length)return`<div class="empty">No positions.</div>`;
   const nx=grid?.[0]||h.length,ny=grid?.[1]||h[0].length,cw=PL/nx,ch=PW/ny;let cells="";

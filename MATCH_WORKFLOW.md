@@ -36,7 +36,7 @@ Config: [`matches/persiba_2026-27.json`](matches/persiba_2026-27.json). On Colab
 - **One master video per match**, never re-encoded. Tag it, track it, review it — all the same file.
 - **Period times** = elapsed time in the master, real kick-off → real final whistle, **stoppage time included**. League matches have no extra time, so only periods 1 and 2. (The earlier "P3/P4" ranges were stoppage time; they are merged back into their halves.)
 - **match_id** from the config is typed into the Tagger's *Match ID* field when you create the match.
-- **Direction**: `home_dir_1h` = which way the *home* team attacks on screen in the 1st half (R = left→right). For away matches, "home" is the opponent.
+- **Direction**: `home_dir_1h` = which way the *home* team attacks on screen in the 1st half (R = left→right). For away matches, "home" is the opponent. **You can leave it `null`**: after tracking, the run reads it from the data (kick-off positions + who stands higher with the ball) and prints `Direction: data says R (high; ...)`. Only set it to override; if your value contradicts a confident reading you get a `WARNING` in the log and at the top of the report — check the video then.
 
 ## A · Track B on Colab — `notebooks/match_colab.ipynb`
 
@@ -98,9 +98,13 @@ Fine-tune any value on top of a profile: `--cpu-threads`, `--cpu-cores`, `--prio
    - **V** plays the clip (3 s before → 2 s after), the mini pitch shows Track B's start/end.
    - Type the shirt number(s), fix team / event / outcome if needed → **Enter** = accept. **X** = reject (not a real event), **N** = skip, **B** = back.
    - Numbers are remembered per Track B track, so later candidates from the same track arrive pre-filled. Once a few tracks are mapped, **Accept mapped OK passes** clears the easy ones in bulk.
+   - The queue shows the **Main queue** (priority 1–2, about 40–45 % of all candidates). A failed pass and the interception that follows are **one card**: type the passer and the "Intercepted by #" number, Enter decides both. *Low priority* (ball was out of view, blips) is one dropdown away if you have time left.
    - **+ Tag something missed here** jumps the video to that moment; tag it with the normal panel (shots, fouls, anything Track B can't see).
-4. Optional extra pass: **Moments → Imported (Track B)** with `moments/track_*_moments.csv` to watch a player's ball-near moments.
-5. **Download CSV** (`<match_id>_events.csv`) and **Download review (JSON)** (`<match_id>_review.json`). Both land in Downloads; the database step picks them up from there.
+4. Optional, once per few matches — **measure Track B**: pick a 10–15 min stretch you have NOT reviewed yet, tag it fully by hand (normal tagging panel), download the CSV, then run
+   `python scripts/evaluate_candidates.py --candidates <id>_candidates.csv --events <id>_events.csv`
+   → recall / precision per event type. That tells us which thresholds to tune.
+5. Optional extra pass: **Moments → Imported (Track B)** with `moments/track_*_moments.csv` to watch a player's ball-near moments.
+6. **Download CSV** (`<match_id>_events.csv`) and **Download review (JSON)** (`<match_id>_review.json`). Both land in Downloads; the database step picks them up from there.
 
 Track B finds roughly half of the real on-ball actions (the ball is often not visible), so expect to accept/fix most candidates and still add some by hand. Fastest order: shots first (filter *Type = Shot*), then passes in the final third, then the rest.
 
@@ -116,7 +120,7 @@ Tables: `matches, tracking, moments, candidates (with your accept/reject), track
 
 ## C · Bring it together — [League Hub](https://claude.ai/artifact/8cgsEsf9yeqHh2fmrnkLCT) → My analysis
 
-Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any order — same match merges into one entry). Per half: score, xG, shot map (Track A); possession proxy, block height in/out of possession, back line, width/length, territory and position heatmaps (Track B), each with a data-quality line.
+Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any order — same match merges into one entry). Per half: score, xG, shot map (Track A); possession (time share), block height in/out of possession, back line, width/length, territory and position heatmaps (Track B), each with a data-quality line.
 
 **Scouting an opponent:** open the club in the Hub (Clubs → club). Every imported Track B report involving that club is combined into a *Scouting profile*: per-match row from that club's point of view, averages, 1st→2nd half change, and an average position heatmap. Run Track B on 2–3 of the opponent's matches (they don't need tagging) and import the reports.
 
@@ -131,5 +135,6 @@ Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any o
 | Team colours wrong (both teams one colour, keepers dominate) | Delete `runs/<id>/team-state.joblib`, rerun step 4 (re-fits from ~100 frames spread over the 1st half) |
 | `Period end ... is past the video end` | The period time is wrong or the download is incomplete |
 | Chunk failed | The last log lines are printed; full log in `runs/<id>/logs/`. Re-run step 5 |
-| Report skipped | Set `home_dir_1h`, run step 7 |
+| Report skipped ("direction could not be read") | Set `home_dir_1h` (R/L) in step 2, run step 7 |
+| `WARNING: Config says home_dir_1h=… but the tracking says …` | Watch the first seconds of the 1st half: which goal does the home team defend? Fix `home_dir_1h` (or set it to null), run step 7 |
 | 60 fps download | Fine: sampling auto-adjusts to ~10 frames/s (stride 6) |

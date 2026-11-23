@@ -75,18 +75,26 @@ Track B can export one cut-list CSV per anonymous `track_id`. The Reel importer 
 - This cut-list is distinct from the 26-column event CSV. It does not change the event importer.
 - `track_id` is not `shirt_number`; no player-number identity is implied.
 
-## 6b. Event candidates (Track B → Tagger Review tab) — v1
+## 6b. Event candidates (Track B → Tagger Review tab) — v1.1
 
-`<match_id>_candidates.csv`, built by `scripts/build_event_candidates.py` from the combined tracking CSV once `home_dir_1h` is known:
+`<match_id>_candidates.csv`, built by `scripts/build_event_candidates.py` from the combined tracking CSV once the attack direction is known (config `home_dir_1h`, or read from the data — §6f):
 
-`cand_id, period, t, t_end, side, type, outcome, track_id, track_to, x, y, ex, ey, confidence, reason, track_player, track_to_player`
+`cand_id, period, t, t_end, side, type, outcome, track_id, track_to, x, y, ex, ey, confidence, reason, track_player, track_to_player, priority, linked`
 
 - `type` uses the Tagger's event names (`pass, cross, shot, tackle, interception, recovery, clearance`); `outcome` uses the Tagger's internal codes (`ok, fail, on, won`; empty = the reviewer picks).
 - `t` = `video_seconds` of the action (release for passes, gain for interceptions/tackles/recoveries); `t_end` = when the ball arrived.
 - `x, y, ex, ey`: **team frame** metres (the acting `side` attacks left → right), so an accepted candidate becomes an event unchanged.
 - `track_id` = acting track, `track_to` = receiver (passes) or the player who lost it (tackles). Anonymous Track B ids, not shirt numbers.
 - `confidence`: `ok` or `review`; `reason` is a short human explanation.
+- `priority` (v1.1): `1` Track B confident, `2` needs a look, `3` probably noise (hidden in the Tagger's default queue, never deleted). Missing column = 2.
+- `linked` (v1.1): on an interception, the `cand_id` of the failed pass / clearance it answers; the Tagger decides both together (accepted for a turnover, rejected otherwise). Empty elsewhere.
 - `track_player`, `track_to_player`: optional shirt-number suggestions for the acting / receiving track, filled from `<match_id>_track_map.csv` (§6e) when shirt-number OCR ran; empty otherwise. The Tagger review pre-fills from them.
+
+## 6f. Attack direction — `<match_id>_direction.json` (+ team report keys)
+
+Written by `scripts/resolve_direction.py` (run by `run_match` after combining): `match_id, used (R|L|null), source (config|inferred|unknown), config, inferred, confidence (high|medium|conflict|none), votes [{signal: kickoff|possession_shift, period, metres, home_right_1h}], goalkeeper_rows_relabelled, warning`. The combined `.meta.json` gets `home_attacks_right_by_period` and a `direction` block. Goalkeeper rows in the combined tracking CSV carry the team defending the half they stand in once the direction is known.
+
+Team report (`trackb_team_report_v1`, additive keys only): per side `possession_share` (time share, §DECISIONS 2026-11-23 evening), `quality.possession_known_share`, top-level `direction_check` and `warnings`. `method.possession` replaces `method.possession_hold_s`.
 
 ## 6e. Shirt-number map (Track B OCR, optional) — `<match_id>_track_map.csv`
 
@@ -103,7 +111,7 @@ Written when Track B runs with `--read-numbers` (easyocr). One row per track tha
 
 ## 6d. Database — `<root>/football.db` (SQLite)
 
-Built by `scripts/save_to_db.py` (called by `run_match.py` at the end of a local run). Tables: `matches, tracking, moments, candidates (+ review_status, event_id), track_map, events, team_metrics, team_heatmaps, ingests`; views `v_review_progress, v_player_events, v_team_half`. Re-saving a match replaces that match's rows. Column names follow sections 4–6c.
+Built by `scripts/save_to_db.py` (called by `run_match.py` at the end of a local run). Tables: `matches, tracking, moments, candidates (+ review_status, event_id, priority, linked — older databases get the two new columns automatically), track_map, events, team_metrics, team_heatmaps, ingests`; views `v_review_progress, v_player_events, v_team_half`. Re-saving a match replaces that match's rows. Column names follow sections 4–6c.
 
 ## 7. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.

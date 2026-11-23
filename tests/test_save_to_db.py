@@ -56,3 +56,16 @@ def test_save_run_folder_and_tagger_files(tmp_path):
                     "--root", str(tmp_path / "root"), "--match", mid, "--inbox", str(inbox)], check=True,
                    capture_output=True)
     assert q("select count(*) from events") == [(2,)] and q("select count(*) from tracking") == [(1,)]
+
+
+def test_old_database_gets_new_candidate_columns(tmp_path):
+    import sqlite3
+    from scripts.save_to_db import migrate
+    con = sqlite3.connect(tmp_path / "old.db")
+    con.execute("CREATE TABLE candidates (match_id TEXT, cand_id TEXT, review_status TEXT)")
+    con.execute("INSERT INTO candidates VALUES ('m', 'c1', 'pending')")
+    migrate(con)
+    migrate(con)   # idempotent
+    cols = [r[1] for r in con.execute("PRAGMA table_info(candidates)")]
+    assert cols[-2:] == ["priority", "linked"]
+    assert con.execute("SELECT cand_id FROM candidates").fetchone() == ("c1",)
