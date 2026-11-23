@@ -62,14 +62,7 @@ def infer_sampling_interval(
             raise ValueError("--sampling-interval-seconds must be positive")
         return float(override)
 
-    metadata = metadata or {}
-    segment_details = []
-    for segment in metadata.get("segments", []):
-        details = segment.get("details", {}) if isinstance(segment, dict) else {}
-        if isinstance(details, dict):
-            segment_details.append(details)
-    if not segment_details:
-        segment_details = [metadata]
+    segment_details = _normalise_segments(metadata)
 
     # Consecutive sampled-frame PTS deltas take precedence, which also handles
     # variable-frame-rate sources. Nominal stride/FPS is only a fallback.
@@ -194,16 +187,48 @@ def confidence_for_moment(
     return ("review" if reasons else "ok"), reasons
 
 
-def _metadata_segments(metadata: dict[str, Any] | None) -> list[dict[str, Any]]:
+def _normalise_segments(metadata: dict[str, Any] | None) -> list[dict[str, Any]]:
+    """Per-source-segment calibration/timing, from either combined-metadata shape.
+
+    Old Colab combiner: metadata["segments"][i]["details"] with source_start/end_seconds.
+    run_match combiner:  metadata["chunks"][i] with flat start/end and calibration; fps and
+    frame_stride live at the top level. Returns a list of detail dicts in a single shape.
+    """
     metadata = metadata or {}
-    segments = []
+    out: list[dict[str, Any]] = []
     for segment in metadata.get("segments", []):
         details = segment.get("details", {}) if isinstance(segment, dict) else {}
-        if isinstance(details, dict):
-            segments.append(details)
-    if not segments:
-        segments = [metadata]
-    return segments
+        if isinstance(details, dict) and details:
+            out.append(details)
+    if not out:
+        top_fps = metadata.get("fps")
+        top_stride = metadata.get("frame_stride")
+        for chunk in metadata.get("chunks", []):
+            if not isinstance(chunk, dict):
+                continue
+            out.append({
+                "calibration_median_error_m": chunk.get("calibration_median_error_m"),
+                "source_start_seconds": chunk.get("start", chunk.get("source_start_seconds")),
+                "source_end_seconds": chunk.get("end", chunk.get("source_end_seconds")),
+                "fps": chunk.get("fps", top_fps),
+                "frame_stride": chunk.get("frame_stride", top_stride),
+            })
+    if not out:
+        out = [metadata]
+    return out
+
+
+def _count_labels(per_track: list[dict[str, Any]]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for track in per_track:
+        for moment in track.get("moments", []):
+            counts[moment["label"]] = counts.get(moment["label"], 0) + 1
+    return counts
+
+
+def _metadata_segments(metadata: dict[str, Any] | None) -> list[dict[str, Any]]:
+    metadata = metadata or {}
+    return _normalise_segments(metadata)
 
 
 def calibration_error_for_window(
@@ -602,6 +627,7 @@ def write_moment_cut_lists(
         },
         "track_count": len(per_track),
         "moment_count": total_moments,
+        "label_counts": _count_labels(per_track),
         "tracks": per_track,
     }
     manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")

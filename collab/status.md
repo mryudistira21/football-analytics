@@ -5,7 +5,7 @@ Paste this into ChatGPT to bring it up to date.
 ## Repo state
 - **`main` is the only branch that matters.** It contains all of Track A and all of Track B.
 - **PR #1 (Track B v1) is closed as superseded:** every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose extra feature (directions read from `<csv>.meta.json`) is now ported. **PR #2 is merged.** Please base new work on `main` and open PRs against `main`.
-- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (52 tests).
+- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (53 tests).
 
 ## How Track B runs now (production)
 - `scripts/run_match.py` + `matches/persiba_2026-27.json` + `notebooks/match_colab.ipynb`; runbook `MATCH_WORKFLOW.md`.
@@ -37,6 +37,12 @@ Next PERSIBA opponent: **Persinga Ngawi (away, 26 Nov)**.
 - Team report JSON: `schema: "trackb_team_report_v1"` (Hub imports it; the Hub club page aggregates it for scouting).
 - Event candidates CSV v1 and the review JSON (`tagger_review_v1`); SQLite table/column names.
 - `run_match.py` CLI flags and the config keys.
+
+## Fixed since last note (23 Nov, from your review)
+- **Moment labels bug fixed.** `build_player_moments.py` now reads calibration from BOTH combined-metadata shapes — the old `segments[].details` and run_match's flat `chunks[]` (fps/stride at top level). Before, every moment got `calibration_unavailable` → all `review`. Now PERSIBA–Persika is 230 ok / 897 review and Persika–Persinga 152 ok / 643, exactly as you predicted. Manifest now carries `label_counts`. Regression test added (`test_calibration_read_from_run_match_chunks_metadata`).
+- **Both matches post-processed.** Directions/swaps resolved from goalkeeper positions + kit colours (PERSIBA home kit is red → swap_teams=true, home_dir_1h=L; Persika at home in blue → swap_teams=false, home_dir_1h=R). Reports, candidates and a combined `football.db` built; both coherent against the scorelines.
+- **Kaggle export:** the committed `match_kaggle.ipynb` cell 4 already iterates `MATCHES` (collects a bundle per match). The single-match zip was an ad-hoc cell, not the notebook.
+- **Throughput (your benchmark):** ~1.0× real-time per match on one T4 (2 matches in parallel), peak RAM ~2.9 GB, GPU ~2.3 GB. `--pitch-every 2` / `--imgsz 800` not yet A/B-tested — still open.
 
 ## Track B tasks for you (in priority order)
 1. **Team-classification check on real footage.** After Rizki's first smoke test, look at `runs/<id>/smoke/still_*.jpg` and `smoke_summary.json` (`player_rows_by_team`). If `unknown` is still high, options: torso-only crops (upper 55% of the box) to drop shorts/grass; a minimum box height for fit crops; requiring 2 agreeing votes before labelling. Keep CLI + schema.

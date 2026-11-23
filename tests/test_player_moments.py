@@ -251,3 +251,20 @@ def test_unknown_team_moments_are_review_not_wrong(tmp_path):
     moment = result["tracks"][0]["moments"][0]
     assert moment["label"] == "review"
     assert "unknown_team_share_high" in moment["review_reasons"]
+
+
+def test_calibration_read_from_run_match_chunks_metadata():
+    from scripts.build_player_moments import _normalise_segments, calibration_error_for_window
+    # run_match combine() metadata shape: flat "chunks", fps/stride at top level
+    meta = {"fps": 30.0, "frame_stride": 3, "chunks": [
+        {"start": 0.0, "end": 60.0, "calibration_median_error_m": 0.5},
+        {"start": 60.0, "end": 120.0, "calibration_median_error_m": 0.7}]}
+    segs = _normalise_segments(meta)
+    assert len(segs) == 2 and segs[0]["source_start_seconds"] == 0.0
+    assert segs[0]["fps"] == 30.0 and segs[0]["frame_stride"] == 3
+    # a moment inside the first chunk gets that chunk's calibration, not "unavailable"
+    assert calibration_error_for_window(meta, 10.0, 20.0) == 0.5
+    # the old "segments"/"details" shape still works
+    old = {"segments": [{"details": {"calibration_median_error_m": 0.4, "source_start_seconds": 0.0,
+                                      "source_end_seconds": 60.0, "fps": 30.0, "frame_stride": 3}}]}
+    assert calibration_error_for_window(old, 10.0, 20.0) == 0.4
