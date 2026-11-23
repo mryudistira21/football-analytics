@@ -83,5 +83,5 @@ def test_press_share_uses_opponent_possession_in_own_third_and_five_metre_holder
     result = pressing_stats(df, poss)
     assert result["home"]["press_eligible_samples"] == 3
     assert result["home"]["pressing_samples"] == 1
-    assert result["home"]["press_share"] == 1 / 3
+    assert result["home"]["press_share"] == 0.333
     assert result["away"]["press_share"] is None
