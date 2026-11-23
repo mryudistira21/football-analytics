@@ -108,7 +108,9 @@ def center_restart_vote(period_rows: pd.DataFrame, period: int, scan_seconds: fl
     center_ball = center_ball.sort_values("video_seconds")
     times = center_ball.video_seconds.to_numpy(dtype=float)
     breaks = np.flatnonzero(np.diff(times) > 1.5) + 1
-    runs = np.split(center_ball, breaks)
+    bounds = [0, *breaks.tolist(), len(center_ball)]
+    # slice with iloc: np.split on a DataFrame returns bare arrays on newer NumPy
+    runs = [center_ball.iloc[a:b] for a, b in zip(bounds, bounds[1:])]
     candidates = []
     window_s = 3.0
     for run in runs:
