@@ -40,7 +40,7 @@ This is a fallback, not a guarantee: if the match has no clear centre restart an
 - Delayed centre restart when the configured period begins in pre-roll.
 - Defensive nearest-two selection, direction gating, and exact seven-column output.
 
-CI result: pending GitHub Actions on the PR.
+CI: passed on PR #3 — 70 tests passed in 4.53 s. Two non-blocking NumPy FutureWarnings are emitted by the centre-restart test's DataFrame splitting.
 
 ## Still waiting for Rizki's data
 1. Shirt-number OCR check: needs the next Kaggle bundles for persiba_gresik_20261113 and persipa_persiba_20261117 with READ_NUMBERS=True (or DB with v_track_numbers). The previously uploaded PERSIBA–Persika bundle contains no number-reader output / track_map.
