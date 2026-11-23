@@ -74,6 +74,92 @@ KICKOFF_MIN_GAP_M = 8.0
 SHIFT_MIN_M = 6.0         # (home shift - away shift) needed for a possession-shift vote
 
 
+def center_restart_vote(period_rows: pd.DataFrame, period: int, scan_seconds: float = 600.0) -> dict[str, Any] | None:
+    """Find one delayed kick-off / after-goal restart vote in the first part of a period.
+
+    A valid window needs the ball near the centre circle and both outfield teams
+    clearly arranged in opposite halves. Contiguous centre-ball runs are evaluated
+    once each to avoid repeatedly scanning the full player table.
+    """
+    players = period_rows[
+        (period_rows.camera_state == "wide")
+        & (period_rows.role == "player")
+        & period_rows.team.isin(["home", "away"])
+    ].dropna(subset=["x"])
+    ball = period_rows[
+        (period_rows.camera_state == "wide")
+        & (period_rows.role == "ball")
+    ].dropna(subset=["x", "y", "video_seconds"])[
+        ["frame", "video_seconds", "x", "y"]
+    ].drop_duplicates("frame").sort_values("video_seconds")
+    if players.empty or ball.empty:
+        return None
+
+    t0 = float(period_rows.video_seconds.min())
+    t1 = min(float(period_rows.video_seconds.max()), t0 + scan_seconds)
+    ball = ball[(ball.video_seconds >= t0) & (ball.video_seconds <= t1)]
+    radius = np.hypot(ball.x - PL / 2.0, ball.y - PW / 2.0)
+    center_ball = ball[radius <= 12.0]
+    if len(center_ball) < 3:
+        return None
+
+    # A restart keeps the ball near the centre for several sampled frames.
+    # Split distant centre-ball appearances into independent candidate restarts.
+    center_ball = center_ball.sort_values("video_seconds")
+    times = center_ball.video_seconds.to_numpy(dtype=float)
+    breaks = np.flatnonzero(np.diff(times) > 1.5) + 1
+    runs = np.split(center_ball, breaks)
+    candidates = []
+    window_s = 3.0
+    for run in runs:
+        if len(run) < 3 or float(run.video_seconds.iloc[-1] - run.video_seconds.iloc[0]) < 0.15:
+            continue
+        start = float(run.video_seconds.iloc[0])
+        b = ball[(ball.video_seconds >= start) & (ball.video_seconds < start + window_s)]
+        if len(b) < 3:
+            continue
+        center = np.hypot(b.x - PL / 2.0, b.y - PW / 2.0) <= 12.0
+        center_frames = set(b.loc[center, "frame"].astype(int).tolist())
+        center_share = float(center.mean())
+        if len(center_frames) < 3 or center_share < 0.15:
+            continue
+
+        p = players[players.frame.isin(center_frames)]
+        home = p[p.team == "home"].x
+        away = p[p.team == "away"].x
+        if len(home) < 15 or len(away) < 15:
+            continue
+        right_consistency = (float((home < PL / 2).mean())
+                             + float((away > PL / 2).mean())) / 2
+        left_consistency = (float((home > PL / 2).mean())
+                            + float((away < PL / 2).mean())) / 2
+        if right_consistency >= left_consistency:
+            consistency, gap, home_right_period = (
+                right_consistency, float(away.mean() - home.mean()), True
+            )
+        else:
+            consistency, gap, home_right_period = (
+                left_consistency, float(home.mean() - away.mean()), False
+            )
+        if consistency >= 0.68 and abs(gap) >= KICKOFF_MIN_GAP_M:
+            candidates.append({
+                "signal": "center_restart",
+                "period": int(period),
+                "seconds_from_period_start": round(start - t0, 1),
+                "metres": round(abs(gap), 1),
+                "center_ball_share": round(center_share, 3),
+                "half_separation": round(consistency, 3),
+                "home_right_1h": home_right_period if period == 1 else not home_right_period,
+            })
+
+    if not candidates:
+        return None
+    candidates.sort(key=lambda v: (
+        v["half_separation"], v["center_ball_share"], -v["seconds_from_period_start"]
+    ), reverse=True)
+    return candidates[0]
+
+
 def infer_direction(df: pd.DataFrame, poss: pd.DataFrame | None = None) -> dict[str, Any]:
     """Which way the home team attacks in the 1st half, from the tracking itself.
 
@@ -90,18 +176,30 @@ def infer_direction(df: pd.DataFrame, poss: pd.DataFrame | None = None) -> dict[
     if poss is None:
         poss = possession_frames(df)
     for p in sorted(int(x) for x in df.period.unique() if int(x) in (1, 2)):
+        period_rows = df[df.period == p]
         d = wide[wide.period == p]
         if d.empty:
             continue
-        t0 = df[df.period == p].video_seconds.min()
+        t0 = float(period_rows.video_seconds.min())
         k = d[d.video_seconds < t0 + KICKOFF_WINDOW_S]
         n = k.team.value_counts()
+        # Keep the simple first-10-second kick-off vote when it is usable.
+        kickoff_added = False
         if n.get("home", 0) >= KICKOFF_MIN_ROWS and n.get("away", 0) >= KICKOFF_MIN_ROWS:
             gap = float(k[k.team == "away"].x.mean() - k[k.team == "home"].x.mean())
             if abs(gap) >= KICKOFF_MIN_GAP_M:
-                right_p = gap > 0                      # home stands left -> defends left -> attacks right
+                right_p = gap > 0
                 votes.append({"signal": "kickoff", "period": p, "metres": round(gap, 1),
                               "home_right_1h": right_p if p == 1 else not right_p})
+                kickoff_added = True
+
+        # If the configured period start contains pre-roll / graphics, look for
+        # a later centre restart (kick-off or after-goal restart) instead.
+        if not kickoff_added:
+            restart = center_restart_vote(period_rows, p)
+            if restart:
+                votes.append(restart)
+
         m = d.merge(poss[["frame", "owner"]], on="frame")
         shift = {}
         for side in ("home", "away"):
@@ -260,6 +358,60 @@ def heat(rows: pd.DataFrame) -> list[list[float]]:
     return [[round(float(v) / mx, 3) for v in col] for col in h]
 
 
+def pressing_stats(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, dict[str, Any]]:
+    """Estimate pressure in the opponent's own third from wide-camera tracking.
+
+    Denominator: opponent-owned samples in the opponent's own third. Numerator:
+    those samples with at least one outfield presser within 5 m of the current
+    ball holder. Samples without a current holder stay in the denominator.
+    This is a tracking proxy, not event-data PPDA.
+    """
+    empty = {side: {"press_share": None, "press_eligible_samples": 0, "pressing_samples": 0}
+             for side in ("home", "away")}
+    if df.empty or poss.empty:
+        return empty
+    wide = df[df.camera_state == "wide"]
+    ball = wide[wide.role == "ball"].dropna(subset=["x", "y", "tx"])[
+        ["frame", "x", "y", "tx"]].drop_duplicates("frame")
+    if ball.empty:
+        return empty
+    people = wide[wide.role.isin(["player", "goalkeeper"]) & wide.team.isin(["home", "away"])].dropna(
+        subset=["x", "y"])[["frame", "team", "x", "y"]]
+    if people.empty:
+        return empty
+    near = people.merge(ball[["frame", "x", "y"]], on="frame", suffixes=("", "_ball"))
+    near["holder_distance_m"] = np.hypot(near.x - near.x_ball, near.y - near.y_ball)
+    nearest_idx = near.groupby("frame").holder_distance_m.idxmin()
+    holders = near.loc[nearest_idx, ["frame", "team", "x", "y", "holder_distance_m"]]
+    holders = holders[holders.holder_distance_m <= HOLDER_M].rename(
+        columns={"team": "holder_team", "x": "holder_x", "y": "holder_y"})
+    states = (poss[["frame", "owner", "holder"]]
+              .merge(ball[["frame", "tx"]], on="frame", how="inner")
+              .merge(holders[["frame", "holder_team", "holder_x", "holder_y"]],
+                     on="frame", how="left"))
+    for side in ("home", "away"):
+        opponent = "away" if side == "home" else "home"
+        # tx is the home team's attacking-left-to-right view.
+        own_third = states.tx >= 70.0 if opponent == "away" else states.tx <= 35.0
+        eligible = states[(states.owner == opponent) & own_third]
+        denominator = int(eligible.frame.nunique())
+        if denominator == 0:
+            continue
+        held = eligible[(eligible.holder == opponent) & (eligible.holder_team == opponent)][
+            ["frame", "holder_x", "holder_y"]].drop_duplicates("frame")
+        pressers = wide[(wide.role == "player") & (wide.team == side)].dropna(
+            subset=["x", "y"])[["frame", "x", "y"]]
+        pairs = pressers.merge(held, on="frame", how="inner")
+        if pairs.empty:
+            numerator = 0
+        else:
+            distance = np.hypot(pairs.x - pairs.holder_x, pairs.y - pairs.holder_y)
+            numerator = int(pairs.loc[distance <= 5.0, "frame"].nunique())
+        empty[side] = {"press_share": round(numerator / denominator, 3),
+                       "press_eligible_samples": denominator, "pressing_samples": numerator}
+    return empty
+
+
 def period_block(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, Any]:
     wide = df[df.camera_state == "wide"]
     mapped = wide.dropna(subset=["x", "y"])
@@ -282,6 +434,7 @@ def period_block(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, Any]:
         thirds = [round(float(b.get(i, 0.0)), 3) for i in range(3)]
 
     owner = pf.set_index("frame").owner
+    press = pressing_stats(df, poss)
     res: dict[str, Any] = {
         "quality": {
             "sampled_frames": int(frames_all),
@@ -305,8 +458,9 @@ def period_block(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, Any]:
             **shape_stats(o),
             "block_height_in_possession_m": shape_stats(o[own == side]).get("block_height_m"),
             "block_height_out_of_possession_m": shape_stats(o[(own != side) & pd.notna(own)]).get("block_height_m"),
+            **press[side],
+            "heatmap": heat(mapped[(mapped.role == "player") & (mapped.team == side)]),
         }
-        res[side]["heatmap"] = heat(mapped[(mapped.role == "player") & (mapped.team == side)])
     return res
 
 
@@ -352,6 +506,10 @@ def build(csv_path: Path, match: dict[str, Any], meta: dict[str, Any], home_dir:
             "near_ball_m": NEAR_BALL_M, "min_outfield_players_for_shape": MIN_OUTFIELD,
             "possession": {"holder_m": HOLDER_M, "confirm_samples": CONFIRM_SAMPLES,
                            "loose_reset_s": LOOSE_RESET_S, "basis": "time, wide-camera samples"},
+            "pressing": {"own_third_m": 35.0, "holder_m": HOLDER_M, "press_distance_m": 5.0,
+                         "definition": "opponent-owned wide samples in the opponent's own third "
+                                       "with an outfield presser within 5 m of the current holder",
+                         "caveat": "Tracking proxy; not event-data PPDA."},
             "caveat": "Broadcast-tracking proxies. Only wide-camera frames are used for positions; "
                       "replays/close-ups are excluded. Compare halves and matches, not with official stats.",
         },
@@ -388,6 +546,7 @@ def markdown(rep: dict[str, Any]) -> str:
             return "—" if x is None else (f"{x:.0%}" if unit == "%" else f"{x} {unit}".strip())
         for label, k, u in [("Possession (time share)", "possession_share", "%"),
                             ("Ball-proximity share (diagnostic)", "ball_proximity_share", "%"),
+                            ("Press share (opponent own third)", "press_share", "%"),
                             ("Block height (median, from own goal)", "block_height_m", "m"),
                             ("  in possession", "block_height_in_possession_m", "m"),
                             ("  out of possession", "block_height_out_of_possession_m", "m"),

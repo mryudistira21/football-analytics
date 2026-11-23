@@ -57,3 +57,31 @@ def test_wrong_direction_shows_up_as_implausible_shape(tmp_path):
     _synthetic(p, home_right_1h=True)
     rep = build(p, {"match_id": "t", "home": "H", "away": "A", "home_dir_1h": "L"}, {"fps": 30, "frame_stride": 3})
     assert rep["periods"]["1"]["home"]["block_height_m"] < 50  # flipped: home now looks deep
+
+
+def test_press_share_uses_opponent_possession_in_own_third_and_five_metre_holder_pressure():
+    import pandas as pd
+    from scripts.team_report import pressing_stats
+
+    rows = []
+    for frame, presser_x in ((1, 94.0), (2, 101.0), (3, None)):
+        rows.append({"frame": frame, "role": "ball", "team": "unknown",
+                     "x": 90.0, "y": 34.0, "tx": 90.0, "camera_state": "wide"})
+        rows.append({"frame": frame, "role": "player", "team": "away",
+                     "x": 90.5, "y": 34.0, "tx": 90.5, "camera_state": "wide"})
+        if presser_x is not None:
+            rows.append({"frame": frame, "role": "player", "team": "home",
+                         "x": presser_x, "y": 34.0, "tx": presser_x, "camera_state": "wide"})
+    df = pd.DataFrame(rows)
+    poss = pd.DataFrame({
+        "frame": [1, 2, 3],
+        "near": ["away", "away", "away"],
+        "holder": ["away", "away", "away"],
+        "owner": ["away", "away", "away"],
+    })
+
+    result = pressing_stats(df, poss)
+    assert result["home"]["press_eligible_samples"] == 3
+    assert result["home"]["pressing_samples"] == 1
+    assert result["home"]["press_share"] == 1 / 3
+    assert result["away"]["press_share"] is None

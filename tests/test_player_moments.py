@@ -268,3 +268,65 @@ def test_calibration_read_from_run_match_chunks_metadata():
     old = {"segments": [{"details": {"calibration_median_error_m": 0.4, "source_start_seconds": 0.0,
                                       "source_end_seconds": 60.0, "fps": 30.0, "frame_stride": 3}}]}
     assert calibration_error_for_window(old, 10.0, 20.0) == 0.4
+
+
+def test_defensive_moments_select_two_nearest_outfield_defenders_and_keep_cutlist_contract(tmp_path):
+    tracking_csv = tmp_path / "defensive.csv"
+    fields = [
+        "match_id", "frame", "video_seconds", "period", "track_id",
+        "role", "team", "x", "y", "confidence", "camera_state",
+    ]
+    with tracking_csv.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        for i in range(40):
+            frame = i * 3
+            seconds = 10.0 + i * 0.1
+            rows = [
+                (0, "ball", "unknown", 30.0, 34.0, 0.9),
+                (20, "player", "away", 30.5, 34.0, 0.9),
+                (10, "player", "home", 33.0, 34.0, 0.9),
+                (11, "player", "home", 34.0, 34.0, 0.9),
+                (12, "player", "home", 38.0, 34.0, 0.9),
+            ]
+            for track_id, role, team, x, y, confidence in rows:
+                writer.writerow({
+                    "match_id": "defensive-demo", "frame": frame,
+                    "video_seconds": seconds, "period": 1, "track_id": track_id,
+                    "role": role, "team": team, "x": x, "y": y,
+                    "confidence": confidence, "camera_state": "wide",
+                })
+
+    metadata = {
+        "match_id": "defensive-demo",
+        "fps": 30.0,
+        "frame_stride": 3,
+        "calibration_median_error_m": 0.5,
+        "home_attacks_right_by_period": {"1": True, "2": False},
+    }
+    output_dir = tmp_path / "moments"
+    result = write_moment_cut_lists(tracking_csv, output_dir, metadata, ball_distance_m=0.4)
+
+    assert result["defensive_observation_count"] == 80
+    assert result["moment_count"] == 2
+    cutlist = output_dir / "track_11_moments.csv"
+    with cutlist.open("r", newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        assert reader.fieldnames == CUTLIST_FIELDS
+        rows = list(reader)
+    assert len(rows) == 1
+    assert rows[0]["events"] == "defensive_nearest_2"
+    assert rows[0]["label"] == "ok"
+
+
+def test_defensive_moments_are_skipped_without_resolved_direction(tmp_path):
+    tracking_csv = tmp_path / "no-direction.csv"
+    write_tracking_csv(tracking_csv)
+    metadata = {
+        "match_id": "match-demo",
+        "fps": 30.0,
+        "frame_stride": 3,
+        "calibration_median_error_m": 0.5,
+    }
+    result = write_moment_cut_lists(tracking_csv, tmp_path / "moments", metadata)
+    assert result["defensive_observation_count"] == 0

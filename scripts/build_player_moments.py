@@ -17,6 +17,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Iterable
 
+import pandas as pd
+
 CUTLIST_FIELDS = [
     "moment", "start_s", "end_s", "duration_s",
     "start_clock", "events", "label",
@@ -375,6 +377,7 @@ def _candidate_observations(
                 "confidence": finite_float(row.get("confidence")),
                 "ball_time_delta_s": time_delta,
                 "ball_distance_m": distance,
+                "events": "near_ball",
             })
     return candidates
 
@@ -464,6 +467,91 @@ def _collect_quality_for_windows(
             }
 
 
+def defensive_candidate_observations(
+    tracking_csv: Path,
+    metadata: dict[str, Any] | None,
+) -> dict[int, list[dict[str, Any]]]:
+    """Find the two nearest outfield defenders while the opponent holds the ball in their own third.
+
+    Direction is read from the resolved combined-run metadata. If direction is
+    unavailable for a period, defensive moments for that period are skipped rather
+    than guessed. The possession owner/holder timeline is shared with team_report.
+    """
+    directions = (metadata or {}).get("home_attacks_right_by_period") or {}
+    if not isinstance(directions, dict) or not directions:
+        return {}
+
+    required = [
+        "frame", "video_seconds", "period", "track_id", "role", "team", "x", "y", "camera_state"
+    ]
+    frame_df = pd.read_csv(
+        tracking_csv,
+        usecols=required,
+        dtype={"x": "float32", "y": "float32", "period": "int8"},
+    )
+    for col in ("role", "team", "camera_state"):
+        frame_df[col] = frame_df[col].astype(str)
+
+    try:
+        from team_report import possession_frames
+    except ImportError:  # imported as scripts.build_player_moments in tests
+        from scripts.team_report import possession_frames
+
+    possession = possession_frames(frame_df)
+    possession_by_frame = possession.set_index("frame")
+    players = frame_df[
+        (frame_df.camera_state == "wide")
+        & (frame_df.role == "player")
+        & frame_df.team.isin(["home", "away"])
+    ].dropna(subset=["x", "y"])
+    players_by_frame = {
+        int(frame): group
+        for frame, group in players.groupby("frame", sort=False)
+    }
+    balls = frame_df[
+        (frame_df.camera_state == "wide") & (frame_df.role == "ball")
+    ].dropna(subset=["x", "y", "video_seconds", "period"])
+
+    result: dict[int, list[dict[str, Any]]] = defaultdict(list)
+    for ball in balls.itertuples(index=False):
+        frame = int(ball.frame)
+        state = possession_by_frame.loc[frame] if frame in possession_by_frame.index else None
+        if state is None or state.owner not in ("home", "away") or state.holder != state.owner:
+            continue
+        owner = str(state.owner)
+        defending_team = "away" if owner == "home" else "home"
+        home_right = directions.get(str(int(ball.period)))
+        if not isinstance(home_right, bool):
+            continue
+        defending_attacks_right = home_right if defending_team == "home" else not home_right
+        ball_team_x = float(ball.x) if defending_attacks_right else 105.0 - float(ball.x)
+        if ball_team_x > 35.0:
+            continue
+
+        frame_players = players_by_frame.get(frame)
+        if frame_players is None or frame_players.empty:
+            continue
+        ranked = []
+        for player in frame_players.itertuples(index=False):
+            if player.team != defending_team:
+                continue
+            distance = math.hypot(float(player.x) - float(ball.x), float(player.y) - float(ball.y))
+            ranked.append((distance, int(float(player.track_id)) if hasattr(player, "track_id") else None))
+        ranked = [(distance, tid) for distance, tid in ranked if tid is not None]
+        ranked.sort(key=lambda item: item[0])
+        for distance, track_id in ranked[:2]:
+            result[track_id].append({
+                "video_seconds": float(ball.video_seconds),
+                "frame": frame,
+                "team": defending_team,
+                "confidence": None,
+                "ball_time_delta_s": 0.0,
+                "ball_distance_m": distance,
+                "events": "defensive_nearest_2",
+            })
+    return result
+
+
 def write_moment_cut_lists(
     tracking_csv: Path,
     output_dir: Path,
@@ -510,6 +598,9 @@ def write_moment_cut_lists(
     candidates = _candidate_observations(
         tracking_csv, ball_by_frame, ball_by_time, sample_interval, ball_distance_m
     )
+    defensive = defensive_candidate_observations(tracking_csv, metadata)
+    for track_id, observations in defensive.items():
+        candidates.setdefault(track_id, []).extend(observations)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest_path = output_dir / f"{tracking_csv.stem}_moments.manifest.json"
@@ -533,6 +624,12 @@ def write_moment_cut_lists(
         windows = merge_candidate_observations(
             candidates[track_id], merge_gap_seconds, sample_interval
         )
+        for window in windows:
+            event_types = sorted({
+                str(observation.get("events") or "near_ball")
+                for observation in window["candidate_observations"]
+            })
+            window["events"] = "+".join(event_types)
         accepted = [
             window for window in windows
             if window["end_s"] - window["start_s"] >= min_duration_seconds
@@ -577,13 +674,14 @@ def write_moment_cut_lists(
                     "end_s": round(end_s, 3),
                     "duration_s": round(duration, 3),
                     "start_clock": format_video_clock(start_s),
-                    "events": "near_ball",
+                    "events": window.get("events", "near_ball"),
                     "label": label,
                 })
                 moment_diagnostics.append({
                     "moment": moment_id,
                     "track_id": track_id,
                     "team": quality["team"],
+                    "events": window.get("events", "near_ball"),
                     "start_s": round(start_s, 3),
                     "end_s": round(end_s, 3),
                     "calibration_error_m": calibration_error,
@@ -615,7 +713,15 @@ def write_moment_cut_lists(
             "min_duration_seconds": min_duration_seconds,
             "sampling_interval_seconds": round(sample_interval, 6),
             "ball_match_max_time_delta_seconds": round(sample_interval, 6),
+            "defensive": {
+                "enabled": bool((metadata or {}).get("home_attacks_right_by_period")),
+                "definition": "two nearest outfield defenders to the ball while the opponent is the current "
+                              "possession holder and the ball is in the defending team's own third",
+                "nearest_defenders": 2,
+                "own_third_m": 35.0,
+            },
         },
+        "defensive_observation_count": sum(len(v) for v in defensive.values()),
         "confidence_policy": {
             "ok": (
                 "calibration <= 1.0 m, wide share >= 0.90, unknown-team share <= 0.25, "
