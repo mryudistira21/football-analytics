@@ -1,4 +1,4 @@
-# Collaboration status — 23 November 2026 (evening)
+# Collaboration status — 23 November 2026 (ChatGPT implementation PR)
 
 Paste this into ChatGPT to bring it up to date.
 
@@ -41,10 +41,15 @@ Next PERSIBA opponent: **Persinga Ngawi (away, 26 Nov)**.
 ## Tasks for you (ChatGPT), in priority order
 1. **Shirt-number OCR, real-match check.** Rizki runs the next Kaggle batch with `READ_NUMBERS = True` (PERSIBA's matches 1–2: `persiba_gresik_20261113`, `persipa_persiba_20261117`). From the bundles / `football.db`: coverage (`v_track_numbers`: share of tracks with a number, share of candidate `track_id`s with `track_player`), confidence distribution, and plausibility (numbers outside each squad list in the Hub = wrong reads; the same number on both teams at once = suspicious). If coverage < ~20 % or many impossible numbers: tune `NumberReader` (crop band, `min_box_px`, `min_conf`, reads per track) or propose a jersey-number model (e.g. a small fine-tuned classifier on the back crop). Keep the `<id>_track_map.csv` contract (§6e). Deliver: a short note in `collab/` + a PR.
 2. **Throughput A/B on one chunk** (still open): same 10-min chunk with defaults vs `--pitch-every 2` vs `--imgsz 800`. Compare minutes, `calibration_median_error_m`, rows, ball rows, and the team report numbers for that chunk. Recommend a default for T4 and for Rizki's laptop (`light` profile, 8 GB RAM).
-3. **Pressing proxy + defensive moments**, built on the new possession timeline (`team_report.possession_frames` → `owner`, `holder`): (a) `team_report`: per team `press_share` = share of opponent-owned wide time in the opponent's own third with ≥ 1 of our outfield players within 5 m of the ball holder; `ppda_proxy` if you can define it cleanly from candidates. New keys only. (b) `build_player_moments.py`: defensive moments (opponent owns the ball in our own third; nearest 2 defenders), same 7-column cut-list, `label ok/review`.
+3. **Pressing proxy + defensive moments — implemented in PR #3 (CI green; awaiting review).** Adds `press_share` and sample-count diagnostics to `trackb_team_report_v1`; adds `defensive_nearest_2` per-track moments using resolved direction metadata and the existing seven-column cut-list. No schema changes. `ppda_proxy` is deferred until a hand-tagged evaluation window validates candidate pass / defensive-action counts; do not label raw candidate counts as PPDA.
 4. **Candidate tuning — after** Rizki has one hand-tagged window and `evaluate_candidates.py` output. Use it to tune `HOLD_M`, `PASS_MIN_M`, `LOOSE_*`, `FLICKER_*` and the priority-3 rules. Report before/after recall/precision; never tune without that file.
-5. **Second pair of eyes** on `infer_direction` / `resolve_direction.py`: edge cases (period start in the config earlier than the real kick-off → the 10 s kick-off window misses; a match with very little possession shift). Suggest extra votes if you see a cheap robust one (e.g. after-goal restarts).
+5. **Direction edge case — fallback implemented in PR #3 (CI green; awaiting review).** If the first 10 seconds do not give a valid kick-off-position vote, `infer_direction` scans up to the first 10 minutes for a clear centre-ball restart (kick-off / after-goal restart) with both teams in opposite halves. At most one strongest restart vote is contributed per period. If neither restart evidence nor possession shift is strong, direction remains unknown.
 
 ## Tasks for Claude (in progress / next)
 - Rebuild PERSIBA–Persika and Persika–Persinga outputs with today's code (done in the sandbox; Rizki received the new reports, candidates and DB).
 - Process the next Kaggle bundles as they arrive; scouting summary for Persinga before 26 Nov.
+
+
+## ChatGPT implementation note
+- See `collab/chatgpt-task-update-2026-11-23.md` for definitions, test scope, limitations, and remaining data requests.
+- Shirt-number OCR and throughput A/B remain dependent on the next READ_NUMBERS Kaggle bundles and same-chunk variant runs; candidate tuning remains blocked until a hand-tagged evaluation window is available.

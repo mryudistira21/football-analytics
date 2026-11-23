@@ -139,3 +139,44 @@ def test_resolve_direction_script_rewrites_csv(tmp_path):
     out = subprocess.run([sys.executable, str(REPO / "scripts" / "resolve_direction.py"), "--input", str(csv_path),
                           "--config", str(cfg), "--match", "m"], capture_output=True, text=True, check=True)
     assert out.stdout.strip().splitlines()[-1] == "R" and "WARNING" in out.stderr
+
+
+def _delayed_restart_match(home_right_1h=True):
+    """The configured period begins in pre-roll; centre restarts occur 30 s later."""
+    rows = []
+    for period in (1, 2):
+        hr = home_right_1h if period == 1 else not home_right_1h
+        t0 = 1000.0 * period
+        # Pre-roll: both teams are visible, but clustered around halfway and no ball is tracked.
+        for i in range(200):
+            t = t0 + i * 0.1
+            f = period * 100000 + i * 3
+            for k in range(8):
+                for side in ("home", "away"):
+                    rows.append(dict(frame=f, video_seconds=t, period=period,
+                                     track_id=k + (50 if side == "away" else 0),
+                                     role="player", team=side, x=50 + (k - 3.5) * 0.3,
+                                     y=10 + 6 * k, camera_state="wide"))
+        # A centre restart: the ball is at centre while both teams take their own halves.
+        for j in range(40):
+            t = t0 + 30.0 + j * 0.1
+            f = period * 100000 + (200 + j) * 3
+            for k in range(8):
+                for side in ("home", "away"):
+                    stands_left = (side == "home" and hr) or (side == "away" and not hr)
+                    x = (25.0 + k * 0.4) if stands_left else (80.0 - k * 0.4)
+                    rows.append(dict(frame=f, video_seconds=t, period=period,
+                                     track_id=k + (50 if side == "away" else 0),
+                                     role="player", team=side, x=x,
+                                     y=10 + 6 * k, camera_state="wide"))
+            rows.append(dict(frame=f, video_seconds=t, period=period, track_id=0,
+                             role="ball", team="unknown", x=52.5, y=34.0,
+                             camera_state="wide"))
+    return pd.DataFrame(rows)
+
+
+def test_direction_falls_back_to_delayed_centre_restarts_when_opening_window_is_preroll():
+    res = infer_direction(_delayed_restart_match(True))
+    assert res["home_dir_1h"] == "R", res
+    assert res["confidence"] == "high"
+    assert [v["signal"] for v in res["votes"]] == ["center_restart", "center_restart"]
