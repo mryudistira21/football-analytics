@@ -1313,7 +1313,7 @@ function parseCandidates(text){
   const num=v=>v===""||v==null?null:(Number.isFinite(+v)?+v:null);
   return rows.map(r=>{const g=n=>ix(n)<0?"":String(r[ix(n)]??"").trim();
     return{id:g("cand_id"),period:+g("period")||1,t:+g("t"),te:num(g("t_end")),side:g("side")==="away"?"away":"home",type:RV_TYPES.includes(g("type"))?g("type"):"pass",
-      out:g("outcome"),tr:g("track_id"),to:g("track_to"),x:num(g("x")),y:num(g("y")),ex:num(g("ex")),ey:num(g("ey")),conf:g("confidence")||"review",why:g("reason"),st:"p",ev:null}})
+      out:g("outcome"),tr:g("track_id"),to:g("track_to"),x:num(g("x")),y:num(g("y")),ex:num(g("ex")),ey:num(g("ey")),conf:g("confidence")||"review",why:g("reason"),tp:g("track_player"),tpto:g("track_to_player"),st:"p",ev:null}})
     .filter(c=>c.id&&Number.isFinite(c.t)&&c.x!=null&&c.y!=null);
 }
 function importCandidates(file){
@@ -1355,8 +1355,8 @@ function renderReview(){
   const l=rvList(),c=rvCur();
   if(!c)return imp+prog+filt+emptyMsg(f.st==="p"?"Nothing pending with these filters — all reviewed.":"No candidates match these filters.");
   const team=c.side==="away"?1:0,tm=rvTmap(),mp=tm[c.tr],mr=c.to?tm[c.to]:null;
-  const pPre=c.ev?(S.events.find(e=>e.id===c.ev)?.p||""):(mp&&mp.team===team?mp.p:"");
-  const rPre=c.ev?(S.events.find(e=>e.id===c.ev)?.rcv||""):(mr&&mr.team===team?mr.p:"");
+  const pPre=c.ev?(S.events.find(e=>e.id===c.ev)?.p||""):(mp&&mp.team===team?mp.p:(c.tp||""));
+  const rPre=c.ev?(S.events.find(e=>e.id===c.ev)?.rcv||""):(mr&&mr.team===team?mr.p:(c.tpto||""));
   const ev=c.ev?S.events.find(e=>e.id===c.ev):null;
   const type=ev?ev.type:c.type,out=ev?ev.out:(c.out||OUTS[c.type][0]);
   const card=`<div class="card" style="border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:10px">
@@ -1370,7 +1370,7 @@ function renderReview(){
         <label class="label">Team<select id="rvTeam">${opt("0",esc(teamName(0)),String(team))}${opt("1",esc(teamName(1)),String(team))}</select></label>
         <label class="label">Event<select id="rvType">${RV_TYPES.map(t=>opt(t,TYPES[t],type)).join("")}</select></label>
         <label class="label">Outcome<select id="rvOut">${OUTS[type].map(o=>opt(o,labelOut(o),out)).join("")}</select></label>
-        <label class="label">Player # <span class="muted" style="font-size:11px">track ${esc(c.tr||"?")}${mp?` = #${esc(mp.p)} (map)`:""}</span><input type="text" id="rvP" class="mono" inputmode="numeric" value="${esc(pPre)}" autocomplete="off"></label>
+        <label class="label">Player # <span class="muted" style="font-size:11px">track ${esc(c.tr||"?")}${mp?` = #${esc(mp.p)} (map)`:(c.tp?` · OCR suggests #${esc(c.tp)}`:"")}</span><input type="text" id="rvP" class="mono" inputmode="numeric" value="${esc(pPre)}" autocomplete="off"></label>
         <label class="label" id="rvRWrap" ${["pass","cross"].includes(type)?"":"hidden"}>Receiver # <span class="muted" style="font-size:11px">${c.to?`track ${esc(c.to)}${mr?` = #${esc(mr.p)} (map)`:""}`:""}</span><input type="text" id="rvR" class="mono" inputmode="numeric" value="${esc(rPre)}" autocomplete="off"></label>
       </div></div>
     <div class="row" style="margin-top:10px;gap:6px;flex-wrap:wrap">

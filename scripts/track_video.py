@@ -407,6 +407,94 @@ def apply_cpu_limits(threads: int, cores: int, priority: str) -> dict[str, Any]:
     return applied
 
 
+class NumberReader:
+    """Optional shirt-number OCR. Reads a digit a few times per track and votes.
+
+    Heavily throttled: each track is read at most `max_reads` times, at least
+    `interval` seconds apart, and only when its box is at least `min_box_px` tall,
+    so total OCR calls stay near (tracks x max_reads), not (frames x players).
+    """
+
+    def __init__(self, device: str, max_reads: int = 6, interval: float = 1.0,
+                 min_box_px: int = 55, min_conf: float = 0.4):
+        self.max_reads, self.interval = max_reads, interval
+        self.min_box_px, self.min_conf = min_box_px, min_conf
+        self.votes: dict[int, Counter[str]] = defaultdict(Counter)
+        self.count: dict[int, int] = defaultdict(int)
+        self.last_t: dict[int, float] = {}
+        self._reader = None
+        self._device = device
+        self.attempts = 0
+        self.reads = 0
+
+    def _load(self):
+        if self._reader is None:
+            import easyocr  # heavy; imported only when numbers are requested
+            self._reader = easyocr.Reader(["en"], gpu=self._device.startswith("cuda"), verbose=False)
+        return self._reader
+
+    @staticmethod
+    def back_crop(frame: np.ndarray, box: Any) -> np.ndarray | None:
+        x1, y1, x2, y2 = np.asarray(box, dtype=int)
+        h, w = y2 - y1, x2 - x1
+        if h < 10 or w < 6:
+            return None
+        # Upper back, where a shirt number sits: top 20-55% of the box, central 64% width.
+        cy1, cy2 = y1 + int(0.20 * h), y1 + int(0.55 * h)
+        mx = int(0.18 * w)
+        cx1, cx2 = x1 + mx, x2 - mx
+        fh, fw = frame.shape[:2]
+        cx1, cy1 = max(0, cx1), max(0, cy1)
+        cx2, cy2 = min(fw, cx2), min(fh, cy2)
+        if cx2 - cx1 < 6 or cy2 - cy1 < 8:
+            return None
+        crop = frame[cy1:cy2, cx1:cx2]
+        scale = max(1.0, 70.0 / max(1, crop.shape[0]))  # upscale small crops toward ~70 px tall
+        if scale > 1.0:
+            crop = cv2.resize(crop, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+        return crop
+
+    def maybe_read(self, tid: int, frame: np.ndarray, box: Any, t: float) -> None:
+        if self.count[tid] >= self.max_reads:
+            return
+        if tid in self.last_t and t - self.last_t[tid] < self.interval:
+            return
+        x1, y1, x2, y2 = np.asarray(box, dtype=int)
+        if y2 - y1 < self.min_box_px:
+            return
+        crop = self.back_crop(frame, box)
+        if crop is None:
+            return
+        self.last_t[tid] = t
+        self.count[tid] += 1
+        self.attempts += 1
+        try:
+            found = self._load().readtext(crop, allowlist="0123456789", detail=1,
+                                          text_threshold=0.5, low_text=0.3)
+        except Exception:
+            return
+        best, best_c = None, 0.0
+        for _, text, conf in found:
+            text = "".join(ch for ch in str(text) if ch.isdigit())
+            if 1 <= len(text) <= 2 and conf >= self.min_conf and conf > best_c:
+                best, best_c = text.lstrip("0") or text, float(conf)
+        if best is not None:
+            self.votes[tid][best] += 1
+            self.reads += 1
+
+    def rows(self, team_of) -> list[dict[str, Any]]:
+        out = []
+        for tid, c in self.votes.items():
+            if not c:
+                continue
+            number, n = c.most_common(1)[0]
+            total = sum(c.values())
+            out.append({"track_id": tid, "team": team_of(tid), "number": number,
+                        "votes": n, "reads": total, "confidence": round(n / total, 3),
+                        "attempts": self.count[tid]})
+        return out
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Track football players and ball on broadcast video.")
     parser.add_argument("--input", type=Path, required=True)
@@ -455,6 +543,12 @@ def main() -> int:
     parser.add_argument("--annotated-output", type=Path)
     parser.add_argument("--annotated-max-seconds", type=float, default=180)
     parser.add_argument("--overwrite", action="store_true")
+    nums = parser.add_argument_group("shirt numbers (optional OCR)")
+    nums.add_argument("--read-numbers", action="store_true",
+                      help="read shirt numbers with OCR and write <output>.numbers.csv (needs easyocr; adds time)")
+    nums.add_argument("--numbers-max-reads", type=int, default=6)
+    nums.add_argument("--numbers-interval", type=float, default=1.0)
+    nums.add_argument("--numbers-min-box-px", type=int, default=55)
     limits = parser.add_argument_group("resource limits (keep the PC usable)")
     limits.add_argument("--cpu-threads", type=int, default=0, help="max CPU threads (0 = default)")
     limits.add_argument("--cpu-cores", type=int, default=0, help="use only the first N logical CPUs (0 = all)")
@@ -573,6 +667,7 @@ def main() -> int:
         "batch": batch_size,
         "resource_limits": applied_limits,
         "pitch_every": args.pitch_every,
+        "read_numbers": bool(args.read_numbers),
         "imgsz": args.imgsz,
         "pitch_imgsz": args.pitch_imgsz,
         "period": args.period,
@@ -605,6 +700,9 @@ def main() -> int:
 
     try:
         team_classifier = None
+        number_reader = NumberReader(
+            device, args.numbers_max_reads, args.numbers_interval, args.numbers_min_box_px
+        ) if args.read_numbers else None
         votes: dict[int, Counter[str]] = defaultdict(Counter)
         team_embeddings: dict[int, np.ndarray] = {}
         last_embedding_refresh: dict[int, int] = {}
@@ -835,6 +933,9 @@ def main() -> int:
                         else "player"
                     )
                     team = team_of(int(tid)) if role != "referee" else "unknown"
+                    if number_reader is not None and role == "player":
+                        number_reader.maybe_read(int(tid) + args.track_id_offset,
+                                                 frame, tracked.xyxy[i], timestamp)
                     x, y = positions[i]
                     rows.append({
                         "match_id": args.match_id, "frame": frame_index,
@@ -1027,6 +1128,19 @@ def main() -> int:
                 if len(v) == 0 or (len(v.most_common()) > 1 and v.most_common()[0][1] == v.most_common()[1][1])
             ),
         })
+        if number_reader is not None:
+            num_rows = number_reader.rows(team_of)
+            num_path = output.with_suffix(".numbers.csv")
+            with num_path.open("w", newline="", encoding="utf-8") as nf:
+                nw = csv.DictWriter(nf, fieldnames=["track_id", "team", "number", "votes",
+                                                    "reads", "confidence", "attempts"])
+                nw.writeheader()
+                nw.writerows(num_rows)
+            metadata["numbers_file"] = str(num_path)
+            metadata["numbers_tracks_read"] = len(num_rows)
+            metadata["numbers_ocr_attempts"] = number_reader.attempts
+            print(f"Shirt numbers: {len(num_rows)} tracks got a number "
+                  f"from {number_reader.attempts:,} OCR attempts -> {num_path}")
         write_meta()
         print(f"\nTracking output written ({completion_status}): {output}")
         print(f"Metadata: {meta_path}")

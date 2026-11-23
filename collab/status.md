@@ -5,7 +5,7 @@ Paste this into ChatGPT to bring it up to date.
 ## Repo state
 - **`main` is the only branch that matters.** It contains all of Track A and all of Track B.
 - **PR #1 (Track B v1) is closed as superseded:** every Track B file on `track-b/automatic-tracking-v1` is byte-identical to `main` except `src/heatmap_from_positions.py`, whose extra feature (directions read from `<csv>.meta.json`) is now ported. **PR #2 is merged.** Please base new work on `main` and open PRs against `main`.
-- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (49 tests).
+- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (52 tests).
 
 ## How Track B runs now (production)
 - `scripts/run_match.py` + `matches/persiba_2026-27.json` + `notebooks/match_colab.ipynb`; runbook `MATCH_WORKFLOW.md`.
@@ -44,4 +44,4 @@ Next PERSIBA opponent: **Persinga Ngawi (away, 26 Nov)**.
 3. **Candidate quality:** after the first real review, compare `candidates.review_status` per `type`/`confidence` in `football.db` (`v_review_progress`) and tune `build_event_candidates.py` thresholds (HOLD_M, PASS_MIN_M, LOOSE_*). Better ball detection = more candidates.
 4. **Defensive moments** in `build_player_moments.py` (ball in a team's own third, nearest 2 defenders), same 7-column cut-list, label `ok/review`.
 5. **Pressing proxy for `team_report.py`:** share of opponent ball-near samples in the opponent's own third where a player of this team is within 5 m. Add as new keys; don't rename existing ones.
-6. Later: shirt-number OCR (would pre-fill the Tagger's track map) → `track_map.csv`.
+6. **Shirt-number OCR is in** (`--read-numbers`, easyocr) → `<id>_track_map.csv`, pre-fills the Tagger review and the DB `track_map` (source=ocr). Contract §6e. **Needs a real-match accuracy check**: run one match with numbers on, then look at `v_track_numbers` (coverage, confidence) and the "OCR suggests" hits in review. Tune crop region / `--numbers-*` / consider a jersey-number model if easyocr coverage is low. → `track_map.csv`.

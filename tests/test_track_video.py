@@ -203,3 +203,34 @@ def test_team_cluster_state_round_trip_is_independent_of_home_away_mapping(tmp_p
     reducer_again, model_again = load_team_cluster_state(path)
     assert reducer_again == reducer
     assert model_again == cluster_model
+
+
+def test_number_reader_votes_and_crop():
+    from scripts.track_video import NumberReader
+    import numpy as np
+    nr = NumberReader(device="cpu")
+    nr.votes[100].update(["7", "7", "7", "9"])   # track 100: mostly 7
+    nr.votes[205].update(["10"])
+    nr.count[100] = 5
+    nr.count[205] = 3
+    rows = {r["track_id"]: r for r in nr.rows(lambda t: "home" if t == 100 else "away")}
+    assert rows[100]["number"] == "7" and rows[100]["votes"] == 3 and rows[100]["confidence"] == 0.75
+    assert rows[100]["team"] == "home" and rows[205]["team"] == "away"
+    # back crop takes the upper-middle of the box and never exceeds the frame
+    frame = np.zeros((200, 200, 3), dtype=np.uint8)
+    crop = NumberReader.back_crop(frame, [50, 40, 90, 140])  # 40x100 box
+    assert crop is not None and crop.shape[0] > 0 and crop.shape[1] > 0
+    assert NumberReader.back_crop(frame, [50, 40, 53, 45]) is None   # too small
+
+
+def test_number_reader_throttles_reads():
+    from scripts.track_video import NumberReader
+    import numpy as np
+    nr = NumberReader(device="cpu", max_reads=2, interval=1.0, min_box_px=30)
+    frame = np.zeros((300, 300, 3), dtype=np.uint8)
+    box = [100, 50, 150, 160]   # 110 px tall
+    # patch the OCR so no network/model is needed
+    nr._reader = type("R", (), {"readtext": staticmethod(lambda *a, **k: [])})()
+    for t in (0.0, 0.2, 1.5, 3.0, 4.5):
+        nr.maybe_read(1, frame, box, t)
+    assert nr.count[1] == 2   # capped at max_reads despite 5 calls over time

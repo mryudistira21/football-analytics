@@ -39,3 +39,38 @@ def test_pass_then_turnover_in_team_frame():
 def test_no_candidates_without_a_ball():
     df = _rows([(float("nan"), float("nan"), [(1, "home", 30.0, 34.0)])] * 5).dropna(subset=["x"])
     assert build(df, {1: True, 2: False}) == []
+
+
+def test_candidates_pick_up_track_map_numbers(tmp_path):
+    import csv as _csv
+    import json
+    import subprocess
+    import sys
+    from pathlib import Path
+    repo = Path(__file__).resolve().parents[1]
+    # tracking: one home pass from track 5 to track 6
+    tracking = tmp_path / "m_tracking.csv"
+    with tracking.open("w", newline="") as fh:
+        w = _csv.writer(fh)
+        w.writerow(["match_id", "frame", "video_seconds", "period", "track_id", "role", "team",
+                    "x", "y", "camera_state"])
+        seq = [(30, 34, [(5, "home", 30, 34), (6, "home", 50, 30), (9, "away", 70, 34)])] * 5 \
+            + [(50, 30, [(5, "home", 31, 34), (6, "home", 50, 30), (9, "away", 70, 34)])] * 5
+        for f, (bx, by, hs) in enumerate(seq):
+            w.writerow(["m", f * 3, f * 0.1, 1, 0, "ball", "unknown", bx, by, "wide"])
+            for tid, side, x, y in hs:
+                w.writerow(["m", f * 3, f * 0.1, 1, tid, "player", side, x, y, "wide"])
+    tmap = tmp_path / "m_track_map.csv"
+    tmap.write_text("track_id,team,number,votes,reads,confidence,attempts\n"
+                    "5,home,10,4,5,0.8,5\n6,home,8,1,3,0.33,3\n", encoding="utf-8")
+    cfg = tmp_path / "cfg.json"
+    cfg.write_text(json.dumps({"matches": [{"match_id": "m", "home": "H", "away": "A", "home_dir_1h": "R"}]}))
+    out = tmp_path / "m_candidates.csv"
+    r = subprocess.run([sys.executable, str(repo / "scripts" / "build_event_candidates.py"),
+                        "--input", str(tracking), "--config", str(cfg), "--match", "m", "--output", str(out)],
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    rows = list(_csv.DictReader(out.open()))
+    p = next(r for r in rows if r["type"] == "pass")
+    assert p["track_player"] == "10"        # track 5, confident -> suggested
+    assert p["track_to_player"] == ""        # track 6 below the confidence/vote floor -> no suggestion

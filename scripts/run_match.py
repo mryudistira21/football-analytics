@@ -363,6 +363,7 @@ def chunk_done(csv_path: Path, c: dict[str, Any], mid: str, settings: dict[str, 
             and m.get("match_id") == mid and int(m.get("period", -1)) == c["period"]
             and int(m.get("frame_stride", -1)) == int(settings["frame_stride"])
             and int(m.get("imgsz", -1)) == int(settings["imgsz"])
+            and bool(m.get("read_numbers", False)) == bool(settings.get("read_numbers"))
             and int(m.get("track_id_offset", -1)) == c["k"] * TRACK_ID_BLOCK
             and abs(float(m.get("requested_start_seconds", -1)) - c["start"]) < 0.01
             and abs(float(m.get("requested_end_seconds", -1)) - c["end"]) < 0.01
@@ -375,7 +376,7 @@ def chunk_done(csv_path: Path, c: dict[str, Any], mid: str, settings: dict[str, 
 
 def tracker_cmd(video: Path, models: Path, cache: Path, mid: str, c: dict[str, Any],
                 settings: dict[str, Any], out_csv: Path, team_state: Path, batch: int,
-                home_dir: str, extra: list[str]) -> list[str]:
+                home_dir: str, extra: list[str], read_numbers: bool = False) -> list[str]:
     return [
         sys.executable, str(TRACKER), "--input", str(video), "--models", str(models),
         "--cache", str(cache), "--match-id", mid, "--period", str(c["period"]),
@@ -393,6 +394,10 @@ def tracker_cmd(video: Path, models: Path, cache: Path, mid: str, c: dict[str, A
         "--team-sample-interval", str(settings.get("team_sample_interval", 15)),
         "--team-sample-max-crops", str(settings.get("team_sample_max_crops", 600)),
         "--team-classify-every", str(settings.get("team_classify_every", 10)),
+        *(["--read-numbers",
+           "--numbers-max-reads", str(settings.get("numbers_max_reads", 6)),
+           "--numbers-interval", str(settings.get("numbers_interval", 1.0)),
+           "--numbers-min-box-px", str(settings.get("numbers_min_box_px", 55))] if read_numbers else []),
         "--output", str(out_csv), "--overwrite", *extra,
     ]
 
@@ -529,7 +534,33 @@ def combine(run: Path, mid: str, chunks: list[dict[str, Any]], swap: bool,
         "note": "video_seconds are seconds in the original master video. Person track IDs are chunk*100000+n and are not shirt numbers.",
     }
     out_csv.with_suffix(".meta.json").write_text(json.dumps(meta, indent=2), encoding="utf-8")
+    combine_numbers(run, mid, chunks, swap, out_csv.with_name(f"{mid}_track_map.csv"))
     return meta
+
+
+def combine_numbers(run: Path, mid: str, chunks: list[dict[str, Any]], swap: bool, out_csv: Path) -> int:
+    """Gather every chunk's shirt-number votes into one track -> number map (one row per track)."""
+    swap_map = {"home": "away", "away": "home"}
+    seen = []
+    for c in chunks:
+        p = run / "chunks" / (chunk_name(mid, c) + ".numbers.csv")
+        if not p.is_file():
+            continue
+        with p.open(newline="", encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                if swap and r.get("team") in swap_map:
+                    r["team"] = swap_map[r["team"]]
+                seen.append(r)
+    if not seen:
+        return 0
+    fields = ["track_id", "team", "number", "votes", "reads", "confidence", "attempts"]
+    seen.sort(key=lambda r: (-float(r.get("confidence") or 0), -int(float(r.get("votes") or 0))))
+    with out_csv.open("w", newline="", encoding="utf-8") as fo:
+        w = csv.DictWriter(fo, fieldnames=fields)
+        w.writeheader()
+        for r in seen:
+            w.writerow({k: r.get(k, "") for k in fields})
+    return len(seen)
 
 
 def bundle(run: Path, mid: str) -> Path:
@@ -539,7 +570,7 @@ def bundle(run: Path, mid: str) -> Path:
             for f in sorted((run / sub).glob("*")) if (run / sub).exists() else []:
                 if f.is_file():
                     zf.write(f, f"{sub}/{f.name}")
-        for name in (f"{mid}_tracking.meta.json", f"{mid}_candidates.csv", f"{mid}_tracking.csv"):
+        for name in (f"{mid}_tracking.meta.json", f"{mid}_candidates.csv", f"{mid}_track_map.csv", f"{mid}_tracking.csv"):
             f = run / name
             if f.exists():   # the tracking CSV compresses ~5x, so the whole match travels in one file
                 zf.write(f, f.name)
@@ -575,6 +606,8 @@ def main() -> int:
     lg.add_argument("--vram-fraction", type=float, help="cap GPU memory share, e.g. 0.5")
     lg.add_argument("--gpu-pause", type=float, help="seconds of GPU rest after each batch")
     lg.add_argument("--max-ram-gb", type=float, help="stop a chunk whose RAM use passes this")
+    ap.add_argument("--read-numbers", action="store_true",
+                    help="read shirt numbers with OCR (needs easyocr) -> <match>_track_map.csv; pre-fills the Tagger review")
     ap.add_argument("--no-teams", action="store_true",
                     help="skip home/away classification (faster; team = unknown everywhere)")
     ap.add_argument("--max-chunks", type=int, help="stop after this many new chunks (budget control)")
@@ -590,6 +623,7 @@ def main() -> int:
                                      "gpu_pause": a.gpu_pause, "max_ram_gb": a.max_ram_gb})
     if a.batch is None and lim["batch"]:
         settings["batch"] = lim["batch"]
+    settings["read_numbers"] = a.read_numbers or bool(settings.get("read_numbers"))
     no_teams = ["--no-team-classification"] if a.no_teams else []
     no_teams += limit_args(lim)  # passed to every tracker run
     mid = match["match_id"]
@@ -651,7 +685,7 @@ def main() -> int:
             out_csv, preview = sm / "smoke.csv", sm / "smoke_preview.mp4"
             cmd = tracker_cmd(video, models, cache, mid, c, settings, out_csv, team_state,
                               int(settings["batch"]), home_dir,
-                              ["--annotated-output", str(preview), "--annotated-max-seconds", str(a.smoke_seconds), *no_teams])
+                              ["--annotated-output", str(preview), "--annotated-max-seconds", str(a.smoke_seconds), *no_teams])  # numbers off for the smoke test
             log("Smoke test (first run also fits the team colours from frames spread over the 1st half) ...")
             t0 = time.time()
             code, tail = run_logged(cmd, run / "logs" / "smoke.log", env, lim["max_ram_gb"])
@@ -690,7 +724,8 @@ def main() -> int:
                     f"{fmt_clock(c['start'])}-{fmt_clock(c['end'])} · batch {batch or 'auto'} · {resources()}")
                 t0 = time.time()
                 code, tail = run_logged(
-                    tracker_cmd(video, models, cache, mid, c, settings, local_csv, team_state, batch, home_dir, no_teams),
+                    tracker_cmd(video, models, cache, mid, c, settings, local_csv, team_state, batch, home_dir,
+                                no_teams, read_numbers=bool(settings.get("read_numbers"))),
                     run / "logs" / (name + ".log"), env, lim["max_ram_gb"])
                 if code == 0:
                     break
@@ -707,6 +742,9 @@ def main() -> int:
                 print(tail)
                 raise SystemExit(f"Chunk {name} failed (exit {code}). Log: {run / 'logs' / (name + '.log')}. "
                                  "Re-run the same command to resume.")
+            numbers_side = local_csv.with_suffix(".numbers.csv")
+            if numbers_side.is_file():
+                copy_if_needed(numbers_side, run / "chunks" / (name + ".numbers.csv"))
             for suffix in (".meta.json", ".csv"):  # csv last: its presence marks the copy as finished
                 copy_if_needed(local_csv.with_suffix(suffix) if suffix != ".csv" else local_csv,
                                run / "chunks" / (name + suffix))

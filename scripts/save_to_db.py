@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS candidates (
   confidence TEXT, reason TEXT, review_status TEXT, event_id TEXT,
   PRIMARY KEY (match_id, cand_id));
 CREATE TABLE IF NOT EXISTS track_map (
-  match_id TEXT, track_id TEXT, side TEXT, player TEXT, PRIMARY KEY (match_id, track_id));
+  match_id TEXT, track_id TEXT, side TEXT, player TEXT, source TEXT, confidence REAL, votes INTEGER,
+  PRIMARY KEY (match_id, track_id, source));
 CREATE TABLE IF NOT EXISTS events (
   match_id TEXT, event_id TEXT, half INTEGER, match_clock TEXT, match_seconds REAL,
   video_seconds REAL, team TEXT, side TEXT, player TEXT, player_name TEXT, event TEXT,
@@ -79,6 +80,8 @@ CREATE VIEW IF NOT EXISTS v_player_events AS
   SELECT e.match_id, m.date, e.side, e.team, e.player, e.player_name, e.event, e.outcome,
          COUNT(*) AS n, ROUND(SUM(COALESCE(e.xg, 0)), 3) AS xg, ROUND(SUM(COALESCE(e.xt_added, 0)), 4) AS xt
   FROM events e LEFT JOIN matches m USING (match_id) GROUP BY 1, 2, 3, 4, 5, 6, 7, 8;
+CREATE VIEW IF NOT EXISTS v_track_numbers AS
+  SELECT match_id, track_id, side, player, confidence, votes FROM track_map WHERE source='ocr' ORDER BY confidence DESC;
 CREATE VIEW IF NOT EXISTS v_team_half AS
   SELECT t.match_id, m.date, m.home, m.away, t.period, t.side, t.metric, t.value
   FROM team_metrics t LEFT JOIN matches m USING (match_id);
@@ -267,11 +270,27 @@ def load_review(src: Sources) -> tuple[dict[str, Any] | None, str | None]:
 def save_track_map(con: sqlite3.Connection, src: Sources, review: dict[str, Any] | None, name: str | None) -> None:
     if not review:
         return
-    con.execute("DELETE FROM track_map WHERE match_id=?", (src.mid,))
-    rows = [(src.mid, str(tid), "home" if v.get("team") == 0 else "away", str(v.get("p", "")))
+    con.execute("DELETE FROM track_map WHERE match_id=? AND source='review'", (src.mid,))
+    rows = [(src.mid, str(tid), "home" if v.get("team") == 0 else "away", str(v.get("p", "")), "review", None, None)
             for tid, v in (review.get("track_map") or {}).items()]
-    con.executemany("INSERT OR REPLACE INTO track_map VALUES (?,?,?,?)", rows)
+    con.executemany("INSERT OR REPLACE INTO track_map VALUES (?,?,?,?,?,?,?)", rows)
     log_ingest(con, src.mid, "track_map", name or "", len(rows))
+
+
+def save_track_numbers(con: sqlite3.Connection, src: Sources) -> None:
+    """The automatic shirt-number OCR map (source='ocr')."""
+    opened = src.open_text(f"{src.mid}_track_map.csv")
+    if not opened:
+        return
+    fh, name = opened
+    con.execute("DELETE FROM track_map WHERE match_id=? AND source='ocr'", (src.mid,))
+    rows = []
+    with fh:
+        for r in csv.DictReader(fh):
+            rows.append((src.mid, str(r["track_id"]), r.get("team"), str(r.get("number", "")), "ocr",
+                         num(r.get("confidence")), num(r.get("votes"))))
+    con.executemany("INSERT OR REPLACE INTO track_map VALUES (?,?,?,?,?,?,?)", rows)
+    log_ingest(con, src.mid, "track_numbers", name, len(rows))
 
 
 def save_events(con: sqlite3.Connection, src: Sources) -> None:
@@ -337,6 +356,7 @@ def main() -> int:
             save_report(con, src)
             save_candidates(con, src, review)
             save_track_map(con, src, review, review_name)
+            save_track_numbers(con, src)
             save_events(con, src)
         saved += 1
     con.close()

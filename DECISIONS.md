@@ -2,6 +2,14 @@
 
 Short log of choices, so neither AI re-opens a settled question. Newest first.
 
+## 2026-11-23 — Shirt-number OCR (optional) → individual players
+- **`track_video.py --read-numbers`** (easyocr): a `NumberReader` reads the upper-back of each player box, heavily throttled (≤ 6 reads/track, ≥ 1 s apart, box ≥ 55 px), digit allowlist, votes per track. Writes `<chunk>.numbers.csv`; off by default (adds GPU time; smoke test never runs it). Chunk metadata records `read_numbers`, so toggling it re-runs chunks.
+- **`run_match` combines** the per-chunk votes into `<match_id>_track_map.csv` (applies `swap_teams`), adds it to the bundle. `build_event_candidates` reads it and fills `track_player`/`track_to_player` on each candidate (confidence ≥ 0.5, votes ≥ 2).
+- **Tagger review pre-fills** the player/receiver number from the candidate when the human track map doesn't already have it ("OCR suggests #7"); the human still confirms, and confirmed numbers are remembered per track as before.
+- **DB:** `track_map` gains `source` (`ocr`/`review`), `confidence`, `votes`; view `v_track_numbers`. OCR and confirmed maps coexist.
+- **Accuracy is unverified** on this footage (720p wide, numbers ~15–25 px). It is a pre-fill to cut typing, not a replacement for review. First real `--read-numbers` run will show coverage; tune `--numbers-*`.
+- Verified here on CPU: voting, throttle, crop geometry, candidate injection, DB ingest. The OCR engine itself only runs on the GPU notebooks.
+
 ## 2026-11-22 (e) — Review pipeline and database
 - **Track B proposes, Track A disposes.** `scripts/build_event_candidates.py` turns possession changes into event candidates (pass/cross, pass-fail + interception, tackle, recovery, clearance, shot) in the Tagger's team frame. Possession = nearest known-team player within 2 m of the ball on wide frames, ≥ 2 samples. On the pilot clip: ~12 candidates/min, ~half the real on-ball actions (ball visible ~53% of wide frames). Candidates contract v1 in DATA_CONTRACT §6b.
 - **Tagger Review tab:** accept (Enter) / reject (X) / skip / back / play clip; team, event, outcome and shirt numbers editable; changing team mirrors the coordinates. Shirt numbers are remembered per track (`match.tmap`) and pre-fill later candidates; bulk-accept of OK passes whose tracks are mapped. Accepted candidates become normal events with `source=trackb`, `cand`, `tr`, `tro`; rejecting an accepted one deletes its event. Candidates persist per match (db chunks of 400 / localStorage). Downloads: `<match_id>_events.csv` (+ source, candidate_id, track_id, track_to columns) and `<match_id>_review.json`.

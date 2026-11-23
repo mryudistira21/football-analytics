@@ -47,7 +47,7 @@ LOOSE_MAX_S = 8.0       # longer gaps are usually the ball being out of view, no
 PASS_MIN_M = 3.0
 CLEAR_MIN_M = 25.0
 FIELDS = ["cand_id", "period", "t", "t_end", "side", "type", "outcome", "track_id", "track_to",
-          "x", "y", "ex", "ey", "confidence", "reason"]
+          "x", "y", "ex", "ey", "confidence", "reason", "track_player", "track_to_player"]
 
 
 @dataclass
@@ -228,8 +228,18 @@ def main() -> int:
     ap.add_argument("--config", type=Path, required=True)
     ap.add_argument("--match", required=True)
     ap.add_argument("--output", type=Path, required=True)
+    ap.add_argument("--track-map", type=Path,
+                    help="optional <match>_track_map.csv from shirt-number OCR; pre-fills track_player columns")
     a = ap.parse_args()
     match = load_match(a.config, a.match)
+    numbers: dict[str, str] = {}
+    tmap_path = a.track_map or a.input.with_name(f"{a.match}_track_map.csv")
+    if tmap_path.is_file():
+        with tmap_path.open(newline="", encoding="utf-8") as fh:
+            for r in csv.DictReader(fh):
+                # keep only reasonably confident reads as a suggestion
+                if float(r.get("confidence") or 0) >= 0.5 and int(float(r.get("votes") or 0)) >= 2:
+                    numbers[str(r["track_id"])] = r["number"]
     hr = home_right(match)
     df = pd.read_csv(a.input, usecols=["frame", "video_seconds", "period", "track_id", "role", "team",
                                        "x", "y", "camera_state"],
@@ -238,6 +248,9 @@ def main() -> int:
     for c in ("role", "team", "camera_state"):
         df[c] = df[c].astype(str)
     rows = build(df, hr)
+    for r in rows:
+        r["track_player"] = numbers.get(str(r["track_id"]), "")
+        r["track_to_player"] = numbers.get(str(r["track_to"]), "") if r["track_to"] else ""
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with a.output.open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=FIELDS)
@@ -246,7 +259,8 @@ def main() -> int:
     by = {}
     for r in rows:
         by[r["type"]] = by.get(r["type"], 0) + 1
-    print(f"{len(rows)} candidates -> {a.output}  {by}")
+    n_named = sum(1 for r in rows if r.get("track_player"))
+    print(f"{len(rows)} candidates -> {a.output}  {by}" + (f"  ({n_named} with a suggested number)" if numbers else ""))
     return 0
 
 

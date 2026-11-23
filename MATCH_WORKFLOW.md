@@ -104,6 +104,10 @@ Fine-tune any value on top of a profile: `--cpu-threads`, `--cpu-cores`, `--prio
 
 Track B finds roughly half of the real on-ball actions (the ball is often not visible), so expect to accept/fix most candidates and still add some by hand. Fastest order: shots first (filter *Type = Shot*), then passes in the final third, then the rest.
 
+### Shirt numbers (optional)
+
+Turn on `READ_NUMBERS = True` in the notebook (or `--read-numbers` locally) to read shirt numbers with OCR. Track B then writes `<match_id>_track_map.csv`, and the Tagger review pre-fills the player number ("OCR suggests #7") so you confirm instead of type. It adds GPU time and accuracy on broadcast footage is hit-and-miss — it's a time-saver, not a replacement for the review. Numbers land in the DB `track_map` table (`source='ocr'`).
+
 ## D · Save to the database
 
 Double-click **`Simpan ke Database.bat`**. It writes every match into **`D:\Video-Bola-Analis\football.db`** (SQLite: one file, nothing to install — it is part of Python). It reads the Track B results (run folder, or a `*_trackb_bundle.zip` from Kaggle/Colab placed in Downloads) and your two Tagger downloads. Run it again after more review; each match is replaced, never duplicated.

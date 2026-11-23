@@ -79,13 +79,23 @@ Track B can export one cut-list CSV per anonymous `track_id`. The Reel importer 
 
 `<match_id>_candidates.csv`, built by `scripts/build_event_candidates.py` from the combined tracking CSV once `home_dir_1h` is known:
 
-`cand_id, period, t, t_end, side, type, outcome, track_id, track_to, x, y, ex, ey, confidence, reason`
+`cand_id, period, t, t_end, side, type, outcome, track_id, track_to, x, y, ex, ey, confidence, reason, track_player, track_to_player`
 
 - `type` uses the Tagger's event names (`pass, cross, shot, tackle, interception, recovery, clearance`); `outcome` uses the Tagger's internal codes (`ok, fail, on, won`; empty = the reviewer picks).
 - `t` = `video_seconds` of the action (release for passes, gain for interceptions/tackles/recoveries); `t_end` = when the ball arrived.
 - `x, y, ex, ey`: **team frame** metres (the acting `side` attacks left → right), so an accepted candidate becomes an event unchanged.
 - `track_id` = acting track, `track_to` = receiver (passes) or the player who lost it (tackles). Anonymous Track B ids, not shirt numbers.
 - `confidence`: `ok` or `review`; `reason` is a short human explanation.
+- `track_player`, `track_to_player`: optional shirt-number suggestions for the acting / receiving track, filled from `<match_id>_track_map.csv` (§6e) when shirt-number OCR ran; empty otherwise. The Tagger review pre-fills from them.
+
+## 6e. Shirt-number map (Track B OCR, optional) — `<match_id>_track_map.csv`
+
+Written when Track B runs with `--read-numbers` (easyocr). One row per track that got a reading:
+
+`track_id, team, number, votes, reads, confidence, attempts`
+
+- `number` is the most-voted shirt number for that anonymous `track_id`; `confidence` = votes / reads. A track spans one chunk only (ids are `chunk × 100000 + n`), so a player appears under several track ids.
+- Suggestions, not ground truth: broadcast numbers are small and often hidden, so coverage and accuracy vary. The Tagger review uses `confidence ≥ 0.5, votes ≥ 2` as a pre-fill; the human always confirms. In the DB these land in `track_map` with `source='ocr'`; confirmed numbers from review are `source='review'`.
 
 ## 6c. Tagger review export — `<match_id>_review.json`
 
