@@ -54,6 +54,7 @@ MOMENTS = REPO / "scripts" / "build_player_moments.py"
 REPORT = REPO / "scripts" / "team_report.py"
 CANDIDATES = REPO / "scripts" / "build_event_candidates.py"
 DIRECTION = REPO / "scripts" / "resolve_direction.py"
+PHYSICAL = REPO / "scripts" / "player_physical.py"
 SAVE_DB = REPO / "scripts" / "save_to_db.py"
 DOWNLOADER = REPO / "src" / "download_match.py"
 MODELS_SCRIPT = REPO / "scripts" / "download_sports_models.py"
@@ -784,14 +785,19 @@ def main() -> int:
                     "--metadata", str(combined.with_suffix(".meta.json")),
                     "--output-dir", str(run / "moments")], check=True, cwd=str(REPO))
 
+    log("Measuring physical running (distance, sprints, touches) ...")
+    physical_json = run / "report" / f"{mid}_player_physical.json"
+    subprocess.run([sys.executable, str(PHYSICAL), "--input", str(combined),
+                    "--output-dir", str(run / "report"), "--match", mid], check=True, cwd=str(REPO))
+
     if used_dir not in ("R", "L"):
         log("Team report and event candidates skipped: the attack direction could not be read from the data. "
             "Set home_dir_1h (R or L) for this match in the config, then run with --post-only.")
     else:
-        log("Building the team report ...")
+        log("Building the team report (shape, possession, pressing, counter-press, summary) ...")
         subprocess.run([sys.executable, str(REPORT), "--input", str(combined), "--config", str(a.config),
-                        "--match", mid, "--output-dir", str(run / "report"), "--home-dir", used_dir],
-                       check=True, cwd=str(REPO))
+                        "--match", mid, "--output-dir", str(run / "report"), "--home-dir", used_dir,
+                        "--physical", str(physical_json)], check=True, cwd=str(REPO))
         log("Building event candidates for review in the Tagger ...")
         subprocess.run([sys.executable, str(CANDIDATES), "--input", str(combined), "--config", str(a.config),
                         "--match", mid, "--output", str(run / f"{mid}_candidates.csv"), "--home-dir", used_dir],

@@ -72,6 +72,15 @@ CREATE TABLE IF NOT EXISTS team_metrics (
   PRIMARY KEY (match_id, period, side, metric));
 CREATE TABLE IF NOT EXISTS team_heatmaps (
   match_id TEXT, period TEXT, side TEXT, grid_json TEXT, PRIMARY KEY (match_id, period, side));
+CREATE TABLE IF NOT EXISTS team_physical (
+  match_id TEXT, side TEXT, distance_km REAL, hi_distance_km REAL, sprint_distance_km REAL,
+  top_speed_kmh REAL, touches INTEGER, tracked_player_seconds INTEGER, PRIMARY KEY (match_id, side));
+CREATE TABLE IF NOT EXISTS player_physical (
+  match_id TEXT, team TEXT, number TEXT, minutes REAL, distance_m REAL, hi_distance_m REAL,
+  sprint_distance_m REAL, top_speed_kmh REAL, touches INTEGER, dist_per_min REAL, tracks INTEGER,
+  PRIMARY KEY (match_id, team, number));
+CREATE TABLE IF NOT EXISTS counter_press (
+  match_id TEXT, period INTEGER, t REAL, side TEXT, pressers INTEGER, regained INTEGER, regain_s REAL);
 CREATE TABLE IF NOT EXISTS ingests (
   match_id TEXT, part TEXT, source_file TEXT, rows INTEGER, ingested_at TEXT);
 CREATE VIEW IF NOT EXISTS v_review_progress AS
@@ -85,6 +94,13 @@ CREATE VIEW IF NOT EXISTS v_track_numbers AS
 CREATE VIEW IF NOT EXISTS v_team_half AS
   SELECT t.match_id, m.date, m.home, m.away, t.period, t.side, t.metric, t.value
   FROM team_metrics t LEFT JOIN matches m USING (match_id);
+CREATE VIEW IF NOT EXISTS v_team_physical AS
+  SELECT p.match_id, m.date, CASE WHEN p.side='home' THEN m.home ELSE m.away END AS team,
+         p.distance_km, p.hi_distance_km, p.sprint_distance_km, p.top_speed_kmh, p.touches
+  FROM team_physical p LEFT JOIN matches m USING (match_id);
+CREATE VIEW IF NOT EXISTS v_counter_press AS
+  SELECT match_id, side, COUNT(*) AS losses, ROUND(AVG(regained), 3) AS regain_share,
+         ROUND(AVG(pressers), 2) AS avg_pressers FROM counter_press GROUP BY 1, 2;
 """
 
 EVENT_COLS = ["half", "match_clock", "match_seconds", "video_seconds", "team", "side", "player",
@@ -238,6 +254,25 @@ def save_report(con: sqlite3.Connection, src: Sources) -> None:
     con.executemany("INSERT OR REPLACE INTO team_metrics VALUES (?,?,?,?,?)", mrows)
     con.executemany("INSERT OR REPLACE INTO team_heatmaps VALUES (?,?,?,?)", hrows)
     log_ingest(con, src.mid, "team_report", name, len(mrows))
+
+    # physical running totals, per-player rows and counter-press turnovers (all embedded in the report)
+    tt = (rep.get("physical") or {}).get("team_totals") or {}
+    con.execute("DELETE FROM team_physical WHERE match_id=?", (src.mid,))
+    con.executemany("INSERT OR REPLACE INTO team_physical VALUES (?,?,?,?,?,?,?,?)",
+                    [(src.mid, side, d.get("distance_km"), d.get("hi_distance_km"), d.get("sprint_distance_km"),
+                      d.get("top_speed_kmh"), d.get("touches"), d.get("tracked_player_seconds"))
+                     for side, d in tt.items()])
+    pcols = ["team", "number", "minutes", "distance_m", "hi_distance_m", "sprint_distance_m",
+             "top_speed_kmh", "touches", "dist_per_min", "tracks"]
+    con.execute("DELETE FROM player_physical WHERE match_id=?", (src.mid,))
+    con.executemany(f"INSERT OR REPLACE INTO player_physical VALUES ({','.join('?' * (len(pcols) + 1))})",
+                    [(src.mid, *[num(r.get(c)) if c not in ("team", "number") else r.get(c) for c in pcols])
+                     for r in (rep.get("physical") or {}).get("by_player") or []])
+    con.execute("DELETE FROM counter_press WHERE match_id=?", (src.mid,))
+    con.executemany("INSERT INTO counter_press VALUES (?,?,?,?,?,?,?)",
+                    [(src.mid, e.get("period"), e.get("t"), e.get("side"), e.get("pressers"),
+                      int(bool(e.get("regained"))), e.get("regain_s"))
+                     for e in rep.get("counter_press_events") or []])
 
 
 def migrate(con: sqlite3.Connection) -> None:

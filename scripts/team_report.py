@@ -414,7 +414,71 @@ def pressing_stats(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, dict[str, 
     return empty
 
 
-def period_block(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, Any]:
+CP_WINDOW_S = 3.0        # count pressers within this long after a loss
+CP_REGAIN_S = 5.0        # the ball is "won back" if the losing team owns it again within this long
+CP_PRESS_M = 5.0         # a presser is within this of the ball
+
+
+def counter_press_events(df: pd.DataFrame, poss: pd.DataFrame) -> pd.DataFrame:
+    """One row per turnover: how hard the team that just lost the ball pressed, and if it won it back.
+
+    A turnover = the possession owner changes from one team to the other. For the losing
+    team, count its distinct outfield players that come within CP_PRESS_M of the ball in the
+    next CP_WINDOW_S; it is a regain if that team owns the ball again within CP_REGAIN_S.
+    """
+    cols = ["period", "t", "side", "pressers", "regained", "regain_s"]
+    wide = df[df.camera_state == "wide"]
+    tmap = wide.groupby("frame").video_seconds.min()
+    ball = wide[wide.role == "ball"].dropna(subset=["x", "y"]).drop_duplicates("frame").set_index("frame")[["x", "y"]]
+    o = poss[["frame", "owner"]].dropna(subset=["frame"]).copy()
+    o = o[o.owner.isin(["home", "away"])].merge(tmap.rename("t"), left_on="frame", right_index=True)
+    o = o.merge(df.drop_duplicates("frame").set_index("frame").period.rename("period"), left_on="frame", right_index=True)
+    o = o.sort_values("t")
+    if len(o) < 2 or ball.empty:
+        return pd.DataFrame(columns=cols)
+    owners = o.owner.to_numpy()
+    turn = np.flatnonzero(owners[1:] != owners[:-1]) + 1     # index in o where possession flipped
+    pl = wide[(wide.role == "player") & wide.team.isin(["home", "away"])].dropna(subset=["x", "y"])
+    pl_by_frame = {int(f): g for f, g in pl.groupby("frame", sort=False)}
+    frames_t = o[["frame", "t", "owner", "period"]].to_numpy()
+    rows = []
+    for i in turn:
+        loser = owners[i - 1]
+        t_loss = float(frames_t[i, 1])
+        f_loss = int(frames_t[i, 0])
+        if f_loss not in ball.index:
+            near = ball.index[np.argmin(np.abs(ball.index.to_numpy() - f_loss))]
+        else:
+            near = f_loss
+        win = o[(o.t > t_loss) & (o.t <= t_loss + CP_WINDOW_S)]
+        pressers = set()
+        for wf in win.frame.unique():
+            g = pl_by_frame.get(int(wf))
+            if g is None:
+                continue
+            bx, by = ball.loc[wf] if wf in ball.index else ball.loc[near]
+            gg = g[g.team == loser]
+            d = np.hypot(gg.x - bx, gg.y - by)
+            pressers.update(gg.track_id[d <= CP_PRESS_M].tolist())
+        after = o[(o.t > t_loss) & (o.t <= t_loss + CP_REGAIN_S)]
+        regain = after[after.owner == loser]
+        rows.append({"period": int(frames_t[i, 3]), "t": round(t_loss, 2), "side": loser,
+                     "pressers": len(pressers), "regained": not regain.empty,
+                     "regain_s": round(float(regain.t.iloc[0] - t_loss), 2) if not regain.empty else None})
+    return pd.DataFrame(rows, columns=cols)
+
+
+def counter_press_agg(ev: pd.DataFrame, side: str) -> dict[str, Any]:
+    s = ev[ev.side == side]
+    n = len(s)
+    if n == 0:
+        return {"counter_press_losses": 0, "counter_press_regain_share": None, "counter_press_avg_pressers": None}
+    return {"counter_press_losses": int(n),
+            "counter_press_regain_share": round(float(s.regained.mean()), 3),
+            "counter_press_avg_pressers": round(float(s.pressers.mean()), 2)}
+
+
+def period_block(df: pd.DataFrame, poss: pd.DataFrame, cp: pd.DataFrame | None = None) -> dict[str, Any]:
     wide = df[df.camera_state == "wide"]
     mapped = wide.dropna(subset=["x", "y"])
     frames_all = df.frame.nunique()
@@ -461,12 +525,37 @@ def period_block(df: pd.DataFrame, poss: pd.DataFrame) -> dict[str, Any]:
             "block_height_in_possession_m": shape_stats(o[own == side]).get("block_height_m"),
             "block_height_out_of_possession_m": shape_stats(o[(own != side) & pd.notna(own)]).get("block_height_m"),
             **press[side],
+            **(counter_press_agg(cp, side) if cp is not None else {}),
             "heatmap": heat(mapped[(mapped.role == "player") & (mapped.team == side)]),
         }
     return res
 
 
-def build(csv_path: Path, match: dict[str, Any], meta: dict[str, Any], home_dir: str | None = None) -> dict[str, Any]:
+def summary_block(rep_all: dict[str, Any], physical: dict[str, Any] | None) -> dict[str, Any]:
+    """Compact two-team summary (one row per team), like a match 'Resumen' panel."""
+    out: dict[str, dict[str, Any]] = {}
+    tt = (physical or {}).get("team_totals") or {}
+    for side in ("home", "away"):
+        b = rep_all.get(side, {})
+        row = {
+            "possession_share": b.get("possession_share"),
+            "press_share": b.get("press_share"),
+            "counter_press_regain_share": b.get("counter_press_regain_share"),
+            "counter_press_losses": b.get("counter_press_losses"),
+            "width_m": b.get("width_m"), "length_m": b.get("length_m"),
+            "block_height_m": b.get("block_height_m"),
+        }
+        if side in tt:
+            row.update({"distance_km": tt[side].get("distance_km"),
+                        "hi_distance_km": tt[side].get("hi_distance_km"),
+                        "sprint_distance_km": tt[side].get("sprint_distance_km"),
+                        "top_speed_kmh": tt[side].get("top_speed_kmh")})
+        out[side] = row
+    return out
+
+
+def build(csv_path: Path, match: dict[str, Any], meta: dict[str, Any], home_dir: str | None = None,
+          physical: dict[str, Any] | None = None) -> dict[str, Any]:
     df = pd.read_csv(csv_path, usecols=USECOLS,
                      dtype={"x": "float32", "y": "float32", "role": "category", "team": "category",
                             "camera_state": "category", "period": "int8"})
@@ -517,9 +606,20 @@ def build(csv_path: Path, match: dict[str, Any], meta: dict[str, Any], home_dir:
         },
         "periods": {},
     }
+    cp = counter_press_events(df, poss)
+    report["method"]["counter_press"] = {"window_s": CP_WINDOW_S, "regain_s": CP_REGAIN_S, "press_m": CP_PRESS_M,
+                                         "definition": "distinct players of the team that just lost the ball coming "
+                                         "within 5 m of it in the next 3 s; regain = that team owns it again within 5 s"}
     for p in periods:
-        report["periods"][str(p)] = period_block(df[df.period == p], poss[poss.frame.isin(df[df.period == p].frame)])
-    report["periods"]["all"] = period_block(df, poss)
+        fr = df[df.period == p].frame
+        report["periods"][str(p)] = period_block(df[df.period == p], poss[poss.frame.isin(fr)], cp[cp.period == p])
+    report["periods"]["all"] = period_block(df, poss, cp)
+    if physical:
+        report["physical"] = {"schema": physical.get("schema"), "thresholds": physical.get("thresholds"),
+                              "caveat": physical.get("caveat"), "team_totals": physical.get("team_totals"),
+                              "by_player": physical.get("by_player") or []}
+    report["summary"] = summary_block(report["periods"]["all"], physical)
+    report["counter_press_events"] = cp.to_dict("records")
     return report
 
 
@@ -549,6 +649,7 @@ def markdown(rep: dict[str, Any]) -> str:
         for label, k, u in [("Possession (time share)", "possession_share", "%"),
                             ("Ball-proximity share (diagnostic)", "ball_proximity_share", "%"),
                             ("Press share (opponent own third)", "press_share", "%"),
+                            ("Counter-press regain share", "counter_press_regain_share", "%"),
                             ("Block height (median, from own goal)", "block_height_m", "m"),
                             ("  in possession", "block_height_in_possession_m", "m"),
                             ("  out of possession", "block_height_out_of_possession_m", "m"),
@@ -557,6 +658,35 @@ def markdown(rep: dict[str, Any]) -> str:
             lines.append(f"| {label} | {v('home', k, u)} | {v('away', k, u)} |")
         lines += ["", f"Ball territory (from {h}'s view): own third {t['def_third']:.0%} · "
                       f"middle {t['middle']:.0%} · attacking third {t['att_third']:.0%}", ""]
+    sm = rep.get("summary")
+    if sm:
+        def sv(side: str, k: str, unit: str) -> str:
+            x = sm[side].get(k)
+            return "—" if x is None else (f"{x:.0%}" if unit == "%" else f"{x} {unit}".strip())
+        lines += ["## Match summary", "", f"| | {h} | {a} |", "|---|---:|---:|"]
+        has_phys = sm["home"].get("distance_km") is not None
+        rows = [("Possession", "possession_share", "%"), ("Press share", "press_share", "%"),
+                ("Counter-press regain", "counter_press_regain_share", "%"),
+                ("Losses (possession lost)", "counter_press_losses", ""),
+                ("Width", "width_m", "m"), ("Length", "length_m", "m")]
+        if has_phys:
+            rows += [("Distance run", "distance_km", "km"), ("High-intensity dist.", "hi_distance_km", "km"),
+                     ("Sprint distance", "sprint_distance_km", "km"), ("Top speed (est.)", "top_speed_kmh", "km/h")]
+        for label, k, u in rows:
+            lines.append(f"| {label} | {sv('home', k, u)} | {sv('away', k, u)} |")
+        if not has_phys:
+            lines += ["", "_Physical running totals need the player-physical pass (run_match adds it)._"]
+        lines += ["", "Distance/speed are broadcast-tracking proxies (on-camera running only); "
+                      "counter-press = how often a team wins the ball back within 5 s of losing it.", ""]
+    bp = (rep.get("physical") or {}).get("by_player") or []
+    if bp:
+        lines += ["## Players (physical, per shirt number)", "",
+                  f"| Team | # | Dist (km) | HI (km) | Sprint (km) | Top km/h | Touches |", "|---|---:|---:|---:|---:|---:|---:|"]
+        side_name = {"home": h, "away": a}
+        for r in sorted(bp, key=lambda r: (r["team"], -r["distance_m"]))[:40]:
+            lines.append(f"| {side_name.get(r['team'], r['team'])} | {r['number']} | {r['distance_m']/1000:.1f} | "
+                         f"{r['hi_distance_m']/1000:.1f} | {r['sprint_distance_m']/1000:.1f} | {r['top_speed_kmh']} | {r['touches']} |")
+        lines.append("")
     lines.append(rep["method"]["caveat"])
     return "\n".join(lines) + "\n"
 
@@ -569,11 +699,13 @@ def main() -> int:
     ap.add_argument("--metadata", type=Path, help="default: <input>.meta.json")
     ap.add_argument("--output-dir", type=Path, required=True)
     ap.add_argument("--home-dir", choices=["R", "L"], help="override home_dir_1h from the config")
+    ap.add_argument("--physical", type=Path, help="<match>_player_physical.json for the summary's running totals")
     a = ap.parse_args()
     match = load_match(a.config, a.match)
     meta_path = a.metadata or a.input.with_suffix(".meta.json")
     meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
-    rep = build(a.input, match, meta, a.home_dir)
+    physical = json.loads(a.physical.read_text(encoding="utf-8")) if a.physical and a.physical.exists() else None
+    rep = build(a.input, match, meta, a.home_dir, physical)
     for w in rep.get("warnings") or []:
         print("WARNING:", w)
     a.output_dir.mkdir(parents=True, exist_ok=True)
@@ -581,8 +713,12 @@ def main() -> int:
     md = a.output_dir / f"{match['match_id']}_team_report.md"
     j.write_text(json.dumps(rep, separators=(",", ":")), encoding="utf-8")
     md.write_text(markdown(rep), encoding="utf-8")
+    cp = pd.DataFrame(rep.get("counter_press_events") or [], columns=["period", "t", "side", "pressers", "regained", "regain_s"])
+    cp_path = a.output_dir / f"{match['match_id']}_counterpress.csv"
+    cp.to_csv(cp_path, index=False)
     print("wrote", j)
     print("wrote", md)
+    print("wrote", cp_path, f"({len(cp)} turnovers)")
     return 0
 
 

@@ -96,6 +96,14 @@ Written by `scripts/resolve_direction.py` (run by `run_match` after combining): 
 
 Team report (`trackb_team_report_v1`, additive keys only): per side `possession_share` (time share, §DECISIONS 2026-11-23 evening), `quality.possession_known_share`, top-level `direction_check` and `warnings`. `method.possession` replaces `method.possession_hold_s`.
 
+## 6g. Physical running — `<match_id>_player_physical.{csv,json}` (+ report keys)
+
+Written by `scripts/player_physical.py`. Per-track CSV columns: `track_id, team, role, minutes, distance_m, hi_distance_m, sprint_distance_m, top_speed_kmh, touches, dist_per_min`. The JSON (`trackb_player_physical_v1`) holds `thresholds`, `caveat`, `team_totals` (per side: `distance_km, hi_distance_km, sprint_distance_km, top_speed_kmh, touches, tracked_player_seconds`) and `by_player` (only when a `track_map.csv` is present: per shirt number, tracks summed). Intensity is distance at speed, not effort counts; team totals are reliable, per-track rows are chunk-length fragments, per-player needs OCR numbers. The team report embeds `physical` (team_totals + by_player) and a `summary` block (one row per team: possession, press, counter-press regain, width, length, + the physical totals).
+
+## 6h. Counter-press — `<match_id>_counterpress.csv` (+ report keys)
+
+Written by `scripts/team_report.py`. Columns: `period, t, side, pressers, regained, regain_s`. One row per turnover; `side` is the team that lost the ball, `pressers` = its distinct players within 5 m of the ball in the next 3 s, `regained`/`regain_s` = whether/when it won the ball back within 5 s. Each period block also carries `counter_press_losses, counter_press_regain_share, counter_press_avg_pressers`. The report's `counter_press_events` array mirrors the CSV.
+
 ## 6e. Shirt-number map (Track B OCR, optional) — `<match_id>_track_map.csv`
 
 Written when Track B runs with `--read-numbers` (easyocr). One row per track that got a reading:
@@ -111,7 +119,7 @@ Written when Track B runs with `--read-numbers` (easyocr). One row per track tha
 
 ## 6d. Database — `<root>/football.db` (SQLite)
 
-Built by `scripts/save_to_db.py` (called by `run_match.py` at the end of a local run). Tables: `matches, tracking, moments, candidates (+ review_status, event_id, priority, linked — older databases get the two new columns automatically), track_map, events, team_metrics, team_heatmaps, ingests`; views `v_review_progress, v_player_events, v_team_half`. Re-saving a match replaces that match's rows. Column names follow sections 4–6c.
+Built by `scripts/save_to_db.py` (called by `run_match.py` at the end of a local run). Tables: `matches, tracking, moments, candidates (+ review_status, event_id, priority, linked), team_physical, player_physical, counter_press (+ views v_team_physical, v_counter_press — older databases get the two new columns automatically), track_map, events, team_metrics, team_heatmaps, ingests`; views `v_review_progress, v_player_events, v_team_half`. Re-saving a match replaces that match's rows. Column names follow sections 4–6c.
 
 ## 7. Resource rules (both tracks)
 - **Stream, don't hoard:** read video frame by frame, write CSV rows as you go (append mode), never hold the whole match in memory.

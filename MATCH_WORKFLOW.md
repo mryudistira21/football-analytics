@@ -120,7 +120,7 @@ Tables: `matches, tracking, moments, candidates (with your accept/reject), track
 
 ## C · Bring it together — [League Hub](https://claude.ai/artifact/8cgsEsf9yeqHh2fmrnkLCT) → My analysis
 
-Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any order — same match merges into one entry). Per half: score, xG, shot map (Track A); possession (time share), block height in/out of possession, back line, width/length, territory and position heatmaps (Track B), each with a data-quality line.
+Import the Tagger CSV **and** `report/<id>_team_report.json` (one or both, any order — same match merges into one entry). A **Match summary** card (possession, press, counter-press regain, width/length, team distance / high-intensity / sprint / top speed; per-player physical once OCR numbers exist). Per half: score, xG, shot map (Track A); possession (time share), block height in/out of possession, back line, width/length, territory and position heatmaps (Track B), each with a data-quality line.
 
 **Scouting an opponent:** open the club in the Hub (Clubs → club). Every imported Track B report involving that club is combined into a *Scouting profile*: per-match row from that club's point of view, averages, 1st→2nd half change, and an average position heatmap. Run Track B on 2–3 of the opponent's matches (they don't need tagging) and import the reports.
 

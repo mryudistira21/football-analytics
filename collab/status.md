@@ -1,4 +1,4 @@
-# Collaboration status — 23 November 2026 (ChatGPT implementation PR)
+# Collaboration status — 25 November 2026
 
 Paste this into ChatGPT to bring it up to date.
 
@@ -38,16 +38,28 @@ Paste this into ChatGPT to bring it up to date.
 
 Next PERSIBA opponent: **Persinga Ngawi (away, 26 Nov)**.
 
+## New since PR #3 (Claude, on main) — physical, counter-press, summary
+From the hublabdev reference app, all built on the tracking we already produce (no schema removals):
+- **`scripts/player_physical.py`** — per-team and (with OCR numbers) per-player distance, high-intensity distance, sprint distance, top speed, touches. Team totals reliable; per-track are chunk fragments; per-player needs `track_map.csv`. DATA_CONTRACT §6g.
+- **Counter-press** in `team_report` — per turnover, the losing team's pressers within 5 m in 3 s and whether it regained within 5 s; `<id>_counterpress.csv` + per-team keys. §6h.
+- **Match summary** block (report + Hub card).
+- DB: `team_physical`, `player_physical`, `counter_press` + views `v_team_physical`, `v_counter_press`.
+- `run_match` now runs player-physical into `report/` before the team report (`--physical`). 78 tests green.
+
+## Matches to run (this batch)
+`match_kaggle.ipynb` on `main` is set to **PERSIBA match 1 (`persiba_gresik_20261113`), match 2 (`persipa_persiba_20261117`), and Persinga–Putra Sang Fajar (`persinga_psf_20261118`)**, READ_NUMBERS=True (also the OCR check). PERSIBA 1–2 have period times; Persinga–PSF needs its 4 timestamps filled in OVERRIDES. Claude processes the bundles when they return.
+
 ## Tasks for you (ChatGPT), in priority order
 1. **Shirt-number OCR, real-match check.** Rizki runs the next Kaggle batch with `READ_NUMBERS = True` (PERSIBA's matches 1–2: `persiba_gresik_20261113`, `persipa_persiba_20261117`). From the bundles / `football.db`: coverage (`v_track_numbers`: share of tracks with a number, share of candidate `track_id`s with `track_player`), confidence distribution, and plausibility (numbers outside each squad list in the Hub = wrong reads; the same number on both teams at once = suspicious). If coverage < ~20 % or many impossible numbers: tune `NumberReader` (crop band, `min_box_px`, `min_conf`, reads per track) or propose a jersey-number model (e.g. a small fine-tuned classifier on the back crop). Keep the `<id>_track_map.csv` contract (§6e). Deliver: a short note in `collab/` + a PR.
 2. **Throughput A/B on one chunk** (still open): same 10-min chunk with defaults vs `--pitch-every 2` vs `--imgsz 800`. Compare minutes, `calibration_median_error_m`, rows, ball rows, and the team report numbers for that chunk. Recommend a default for T4 and for Rizki's laptop (`light` profile, 8 GB RAM).
-3. **Pressing proxy + defensive moments — implemented in PR #3 (CI green; awaiting review).** Adds `press_share` and sample-count diagnostics to `trackb_team_report_v1`; adds `defensive_nearest_2` per-track moments using resolved direction metadata and the existing seven-column cut-list. No schema changes. `ppda_proxy` is deferred until a hand-tagged evaluation window validates candidate pass / defensive-action counts; do not label raw candidate counts as PPDA.
+3. **Pressing proxy + defensive moments — MERGED (PR #3).** Adds `press_share` and sample-count diagnostics to `trackb_team_report_v1`; adds `defensive_nearest_2` per-track moments using resolved direction metadata and the existing seven-column cut-list. No schema changes. `ppda_proxy` is deferred until a hand-tagged evaluation window validates candidate pass / defensive-action counts; do not label raw candidate counts as PPDA.
 4. **Candidate tuning — after** Rizki has one hand-tagged window and `evaluate_candidates.py` output. Use it to tune `HOLD_M`, `PASS_MIN_M`, `LOOSE_*`, `FLICKER_*` and the priority-3 rules. Report before/after recall/precision; never tune without that file.
-5. **Direction edge case — fallback implemented in PR #3 (CI green; awaiting review).** If the first 10 seconds do not give a valid kick-off-position vote, `infer_direction` scans up to the first 10 minutes for a clear centre-ball restart (kick-off / after-goal restart) with both teams in opposite halves. At most one strongest restart vote is contributed per period. If neither restart evidence nor possession shift is strong, direction remains unknown.
+5. **Direction restart fallback — MERGED (PR #3; Claude fixed a NumPy-2 crash in the restart split before merge).** If the first 10 seconds do not give a valid kick-off-position vote, `infer_direction` scans up to the first 10 minutes for a clear centre-ball restart (kick-off / after-goal restart) with both teams in opposite halves. At most one strongest restart vote is contributed per period. If neither restart evidence nor possession shift is strong, direction remains unknown.
 
 ## Tasks for Claude (in progress / next)
-- Rebuild PERSIBA–Persika and Persika–Persinga outputs with today's code (done in the sandbox; Rizki received the new reports, candidates and DB).
-- Process the next Kaggle bundles as they arrive; scouting summary for Persinga before 26 Nov.
+- Physical / counter-press / summary built and validated on the two real matches; Rizki has the rebuilt reports + DB.
+- Process the three new Kaggle bundles when they arrive; Persinga scouting summary.
+- **Note for ChatGPT:** physical running, counter-press and the match summary are done — don't rebuild them; your OCR-coverage check (task 1) now also feeds the per-player physical table.
 
 
 ## ChatGPT implementation note

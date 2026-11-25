@@ -368,7 +368,34 @@ function trackingSection(a,period,lbl){
     <div class="card"><div class="note" style="margin-bottom:6px">${esc(a.home)} — positions, attacking →</div>${heatSvg(H.heatmap,T.grid,hc)}</div>
     <div class="card"><div class="note" style="margin-bottom:6px">${esc(a.away)} — positions, attacking →</div>${heatSvg(A.heatmap,T.grid,ac)}</div>
   </div>
+  ${summaryCard(T,a,hc,ac)}
   <p class="note" style="margin-top:8px">${esc(T.method?.caveat||"")} Block height and back line are metres from the team's own goal line.</p>`;
+}
+function summaryCard(T,a,hc,ac){
+  const S=T.summary;if(!S)return"";
+  const P=T.physical||{},tt=P.team_totals||{},by=P.by_player||[];
+  const srow=(label,k,f)=>`<tr><td>${label}</td><td class="n">${f(S.home?.[k])}</td><td class="n">${f(S.away?.[k])}</td></tr>`;
+  const km=v=>v==null?"—":v+" km",kmh=v=>v==null?"—":v+" km/h",n0=v=>v==null?"—":v;
+  const phys=S.home?.distance_km!=null;
+  const nm={home:esc(a.home),away:esc(a.away)};
+  const byRows=by.slice().sort((x,y)=>x.team===y.team?y.distance_m-x.distance_m:(x.team<y.team?-1:1)).slice(0,40)
+    .map(r=>`<tr><td>${nm[r.team]||r.team}</td><td class="n">${esc(r.number)}</td><td class="n">${(r.distance_m/1000).toFixed(1)}</td><td class="n">${(r.hi_distance_m/1000).toFixed(1)}</td><td class="n">${(r.sprint_distance_m/1000).toFixed(1)}</td><td class="n">${r.top_speed_kmh}</td><td class="n">${r.touches}</td></tr>`).join("");
+  return `<h3 style="font-size:16px;text-transform:uppercase;margin:16px 0 6px">Match summary — Track B</h3>
+  <div class="card"><div class="tablewrap"><table class="tb"><thead><tr><th></th><th class="n"><span class="swatch" style="background:${hc}"></span> ${esc(a.home)}</th><th class="n"><span class="swatch" style="background:${ac}"></span> ${esc(a.away)}</th></tr></thead><tbody>
+    ${srow("Possession","possession_share",pct)}
+    ${srow("Press share","press_share",pct)}
+    ${srow("Counter-press regain","counter_press_regain_share",pct)}
+    ${srow("Losses (possession lost)","counter_press_losses",n0)}
+    ${srow("Width","width_m",mtr)}${srow("Length","length_m",mtr)}
+    ${phys?srow("Distance run","distance_km",km):""}
+    ${phys?srow("High-intensity dist.","hi_distance_km",km):""}
+    ${phys?srow("Sprint distance","sprint_distance_km",km):""}
+    ${phys?srow("Top speed (est.)","top_speed_kmh",kmh):""}
+  </tbody></table></div>
+  ${phys?"":`<p class="note" style="margin-top:8px">Physical running totals appear once the match is processed with the player-physical pass.</p>`}
+  ${byRows?`<div class="k" style="margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)">Players — physical (per shirt number, from OCR)</div>
+    <div class="tablewrap"><table class="tb"><thead><tr><th>Team</th><th class="n">#</th><th class="n">Dist km</th><th class="n">HI km</th><th class="n">Sprint km</th><th class="n">Top km/h</th><th class="n">Touches</th></tr></thead><tbody>${byRows}</tbody></table></div>`:""}
+  <p class="note" style="margin-top:8px">Counter-press regain = share of this team's turnovers won back within 5 s. Distance/speed are broadcast-tracking proxies (on-camera running only); per-player rows need shirt-number OCR.</p></div>`;
 }
 function possOf(me){return me?(me.possession_share!=null?me.possession_share:me.ball_proximity_share):null}   // older reports: proximity proxy
 function heatSvg(h,grid,col){
