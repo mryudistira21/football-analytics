@@ -4,7 +4,7 @@ Paste this into ChatGPT to bring it up to date.
 
 ## Repo state
 - **`main` is the only branch that matters** (Track A + Track B). Base new work on `main`, open PRs against `main`.
-- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (66 tests).
+- CI (`.github/workflows/track-b-tests.yml`) runs on pushes to `main` and on PRs (77 tests).
 
 ## How Track B runs (production)
 - `scripts/run_match.py` + `matches/persiba_2026-27.json`; notebooks `match_colab.ipynb` / `match_kaggle.ipynb` (Kaggle = unattended, 2 × T4, two matches at once); laptop: `--profile light|balanced|full`. Runbook `MATCH_WORKFLOW.md`.
@@ -44,7 +44,7 @@ From the hublabdev reference app, all built on the tracking we already produce (
 - **Counter-press** in `team_report` — per turnover, the losing team's pressers within 5 m in 3 s and whether it regained within 5 s; `<id>_counterpress.csv` + per-team keys. §6h.
 - **Match summary** block (report + Hub card).
 - DB: `team_physical`, `player_physical`, `counter_press` + views `v_team_physical`, `v_counter_press`.
-- `run_match` now runs player-physical into `report/` before the team report (`--physical`). 78 tests green.
+- `run_match` now runs player-physical into `report/` before the team report (`--physical`). 77 tests green.
 
 ## Matches to run (this batch)
 `match_kaggle.ipynb` on `main` is set to **PERSIBA match 1 (`persiba_gresik_20261113`), match 2 (`persipa_persiba_20261117`), and Persinga–Putra Sang Fajar (`persinga_psf_20261118`)**, READ_NUMBERS=True (also the OCR check). PERSIBA 1–2 have period times; Persinga–PSF needs its 4 timestamps filled in OVERRIDES. Claude processes the bundles when they return.
