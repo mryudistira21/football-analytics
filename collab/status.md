@@ -1,4 +1,4 @@
-# Collaboration status — 25 November 2026
+# Collaboration status — 27 November 2026
 
 Paste this into ChatGPT to bring it up to date.
 
@@ -26,17 +26,23 @@ Paste this into ChatGPT to bring it up to date.
 - Candidates CSV v1.1 (DATA_CONTRACT §6b), direction JSON (§6f), review JSON `tagger_review_v1`, SQLite names (§6d), `run_match.py` CLI flags and config keys.
 
 ## Matches in the config
+Group B after Pekan 4 (ileague): PSF 12 · Persika 10 · Gresik 6 · Persinga 4 · Persibangga 4 · Persibo 2 · **PERSIBA 2** · Persipa 2. Format: top 2 + two best 3rd-placed teams (of 3 groups) reach round 2; round-2 group winners are promoted, runners-up play off for a third spot.
+
 | match_id | Fixture | Score | Scope | State |
 |---|---|---|---|---|
-| `persiba_gresik_20261113` | PERSIBA – Gresik United | 0–0 | PERSIBA | periods set, not run yet |
-| `persipa_persiba_20261117` | Persipa Pati – PERSIBA | 2–2 | PERSIBA | periods set, not run yet |
+| `persiba_gresik_20261113` | PERSIBA – Gresik United | 0–0 | PERSIBA | periods set, batch 2 |
+| `persipa_persiba_20261117` | Persipa Pati – PERSIBA | 2–2 | PERSIBA | periods set, batch 2 |
 | `persiba_persika_20261121` | PERSIBA – Persika | 0–1 | PERSIBA | **done** (dir R, swap) |
-| `persika_persinga_20261113` | Persika – Persinga Ngawi | 1–0 | scouting | **done** (dir R) |
-| `gresik_persika_20261117` | Gresik – Persika | 1–1 | scouting | periods set, not run |
-| `persinga_psf_20261118` | Persinga – Putra Sang Fajar | 1–2 | scouting | needs period times |
-| `persinga_persibangga_20261122` | Persinga – Persibangga | — | scouting | video pending |
+| `persiba_persinga_20261126` | PERSIBA – Persinga | 0–1 | PERSIBA | **batch 1 (Kaggle)** |
+| `persika_persinga_20261113` | Persika – Persinga | 1–0 | scouting | **done** (dir R) |
+| `psf_persibangga_20261114` | PSF – Persibangga | 2–0 | scouting | **batch 1** |
+| `persibangga_persibo_20261118` | Persibangga – Persibo | 2–1 | scouting | **batch 1** |
+| `persinga_persibangga_20261122` | Persinga – Persibangga | 1–1 | scouting | **batch 1** |
+| `gresik_persibangga_20261126` | Gresik – Persibangga | 2–1 | scouting | **batch 1** |
+| `gresik_persika_20261117` | Gresik – Persika | 1–1 | scouting | periods set, not queued |
+| `persinga_psf_20261118` | Persinga – PSF | 1–2 | scouting | needs period times |
 
-Next PERSIBA opponent: **Persinga Ngawi (away, 26 Nov)**.
+Next PERSIBA match: **Persibangga – PERSIBA, Pekan 5, Mon 30 Nov 2026 15:30 WIB, Trisanja (away).** Then Persibo (a), PSF (h), Persika (a), Persinga (a), Persibo (h).
 
 ## New since PR #3 (Claude, on main) — physical, counter-press, summary
 From the hublabdev reference app, all built on the tracking we already produce (no schema removals):

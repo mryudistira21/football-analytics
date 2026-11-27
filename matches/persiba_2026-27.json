@@ -187,14 +187,123 @@
       "date": "2026-11-22",
       "home": "Persinga Ngawi",
       "away": "Persibangga Purbalingga",
-      "score": null,
-      "video_url": null,
+      "score": [
+        1,
+        1
+      ],
+      "video_url": "https://www.youtube.com/watch?v=1FvyMcBaT2M",
       "periods": {
-        "1": null,
-        "2": null
+        "1": [
+          "5:40",
+          "53:55"
+        ],
+        "2": [
+          "69:15",
+          "117:35"
+        ]
       },
       "home_dir_1h": null,
       "swap_teams": false
+    },
+    {
+      "match_id": "persiba_persinga_20261126",
+      "round": "Pekan 4",
+      "date": "2026-11-26",
+      "home": "PERSIBA Bantul",
+      "away": "Persinga Ngawi",
+      "score": [
+        0,
+        1
+      ],
+      "video_url": "https://www.youtube.com/watch?v=z5Zng-9AzbA",
+      "periods": {
+        "1": [
+          "09:35",
+          "55:55"
+        ],
+        "2": [
+          "72:37",
+          "121:55"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false,
+      "scope": "persiba"
+    },
+    {
+      "match_id": "psf_persibangga_20261114",
+      "round": "Pekan 1",
+      "date": "2026-11-14",
+      "home": "Putra Sang Fajar FC",
+      "away": "Persibangga Purbalingga",
+      "score": [
+        2,
+        0
+      ],
+      "video_url": "https://www.youtube.com/watch?v=hvS-dlSDQsU",
+      "periods": {
+        "1": [
+          "08:08",
+          "55:55"
+        ],
+        "2": [
+          "70:55",
+          "119:27"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false,
+      "scope": "scouting"
+    },
+    {
+      "match_id": "persibangga_persibo_20261118",
+      "round": "Pekan 2",
+      "date": "2026-11-18",
+      "home": "Persibangga Purbalingga",
+      "away": "Persibo Bojonegoro",
+      "score": [
+        2,
+        1
+      ],
+      "video_url": "https://www.youtube.com/watch?v=UOjP1O_0qHc",
+      "periods": {
+        "1": [
+          "7:07",
+          "55:15"
+        ],
+        "2": [
+          "71:00",
+          "122:15"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false,
+      "scope": "scouting"
+    },
+    {
+      "match_id": "gresik_persibangga_20261126",
+      "round": "Pekan 4",
+      "date": "2026-11-26",
+      "home": "Gresik United FC",
+      "away": "Persibangga Purbalingga",
+      "score": [
+        2,
+        1
+      ],
+      "video_url": "https://www.youtube.com/watch?v=OaY0vfIG4wI",
+      "periods": {
+        "1": [
+          "09:35",
+          "56:05"
+        ],
+        "2": [
+          "70:25",
+          "120:20"
+        ]
+      },
+      "home_dir_1h": null,
+      "swap_teams": false,
+      "scope": "scouting"
     }
   ]
 }
