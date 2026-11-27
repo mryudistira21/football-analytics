@@ -147,7 +147,16 @@ def main() -> int:
         if not ck or not ck.is_file():
             print(f"--cookies: no cookie file found at {a.cookies}")
             return 1
-        base_opts["cookiefile"] = str(ck)
+        # yt-dlp rewrites the cookie file when it closes; the source may be on a
+        # read-only filesystem (e.g. a Kaggle /kaggle/input dataset), so work from
+        # a writable copy. Unique per process so parallel downloads don't collide.
+        import tempfile
+        work_ck = Path(tempfile.gettempdir()) / f"yt_cookies_{os.getpid()}.txt"
+        try:
+            shutil.copyfile(ck, work_ck)
+            base_opts["cookiefile"] = str(work_ck)
+        except OSError:
+            base_opts["cookiefile"] = str(ck)   # fall back to the original
         print(f"Using cookies from {ck}")
 
     if a.list:
