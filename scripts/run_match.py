@@ -256,7 +256,7 @@ def youtube_id(url: str) -> str | None:
 
 # ---------------------------------------------------------------- steps
 def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool,
-                 video_dir: Path | None = None) -> Path:
+                 video_dir: Path | None = None, cookies: Path | None = None) -> Path:
     """Persistent copy in root/videos; a local working copy in work/ for fast decoding."""
     mid = match["match_id"]
     vids = video_dir or root / "videos"
@@ -286,8 +286,11 @@ def ensure_video(match: dict[str, Any], root: Path, work: Path, download: bool,
             raise SystemExit(f"{mid}: set video_url in the config first.")
         stage = vids if video_dir is not None else work / "videos"
         log(f"Downloading {url} (720p, <=30 fps, no re-encode) ...")
-        r = subprocess.run([sys.executable, str(DOWNLOADER), url, "--height", "720", "--fps", "30",
-                            "--name", mid, "--out", str(stage)])
+        dl_cmd = [sys.executable, str(DOWNLOADER), url, "--height", "720", "--fps", "30",
+                  "--name", mid, "--out", str(stage)]
+        if cookies:
+            dl_cmd += ["--cookies", str(cookies)]
+        r = subprocess.run(dl_cmd)
         if r.returncode != 0:
             raise SystemExit("Download failed; see the messages above.")
         got = next(p for p in sorted(stage.glob(mid + ".*")) if p.suffix.lower() in (".mp4", ".mkv", ".webm"))
@@ -593,6 +596,8 @@ def main() -> int:
     ap.add_argument("--download", action="store_true", help="download the video if it is missing")
     ap.add_argument("--download-only", action="store_true",
                     help="only fetch the video (+ models) into --root; no GPU needed")
+    ap.add_argument("--cookies", type=Path,
+                    help="Netscape cookies.txt passed to the YouTube downloader (gets past the bot check)")
     ap.add_argument("--smoke", action="store_true", help="60 s check with preview + stills, then stop")
     ap.add_argument("--smoke-seconds", type=float, default=60)
     ap.add_argument("--post-only", action="store_true", help="skip tracking; rebuild combine/moments/report")
@@ -636,7 +641,7 @@ def main() -> int:
     for d in (run / "chunks", run / "logs", work):
         d.mkdir(parents=True, exist_ok=True)
     if a.download_only:
-        video = ensure_video(match, root, work, True, a.video_dir)
+        video = ensure_video(match, root, work, True, a.video_dir, a.cookies)
         duration, fps = video_info(video)
         ensure_models(root)
         log(f"Ready: {video} ({fmt_clock(duration)}, {fps:.2f} fps). "
@@ -662,7 +667,7 @@ def main() -> int:
     log(f"  {len(chunks)} chunks of <= {settings['chunk_seconds'] / 60:.0f} min | {resources()}")
 
     if not a.post_only:
-        video = ensure_video(match, root, work, a.download, a.video_dir)
+        video = ensure_video(match, root, work, a.download, a.video_dir, a.cookies)
         duration, fps = video_info(video)
         last_end = max(p["end"] for p in periods)
         if duration and last_end > duration + 1:

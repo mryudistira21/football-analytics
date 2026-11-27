@@ -119,6 +119,8 @@ def main() -> int:
     ap.add_argument("--threads", type=int, default=4, help="CPU threads when re-encoding (default 4)")
     ap.add_argument("--name", help="output file name without extension (default: video title)")
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT, help=f"output folder (default: {DEFAULT_OUT})")
+    ap.add_argument("--cookies", type=Path, help="Netscape cookies.txt for YouTube "
+                    "(gets past the 'confirm you're not a bot' check on datacenter IPs)")
     ap.add_argument("--list", action="store_true", help="list available qualities and exit")
     a = ap.parse_args()
 
@@ -136,6 +138,12 @@ def main() -> int:
         print("Note: no JavaScript runtime found, so some YouTube formats may be missing.\n"
               "      Fix once with:  winget install DenoLand.Deno   (then open a new window)\n")
     base_opts = {"js_runtimes": runtimes} if runtimes else {}
+    if a.cookies:
+        if not a.cookies.exists():
+            print(f"--cookies file not found: {a.cookies}")
+            return 1
+        base_opts["cookiefile"] = str(a.cookies)
+        print(f"Using cookies from {a.cookies}")
 
     if a.list:
         with yt_dlp.YoutubeDL({**base_opts, "listformats": True}) as ydl:
