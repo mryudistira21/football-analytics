@@ -1,8 +1,8 @@
 {
   "competition": "Liga Nusantara 2026-27",
-  "updated": "2026-11-18",
+  "updated": "2026-11-27",
   "source": "ileague.id",
-  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "note": "Group B: full results, scorers and W/D/L from the ileague match pages (rounds 1-4). Groups A/C: points from ileague; only Pekan 2 results kept. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
   "clubs": [
     {
       "name": "BATAVIA FC",
@@ -3517,37 +3517,37 @@
       {
         "short": "PKB",
         "name": "Pekanbaru FC",
-        "pts": 6,
+        "pts": 9,
         "rank": 1
       },
       {
         "short": "PSK",
         "name": "Pesik Kuningan",
-        "pts": 3,
+        "pts": 7,
         "rank": 2
       },
       {
         "short": "BAT",
         "name": "BATAVIA FC",
-        "pts": 3,
+        "pts": 6,
         "rank": 3
-      },
-      {
-        "short": "PKT",
-        "name": "Persekat",
-        "pts": 3,
-        "rank": 4
       },
       {
         "short": "PKO",
         "name": "Persikota Kota Tangerang",
-        "pts": 3,
+        "pts": 6,
+        "rank": 4
+      },
+      {
+        "short": "PKT",
+        "name": "Persekat",
+        "pts": 5,
         "rank": 5
       },
       {
         "short": "PKN",
         "name": "Persikotas Nusantara",
-        "pts": 0,
+        "pts": 1,
         "rank": 6
       },
       {
@@ -3561,136 +3561,311 @@
       {
         "short": "PSF",
         "name": "Putra Sang Fajar FC",
-        "pts": 6,
-        "rank": 1
+        "pts": 12,
+        "rank": 1,
+        "p": 4,
+        "w": 4,
+        "d": 0,
+        "l": 0,
+        "gf": 6,
+        "ga": 1,
+        "gd": 5,
+        "gf_1h": 1,
+        "gf_2h": 5,
+        "ga_1h": 0,
+        "ga_2h": 1
       },
       {
         "short": "PKA",
         "name": "Persika Karanganyar",
+        "pts": 10,
+        "rank": 2,
+        "p": 4,
+        "w": 3,
+        "d": 1,
+        "l": 0,
+        "gf": 6,
+        "ga": 2,
+        "gd": 4,
+        "gf_1h": 4,
+        "gf_2h": 2,
+        "ga_1h": 0,
+        "ga_2h": 2
+      },
+      {
+        "short": "GRS",
+        "name": "Gresik United FC",
+        "pts": 6,
+        "rank": 3,
+        "p": 4,
+        "w": 1,
+        "d": 3,
+        "l": 0,
+        "gf": 4,
+        "ga": 3,
+        "gd": 1,
+        "gf_1h": 0,
+        "gf_2h": 4,
+        "ga_1h": 1,
+        "ga_2h": 2
+      },
+      {
+        "short": "PNG",
+        "name": "Persinga Ngawi",
         "pts": 4,
-        "rank": 2
+        "rank": 4,
+        "p": 4,
+        "w": 1,
+        "d": 1,
+        "l": 2,
+        "gf": 3,
+        "ga": 4,
+        "gd": -1,
+        "gf_1h": 1,
+        "gf_2h": 2,
+        "ga_1h": 2,
+        "ga_2h": 2
       },
       {
         "short": "PBG",
         "name": "Persibangga Purbalingga",
-        "pts": 3,
-        "rank": 3
+        "pts": 4,
+        "rank": 5,
+        "p": 4,
+        "w": 1,
+        "d": 1,
+        "l": 2,
+        "gf": 4,
+        "ga": 6,
+        "gd": -2,
+        "gf_1h": 3,
+        "gf_2h": 1,
+        "ga_1h": 0,
+        "ga_2h": 6
+      },
+      {
+        "short": "PBO",
+        "name": "Persibo Bojonegoro",
+        "pts": 2,
+        "rank": 6,
+        "p": 4,
+        "w": 0,
+        "d": 2,
+        "l": 2,
+        "gf": 2,
+        "ga": 4,
+        "gd": -2,
+        "gf_1h": 0,
+        "gf_2h": 2,
+        "ga_1h": 1,
+        "ga_2h": 3
       },
       {
         "short": "BTL",
         "name": "PERSIBA Bantul",
         "pts": 2,
-        "rank": 4
+        "rank": 7,
+        "p": 4,
+        "w": 0,
+        "d": 2,
+        "l": 2,
+        "gf": 2,
+        "ga": 4,
+        "gd": -2,
+        "gf_1h": 1,
+        "gf_2h": 1,
+        "ga_1h": 3,
+        "ga_2h": 1
       },
       {
         "short": "PIP",
         "name": "Persipa Pati",
         "pts": 2,
-        "rank": 5
-      },
-      {
-        "short": "GRS",
-        "name": "Gresik United FC",
-        "pts": 2,
-        "rank": 6
-      },
-      {
-        "short": "PBO",
-        "name": "Persibo Bojonegoro",
-        "pts": 1,
-        "rank": 7
-      },
-      {
-        "short": "PNG",
-        "name": "Persinga Ngawi",
-        "pts": 0,
-        "rank": 8
+        "rank": 8,
+        "p": 4,
+        "w": 0,
+        "d": 2,
+        "l": 2,
+        "gf": 3,
+        "ga": 6,
+        "gd": -3,
+        "gf_1h": 1,
+        "gf_2h": 2,
+        "ga_1h": 4,
+        "ga_2h": 2
       }
     ],
     "C": [
       {
         "short": "PKP",
         "name": "Persekabpas",
-        "pts": 6,
+        "pts": 10,
         "rank": 1
       },
       {
         "short": "PSD",
         "name": "Perseden Denpasar",
-        "pts": 4,
+        "pts": 8,
         "rank": 2
-      },
-      {
-        "short": "PSU",
-        "name": "Pasuruan United",
-        "pts": 3,
-        "rank": 3
-      },
-      {
-        "short": "NGA",
-        "name": "PS Ngada",
-        "pts": 2,
-        "rank": 4
-      },
-      {
-        "short": "PPI",
-        "name": "Persipani Paniai",
-        "pts": 2,
-        "rank": 5
       },
       {
         "short": "PKU",
         "name": "Persikutim Patriot United",
-        "pts": 1,
-        "rank": 6
+        "pts": 5,
+        "rank": 3
       },
       {
-        "short": "DON",
-        "name": "Donggala United FC",
-        "pts": 1,
-        "rank": 7
+        "short": "PSU",
+        "name": "Pasuruan United",
+        "pts": 4,
+        "rank": 4
+      },
+      {
+        "short": "NGA",
+        "name": "PS Ngada",
+        "pts": 4,
+        "rank": 5
+      },
+      {
+        "short": "PPI",
+        "name": "Persipani Paniai",
+        "pts": 3,
+        "rank": 6
       },
       {
         "short": "PNB",
         "name": "Persinab FC",
-        "pts": 1,
+        "pts": 3,
+        "rank": 7
+      },
+      {
+        "short": "DON",
+        "name": "Donggala United FC",
+        "pts": 2,
         "rank": 8
       }
     ]
   },
   "scorers": [
     {
-      "name": "JOHAN YOGA",
-      "club": "PSF",
-      "clubName": "Putra Sang Fajar FC",
-      "goals": 3
+      "name": "FERRY CAHYO",
+      "club": "BAT",
+      "clubName": "BATAVIA FC",
+      "goals": 4
     },
     {
-      "name": "FARID. F",
+      "name": "JOHAN YOGA UTAMA",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC",
+      "goals": 4
+    },
+    {
+      "name": "FARID F.",
       "club": "PSU",
       "clubName": "Pasuruan United",
-      "goals": 2
+      "goals": 3
     },
     {
       "name": "BETO",
       "club": "PKP",
       "clubName": "Persekabpas",
-      "goals": 2
+      "goals": 3
     },
     {
-      "name": "A. SIREGAR",
-      "club": "BAT",
-      "clubName": "BATAVIA FC",
-      "goals": 2
-    },
-    {
-      "name": "DANYL TUKA",
-      "club": "PIP",
-      "clubName": "Persipa Pati",
-      "goals": 2
+      "name": "ALDON LALU",
+      "club": "NGA",
+      "clubName": "PS Ngada",
+      "goals": 3
     }
   ],
   "fixtures": [
+    {
+      "date": "2026-11-13",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 0,
+      "away": "GRS",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-13",
+      "home": "PBO",
+      "hg": 0,
+      "ag": 0,
+      "away": "PIP",
+      "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-13",
+      "home": "PKA",
+      "hg": 1,
+      "ag": 0,
+      "away": "PNG",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [
+        "M. Syaiful Asri 88'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-14",
+      "home": "PSF",
+      "hg": 2,
+      "ag": 0,
+      "away": "PBG",
+      "venue": "Stadion Gelora Soepriadi, Blitar",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [
+        "Johan Yoga Utama 47' (p)",
+        "Johan Yoga Utama 74'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-17",
+      "home": "GRS",
+      "hg": 1,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Stadion Gelora Joko Samudro, Gresik",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Maulana Ilham Jaya Kusuma 78'"
+      ],
+      "scorers_away": [
+        "Rexo Dolby Callepso 90+3'"
+      ]
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PIP",
+      "hg": 2,
+      "ag": 2,
+      "away": "BTL",
+      "venue": "Stadion Moch. Soebroto, Magelang",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Danhyl Poetra Marselinho Tuka 15'",
+        "Danhyl Poetra Marselinho Tuka 58'"
+      ],
+      "scorers_away": [
+        "Elvateeh Varesia Akhada 9'",
+        "Muh Arsil Anas 51'"
+      ]
+    },
     {
       "date": "2026-11-17",
       "home": "PKN",
@@ -3698,7 +3873,8 @@
       "ag": 2,
       "away": "PKB",
       "venue": "Stadion Galuh Ciamis",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-17",
@@ -3707,7 +3883,8 @@
       "ag": 0,
       "away": "PKO",
       "venue": "Trisanja",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-17",
@@ -3716,61 +3893,8 @@
       "ag": 0,
       "away": "PJU",
       "venue": "Kebogiro",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-17",
-      "home": "PIP",
-      "hg": 2,
-      "ag": 2,
-      "away": "BTL",
-      "venue": "Moch. Soebroto",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-17",
-      "home": "GRS",
-      "hg": 1,
-      "ag": 1,
-      "away": "PKA",
-      "venue": "Gelora Joko Samudro",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PNG",
-      "hg": 1,
-      "ag": 2,
-      "away": "PSF",
-      "venue": "Stadion Ketonggo Ngawi",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PBG",
-      "hg": 2,
-      "ag": 1,
-      "away": "PBO",
-      "venue": "Trisanja",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PSU",
-      "hg": 0,
-      "ag": 1,
-      "away": "PKP",
-      "venue": "UNS",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PNB",
-      "hg": 1,
-      "ag": 1,
-      "away": "PSD",
-      "venue": "Brawijaya",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-18",
@@ -3779,7 +3903,25 @@
       "ag": 3,
       "away": "DON",
       "venue": "Gelora Joko Samudro",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PBG",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBO",
+      "venue": "Stadion Trisanja, Tegal",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Usama Ahmad Raihan 32'",
+        "Farrel Arya Tri Sandika Supratikno 90+4'"
+      ],
+      "scorers_away": [
+        "Sehabudin Ahmad 48'"
+      ]
     },
     {
       "date": "2026-11-18",
@@ -3788,7 +3930,1054 @@
       "ag": 1,
       "away": "PPI",
       "venue": "Kudungga Sangatta",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNB",
+      "hg": 1,
+      "ag": 1,
+      "away": "PSD",
+      "venue": "Brawijaya",
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 2,
+      "away": "PSF",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Much Ilham Noer 56'"
+      ],
+      "scorers_away": [
+        "Johan Yoga Utama 22'",
+        "Komarodin 86'"
+      ]
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PSU",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKP",
+      "venue": "UNS",
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-21",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Muhammad Fabian Aslam 29'"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PBO",
+      "hg": 1,
+      "ag": 1,
+      "away": "GRS",
+      "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [
+        "Iqbal Tri Saputra 79'"
+      ],
+      "scorers_away": [
+        "M. Dzaki Alamsyah 88'"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PIP",
+      "hg": 0,
+      "ag": 1,
+      "away": "PSF",
+      "venue": "Stadion Moch. Soebroto, Magelang",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Johan Yoga Utama 48' (p)"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 1,
+      "away": "PBG",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [
+        "Much Ilham Noer 67'"
+      ],
+      "scorers_away": [
+        "Usama Ahmad Raihan 27'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 1,
+      "away": "PNG",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Aditya Sentosa 29'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "GRS",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBG",
+      "venue": "Stadion Gelora Joko Samudro, Gresik",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Shahih Elang Rishandy 78' (p)",
+        "Shahih Elang Rishandy 90'"
+      ],
+      "scorers_away": [
+        "Usama Ahmad Raihan 32'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "PKA",
+      "hg": 3,
+      "ag": 1,
+      "away": "PIP",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Muhammad Fabian Aslam 19'",
+        "Muhammad Fabian Aslam 34'",
+        "Febrian Tri Yanto 43'"
+      ],
+      "scorers_away": [
+        "Ilham Wibowo Yusuf 49'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "PSF",
+      "hg": 1,
+      "ag": 0,
+      "away": "PBO",
+      "venue": "Stadion Gelora Soepriadi, Blitar",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Komarodin 50'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-29",
+      "time": "",
+      "home": "PKN",
+      "hg": null,
+      "ag": null,
+      "away": "PSK",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "",
+      "home": "PKT",
+      "hg": null,
+      "ag": null,
+      "away": "PJU",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PKB",
+      "hg": null,
+      "ag": null,
+      "away": "BAT",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PNB",
+      "hg": null,
+      "ag": null,
+      "away": "PKU",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PPI",
+      "hg": null,
+      "ag": null,
+      "away": "DON",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PSD",
+      "hg": null,
+      "ag": null,
+      "away": "PKP",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PSU",
+      "hg": null,
+      "ag": null,
+      "away": "NGA",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:00",
+      "home": "PNG",
+      "hg": null,
+      "ag": null,
+      "away": "PBO",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:30",
+      "home": "GRS",
+      "hg": null,
+      "ag": null,
+      "away": "PIP",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:30",
+      "home": "PBG",
+      "hg": null,
+      "ag": null,
+      "away": "BTL",
+      "venue": "Stadion Trisanja, Tegal",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "19:00",
+      "home": "PKA",
+      "hg": null,
+      "ag": null,
+      "away": "PSF",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 5",
+      "group": "B"
     }
-  ]
+  ],
+  "players_to_watch": {
+    "BTL": {
+      "name": "PERSIBA Bantul",
+      "group": "B",
+      "players": [
+        {
+          "no": 86,
+          "name": "ELVATEEH VARESIA AKHADA",
+          "role": "Right winger",
+          "why": "Scored PERSIBA's first goal of the season (9', from outside the box at Persipa). Back from a two-yellow suspension.",
+          "why_id": "Pencetak gol pertama PERSIBA musim ini (menit 9, tendangan dari luar kotak di kandang Persipa). Kembali setelah absen akumulasi kartu.",
+          "stats": {
+            "apps": 3,
+            "starts": 3,
+            "sub_apps": 0,
+            "minutes": 264,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 14,
+          "name": "MUH ARSIL ANAS",
+          "role": "Central midfielder",
+          "why": "19 years old and already a starter: headed the 51' goal at Persipa, 3 starts + 1 sub appearance.",
+          "why_id": "Baru 19 tahun tapi sudah jadi starter: sundulannya di menit 51 ke gawang Persipa, 3 kali starter + 1 kali masuk dari bangku cadangan.",
+          "stats": {
+            "apps": 4,
+            "starts": 3,
+            "sub_apps": 1,
+            "minutes": 239,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 87,
+          "name": "AHMAD RIFAL",
+          "role": "Centre-back",
+          "why": "The constant in a back line that has changed every game: most minutes in the squad (about 315').",
+          "why_id": "Satu-satunya yang konstan di lini belakang yang selalu berubah: menit bermain terbanyak di skuad (sekitar 315 menit).",
+          "stats": {
+            "apps": 4,
+            "starts": 3,
+            "sub_apps": 1,
+            "minutes": 315,
+            "goals": 0,
+            "pens": 0,
+            "captain": 0
+          }
+        }
+      ]
+    },
+    "PBG": {
+      "name": "Persibangga Purbalingga",
+      "group": "B",
+      "players": [
+        {
+          "no": 18,
+          "name": "USAMA AHMAD RAIHAN",
+          "role": "Left winger",
+          "why": "Persibangga's main threat: 3 of their 4 goals (27', 32', 32'), all before half-time, every minute played.",
+          "why_id": "Ancaman utama Persibangga: 3 dari 4 gol tim (menit 27, 32, 32), semuanya di babak pertama, main penuh di semua laga.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 360,
+            "goals": 3,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 87,
+          "name": "MUHAMMMAD ILHAMUL IRHAZ",
+          "role": "Defensive midfielder (captain)",
+          "why": "Captain and midfield screen; back from a two-yellow suspension (booked by 41' and 45+2' in earlier games).",
+          "why_id": "Kapten sekaligus gelandang bertahan; kembali dari akumulasi kartu (kartu kuning di menit 41 dan 45+2 pada laga sebelumnya).",
+          "stats": {
+            "apps": 3,
+            "starts": 3,
+            "sub_apps": 0,
+            "minutes": 252,
+            "goals": 0,
+            "pens": 0,
+            "captain": 3
+          }
+        },
+        {
+          "no": 7,
+          "name": "ERLANGGA ADHYAKSA NUGRAHA",
+          "role": "Attacking midfielder",
+          "why": "Played every minute (360'); captained the side at Gresik. The link between midfield and Usama.",
+          "why_id": "Main penuh 360 menit; jadi kapten saat di Gresik. Penghubung lini tengah dengan Usama.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 360,
+            "goals": 0,
+            "pens": 0,
+            "captain": 1
+          }
+        }
+      ]
+    },
+    "PSF": {
+      "name": "Putra Sang Fajar FC",
+      "group": "B",
+      "players": [
+        {
+          "no": 90,
+          "name": "JOHAN YOGA UTAMA",
+          "role": "Centre-forward",
+          "why": "4 goals in 4 (2 penalties), joint top scorer in the league. Unbeaten Putra Sang Fajar lean on him.",
+          "why_id": "4 gol dari 4 laga (2 penalti), top skor bersama di liga. Putra Sang Fajar yang belum terkalahkan bertumpu padanya.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 354,
+            "goals": 4,
+            "pens": 2,
+            "captain": 0
+          }
+        },
+        {
+          "no": 10,
+          "name": "KOMARODIN",
+          "role": "Winger / impact sub",
+          "why": "2 goals, mostly off the bench: the 86' winner at Persinga and the only goal against Persibo.",
+          "why_id": "2 gol, kebanyakan dari bangku cadangan: gol kemenangan menit 86 di Ngawi dan satu-satunya gol melawan Persibo.",
+          "stats": {
+            "apps": 4,
+            "starts": 1,
+            "sub_apps": 3,
+            "minutes": 129,
+            "goals": 2,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 21,
+          "name": "FIRMANSYAH",
+          "role": "Attacking midfielder (captain)",
+          "why": "Captain, every minute played for the group leaders.",
+          "why_id": "Kapten, main penuh di setiap laga untuk pemuncak grup.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 360,
+            "goals": 0,
+            "pens": 0,
+            "captain": 3
+          }
+        }
+      ]
+    },
+    "PKA": {
+      "name": "Persika Karanganyar",
+      "group": "B",
+      "players": [
+        {
+          "no": 21,
+          "name": "MUHAMMAD FABIAN ASLAM",
+          "role": "Right-back",
+          "why": "3 goals from right-back, including the counter-attack winner in Bantul (29') and a brace against Persipa.",
+          "why_id": "3 gol dari posisi bek kanan, termasuk gol kemenangan lewat serangan balik di Bantul (menit 29) dan dua gol ke gawang Persipa.",
+          "stats": {
+            "apps": 2,
+            "starts": 2,
+            "sub_apps": 0,
+            "minutes": 167,
+            "goals": 3,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 91,
+          "name": "FEBRIAN TRI YANTO",
+          "role": "Central midfielder",
+          "why": "Goal against Persipa; 3 starts in midfield.",
+          "why_id": "Mencetak gol ke gawang Persipa; 3 kali starter di lini tengah.",
+          "stats": {
+            "apps": 4,
+            "starts": 3,
+            "sub_apps": 1,
+            "minutes": 222,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 7,
+          "name": "REXO DOLBY CALLEPSO",
+          "role": "Forward / impact sub",
+          "why": "Late threat off the bench: the 90+3' equaliser at Gresik.",
+          "why_id": "Ancaman di menit akhir dari bangku cadangan: gol penyeimbang menit 90+3 di Gresik.",
+          "stats": {
+            "apps": 3,
+            "starts": 0,
+            "sub_apps": 3,
+            "minutes": 86,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        }
+      ]
+    },
+    "GRS": {
+      "name": "Gresik United FC",
+      "group": "B",
+      "players": [
+        {
+          "no": 28,
+          "name": "SHAHIH ELANG RISHANDY",
+          "role": "Centre-forward",
+          "why": "2 goals after coming on at half-time against Persibangga (78' penalty, 90'). Gresik have scored all 4 goals after the break.",
+          "why_id": "2 gol setelah masuk di babak kedua melawan Persibangga (penalti menit 78 dan menit 90). Keempat gol Gresik lahir di babak kedua.",
+          "stats": {
+            "apps": 4,
+            "starts": 2,
+            "sub_apps": 2,
+            "minutes": 270,
+            "goals": 2,
+            "pens": 1,
+            "captain": 0
+          }
+        },
+        {
+          "no": 22,
+          "name": "M. DZAKI ALAMSYAH",
+          "role": "Centre-forward",
+          "why": "88' equaliser at Persibo; another Gresik goal that came late.",
+          "why_id": "Gol penyeimbang menit 88 di Bojonegoro; lagi-lagi gol telat dari Gresik.",
+          "stats": {
+            "apps": 4,
+            "starts": 2,
+            "sub_apps": 2,
+            "minutes": 167,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 21,
+          "name": "ABDUL RAHMAN",
+          "role": "Centre-back (captain)",
+          "why": "Captain of a defence that has let in 3 in 4.",
+          "why_id": "Kapten lini belakang yang hanya kebobolan 3 gol dari 4 laga.",
+          "stats": {
+            "apps": 3,
+            "starts": 3,
+            "sub_apps": 0,
+            "minutes": 270,
+            "goals": 0,
+            "pens": 0,
+            "captain": 3
+          }
+        }
+      ]
+    },
+    "PNG": {
+      "name": "Persinga Ngawi",
+      "group": "B",
+      "players": [
+        {
+          "no": 66,
+          "name": "MUCH ILHAM NOER",
+          "role": "Central midfielder",
+          "why": "2 goals (56', 67') from midfield; started every game.",
+          "why_id": "2 gol (menit 56 dan 67) dari lini tengah; selalu jadi starter.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 283,
+            "goals": 2,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 27,
+          "name": "ADITYA SENTOSA",
+          "role": "Central midfielder",
+          "why": "Scored the winner in Bantul (29').",
+          "why_id": "Pencetak gol kemenangan di Bantul (menit 29).",
+          "stats": {
+            "apps": 4,
+            "starts": 2,
+            "sub_apps": 2,
+            "minutes": 202,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 19,
+          "name": "NANDA HELVRIT SAPUTRA",
+          "role": "Centre-back (captain)",
+          "why": "Captain, about 338' played.",
+          "why_id": "Kapten, sekitar 338 menit bermain.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 338,
+            "goals": 0,
+            "pens": 0,
+            "captain": 2
+          }
+        }
+      ]
+    },
+    "PBO": {
+      "name": "Persibo Bojonegoro",
+      "group": "B",
+      "players": [
+        {
+          "no": 7,
+          "name": "SEHABUDIN AHMAD",
+          "role": "Centre-forward",
+          "why": "Scored at Persibangga; the starting striker.",
+          "why_id": "Mencetak gol di kandang Persibangga; striker utama.",
+          "stats": {
+            "apps": 4,
+            "starts": 3,
+            "sub_apps": 1,
+            "minutes": 269,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 10,
+          "name": "IQBAL TRI SAPUTRA",
+          "role": "Forward / impact sub",
+          "why": "79' goal against Gresik eight minutes after coming on.",
+          "why_id": "Gol menit 79 ke gawang Gresik, delapan menit setelah masuk.",
+          "stats": {
+            "apps": 3,
+            "starts": 0,
+            "sub_apps": 3,
+            "minutes": 75,
+            "goals": 1,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 3,
+          "name": "CRAH EKA ANGGER ISWANTO",
+          "role": "Left-back (captain)",
+          "why": "Captain, every minute played (360').",
+          "why_id": "Kapten, main penuh 360 menit.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 360,
+            "goals": 0,
+            "pens": 0,
+            "captain": 4
+          }
+        }
+      ]
+    },
+    "PIP": {
+      "name": "Persipa Pati",
+      "group": "B",
+      "players": [
+        {
+          "no": 16,
+          "name": "DANHYL POETRA MARSELINHO TUKA",
+          "role": "Left winger",
+          "why": "Both goals in the 2-2 with PERSIBA (15', 58').",
+          "why_id": "Dua gol ke gawang PERSIBA di laga 2-2 (menit 15 dan 58).",
+          "stats": {
+            "apps": 4,
+            "starts": 3,
+            "sub_apps": 1,
+            "minutes": 288,
+            "goals": 2,
+            "pens": 0,
+            "captain": 0
+          }
+        },
+        {
+          "no": 8,
+          "name": "AKHMAD RIYADI",
+          "role": "Defensive midfielder",
+          "why": "Midfield anchor, about 337' played.",
+          "why_id": "Jangkar lini tengah, sekitar 337 menit bermain.",
+          "stats": {
+            "apps": 4,
+            "starts": 4,
+            "sub_apps": 0,
+            "minutes": 337,
+            "goals": 0,
+            "pens": 0,
+            "captain": 0
+          }
+        }
+      ]
+    }
+  },
+  "ptw_basis": "Official ileague data, rounds 1-4: goals, starts, approximate minutes, captaincy, suspensions.",
+  "persiba_schedule": [
+    {
+      "round": 5,
+      "date": "2026-11-30",
+      "home": "PBG",
+      "away": "BTL"
+    },
+    {
+      "round": 6,
+      "date": "2026-12-04",
+      "home": "PBO",
+      "away": "BTL"
+    },
+    {
+      "round": 7,
+      "date": "2026-12-08",
+      "home": "BTL",
+      "away": "PSF"
+    },
+    {
+      "round": 8,
+      "date": "2026-12-12",
+      "home": "PKA",
+      "away": "BTL"
+    },
+    {
+      "round": 9,
+      "date": "2026-12-16",
+      "home": "PNG",
+      "away": "BTL"
+    },
+    {
+      "round": 10,
+      "date": "2026-12-20",
+      "home": "BTL",
+      "away": "PBO"
+    }
+  ],
+  "status": [
+    {
+      "match_id": "persiba_gresik_20261113",
+      "date": "2026-11-13",
+      "round": "Pekan 1",
+      "home": "BTL",
+      "away": "GRS",
+      "hg": 0,
+      "ag": 0,
+      "played": true,
+      "stage": "ready",
+      "label": "Ready to run (batch 2)",
+      "why": [
+        "PERSIBA match"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-13",
+      "round": "Pekan 1",
+      "home": "PBO",
+      "away": "PIP",
+      "hg": 0,
+      "ag": 0,
+      "played": true,
+      "stage": "not_set_up",
+      "label": "Not set up",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": "persika_persinga_20261113",
+      "date": "2026-11-13",
+      "round": "Pekan 1",
+      "home": "PKA",
+      "away": "PNG",
+      "hg": 1,
+      "ag": 0,
+      "played": true,
+      "stage": "analysed",
+      "label": "Analysed (Track B)",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": "psf_persibangga_20261114",
+      "date": "2026-11-14",
+      "round": "Pekan 1",
+      "home": "PSF",
+      "away": "PBG",
+      "hg": 2,
+      "ag": 0,
+      "played": true,
+      "stage": "queued",
+      "label": "Queued (Kaggle batch 1)",
+      "why": [
+        "Scouting: next opponent"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": "gresik_persika_20261117",
+      "date": "2026-11-17",
+      "round": "Pekan 2",
+      "home": "GRS",
+      "away": "PKA",
+      "hg": 1,
+      "ag": 1,
+      "played": true,
+      "stage": "ready",
+      "label": "Ready to run",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": "persipa_persiba_20261117",
+      "date": "2026-11-17",
+      "round": "Pekan 2",
+      "home": "PIP",
+      "away": "BTL",
+      "hg": 2,
+      "ag": 2,
+      "played": true,
+      "stage": "ready",
+      "label": "Ready to run (batch 2)",
+      "why": [
+        "PERSIBA match"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": "persibangga_persibo_20261118",
+      "date": "2026-11-18",
+      "round": "Pekan 2",
+      "home": "PBG",
+      "away": "PBO",
+      "hg": 2,
+      "ag": 1,
+      "played": true,
+      "stage": "queued",
+      "label": "Queued (Kaggle batch 1)",
+      "why": [
+        "Scouting: next opponent"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": "persinga_psf_20261118",
+      "date": "2026-11-18",
+      "round": "Pekan 2",
+      "home": "PNG",
+      "away": "PSF",
+      "hg": 1,
+      "ag": 2,
+      "played": true,
+      "stage": "needs_times",
+      "label": "Needs period times",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": "persiba_persika_20261121",
+      "date": "2026-11-21",
+      "round": "Pekan 3",
+      "home": "BTL",
+      "away": "PKA",
+      "hg": 0,
+      "ag": 1,
+      "played": true,
+      "stage": "analysed",
+      "label": "Analysed (Track B)",
+      "why": [
+        "PERSIBA match"
+      ],
+      "notes": "Direction corrected to R on 23 Nov; physical + counter-press added 25 Nov."
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-22",
+      "round": "Pekan 3",
+      "home": "PBO",
+      "away": "GRS",
+      "hg": 1,
+      "ag": 1,
+      "played": true,
+      "stage": "not_set_up",
+      "label": "Not set up",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-22",
+      "round": "Pekan 3",
+      "home": "PIP",
+      "away": "PSF",
+      "hg": 0,
+      "ag": 1,
+      "played": true,
+      "stage": "not_set_up",
+      "label": "Not set up",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": "persinga_persibangga_20261122",
+      "date": "2026-11-22",
+      "round": "Pekan 3",
+      "home": "PNG",
+      "away": "PBG",
+      "hg": 1,
+      "ag": 1,
+      "played": true,
+      "stage": "queued",
+      "label": "Queued (Kaggle batch 1)",
+      "why": [
+        "Scouting: next opponent"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": "persiba_persinga_20261126",
+      "date": "2026-11-26",
+      "round": "Pekan 4",
+      "home": "BTL",
+      "away": "PNG",
+      "hg": 0,
+      "ag": 1,
+      "played": true,
+      "stage": "queued",
+      "label": "Queued (Kaggle batch 1)",
+      "why": [
+        "PERSIBA match"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": "gresik_persibangga_20261126",
+      "date": "2026-11-26",
+      "round": "Pekan 4",
+      "home": "GRS",
+      "away": "PBG",
+      "hg": 2,
+      "ag": 1,
+      "played": true,
+      "stage": "queued",
+      "label": "Queued (Kaggle batch 1)",
+      "why": [
+        "Scouting: next opponent"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-26",
+      "round": "Pekan 4",
+      "home": "PKA",
+      "away": "PIP",
+      "hg": 3,
+      "ag": 1,
+      "played": true,
+      "stage": "not_set_up",
+      "label": "Not set up",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-26",
+      "round": "Pekan 4",
+      "home": "PSF",
+      "away": "PBO",
+      "hg": 1,
+      "ag": 0,
+      "played": true,
+      "stage": "not_set_up",
+      "label": "Not set up",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-30",
+      "round": "Pekan 5",
+      "home": "PNG",
+      "away": "PBO",
+      "hg": null,
+      "ag": null,
+      "played": false,
+      "stage": "upcoming",
+      "label": "Not played yet",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-30",
+      "round": "Pekan 5",
+      "home": "GRS",
+      "away": "PIP",
+      "hg": null,
+      "ag": null,
+      "played": false,
+      "stage": "upcoming",
+      "label": "Not played yet",
+      "why": [],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-30",
+      "round": "Pekan 5",
+      "home": "PBG",
+      "away": "BTL",
+      "hg": null,
+      "ag": null,
+      "played": false,
+      "stage": "upcoming",
+      "label": "Not played yet",
+      "why": [
+        "PERSIBA match"
+      ],
+      "notes": ""
+    },
+    {
+      "match_id": null,
+      "date": "2026-11-30",
+      "round": "Pekan 5",
+      "home": "PKA",
+      "away": "PSF",
+      "hg": null,
+      "ag": null,
+      "played": false,
+      "stage": "upcoming",
+      "label": "Not played yet",
+      "why": [],
+      "notes": ""
+    }
+  ],
+  "next_match": {
+    "date": "2026-11-30",
+    "time": "15:30 WIB",
+    "home": "PBG",
+    "away": "BTL",
+    "venue": "Stadion Trisanja, Tegal",
+    "round": "Pekan 5"
+  }
 }

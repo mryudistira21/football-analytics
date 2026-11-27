@@ -1,0 +1,14 @@
+{
+  "note": "Ledger of what has been done per match. Claude updates it when a Track B bundle is processed or a review lands; scripts/build_hub_data.py merges it with the config into the Hub's Analysis status tab. stages: track_b = queued|done, report = done, review = done (Tagger review imported to the DB).",
+  "matches": {
+    "persiba_persika_20261121": {"track_b": "done", "track_b_date": "2026-11-23", "report": "done", "notes": "Direction corrected to R on 23 Nov; physical + counter-press added 25 Nov."},
+    "persika_persinga_20261113": {"track_b": "done", "track_b_date": "2026-11-23", "report": "done"},
+    "gresik_persibangga_20261126": {"track_b": "queued", "batch": 1, "queued_date": "2026-11-27"},
+    "persiba_persinga_20261126": {"track_b": "queued", "batch": 1, "queued_date": "2026-11-27"},
+    "persinga_persibangga_20261122": {"track_b": "queued", "batch": 1, "queued_date": "2026-11-27"},
+    "persibangga_persibo_20261118": {"track_b": "queued", "batch": 1, "queued_date": "2026-11-27"},
+    "psf_persibangga_20261114": {"track_b": "queued", "batch": 1, "queued_date": "2026-11-27"},
+    "persiba_gresik_20261113": {"batch": 2},
+    "persipa_persiba_20261117": {"batch": 2}
+  }
+}

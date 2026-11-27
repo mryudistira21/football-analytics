@@ -1,0 +1,424 @@
+{
+ "schema": "players_to_watch_v1",
+ "updated": "2026-11-27",
+ "through_round": 4,
+ "basis": "Official ileague data, rounds 1-4: goals, starts, approximate minutes, captaincy, suspensions.",
+ "clubs": {
+  "BTL": {
+   "name": "PERSIBA Bantul",
+   "group": "B",
+   "players": [
+    {
+     "no": 86,
+     "name": "ELVATEEH VARESIA AKHADA",
+     "role": "Right winger",
+     "why": "Scored PERSIBA's first goal of the season (9', from outside the box at Persipa). Back from a two-yellow suspension.",
+     "why_id": "Pencetak gol pertama PERSIBA musim ini (menit 9, tendangan dari luar kotak di kandang Persipa). Kembali setelah absen akumulasi kartu.",
+     "stats": {
+      "apps": 3,
+      "starts": 3,
+      "sub_apps": 0,
+      "minutes": 264,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "role": "Central midfielder",
+     "why": "19 years old and already a starter: headed the 51' goal at Persipa, 3 starts + 1 sub appearance.",
+     "why_id": "Baru 19 tahun tapi sudah jadi starter: sundulannya di menit 51 ke gawang Persipa, 3 kali starter + 1 kali masuk dari bangku cadangan.",
+     "stats": {
+      "apps": 4,
+      "starts": 3,
+      "sub_apps": 1,
+      "minutes": 239,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 87,
+     "name": "AHMAD RIFAL",
+     "role": "Centre-back",
+     "why": "The constant in a back line that has changed every game: most minutes in the squad (about 315').",
+     "why_id": "Satu-satunya yang konstan di lini belakang yang selalu berubah: menit bermain terbanyak di skuad (sekitar 315 menit).",
+     "stats": {
+      "apps": 4,
+      "starts": 3,
+      "sub_apps": 1,
+      "minutes": 315,
+      "goals": 0,
+      "pens": 0,
+      "captain": 0
+     }
+    }
+   ]
+  },
+  "PBG": {
+   "name": "Persibangga Purbalingga",
+   "group": "B",
+   "players": [
+    {
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "role": "Left winger",
+     "why": "Persibangga's main threat: 3 of their 4 goals (27', 32', 32'), all before half-time, every minute played.",
+     "why_id": "Ancaman utama Persibangga: 3 dari 4 gol tim (menit 27, 32, 32), semuanya di babak pertama, main penuh di semua laga.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 360,
+      "goals": 3,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 87,
+     "name": "MUHAMMMAD ILHAMUL IRHAZ",
+     "role": "Defensive midfielder (captain)",
+     "why": "Captain and midfield screen; back from a two-yellow suspension (booked by 41' and 45+2' in earlier games).",
+     "why_id": "Kapten sekaligus gelandang bertahan; kembali dari akumulasi kartu (kartu kuning di menit 41 dan 45+2 pada laga sebelumnya).",
+     "stats": {
+      "apps": 3,
+      "starts": 3,
+      "sub_apps": 0,
+      "minutes": 252,
+      "goals": 0,
+      "pens": 0,
+      "captain": 3
+     }
+    },
+    {
+     "no": 7,
+     "name": "ERLANGGA ADHYAKSA NUGRAHA",
+     "role": "Attacking midfielder",
+     "why": "Played every minute (360'); captained the side at Gresik. The link between midfield and Usama.",
+     "why_id": "Main penuh 360 menit; jadi kapten saat di Gresik. Penghubung lini tengah dengan Usama.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 360,
+      "goals": 0,
+      "pens": 0,
+      "captain": 1
+     }
+    }
+   ]
+  },
+  "PSF": {
+   "name": "Putra Sang Fajar FC",
+   "group": "B",
+   "players": [
+    {
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "role": "Centre-forward",
+     "why": "4 goals in 4 (2 penalties), joint top scorer in the league. Unbeaten Putra Sang Fajar lean on him.",
+     "why_id": "4 gol dari 4 laga (2 penalti), top skor bersama di liga. Putra Sang Fajar yang belum terkalahkan bertumpu padanya.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 354,
+      "goals": 4,
+      "pens": 2,
+      "captain": 0
+     }
+    },
+    {
+     "no": 10,
+     "name": "KOMARODIN",
+     "role": "Winger / impact sub",
+     "why": "2 goals, mostly off the bench: the 86' winner at Persinga and the only goal against Persibo.",
+     "why_id": "2 gol, kebanyakan dari bangku cadangan: gol kemenangan menit 86 di Ngawi dan satu-satunya gol melawan Persibo.",
+     "stats": {
+      "apps": 4,
+      "starts": 1,
+      "sub_apps": 3,
+      "minutes": 129,
+      "goals": 2,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 21,
+     "name": "FIRMANSYAH",
+     "role": "Attacking midfielder (captain)",
+     "why": "Captain, every minute played for the group leaders.",
+     "why_id": "Kapten, main penuh di setiap laga untuk pemuncak grup.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 360,
+      "goals": 0,
+      "pens": 0,
+      "captain": 3
+     }
+    }
+   ]
+  },
+  "PKA": {
+   "name": "Persika Karanganyar",
+   "group": "B",
+   "players": [
+    {
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "role": "Right-back",
+     "why": "3 goals from right-back, including the counter-attack winner in Bantul (29') and a brace against Persipa.",
+     "why_id": "3 gol dari posisi bek kanan, termasuk gol kemenangan lewat serangan balik di Bantul (menit 29) dan dua gol ke gawang Persipa.",
+     "stats": {
+      "apps": 2,
+      "starts": 2,
+      "sub_apps": 0,
+      "minutes": 167,
+      "goals": 3,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "role": "Central midfielder",
+     "why": "Goal against Persipa; 3 starts in midfield.",
+     "why_id": "Mencetak gol ke gawang Persipa; 3 kali starter di lini tengah.",
+     "stats": {
+      "apps": 4,
+      "starts": 3,
+      "sub_apps": 1,
+      "minutes": 222,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 7,
+     "name": "REXO DOLBY CALLEPSO",
+     "role": "Forward / impact sub",
+     "why": "Late threat off the bench: the 90+3' equaliser at Gresik.",
+     "why_id": "Ancaman di menit akhir dari bangku cadangan: gol penyeimbang menit 90+3 di Gresik.",
+     "stats": {
+      "apps": 3,
+      "starts": 0,
+      "sub_apps": 3,
+      "minutes": 86,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    }
+   ]
+  },
+  "GRS": {
+   "name": "Gresik United FC",
+   "group": "B",
+   "players": [
+    {
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "role": "Centre-forward",
+     "why": "2 goals after coming on at half-time against Persibangga (78' penalty, 90'). Gresik have scored all 4 goals after the break.",
+     "why_id": "2 gol setelah masuk di babak kedua melawan Persibangga (penalti menit 78 dan menit 90). Keempat gol Gresik lahir di babak kedua.",
+     "stats": {
+      "apps": 4,
+      "starts": 2,
+      "sub_apps": 2,
+      "minutes": 270,
+      "goals": 2,
+      "pens": 1,
+      "captain": 0
+     }
+    },
+    {
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "role": "Centre-forward",
+     "why": "88' equaliser at Persibo; another Gresik goal that came late.",
+     "why_id": "Gol penyeimbang menit 88 di Bojonegoro; lagi-lagi gol telat dari Gresik.",
+     "stats": {
+      "apps": 4,
+      "starts": 2,
+      "sub_apps": 2,
+      "minutes": 167,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 21,
+     "name": "ABDUL RAHMAN",
+     "role": "Centre-back (captain)",
+     "why": "Captain of a defence that has let in 3 in 4.",
+     "why_id": "Kapten lini belakang yang hanya kebobolan 3 gol dari 4 laga.",
+     "stats": {
+      "apps": 3,
+      "starts": 3,
+      "sub_apps": 0,
+      "minutes": 270,
+      "goals": 0,
+      "pens": 0,
+      "captain": 3
+     }
+    }
+   ]
+  },
+  "PNG": {
+   "name": "Persinga Ngawi",
+   "group": "B",
+   "players": [
+    {
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "role": "Central midfielder",
+     "why": "2 goals (56', 67') from midfield; started every game.",
+     "why_id": "2 gol (menit 56 dan 67) dari lini tengah; selalu jadi starter.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 283,
+      "goals": 2,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "role": "Central midfielder",
+     "why": "Scored the winner in Bantul (29').",
+     "why_id": "Pencetak gol kemenangan di Bantul (menit 29).",
+     "stats": {
+      "apps": 4,
+      "starts": 2,
+      "sub_apps": 2,
+      "minutes": 202,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 19,
+     "name": "NANDA HELVRIT SAPUTRA",
+     "role": "Centre-back (captain)",
+     "why": "Captain, about 338' played.",
+     "why_id": "Kapten, sekitar 338 menit bermain.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 338,
+      "goals": 0,
+      "pens": 0,
+      "captain": 2
+     }
+    }
+   ]
+  },
+  "PBO": {
+   "name": "Persibo Bojonegoro",
+   "group": "B",
+   "players": [
+    {
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "role": "Centre-forward",
+     "why": "Scored at Persibangga; the starting striker.",
+     "why_id": "Mencetak gol di kandang Persibangga; striker utama.",
+     "stats": {
+      "apps": 4,
+      "starts": 3,
+      "sub_apps": 1,
+      "minutes": 269,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 10,
+     "name": "IQBAL TRI SAPUTRA",
+     "role": "Forward / impact sub",
+     "why": "79' goal against Gresik eight minutes after coming on.",
+     "why_id": "Gol menit 79 ke gawang Gresik, delapan menit setelah masuk.",
+     "stats": {
+      "apps": 3,
+      "starts": 0,
+      "sub_apps": 3,
+      "minutes": 75,
+      "goals": 1,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 3,
+     "name": "CRAH EKA ANGGER ISWANTO",
+     "role": "Left-back (captain)",
+     "why": "Captain, every minute played (360').",
+     "why_id": "Kapten, main penuh 360 menit.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 360,
+      "goals": 0,
+      "pens": 0,
+      "captain": 4
+     }
+    }
+   ]
+  },
+  "PIP": {
+   "name": "Persipa Pati",
+   "group": "B",
+   "players": [
+    {
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "role": "Left winger",
+     "why": "Both goals in the 2-2 with PERSIBA (15', 58').",
+     "why_id": "Dua gol ke gawang PERSIBA di laga 2-2 (menit 15 dan 58).",
+     "stats": {
+      "apps": 4,
+      "starts": 3,
+      "sub_apps": 1,
+      "minutes": 288,
+      "goals": 2,
+      "pens": 0,
+      "captain": 0
+     }
+    },
+    {
+     "no": 8,
+     "name": "AKHMAD RIYADI",
+     "role": "Defensive midfielder",
+     "why": "Midfield anchor, about 337' played.",
+     "why_id": "Jangkar lini tengah, sekitar 337 menit bermain.",
+     "stats": {
+      "apps": 4,
+      "starts": 4,
+      "sub_apps": 0,
+      "minutes": 337,
+      "goals": 0,
+      "pens": 0,
+      "captain": 0
+     }
+    }
+   ]
+  }
+ }
+}

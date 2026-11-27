@@ -1,0 +1,9359 @@
+{
+ "schema": "groupb_matches_v1",
+ "competition": "Liga Nusantara 2026-27 — Group B",
+ "updated": "2026-11-27",
+ "through_round": 4,
+ "source": "ileague.id match pages; scorers cross-checked with Tribun Jogja, Jatengnews, Radar Madiun, Radar Solo where the ileague list mixes goals and cards",
+ "teams": {
+  "BTL": "PERSIBA Bantul",
+  "GRS": "Gresik United FC",
+  "PBG": "Persibangga Purbalingga",
+  "PBO": "Persibo Bojonegoro",
+  "PKA": "Persika Karanganyar",
+  "PNG": "Persinga Ngawi",
+  "PIP": "Persipa Pati",
+  "PSF": "Putra Sang Fajar FC"
+ },
+ "standings": [
+  {
+   "club": "PSF",
+   "name": "Putra Sang Fajar FC",
+   "p": 4,
+   "w": 4,
+   "d": 0,
+   "l": 0,
+   "gf": 6,
+   "ga": 1,
+   "pts": 12,
+   "gf_1h": 1,
+   "gf_2h": 5,
+   "ga_1h": 0,
+   "ga_2h": 1,
+   "gd": 5
+  },
+  {
+   "club": "PKA",
+   "name": "Persika Karanganyar",
+   "p": 4,
+   "w": 3,
+   "d": 1,
+   "l": 0,
+   "gf": 6,
+   "ga": 2,
+   "pts": 10,
+   "gf_1h": 4,
+   "gf_2h": 2,
+   "ga_1h": 0,
+   "ga_2h": 2,
+   "gd": 4
+  },
+  {
+   "club": "GRS",
+   "name": "Gresik United FC",
+   "p": 4,
+   "w": 1,
+   "d": 3,
+   "l": 0,
+   "gf": 4,
+   "ga": 3,
+   "pts": 6,
+   "gf_1h": 0,
+   "gf_2h": 4,
+   "ga_1h": 1,
+   "ga_2h": 2,
+   "gd": 1
+  },
+  {
+   "club": "PNG",
+   "name": "Persinga Ngawi",
+   "p": 4,
+   "w": 1,
+   "d": 1,
+   "l": 2,
+   "gf": 3,
+   "ga": 4,
+   "pts": 4,
+   "gf_1h": 1,
+   "gf_2h": 2,
+   "ga_1h": 2,
+   "ga_2h": 2,
+   "gd": -1
+  },
+  {
+   "club": "PBG",
+   "name": "Persibangga Purbalingga",
+   "p": 4,
+   "w": 1,
+   "d": 1,
+   "l": 2,
+   "gf": 4,
+   "ga": 6,
+   "pts": 4,
+   "gf_1h": 3,
+   "gf_2h": 1,
+   "ga_1h": 0,
+   "ga_2h": 6,
+   "gd": -2
+  },
+  {
+   "club": "BTL",
+   "name": "PERSIBA Bantul",
+   "p": 4,
+   "w": 0,
+   "d": 2,
+   "l": 2,
+   "gf": 2,
+   "ga": 4,
+   "pts": 2,
+   "gf_1h": 1,
+   "gf_2h": 1,
+   "ga_1h": 3,
+   "ga_2h": 1,
+   "gd": -2
+  },
+  {
+   "club": "PBO",
+   "name": "Persibo Bojonegoro",
+   "p": 4,
+   "w": 0,
+   "d": 2,
+   "l": 2,
+   "gf": 2,
+   "ga": 4,
+   "pts": 2,
+   "gf_1h": 0,
+   "gf_2h": 2,
+   "ga_1h": 1,
+   "ga_2h": 3,
+   "gd": -2
+  },
+  {
+   "club": "PIP",
+   "name": "Persipa Pati",
+   "p": 4,
+   "w": 0,
+   "d": 2,
+   "l": 2,
+   "gf": 3,
+   "ga": 6,
+   "pts": 2,
+   "gf_1h": 1,
+   "gf_2h": 2,
+   "ga_1h": 4,
+   "ga_2h": 2,
+   "gd": -3
+  }
+ ],
+ "matches": [
+  {
+   "id": "persiba_gresik_20261113",
+   "round": 1,
+   "date": "2026-11-13",
+   "home": "BTL",
+   "away": "GRS",
+   "venue": "Stadion Sultan Agung, Bantul",
+   "att": 2375,
+   "coach": [
+    "SUSANTO",
+    "JOKO SUSILO"
+   ],
+   "goals": [],
+   "score": [
+    0,
+    0
+   ],
+   "home_name": "PERSIBA Bantul",
+   "away_name": "Gresik United FC",
+   "xi_home": [
+    {
+     "no": 20,
+     "name": "MOHAMMAD FEBRYANSYAH REFYAN SANUSI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "WIGANDA PRADIKA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "81"
+     ],
+     "off": 81,
+     "minutes": 81
+    },
+    {
+     "no": 18,
+     "name": "MUHAMMAD AULIA WIRAWAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "25",
+      "33"
+     ],
+     "off": 33,
+     "minutes": 33
+    },
+    {
+     "no": 87,
+     "name": "AHMAD RIFAL",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 66,
+     "name": "CHOLIS BIMA SATRIA NATANEGARA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "71",
+      "81"
+     ],
+     "off": 81,
+     "minutes": 81
+    },
+    {
+     "no": 8,
+     "name": "AIDUN SASTRA UTAMI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "33"
+     ],
+     "off": 33,
+     "minutes": 33
+    },
+    {
+     "no": 10,
+     "name": "REYKI FARIZ RAMADHAN",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    },
+    {
+     "no": 17,
+     "name": "RISKY DWIYAN APRILYANTO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ANTONI PUTRO NUGROHO",
+     "pos": "LWF",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 86,
+     "name": "ELVATEEH VARESIA AKHADA",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 11,
+     "name": "ALDITO DAFFA QUARISMA",
+     "markers": [
+      "81"
+     ],
+     "on": 81,
+     "minutes": 9
+    },
+    {
+     "no": 24,
+     "name": "MUH TIRTO WICAKSONO",
+     "markers": [
+      "33"
+     ],
+     "on": 33,
+     "minutes": 57
+    },
+    {
+     "no": 29,
+     "name": "RIAN RAMADAN",
+     "markers": [
+      "81"
+     ],
+     "on": 81,
+     "minutes": 9
+    },
+    {
+     "no": 28,
+     "name": "DHARMA JATI BINTARA PUTRA",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    },
+    {
+     "no": 16,
+     "name": "FACHRIZAL AHNAF MAULANA",
+     "markers": [
+      "33"
+     ],
+     "on": 33,
+     "minutes": 57
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 23,
+     "name": "LALU MUHAMMAD RIZKI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "ABDUL RAHMAN",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOKO SUPRIYANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 16,
+     "name": "ADE M NUR SAIHITUA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ALIF JAELANI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "M. SYAIFULLAH SALIM",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 15,
+     "name": "MUHAMAD FADILLA AKBAR",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 24,
+     "name": "MOHAMMAD JORDAN ZAMORANO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "49",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 9,
+     "name": "DECO NOVERO PALANDI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 99,
+     "name": "OSCAR NOVANGGA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "74"
+     ],
+     "off": 74,
+     "minutes": 74
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 29,
+     "name": "MUHAMMAD BAIHAQI RIFAI",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 8,
+     "name": "M ALWI FURQON",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 17,
+     "name": "MAULANA ILHAM JAYA KUSUMA",
+     "markers": [
+      "74"
+     ],
+     "on": 74,
+     "minutes": 16
+    },
+    {
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 18,
+     "name": "ALDI TRI NUGROHO",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    }
+   ]
+  },
+  {
+   "id": "persibo_persipa_20261113",
+   "round": 1,
+   "date": "2026-11-13",
+   "home": "PBO",
+   "away": "PIP",
+   "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+   "att": 1430,
+   "coach": [
+    "I PUTU GEDE SWI SANTOSO",
+    "SALAHUDDIN"
+   ],
+   "goals": [],
+   "notes": [
+    "Persibo #58 Adi Purnama S. Suaib sent off 90' (later banned for misconduct)"
+   ],
+   "score": [
+    0,
+    0
+   ],
+   "home_name": "Persibo Bojonegoro",
+   "away_name": "Persipa Pati",
+   "xi_home": [
+    {
+     "no": 14,
+     "name": "ALDO FERNANDI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "CRAH EKA ANGGER ISWANTO",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "TEGAR ANDRIE SHEVANTON",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 26,
+     "name": "RIO PRATAMA VALENTINO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "MOCHAMAD ADITYA RANGGA SAPUTRA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "MOHAMAD SYAHRIL AFRIZAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "87",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 27,
+     "name": "ROMEO NIZAM ABISHA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    },
+    {
+     "no": 58,
+     "name": "ADI PURNAMA S. SUAIB",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "35",
+      "90",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    },
+    {
+     "no": 11,
+     "name": "RIFALDI BAWUO",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "61"
+     ],
+     "off": 61,
+     "minutes": 61
+    },
+    {
+     "no": 77,
+     "name": "NURDIAN SYAPUTRA CHANIAGO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "61"
+     ],
+     "off": 61,
+     "minutes": 61
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 29,
+     "name": "BASAJUMP LATUCONSINA",
+     "markers": [
+      "61"
+     ],
+     "on": 61,
+     "minutes": 29
+    },
+    {
+     "no": 25,
+     "name": "AARON YEKTI",
+     "markers": [
+      "90"
+     ],
+     "on": 90,
+     "minutes": 1
+    },
+    {
+     "no": 37,
+     "name": "WIRAJA ARIA FADHIL AULIA",
+     "markers": [
+      "77"
+     ],
+     "on": 77,
+     "minutes": 13
+    },
+    {
+     "no": 38,
+     "name": "AZRIL DECO NORMADHANY",
+     "markers": [
+      "86"
+     ],
+     "on": 86,
+     "minutes": 4
+    },
+    {
+     "no": 33,
+     "name": "OCVIAN CHANIGIO",
+     "markers": [
+      "61"
+     ],
+     "on": 61,
+     "minutes": 29
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 88,
+     "name": "ARIFIN SETYADI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "MUHAMMAD IQBAL AL GHUZAT",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 5,
+     "name": "IMAM MAHMUDI",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 44,
+     "name": "MUHAMMAD RHAGA AL MISRI YULIANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "72",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 71,
+     "name": "MUH. AL - QADRI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "AKHMAD RIYADI",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "67"
+     ],
+     "off": 67,
+     "minutes": 67
+    },
+    {
+     "no": 36,
+     "name": "EDGARDA FAHAR BUNTORO",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "11",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 47,
+     "name": "HERSYA SCIFO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "61"
+     ],
+     "off": 61,
+     "minutes": 61
+    },
+    {
+     "no": 10,
+     "name": "FRITY ARMAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "61"
+     ],
+     "off": 61,
+     "minutes": 61
+    },
+    {
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "67"
+     ],
+     "off": 67,
+     "minutes": 67
+    },
+    {
+     "no": 99,
+     "name": "MOCHAMMAD RISAL AMIN",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "87"
+     ],
+     "off": 87,
+     "minutes": 87
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 9,
+     "name": "QISCHIL GANDRUM MINNY",
+     "markers": [
+      "87"
+     ],
+     "on": 87,
+     "minutes": 3
+    },
+    {
+     "no": 14,
+     "name": "YOSUA RAFAEL ATALYA YOLTUWU",
+     "markers": [
+      "61"
+     ],
+     "on": 61,
+     "minutes": 29
+    },
+    {
+     "no": 67,
+     "name": "RIDUWAN JAMIL",
+     "markers": [
+      "67"
+     ],
+     "on": 67,
+     "minutes": 23
+    },
+    {
+     "no": 86,
+     "name": "YOHANES YAPAGAIMU",
+     "markers": [
+      "61",
+      "75"
+     ],
+     "on": 61,
+     "minutes": 29
+    },
+    {
+     "no": 7,
+     "name": "PANDI AHMAD LESTALUHU",
+     "markers": [
+      "67"
+     ],
+     "on": 67,
+     "minutes": 23
+    }
+   ]
+  },
+  {
+   "id": "persika_persinga_20261113",
+   "round": 1,
+   "date": "2026-11-13",
+   "home": "PKA",
+   "away": "PNG",
+   "venue": "Stadion Manahan, Solo",
+   "att": 2183,
+   "coach": [
+    "TAUFIQ",
+    "DINDIN WAHYUDIN"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 18,
+     "name": "M. SYAIFUL ASRI",
+     "minute": "88",
+     "note": "",
+     "source": "Radar Madiun"
+    }
+   ],
+   "score": [
+    1,
+    0
+   ],
+   "home_name": "Persika Karanganyar",
+   "away_name": "Persinga Ngawi",
+   "xi_home": [
+    {
+     "no": 31,
+     "name": "NURI AGUS WIBOWO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 38,
+     "name": "MUSRIL",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "41",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "MUHAMMAD RIO SAPUTRO",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 19,
+     "name": "IBNUL MUBARAK",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "69"
+     ],
+     "off": 69,
+     "minutes": 69
+    },
+    {
+     "no": 77,
+     "name": "UMAR",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 4,
+     "name": "ABI DEFA MARENDRA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "66"
+     ],
+     "off": 66,
+     "minutes": 66
+    },
+    {
+     "no": 6,
+     "name": "MOCHAMAD RAGIL YUSUF SAPUTRA",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 8,
+     "name": "YOGIEK FERNANDA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "69"
+     ],
+     "off": 69,
+     "minutes": 69
+    },
+    {
+     "no": 16,
+     "name": "LIONEL ZAHRA ALFARIZKI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "M. SYAIFUL ASRI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "88",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 23,
+     "name": "WAWAN FEBRIANTO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 25,
+     "name": "YULFIKAR MANSUR BAYUAJI",
+     "markers": [
+      "69"
+     ],
+     "on": 69,
+     "minutes": 21
+    },
+    {
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "markers": [
+      "66"
+     ],
+     "on": 66,
+     "minutes": 24
+    },
+    {
+     "no": 11,
+     "name": "REYHAN FIRDAUS",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 28,
+     "name": "MOHAMAD IQBAL",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 12,
+     "name": "RONI SUGENG ARIYANTO",
+     "markers": [
+      "69"
+     ],
+     "on": 69,
+     "minutes": 21
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 96,
+     "name": "FAHMI IDRIS",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 22,
+     "name": "DADAN AKBAR NUGRAHA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "46",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "SYARFUL MUDAWAM",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 15,
+     "name": "BAGAS AGUNG UTOMO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 19,
+     "name": "NANDA HELVRIT SAPUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 25,
+     "name": "JOHANES EDWARD SUBROTO",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 11,
+     "name": "DIMAS GALIH GUMILANG",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 21,
+     "name": "AKBAR SYAKIRA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "58",
+      "90"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 18,
+     "name": "M.ALVIN DWI GUNA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 77,
+     "name": "MUHAMAD FIRMAN JANUARI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 13,
+     "name": "IKBAL KHADAFI",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    },
+    {
+     "no": 14,
+     "name": "BATHSYA DEWA APRILLIANO",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 4,
+     "name": "RONALD AFFRIZAL ARDIANSYAH PUTRA SABATH",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    },
+    {
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    },
+    {
+     "no": 57,
+     "name": "QOYUM NAZALUDIN MUHAMAD",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    }
+   ]
+  },
+  {
+   "id": "psf_persibangga_20261114",
+   "round": 1,
+   "date": "2026-11-14",
+   "home": "PSF",
+   "away": "PBG",
+   "venue": "Stadion Gelora Soepriadi, Blitar",
+   "att": 711,
+   "coach": [
+    "AGUS SUGENG RIYANTO",
+    "MOHAMAD IRFAN"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "minute": "47",
+     "note": "pen",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "minute": "74",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    2,
+    0
+   ],
+   "home_name": "Putra Sang Fajar FC",
+   "away_name": "Persibangga Purbalingga",
+   "xi_home": [
+    {
+     "no": 86,
+     "name": "WAHYU TRI NUGROHO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 30,
+     "name": "OKY KHARISMA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "45",
+      "64"
+     ],
+     "off": 64,
+     "minutes": 64
+    },
+    {
+     "no": 87,
+     "name": "FATHUL IHSAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    },
+    {
+     "no": 29,
+     "name": "FAHRI AKBAR ROMADHON",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "FIRMANSYAH",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 22,
+     "name": "FAJAR IHSANUDIN",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "14",
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 99,
+     "name": "KEVIN AL HAFIZ",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "56",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 11,
+     "name": "MOCH. ALEX SANDRO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "64"
+     ],
+     "off": 64,
+     "minutes": 64
+    },
+    {
+     "no": 9,
+     "name": "AHMAD ATHALLAH ARAIHAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "47",
+      "74",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "RIDWAN ANSORI",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 12,
+     "name": "FIGO FIRMANSYAH",
+     "markers": [
+      "77"
+     ],
+     "on": 77,
+     "minutes": 13
+    },
+    {
+     "no": 27,
+     "name": "ZIDANE ALZIZOU LUBIS",
+     "markers": [
+      "45",
+      "55"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 14,
+     "name": "DIFO PRASETYA",
+     "markers": [
+      "64"
+     ],
+     "on": 64,
+     "minutes": 26
+    },
+    {
+     "no": 10,
+     "name": "KOMARODIN",
+     "markers": [
+      "64",
+      "83"
+     ],
+     "on": 64,
+     "minutes": 26
+    },
+    {
+     "no": 75,
+     "name": "RIO FERNANDO DWI ARDIANSYAH",
+     "markers": [
+      "86"
+     ],
+     "on": 86,
+     "minutes": 4
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 76,
+     "name": "HUSEIN AKBAR AL FAUZI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "AZHRIL SYAHDAN FABREGAS",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 4,
+     "name": "FATHUR YAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "YUFRIZAL LU'AY ABIYU",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "1",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 25,
+     "name": "AHMAD RAMDIN TUASALAMONY",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ERLANGGA ADHYAKSA NUGRAHA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "58",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 30,
+     "name": "ALBERT THEO WICAKSONO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 87,
+     "name": "MUHAMMMAD ILHAMUL IRHAZ",
+     "pos": "DM",
+     "captain": true,
+     "markers": [
+      "41",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 12,
+     "name": "ARDYA MALIK PUTRA",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "52"
+     ],
+     "off": 52,
+     "minutes": 52
+    },
+    {
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 79,
+     "name": "ADITHYA JORY GURUH SETIAWAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 17,
+     "name": "AFIF TEGUH SAPUTRA",
+     "markers": [
+      "52"
+     ],
+     "on": 52,
+     "minutes": 38
+    },
+    {
+     "no": 32,
+     "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+     "markers": [
+      "77"
+     ],
+     "on": 77,
+     "minutes": 13
+    }
+   ]
+  },
+  {
+   "id": "persipa_persiba_20261117",
+   "round": 2,
+   "date": "2026-11-17",
+   "home": "PIP",
+   "away": "BTL",
+   "ht": [
+    1,
+    1
+   ],
+   "venue": "Stadion Moch. Soebroto, Magelang",
+   "att": 361,
+   "coach": [
+    "SALAHUDDIN",
+    "SUSANTO"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 86,
+     "name": "ELVATEEH VARESIA AKHADA",
+     "minute": "9",
+     "note": "shot from outside the box",
+     "source": "Tribun Jogja"
+    },
+    {
+     "side": "h",
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "minute": "15",
+     "note": "",
+     "source": "Tribun Jogja"
+    },
+    {
+     "side": "a",
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "minute": "51",
+     "note": "header",
+     "source": "Tribun Jogja"
+    },
+    {
+     "side": "h",
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "minute": "58",
+     "note": "",
+     "source": "Tribun Jogja"
+    }
+   ],
+   "cards": [
+    [
+     "a",
+     86,
+     "yellow",
+     "32"
+    ],
+    [
+     "a",
+     10,
+     "yellow",
+     "63"
+    ]
+   ],
+   "score": [
+    2,
+    2
+   ],
+   "home_name": "Persipa Pati",
+   "away_name": "PERSIBA Bantul",
+   "xi_home": [
+    {
+     "no": 88,
+     "name": "ARIFIN SETYADI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 5,
+     "name": "IMAM MAHMUDI",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 71,
+     "name": "MUH. AL - QADRI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "MUHAMMAD IQBAL AL GHUZAT",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 44,
+     "name": "MUHAMMAD RHAGA AL MISRI YULIANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "AKHMAD RIYADI",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 36,
+     "name": "EDGARDA FAHAR BUNTORO",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "75"
+     ],
+     "off": 75,
+     "minutes": 75
+    },
+    {
+     "no": 47,
+     "name": "HERSYA SCIFO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "82"
+     ],
+     "off": 82,
+     "minutes": 82
+    },
+    {
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "15",
+      "58",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 99,
+     "name": "MOCHAMMAD RISAL AMIN",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "82"
+     ],
+     "off": 82,
+     "minutes": 82
+    },
+    {
+     "no": 86,
+     "name": "YOHANES YAPAGAIMU",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 9,
+     "name": "QISCHIL GANDRUM MINNY",
+     "markers": [
+      "86"
+     ],
+     "on": 86,
+     "minutes": 4
+    },
+    {
+     "no": 30,
+     "name": "GADA RAMADHAN",
+     "markers": [
+      "82"
+     ],
+     "on": 82,
+     "minutes": 8
+    },
+    {
+     "no": 14,
+     "name": "YOSUA RAFAEL ATALYA YOLTUWU",
+     "markers": [
+      "75"
+     ],
+     "on": 75,
+     "minutes": 15
+    },
+    {
+     "no": 7,
+     "name": "PANDI AHMAD LESTALUHU",
+     "markers": [
+      "82"
+     ],
+     "on": 82,
+     "minutes": 8
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 20,
+     "name": "MOHAMMAD FEBRYANSYAH REFYAN SANUSI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 87,
+     "name": "AHMAD RIFAL",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 66,
+     "name": "CHOLIS BIMA SATRIA NATANEGARA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "72"
+     ],
+     "off": 72,
+     "minutes": 72
+    },
+    {
+     "no": 16,
+     "name": "FACHRIZAL AHNAF MAULANA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOSEPH ALEXANDER KURNIAWAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "51",
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    },
+    {
+     "no": 24,
+     "name": "MUH TIRTO WICAKSONO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "RISKY DWIYAN APRILYANTO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ANTONI PUTRO NUGROHO",
+     "pos": "LWF",
+     "captain": true,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 86,
+     "name": "ELVATEEH VARESIA AKHADA",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "9",
+      "32",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 77,
+     "name": "SANDI ARTA SAMOSIR",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 12,
+     "name": "LORENZO GOMES DE OLIVIERA",
+     "markers": [
+      "72"
+     ],
+     "on": 72,
+     "minutes": 18
+    },
+    {
+     "no": 11,
+     "name": "ALDITO DAFFA QUARISMA",
+     "markers": [
+      "86"
+     ],
+     "on": 86,
+     "minutes": 4
+    },
+    {
+     "no": 10,
+     "name": "REYKI FARIZ RAMADHAN",
+     "markers": [
+      "45",
+      "63"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 3,
+     "name": "WIGANDA PRADIKA",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    }
+   ]
+  },
+  {
+   "id": "gresik_persika_20261117",
+   "round": 2,
+   "date": "2026-11-17",
+   "home": "GRS",
+   "away": "PKA",
+   "venue": "Stadion Gelora Joko Samudro, Gresik",
+   "att": 1583,
+   "coach": [
+    "JOKO SUSILO",
+    "TAUFIQ"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 17,
+     "name": "MAULANA ILHAM JAYA KUSUMA",
+     "minute": "78",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "a",
+     "no": 7,
+     "name": "REXO DOLBY CALLEPSO",
+     "minute": "90+3",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    1,
+    1
+   ],
+   "home_name": "Gresik United FC",
+   "away_name": "Persika Karanganyar",
+   "xi_home": [
+    {
+     "no": 23,
+     "name": "LALU MUHAMMAD RIZKI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "ABDUL RAHMAN",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOKO SUPRIYANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "ALDI TRI NUGROHO",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "87"
+     ],
+     "off": 87,
+     "minutes": 87
+    },
+    {
+     "no": 16,
+     "name": "ADE M NUR SAIHITUA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ALIF JAELANI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "74"
+     ],
+     "off": 74,
+     "minutes": 74
+    },
+    {
+     "no": 13,
+     "name": "M. SYAIFULLAH SALIM",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 24,
+     "name": "MOHAMMAD JORDAN ZAMORANO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 9,
+     "name": "DECO NOVERO PALANDI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 99,
+     "name": "OSCAR NOVANGGA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "74"
+     ],
+     "off": 74,
+     "minutes": 74
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 29,
+     "name": "MUHAMMAD BAIHAQI RIFAI",
+     "markers": [
+      "87"
+     ],
+     "on": 87,
+     "minutes": 3
+    },
+    {
+     "no": 8,
+     "name": "M ALWI FURQON",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 17,
+     "name": "MAULANA ILHAM JAYA KUSUMA",
+     "markers": [
+      "74",
+      "78"
+     ],
+     "on": 74,
+     "minutes": 16
+    },
+    {
+     "no": 85,
+     "name": "DIAN ARDIANSYAH",
+     "markers": [
+      "74"
+     ],
+     "on": 74,
+     "minutes": 16
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 31,
+     "name": "NURI AGUS WIBOWO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 38,
+     "name": "MUSRIL",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "MUHAMMAD RIO SAPUTRO",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 25,
+     "name": "YULFIKAR MANSUR BAYUAJI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 12,
+     "name": "RONI SUGENG ARIYANTO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 28,
+     "name": "MOHAMAD IQBAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "57"
+     ],
+     "off": 57,
+     "minutes": 57
+    },
+    {
+     "no": 11,
+     "name": "REYHAN FIRDAUS",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 18,
+     "name": "M. SYAIFUL ASRI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "LIONEL ZAHRA ALFARIZKI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "79"
+     ],
+     "off": 79,
+     "minutes": 79
+    },
+    {
+     "no": 23,
+     "name": "WAWAN FEBRIANTO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "79"
+     ],
+     "off": 79,
+     "minutes": 79
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 3,
+     "name": "DHANU SYAH PUTRA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 52,
+     "name": "FADHILAH TEGAR NUR AZIZ",
+     "markers": [
+      "79"
+     ],
+     "on": 79,
+     "minutes": 11
+    },
+    {
+     "no": 7,
+     "name": "REXO DOLBY CALLEPSO",
+     "markers": [
+      "57",
+      "90+3"
+     ],
+     "on": 57,
+     "minutes": 33
+    },
+    {
+     "no": 77,
+     "name": "UMAR",
+     "markers": [
+      "79"
+     ],
+     "on": 79,
+     "minutes": 11
+    },
+    {
+     "no": 8,
+     "name": "YOGIEK FERNANDA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    }
+   ]
+  },
+  {
+   "id": "persinga_psf_20261118",
+   "round": 2,
+   "date": "2026-11-18",
+   "home": "PNG",
+   "away": "PSF",
+   "venue": "Stadion Ketonggo, Ngawi",
+   "att": 682,
+   "coach": [
+    "DINDIN WAHYUDIN",
+    "AGUS SUGENG RIYANTO"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "minute": "22",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "minute": "56",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "a",
+     "no": 10,
+     "name": "KOMARODIN",
+     "minute": "86",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "cards": [
+    [
+     "h",
+     7,
+     "red",
+     "63"
+    ]
+   ],
+   "notes": [
+    "Persinga #7 Rezza Maulana Fahrullah sent off 63' (straight red)"
+   ],
+   "score": [
+    1,
+    2
+   ],
+   "home_name": "Persinga Ngawi",
+   "away_name": "Putra Sang Fajar FC",
+   "xi_home": [
+    {
+     "no": 96,
+     "name": "FAHMI IDRIS",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 20,
+     "name": "ARFAMUZI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "42"
+     ],
+     "off": 42,
+     "minutes": 42
+    },
+    {
+     "no": 15,
+     "name": "BAGAS AGUNG UTOMO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 19,
+     "name": "NANDA HELVRIT SAPUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "SAMSUL ALAM",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "42"
+     ],
+     "off": 42,
+     "minutes": 42
+    },
+    {
+     "no": 8,
+     "name": "DEJAN ALIKHA MUHAMMAD",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 11,
+     "name": "DIMAS GALIH GUMILANG",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "66"
+     ],
+     "off": 66,
+     "minutes": 66
+    },
+    {
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "56",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "REZZA MAULANA FAHRULLAH",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "63"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 57,
+     "name": "QOYUM NAZALUDIN MUHAMAD",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 77,
+     "name": "MUHAMAD FIRMAN JANUARI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 14,
+     "name": "BATHSYA DEWA APRILLIANO",
+     "markers": [
+      "66"
+     ],
+     "on": 66,
+     "minutes": 24
+    },
+    {
+     "no": 3,
+     "name": "SYARFUL MUDAWAM",
+     "markers": [
+      "42"
+     ],
+     "on": 42,
+     "minutes": 48
+    },
+    {
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    },
+    {
+     "no": 22,
+     "name": "DADAN AKBAR NUGRAHA",
+     "markers": [
+      "42"
+     ],
+     "on": 42,
+     "minutes": 48
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 20,
+     "name": "DAVA ARYULA SIREGAR",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 30,
+     "name": "OKY KHARISMA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "66"
+     ],
+     "off": 66,
+     "minutes": 66
+    },
+    {
+     "no": 87,
+     "name": "FATHUL IHSAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 15,
+     "name": "MUHAMMAD SURYA MAULANA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "66"
+     ],
+     "off": 66,
+     "minutes": 66
+    },
+    {
+     "no": 21,
+     "name": "FIRMANSYAH",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 22,
+     "name": "FAJAR IHSANUDIN",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "81"
+     ],
+     "off": 81,
+     "minutes": 81
+    },
+    {
+     "no": 99,
+     "name": "KEVIN AL HAFIZ",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 11,
+     "name": "MOCH. ALEX SANDRO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 9,
+     "name": "AHMAD ATHALLAH ARAIHAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "22",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "RIDWAN ANSORI",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "52"
+     ],
+     "off": 52,
+     "minutes": 52
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 14,
+     "name": "DIFO PRASETYA",
+     "markers": [
+      "52"
+     ],
+     "on": 52,
+     "minutes": 38
+    },
+    {
+     "no": 29,
+     "name": "FAHRI AKBAR ROMADHON",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 76,
+     "name": "RADITYA ILHAM PRAMANA",
+     "markers": [
+      "81"
+     ],
+     "on": 81,
+     "minutes": 9
+    },
+    {
+     "no": 18,
+     "name": "DONA SAPUTRA",
+     "markers": [
+      "66"
+     ],
+     "on": 66,
+     "minutes": 24
+    },
+    {
+     "no": 10,
+     "name": "KOMARODIN",
+     "markers": [
+      "66",
+      "86"
+     ],
+     "on": 66,
+     "minutes": 24
+    }
+   ]
+  },
+  {
+   "id": "persibangga_persibo_20261118",
+   "round": 2,
+   "date": "2026-11-18",
+   "home": "PBG",
+   "away": "PBO",
+   "ht": [
+    1,
+    0
+   ],
+   "venue": "Stadion Trisanja, Tegal",
+   "att": 277,
+   "coach": [
+    "MOHAMAD IRFAN",
+    "I PUTU GEDE SWI SANTOSO"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "minute": "32",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "a",
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "minute": "48",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 32,
+     "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+     "minute": "90+4",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    2,
+    1
+   ],
+   "home_name": "Persibangga Purbalingga",
+   "away_name": "Persibo Bojonegoro",
+   "xi_home": [
+    {
+     "no": 76,
+     "name": "HUSEIN AKBAR AL FAUZI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "AZHRIL SYAHDAN FABREGAS",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "76"
+     ],
+     "off": 76,
+     "minutes": 76
+    },
+    {
+     "no": 4,
+     "name": "FATHUR YAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "YUFRIZAL LU'AY ABIYU",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 25,
+     "name": "AHMAD RAMDIN TUASALAMONY",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ERLANGGA ADHYAKSA NUGRAHA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "AFIF TEGUH SAPUTRA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "76"
+     ],
+     "off": 76,
+     "minutes": 76
+    },
+    {
+     "no": 30,
+     "name": "ALBERT THEO WICAKSONO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 87,
+     "name": "MUHAMMMAD ILHAMUL IRHAZ",
+     "pos": "DM",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "32",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 79,
+     "name": "ADITHYA JORY GURUH SETIAWAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "79"
+     ],
+     "off": 79,
+     "minutes": 79
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 44,
+     "name": "RESTU SETYA PRATAMA",
+     "markers": [
+      "76"
+     ],
+     "on": 76,
+     "minutes": 14
+    },
+    {
+     "no": 11,
+     "name": "ALFANDI",
+     "markers": [
+      "76"
+     ],
+     "on": 76,
+     "minutes": 14
+    },
+    {
+     "no": 32,
+     "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+     "markers": [
+      "79",
+      "90+4"
+     ],
+     "on": 79,
+     "minutes": 11
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 14,
+     "name": "ALDO FERNANDI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "CRAH EKA ANGGER ISWANTO",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "TEGAR ANDRIE SHEVANTON",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 26,
+     "name": "RIO PRATAMA VALENTINO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "MOCHAMAD ADITYA RANGGA SAPUTRA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "MARVIN NUGRAHA HILMANSYAH",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "MOHAMAD SYAHRIL AFRIZAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "55"
+     ],
+     "off": 55,
+     "minutes": 55
+    },
+    {
+     "no": 33,
+     "name": "OCVIAN CHANIGIO",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "48",
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 27,
+     "name": "ROMEO NIZAM ABISHA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 77,
+     "name": "NURDIAN SYAPUTRA CHANIAGO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "87"
+     ],
+     "off": 87,
+     "minutes": 87
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 29,
+     "name": "BASAJUMP LATUCONSINA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 25,
+     "name": "AARON YEKTI",
+     "markers": [
+      "55"
+     ],
+     "on": 55,
+     "minutes": 35
+    },
+    {
+     "no": 10,
+     "name": "IQBAL TRI SAPUTRA",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    },
+    {
+     "no": 9,
+     "name": "KAKA PUTRA PRAMANA",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    },
+    {
+     "no": 11,
+     "name": "RIFALDI BAWUO",
+     "markers": [
+      "87"
+     ],
+     "on": 87,
+     "minutes": 3
+    }
+   ]
+  },
+  {
+   "id": "persiba_persika_20261121",
+   "round": 3,
+   "date": "2026-11-21",
+   "home": "BTL",
+   "away": "PKA",
+   "ht": [
+    0,
+    1
+   ],
+   "venue": "Stadion Sultan Agung, Bantul",
+   "att": 1313,
+   "coach": [
+    "SUSANTO",
+    "TAUFIQ"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "minute": "29",
+     "note": "counter-attack (Jatengnews: 28')",
+     "source": "ileague + Jatengnews"
+    }
+   ],
+   "cards": [
+    [
+     "h",
+     16,
+     "yellow",
+     "42"
+    ],
+    [
+     "h",
+     29,
+     "yellow",
+     "64"
+    ],
+    [
+     "h",
+     86,
+     "yellow",
+     "83"
+    ],
+    [
+     "h",
+     87,
+     "yellow",
+     "88"
+    ],
+    [
+     "h",
+     10,
+     "yellow",
+     "90+1"
+    ],
+    [
+     "a",
+     21,
+     "yellow",
+     "42"
+    ],
+    [
+     "a",
+     77,
+     "yellow",
+     "59"
+    ],
+    [
+     "a",
+     36,
+     "yellow",
+     "87"
+    ]
+   ],
+   "score": [
+    0,
+    1
+   ],
+   "home_name": "PERSIBA Bantul",
+   "away_name": "Persika Karanganyar",
+   "xi_home": [
+    {
+     "no": 20,
+     "name": "MOHAMMAD FEBRYANSYAH REFYAN SANUSI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "FACHRIZAL AHNAF MAULANA",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "42",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOSEPH ALEXANDER KURNIAWAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 87,
+     "name": "AHMAD RIFAL",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "88",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 29,
+     "name": "RIAN RAMADAN",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "64",
+      "65"
+     ],
+     "off": 65,
+     "minutes": 65
+    },
+    {
+     "no": 11,
+     "name": "ALDITO DAFFA QUARISMA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    },
+    {
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 17,
+     "name": "RISKY DWIYAN APRILYANTO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 73,
+     "name": "MUHAMMAD IQBAL DALIMUNTHE",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 77,
+     "name": "SANDI ARTA SAMOSIR",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 86,
+     "name": "ELVATEEH VARESIA AKHADA",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "83",
+      "84"
+     ],
+     "off": 84,
+     "minutes": 84
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 8,
+     "name": "AIDUN SASTRA UTAMI",
+     "markers": [
+      "84"
+     ],
+     "on": 84,
+     "minutes": 6
+    },
+    {
+     "no": 66,
+     "name": "CHOLIS BIMA SATRIA NATANEGARA",
+     "markers": [
+      "65"
+     ],
+     "on": 65,
+     "minutes": 25
+    },
+    {
+     "no": 12,
+     "name": "LORENZO GOMES DE OLIVIERA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 24,
+     "name": "MUH TIRTO WICAKSONO",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 10,
+     "name": "REYKI FARIZ RAMADHAN",
+     "markers": [
+      "86",
+      "90+1"
+     ],
+     "on": 86,
+     "minutes": 4
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 31,
+     "name": "NURI AGUS WIBOWO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "DHANU SYAH PUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 5,
+     "name": "IFAN IZDIHAR IYANANDA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "29",
+      "42",
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    },
+    {
+     "no": 25,
+     "name": "YULFIKAR MANSUR BAYUAJI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 52,
+     "name": "FADHILAH TEGAR NUR AZIZ",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    },
+    {
+     "no": 77,
+     "name": "UMAR",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "59",
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    },
+    {
+     "no": 4,
+     "name": "ABI DEFA MARENDRA",
+     "pos": "CM",
+     "captain": true,
+     "markers": [
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    },
+    {
+     "no": 8,
+     "name": "YOGIEK FERNANDA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 28,
+     "name": "MOHAMAD IQBAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 38,
+     "name": "MUSRIL",
+     "markers": [
+      "77"
+     ],
+     "on": 77,
+     "minutes": 13
+    },
+    {
+     "no": 16,
+     "name": "LIONEL ZAHRA ALFARIZKI",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    },
+    {
+     "no": 36,
+     "name": "RELOSA RIVAN SATRIA HUTAMA",
+     "markers": [
+      "77",
+      "87"
+     ],
+     "on": 77,
+     "minutes": 13
+    },
+    {
+     "no": 7,
+     "name": "REXO DOLBY CALLEPSO",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    },
+    {
+     "no": 12,
+     "name": "RONI SUGENG ARIYANTO",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    }
+   ]
+  },
+  {
+   "id": "persinga_persibangga_20261122",
+   "round": 3,
+   "date": "2026-11-22",
+   "home": "PNG",
+   "away": "PBG",
+   "ht": [
+    0,
+    1
+   ],
+   "venue": "Stadion Ketonggo, Ngawi",
+   "att": 810,
+   "coach": [
+    "DINDIN WAHYUDIN",
+    "MOHAMAD IRFAN"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "minute": "27",
+     "note": "",
+     "source": "ileague + Radar Solo"
+    },
+    {
+     "side": "h",
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "minute": "67",
+     "note": "",
+     "source": "ileague + Radar Solo"
+    }
+   ],
+   "score": [
+    1,
+    1
+   ],
+   "home_name": "Persinga Ngawi",
+   "away_name": "Persibangga Purbalingga",
+   "xi_home": [
+    {
+     "no": 96,
+     "name": "FAHMI IDRIS",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "IKBAL KHADAFI",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 3,
+     "name": "SYARFUL MUDAWAM",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 19,
+     "name": "NANDA HELVRIT SAPUTRA",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 25,
+     "name": "JOHANES EDWARD SUBROTO",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "81"
+     ],
+     "off": 81,
+     "minutes": 81
+    },
+    {
+     "no": 8,
+     "name": "DEJAN ALIKHA MUHAMMAD",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "67",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 9,
+     "name": "MOH.NASRUL ARIFIN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "68"
+     ],
+     "off": 68,
+     "minutes": 68
+    },
+    {
+     "no": 57,
+     "name": "QOYUM NAZALUDIN MUHAMAD",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "58"
+     ],
+     "off": 58,
+     "minutes": 58
+    },
+    {
+     "no": 77,
+     "name": "MUHAMAD FIRMAN JANUARI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 17,
+     "name": "SAMSUL ALAM",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 18,
+     "name": "M.ALVIN DWI GUNA",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    },
+    {
+     "no": 10,
+     "name": "DAMAR YUDHISTIRA PANGESTU",
+     "markers": [
+      "81"
+     ],
+     "on": 81,
+     "minutes": 9
+    },
+    {
+     "no": 21,
+     "name": "AKBAR SYAKIRA",
+     "markers": [
+      "68"
+     ],
+     "on": 68,
+     "minutes": 22
+    },
+    {
+     "no": 99,
+     "name": "MUHAMAD GAOSHIROWI",
+     "markers": [
+      "58"
+     ],
+     "on": 58,
+     "minutes": 32
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 76,
+     "name": "HUSEIN AKBAR AL FAUZI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 2,
+     "name": "MUHAMMAD KHOIRUL AMIN",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 16,
+     "name": "AZHRIL SYAHDAN FABREGAS",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "43"
+     ],
+     "off": 43,
+     "minutes": 43
+    },
+    {
+     "no": 6,
+     "name": "YUFRIZAL LU'AY ABIYU",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 15,
+     "name": "I MADE DWI MEIYANA PUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 25,
+     "name": "AHMAD RAMDIN TUASALAMONY",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ERLANGGA ADHYAKSA NUGRAHA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 30,
+     "name": "ALBERT THEO WICAKSONO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 87,
+     "name": "MUHAMMMAD ILHAMUL IRHAZ",
+     "pos": "DM",
+     "captain": true,
+     "markers": [
+      "72"
+     ],
+     "off": 72,
+     "minutes": 72
+    },
+    {
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "27",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 79,
+     "name": "ADITHYA JORY GURUH SETIAWAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "75"
+     ],
+     "off": 75,
+     "minutes": 75
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 44,
+     "name": "RESTU SETYA PRATAMA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 4,
+     "name": "FATHUR YAN",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 22,
+     "name": "MUHAMMAD NAJA NAUFAL HILMI",
+     "markers": [
+      "72"
+     ],
+     "on": 72,
+     "minutes": 18
+    },
+    {
+     "no": 11,
+     "name": "ALFANDI",
+     "markers": [
+      "43"
+     ],
+     "on": 43,
+     "minutes": 47
+    },
+    {
+     "no": 32,
+     "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+     "markers": [
+      "75"
+     ],
+     "on": 75,
+     "minutes": 15
+    }
+   ]
+  },
+  {
+   "id": "persipa_psf_20261122",
+   "round": 3,
+   "date": "2026-11-22",
+   "home": "PIP",
+   "away": "PSF",
+   "venue": "Stadion Moch. Soebroto, Magelang",
+   "att": 147,
+   "coach": [
+    "SALAHUDDIN",
+    "AGUS SUGENG RIYANTO"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "minute": "48",
+     "note": "pen",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    0,
+    1
+   ],
+   "home_name": "Persipa Pati",
+   "away_name": "Putra Sang Fajar FC",
+   "xi_home": [
+    {
+     "no": 88,
+     "name": "ARIFIN SETYADI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "MUHAMMAD IQBAL AL GHUZAT",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 5,
+     "name": "IMAM MAHMUDI",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 44,
+     "name": "MUHAMMAD RHAGA AL MISRI YULIANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "73"
+     ],
+     "off": 73,
+     "minutes": 73
+    },
+    {
+     "no": 71,
+     "name": "MUH. AL - QADRI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "AKHMAD RIYADI",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "YOSUA RAFAEL ATALYA YOLTUWU",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 47,
+     "name": "HERSYA SCIFO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    },
+    {
+     "no": 10,
+     "name": "FRITY ARMAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    },
+    {
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "86"
+     ],
+     "off": 86,
+     "minutes": 86
+    },
+    {
+     "no": 99,
+     "name": "MOCHAMMAD RISAL AMIN",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 36,
+     "name": "EDGARDA FAHAR BUNTORO",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    },
+    {
+     "no": 24,
+     "name": "ALFONS RIZAL SAMAN",
+     "markers": [
+      "86"
+     ],
+     "on": 86,
+     "minutes": 4
+    },
+    {
+     "no": 19,
+     "name": "MOCH REZA ANDREA ARSHAVIN",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    },
+    {
+     "no": 15,
+     "name": "ILHAM WIBOWO YUSUF",
+     "markers": [
+      "73"
+     ],
+     "on": 73,
+     "minutes": 17
+    },
+    {
+     "no": 52,
+     "name": "SADDAM EMIRUDDIN GAFFAR",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 20,
+     "name": "DAVA ARYULA SIREGAR",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "DIFO PRASETYA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 75,
+     "name": "RIO FERNANDO DWI ARDIANSYAH",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 15,
+     "name": "MUHAMMAD SURYA MAULANA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 51,
+     "name": "AIRLANGGA MUTAMASIQDINA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "FIRMANSYAH",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 99,
+     "name": "KEVIN AL HAFIZ",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "59"
+     ],
+     "off": 59,
+     "minutes": 59
+    },
+    {
+     "no": 8,
+     "name": "FREZY AL HUDAIFI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "48",
+      "84"
+     ],
+     "off": 84,
+     "minutes": 84
+    },
+    {
+     "no": 11,
+     "name": "MOCH. ALEX SANDRO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "79"
+     ],
+     "off": 79,
+     "minutes": 79
+    },
+    {
+     "no": 7,
+     "name": "RIDWAN ANSORI",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "59"
+     ],
+     "off": 59,
+     "minutes": 59
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 27,
+     "name": "ZIDANE ALZIZOU LUBIS",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 29,
+     "name": "FAHRI AKBAR ROMADHON",
+     "markers": [
+      "59"
+     ],
+     "on": 59,
+     "minutes": 31
+    },
+    {
+     "no": 76,
+     "name": "RADITYA ILHAM PRAMANA",
+     "markers": [
+      "59"
+     ],
+     "on": 59,
+     "minutes": 31
+    },
+    {
+     "no": 40,
+     "name": "MUHAMMAD FAHRUL ROJDI",
+     "markers": [
+      "79"
+     ],
+     "on": 79,
+     "minutes": 11
+    },
+    {
+     "no": 10,
+     "name": "KOMARODIN",
+     "markers": [
+      "84"
+     ],
+     "on": 84,
+     "minutes": 6
+    }
+   ]
+  },
+  {
+   "id": "persibo_gresik_20261122",
+   "round": 3,
+   "date": "2026-11-22",
+   "home": "PBO",
+   "away": "GRS",
+   "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+   "att": 3360,
+   "coach": [
+    "I PUTU GEDE SWI SANTOSO",
+    "JOKO SUSILO"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 10,
+     "name": "IQBAL TRI SAPUTRA",
+     "minute": "79",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "a",
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "minute": "88",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    1,
+    1
+   ],
+   "home_name": "Persibo Bojonegoro",
+   "away_name": "Gresik United FC",
+   "xi_home": [
+    {
+     "no": 14,
+     "name": "ALDO FERNANDI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "CRAH EKA ANGGER ISWANTO",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "TEGAR ANDRIE SHEVANTON",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 26,
+     "name": "RIO PRATAMA VALENTINO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "MOCHAMAD ADITYA RANGGA SAPUTRA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "MARVIN NUGRAHA HILMANSYAH",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "MOHAMAD SYAHRIL AFRIZAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 27,
+     "name": "ROMEO NIZAM ABISHA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 29,
+     "name": "BASAJUMP LATUCONSINA",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "71"
+     ],
+     "off": 71,
+     "minutes": 71
+    },
+    {
+     "no": 77,
+     "name": "NURDIAN SYAPUTRA CHANIAGO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 25,
+     "name": "AARON YEKTI",
+     "markers": [
+      "90"
+     ],
+     "on": 90,
+     "minutes": 1
+    },
+    {
+     "no": 10,
+     "name": "IQBAL TRI SAPUTRA",
+     "markers": [
+      "71",
+      "79"
+     ],
+     "on": 71,
+     "minutes": 19
+    },
+    {
+     "no": 9,
+     "name": "KAKA PUTRA PRAMANA",
+     "markers": [
+      "90"
+     ],
+     "on": 90,
+     "minutes": 1
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 77,
+     "name": "SYAMIL BAHIJ IRAWAN",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "ALDI TRI NUGROHO",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOKO SUPRIYANTO",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "ADE M NUR SAIHITUA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ALIF JAELANI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "M ALWI FURQON",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "80"
+     ],
+     "off": 80,
+     "minutes": 80
+    },
+    {
+     "no": 13,
+     "name": "M. SYAIFULLAH SALIM",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 15,
+     "name": "MUHAMAD FADILLA AKBAR",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "70"
+     ],
+     "off": 70,
+     "minutes": 70
+    },
+    {
+     "no": 24,
+     "name": "MOHAMMAD JORDAN ZAMORANO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 9,
+     "name": "DECO NOVERO PALANDI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "markers": [
+      "80",
+      "88"
+     ],
+     "on": 80,
+     "minutes": 10
+    },
+    {
+     "no": 10,
+     "name": "RAFI HERLIAN ADINATA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 46,
+     "name": "WAHYU AGONG DRAJAT MULYONO",
+     "markers": [
+      "70"
+     ],
+     "on": 70,
+     "minutes": 20
+    },
+    {
+     "no": 99,
+     "name": "OSCAR NOVANGGA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 17,
+     "name": "MAULANA ILHAM JAYA KUSUMA",
+     "markers": [
+      "90"
+     ],
+     "on": 90,
+     "minutes": 1
+    }
+   ]
+  },
+  {
+   "id": "gresik_persibangga_20261126",
+   "round": 4,
+   "date": "2026-11-26",
+   "home": "GRS",
+   "away": "PBG",
+   "ht": [
+    0,
+    1
+   ],
+   "venue": "Stadion Gelora Joko Samudro, Gresik",
+   "att": 1209,
+   "coach": [
+    "JOKO SUSILO",
+    "MOHAMAD IRFAN"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "minute": "32",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "minute": "78",
+     "note": "pen",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "minute": "90",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "suspended": [
+    [
+     "a",
+     6,
+     "YUFRIZAL LU'AY ABIYU",
+     "2 yellow cards (matches 4 and 12)"
+    ],
+    [
+     "a",
+     87,
+     "MUHAMMMAD ILHAMUL IRHAZ",
+     "2 yellow cards (matches 4 and 12)"
+    ],
+    [
+     "h",
+     24,
+     "MOHAMMAD JORDAN ZAMORANO",
+     "2 yellow cards (matches 1 and 11)"
+    ]
+   ],
+   "score": [
+    2,
+    1
+   ],
+   "home_name": "Gresik United FC",
+   "away_name": "Persibangga Purbalingga",
+   "xi_home": [
+    {
+     "no": 77,
+     "name": "SYAMIL BAHIJ IRAWAN",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "ALDI TRI NUGROHO",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "ABDUL RAHMAN",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 33,
+     "name": "JOKO SUPRIYANTO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "ADE M NUR SAIHITUA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "82"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ALIF JAELANI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "M ALWI FURQON",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "73"
+     ],
+     "off": 73,
+     "minutes": 73
+    },
+    {
+     "no": 13,
+     "name": "M. SYAIFULLAH SALIM",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 9,
+     "name": "DECO NOVERO PALANDI",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 22,
+     "name": "M. DZAKI ALAMSYAH",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "54"
+     ],
+     "off": 54,
+     "minutes": 54
+    },
+    {
+     "no": 85,
+     "name": "DIAN ARDIANSYAH",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 10,
+     "name": "RAFI HERLIAN ADINATA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 15,
+     "name": "MUHAMAD FADILLA AKBAR",
+     "markers": [
+      "54"
+     ],
+     "on": 54,
+     "minutes": 36
+    },
+    {
+     "no": 46,
+     "name": "WAHYU AGONG DRAJAT MULYONO",
+     "markers": [
+      "73"
+     ],
+     "on": 73,
+     "minutes": 17
+    },
+    {
+     "no": 99,
+     "name": "OSCAR NOVANGGA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 28,
+     "name": "SHAHIH ELANG RISHANDY",
+     "markers": [
+      "45",
+      "90+5"
+     ],
+     "on": 45,
+     "minutes": 45
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 76,
+     "name": "HUSEIN AKBAR AL FAUZI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 25,
+     "name": "AHMAD RAMDIN TUASALAMONY",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 16,
+     "name": "AZHRIL SYAHDAN FABREGAS",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 4,
+     "name": "FATHUR YAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "59"
+     ],
+     "off": 59,
+     "minutes": 59
+    },
+    {
+     "no": 15,
+     "name": "I MADE DWI MEIYANA PUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ERLANGGA ADHYAKSA NUGRAHA",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 17,
+     "name": "AFIF TEGUH SAPUTRA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 30,
+     "name": "ALBERT THEO WICAKSONO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "77"
+     ],
+     "off": 77,
+     "minutes": 77
+    },
+    {
+     "no": 22,
+     "name": "MUHAMMAD NAJA NAUFAL HILMI",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "USAMA AHMAD RAIHAN",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "32",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 79,
+     "name": "ADITHYA JORY GURUH SETIAWAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 44,
+     "name": "RESTU SETYA PRATAMA",
+     "markers": [
+      "59"
+     ],
+     "on": 59,
+     "minutes": 31
+    },
+    {
+     "no": 11,
+     "name": "ALFANDI",
+     "markers": [
+      "77"
+     ],
+     "on": 77,
+     "minutes": 13
+    },
+    {
+     "no": 32,
+     "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    }
+   ]
+  },
+  {
+   "id": "psf_persibo_20261126",
+   "round": 4,
+   "date": "2026-11-26",
+   "home": "PSF",
+   "away": "PBO",
+   "venue": "Stadion Gelora Soepriadi, Blitar",
+   "att": 733,
+   "coach": [
+    "AGUS SUGENG RIYANTO",
+    "I PUTU GEDE SWI SANTOSO"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 10,
+     "name": "KOMARODIN",
+     "minute": "50",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "suspended": [
+    [
+     "h",
+     99,
+     "KEVIN AL HAFIZ",
+     "2 yellow cards"
+    ],
+    [
+     "h",
+     27,
+     "ZIDANE ALZIZOU LUBIS",
+     "2 yellow cards"
+    ],
+    [
+     "a",
+     29,
+     "BASAJUMP LATUCONSINA",
+     "2 yellow cards"
+    ],
+    [
+     "a",
+     58,
+     "ADI PURNAMA S. SUAIB",
+     "disciplinary ban"
+    ]
+   ],
+   "score": [
+    1,
+    0
+   ],
+   "home_name": "Putra Sang Fajar FC",
+   "away_name": "Persibo Bojonegoro",
+   "xi_home": [
+    {
+     "no": 20,
+     "name": "DAVA ARYULA SIREGAR",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "DIFO PRASETYA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 87,
+     "name": "FATHUL IHSAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 15,
+     "name": "MUHAMMAD SURYA MAULANA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 29,
+     "name": "FAHRI AKBAR ROMADHON",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 12,
+     "name": "FIGO FIRMANSYAH",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "88"
+     ],
+     "off": 88,
+     "minutes": 88
+    },
+    {
+     "no": 21,
+     "name": "FIRMANSYAH",
+     "pos": "AM",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 22,
+     "name": "FAJAR IHSANUDIN",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "66"
+     ],
+     "off": 66,
+     "minutes": 66
+    },
+    {
+     "no": 9,
+     "name": "AHMAD ATHALLAH ARAIHAN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 10,
+     "name": "KOMARODIN",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "50",
+      "73"
+     ],
+     "off": 73,
+     "minutes": 73
+    },
+    {
+     "no": 90,
+     "name": "JOHAN YOGA UTAMA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 30,
+     "name": "OKY KHARISMA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 11,
+     "name": "MOCH. ALEX SANDRO",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 76,
+     "name": "RADITYA ILHAM PRAMANA",
+     "markers": [
+      "66"
+     ],
+     "on": 66,
+     "minutes": 24
+    },
+    {
+     "no": 26,
+     "name": "CHARLES GEORGE RUMAROPEN",
+     "markers": [
+      "88"
+     ],
+     "on": 88,
+     "minutes": 2
+    },
+    {
+     "no": 18,
+     "name": "DONA SAPUTRA",
+     "markers": [
+      "73"
+     ],
+     "on": 73,
+     "minutes": 17
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 14,
+     "name": "ALDO FERNANDI",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "CRAH EKA ANGGER ISWANTO",
+     "pos": "LB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 76,
+     "name": "JOVAN JORDANTIAN SYAHWA MAULANA",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    },
+    {
+     "no": 26,
+     "name": "RIO PRATAMA VALENTINO",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 6,
+     "name": "TEGAR ANDRIE SHEVANTON",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "MARVIN NUGRAHA HILMANSYAH",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 18,
+     "name": "MOHAMAD SYAHRIL AFRIZAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 77,
+     "name": "NURDIAN SYAPUTRA CHANIAGO",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "63"
+     ],
+     "off": 63,
+     "minutes": 63
+    },
+    {
+     "no": 11,
+     "name": "RIFALDI BAWUO",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    },
+    {
+     "no": 25,
+     "name": "AARON YEKTI",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "56"
+     ],
+     "off": 56,
+     "minutes": 56
+    },
+    {
+     "no": 27,
+     "name": "ROMEO NIZAM ABISHA",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "80"
+     ],
+     "off": 80,
+     "minutes": 80
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 34,
+     "name": "KAFKA KHAYLA AZWA",
+     "markers": [
+      "80"
+     ],
+     "on": 80,
+     "minutes": 10
+    },
+    {
+     "no": 13,
+     "name": "MOCHAMAD ADITYA RANGGA SAPUTRA",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    },
+    {
+     "no": 7,
+     "name": "SEHABUDIN AHMAD",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    },
+    {
+     "no": 10,
+     "name": "IQBAL TRI SAPUTRA",
+     "markers": [
+      "56"
+     ],
+     "on": 56,
+     "minutes": 34
+    },
+    {
+     "no": 33,
+     "name": "OCVIAN CHANIGIO",
+     "markers": [
+      "63"
+     ],
+     "on": 63,
+     "minutes": 27
+    }
+   ]
+  },
+  {
+   "id": "persiba_persinga_20261126",
+   "round": 4,
+   "date": "2026-11-26",
+   "home": "BTL",
+   "away": "PNG",
+   "ht": [
+    0,
+    1
+   ],
+   "venue": "Stadion Sultan Agung, Bantul",
+   "att": 188,
+   "coach": [
+    "SUSANTO",
+    "DINDIN WAHYUDIN"
+   ],
+   "goals": [
+    {
+     "side": "a",
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "minute": "29",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "suspended": [
+    [
+     "h",
+     10,
+     "REYKI FARIZ RAMADHAN",
+     "2 yellow cards (63' vs Persipa, 90+1' vs Persika)"
+    ],
+    [
+     "h",
+     86,
+     "ELVATEEH VARESIA AKHADA",
+     "2 yellow cards (32' vs Persipa, 83' vs Persika)"
+    ]
+   ],
+   "score": [
+    0,
+    1
+   ],
+   "home_name": "PERSIBA Bantul",
+   "away_name": "Persinga Ngawi",
+   "xi_home": [
+    {
+     "no": 81,
+     "name": "YOGI HERMAWAN",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "WIGANDA PRADIKA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "72"
+     ],
+     "off": 72,
+     "minutes": 72
+    },
+    {
+     "no": 12,
+     "name": "LORENZO GOMES DE OLIVIERA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "MARCELL JANUAR PUTRA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 33,
+     "name": "JOSEPH ALEXANDER KURNIAWAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "AIDUN SASTRA UTAMI",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "60"
+     ],
+     "off": 60,
+     "minutes": 60
+    },
+    {
+     "no": 11,
+     "name": "ALDITO DAFFA QUARISMA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 24,
+     "name": "MUH TIRTO WICAKSONO",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "12"
+     ],
+     "off": 12,
+     "minutes": 12
+    },
+    {
+     "no": 98,
+     "name": "RAKHA ZULHILMI FASYIR",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 7,
+     "name": "ANTONI PUTRO NUGROHO",
+     "pos": "LWF",
+     "captain": true,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 77,
+     "name": "SANDI ARTA SAMOSIR",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 87,
+     "name": "AHMAD RIFAL",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 6,
+     "name": "MIFTHAHUL ULUMIL ULYA",
+     "markers": [
+      "12"
+     ],
+     "on": 12,
+     "minutes": 78
+    },
+    {
+     "no": 14,
+     "name": "MUH ARSIL ANAS",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 17,
+     "name": "RISKY DWIYAN APRILYANTO",
+     "markers": [
+      "72"
+     ],
+     "on": 72,
+     "minutes": 18
+    },
+    {
+     "no": 19,
+     "name": "VENGKO ARMEDYA",
+     "markers": [
+      "60"
+     ],
+     "on": 60,
+     "minutes": 30
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 34,
+     "name": "MUHAMAD SURYANULLOH",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 13,
+     "name": "IKBAL KHADAFI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "87"
+     ],
+     "off": 87,
+     "minutes": 87
+    },
+    {
+     "no": 19,
+     "name": "NANDA HELVRIT SAPUTRA",
+     "pos": "CB",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 3,
+     "name": "SYARFUL MUDAWAM",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 27,
+     "name": "ADITYA SENTOSA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "29",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "DEJAN ALIKHA MUHAMMAD",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 66,
+     "name": "MUCH ILHAM NOER",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 16,
+     "name": "ZAM ZAM SOVIA AROPA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "BATHSYA DEWA APRILLIANO",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 9,
+     "name": "MOH. NASRUL ARIFIN",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 77,
+     "name": "MUHAMAD FIRMAN JANUARI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "79"
+     ],
+     "off": 79,
+     "minutes": 79
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 21,
+     "name": "AKBAR SYAKIRA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 18,
+     "name": "M.ALVIN DWI GUNA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 22,
+     "name": "DADAN AKBAR NUGRAHA",
+     "markers": [
+      "87"
+     ],
+     "on": 87,
+     "minutes": 3
+    },
+    {
+     "no": 97,
+     "name": "ZERY ALPINDO KEMBAREN",
+     "markers": [
+      "79"
+     ],
+     "on": 79,
+     "minutes": 11
+    }
+   ]
+  },
+  {
+   "id": "persika_persipa_20261126",
+   "round": 4,
+   "date": "2026-11-26",
+   "home": "PKA",
+   "away": "PIP",
+   "venue": "Stadion Manahan, Solo",
+   "att": 1962,
+   "coach": [
+    "TAUFIQ",
+    "SALAHUDDIN"
+   ],
+   "goals": [
+    {
+     "side": "h",
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "minute": "19",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "minute": "34",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "h",
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "minute": "43",
+     "note": "",
+     "source": "ileague"
+    },
+    {
+     "side": "a",
+     "no": 15,
+     "name": "ILHAM WIBOWO YUSUF",
+     "minute": "49",
+     "note": "",
+     "source": "ileague"
+    }
+   ],
+   "score": [
+    3,
+    1
+   ],
+   "home_name": "Persika Karanganyar",
+   "away_name": "Persipa Pati",
+   "xi_home": [
+    {
+     "no": 31,
+     "name": "NURI AGUS WIBOWO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 38,
+     "name": "MUSRIL",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 5,
+     "name": "IFAN IZDIHAR IYANANDA",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 21,
+     "name": "MUHAMMAD FABIAN ASLAM",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "19",
+      "34",
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 25,
+     "name": "YULFIKAR MANSUR BAYUAJI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 4,
+     "name": "ABI DEFA MARENDRA",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "74"
+     ],
+     "off": 74,
+     "minutes": 74
+    },
+    {
+     "no": 8,
+     "name": "YOGIEK FERNANDA",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "88"
+     ],
+     "off": 88,
+     "minutes": 88
+    },
+    {
+     "no": 28,
+     "name": "MOHAMAD IQBAL",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 91,
+     "name": "FEBRIAN TRI YANTO",
+     "pos": "CM",
+     "captain": false,
+     "markers": [
+      "43",
+      "64"
+     ],
+     "off": 64,
+     "minutes": 64
+    },
+    {
+     "no": 16,
+     "name": "LIONEL ZAHRA ALFARIZKI",
+     "pos": "LWF",
+     "captain": false,
+     "markers": [
+      "64"
+     ],
+     "off": 64,
+     "minutes": 64
+    },
+    {
+     "no": 23,
+     "name": "WAWAN FEBRIANTO",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "64"
+     ],
+     "off": 64,
+     "minutes": 64
+    }
+   ],
+   "subs_home": [
+    {
+     "no": 14,
+     "name": "ARIF AGUNG MUSTHOFA",
+     "markers": [
+      "88"
+     ],
+     "on": 88,
+     "minutes": 2
+    },
+    {
+     "no": 52,
+     "name": "FADHILAH TEGAR NUR AZIZ",
+     "markers": [
+      "64"
+     ],
+     "on": 64,
+     "minutes": 26
+    },
+    {
+     "no": 36,
+     "name": "RELOSA RIVAN SATRIA HUTAMA",
+     "markers": [
+      "74"
+     ],
+     "on": 74,
+     "minutes": 16
+    },
+    {
+     "no": 7,
+     "name": "REXO DOLBY CALLEPSO",
+     "markers": [
+      "64"
+     ],
+     "on": 64,
+     "minutes": 26
+    },
+    {
+     "no": 77,
+     "name": "UMAR",
+     "markers": [
+      "64"
+     ],
+     "on": 64,
+     "minutes": 26
+    }
+   ],
+   "xi_away": [
+    {
+     "no": 1,
+     "name": "ADHIEL TRISTANTO",
+     "pos": "GK",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 94,
+     "name": "DIMAS SAPUTRA",
+     "pos": "LB",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 15,
+     "name": "ILHAM WIBOWO YUSUF",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "49",
+      "80"
+     ],
+     "off": 80,
+     "minutes": 80
+    },
+    {
+     "no": 28,
+     "name": "RIONALDI MEHRAN",
+     "pos": "CB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 71,
+     "name": "MUH. AL - QADRI",
+     "pos": "RB",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 8,
+     "name": "AKHMAD RIYADI",
+     "pos": "DM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 14,
+     "name": "YOSUA RAFAEL ATALYA YOLTUWU",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 36,
+     "name": "EDGARDA FAHAR BUNTORO",
+     "pos": "AM",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    },
+    {
+     "no": 7,
+     "name": "PANDI AHMAD LESTALUHU",
+     "pos": "CF",
+     "captain": true,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 52,
+     "name": "SADDAM EMIRUDDIN GAFFAR",
+     "pos": "CF",
+     "captain": false,
+     "markers": [
+      "90"
+     ],
+     "off": 90,
+     "minutes": 90
+    },
+    {
+     "no": 99,
+     "name": "MOCHAMMAD RISAL AMIN",
+     "pos": "RWF",
+     "captain": false,
+     "markers": [
+      "45"
+     ],
+     "off": 45,
+     "minutes": 45
+    }
+   ],
+   "subs_away": [
+    {
+     "no": 17,
+     "name": "MUHAMMAD IQBAL AL GHUZAT",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 16,
+     "name": "DANHYL POETRA MARSELINHO TUKA",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    },
+    {
+     "no": 44,
+     "name": "MUHAMMAD RHAGA AL MISRI YULIANTO",
+     "markers": [
+      "80"
+     ],
+     "on": 80,
+     "minutes": 10
+    },
+    {
+     "no": 86,
+     "name": "YOHANES YAPAGAIMU",
+     "markers": [
+      "45"
+     ],
+     "on": 45,
+     "minutes": 45
+    }
+   ]
+  }
+ ],
+ "players": [
+  {
+   "club": "BTL",
+   "no": 87,
+   "name": "AHMAD RIFAL",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 315,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 1,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "BTL",
+   "no": 17,
+   "name": "RISKY DWIYAN APRILYANTO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 288,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "BTL",
+   "no": 20,
+   "name": "MOHAMMAD FEBRYANSYAH REFYAN SANUSI",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 77,
+   "name": "SANDI ARTA SAMOSIR",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 86,
+   "name": "ELVATEEH VARESIA AKHADA",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 264,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 2,
+   "red": 0,
+   "positions": {
+    "RWF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 33,
+   "name": "JOSEPH ALEXANDER KURNIAWAN",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 248,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 14,
+   "name": "MUH ARSIL ANAS",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 239,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "BTL",
+   "no": 16,
+   "name": "FACHRIZAL AHNAF MAULANA",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 237,
+   "goals": 0,
+   "pens": 0,
+   "captain": 1,
+   "yellow": 1,
+   "red": 0,
+   "positions": {
+    "CB": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 24,
+   "name": "MUH TIRTO WICAKSONO",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 204,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "BTL",
+   "no": 11,
+   "name": "ALDITO DAFFA QUARISMA",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 189,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "BTL",
+   "no": 7,
+   "name": "ANTONI PUTRO NUGROHO",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 3,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 66,
+   "name": "CHOLIS BIMA SATRIA NATANEGARA",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 178,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 3,
+   "name": "WIGANDA PRADIKA",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 175,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 12,
+   "name": "LORENZO GOMES DE OLIVIERA",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 153,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 10,
+   "name": "REYKI FARIZ RAMADHAN",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 139,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 2,
+   "red": 0,
+   "positions": {
+    "AM": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 8,
+   "name": "AIDUN SASTRA UTAMI",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 99,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "BTL",
+   "no": 81,
+   "name": "YOGI HERMAWAN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 98,
+   "name": "RAKHA ZULHILMI FASYIR",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 6,
+   "name": "MIFTHAHUL ULUMIL ULYA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 78,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 29,
+   "name": "RIAN RAMADAN",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 74,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 1,
+   "red": 0,
+   "positions": {
+    "RB": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "BTL",
+   "no": 73,
+   "name": "MUHAMMAD IQBAL DALIMUNTHE",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 13,
+   "name": "MARCELL JANUAR PUTRA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 18,
+   "name": "MUHAMMAD AULIA WIRAWAN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 33,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 19,
+   "name": "VENGKO ARMEDYA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 30,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "BTL",
+   "no": 28,
+   "name": "DHARMA JATI BINTARA PUTRA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 27,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "GRS",
+   "no": 16,
+   "name": "ADE M NUR SAIHITUA",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 7,
+   "name": "ALIF JAELANI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 344,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 33,
+   "name": "JOKO SUPRIYANTO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 315,
+   "goals": 0,
+   "pens": 0,
+   "captain": 1,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 18,
+   "name": "ALDI TRI NUGROHO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 299,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 21,
+   "name": "ABDUL RAHMAN",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 3,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "GRS",
+   "no": 24,
+   "name": "MOHAMMAD JORDAN ZAMORANO",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "GRS",
+   "no": 28,
+   "name": "SHAHIH ELANG RISHANDY",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 270,
+   "goals": 2,
+   "pens": 1,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 8,
+   "name": "M ALWI FURQON",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 243,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 99,
+   "name": "OSCAR NOVANGGA",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 238,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 15,
+   "name": "MUHAMAD FADILLA AKBAR",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 196,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "GRS",
+   "no": 23,
+   "name": "LALU MUHAMMAD RIZKI",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 13,
+   "name": "M. SYAIFULLAH SALIM",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 9,
+   "name": "DECO NOVERO PALANDI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 77,
+   "name": "SYAMIL BAHIJ IRAWAN",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 22,
+   "name": "M. DZAKI ALAMSYAH",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 167,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "GRS",
+   "no": 10,
+   "name": "RAFI HERLIAN ADINATA",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 85,
+   "name": "DIAN ARDIANSYAH",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 61,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 29,
+   "name": "MUHAMMAD BAIHAQI RIFAI",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 48,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 46,
+   "name": "WAHYU AGONG DRAJAT MULYONO",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 37,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "GRS",
+   "no": 17,
+   "name": "MAULANA ILHAM JAYA KUSUMA",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 33,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 76,
+   "name": "HUSEIN AKBAR AL FAUZI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 25,
+   "name": "AHMAD RAMDIN TUASALAMONY",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 7,
+   "name": "ERLANGGA ADHYAKSA NUGRAHA",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 1,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 18,
+   "name": "USAMA AHMAD RAIHAN",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 3,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 30,
+   "name": "ALBERT THEO WICAKSONO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 347,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 16,
+   "name": "AZHRIL SYAHDAN FABREGAS",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 299,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 79,
+   "name": "ADITHYA JORY GURUH SETIAWAN",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 294,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 4,
+   "name": "FATHUR YAN",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 284,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 6,
+   "name": "YUFRIZAL LU'AY ABIYU",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 87,
+   "name": "MUHAMMMAD ILHAMUL IRHAZ",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 252,
+   "goals": 0,
+   "pens": 0,
+   "captain": 3,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 17,
+   "name": "AFIF TEGUH SAPUTRA",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 204,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 15,
+   "name": "I MADE DWI MEIYANA PUTRA",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 135,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PBG",
+   "no": 22,
+   "name": "MUHAMMAD NAJA NAUFAL HILMI",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 108,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PBG",
+   "no": 44,
+   "name": "RESTU SETYA PRATAMA",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 11,
+   "name": "ALFANDI",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 74,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PBG",
+   "no": 32,
+   "name": "FARREL ARYA TRI SANDIKA SUPRATIKNO",
+   "starts": 0,
+   "sub_apps": 4,
+   "minutes": 66,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 4
+  },
+  {
+   "club": "PBG",
+   "no": 12,
+   "name": "ARDYA MALIK PUTRA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 52,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PBG",
+   "no": 2,
+   "name": "MUHAMMAD KHOIRUL AMIN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PBO",
+   "no": 14,
+   "name": "ALDO FERNANDI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 3,
+   "name": "CRAH EKA ANGGER ISWANTO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 4,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 6,
+   "name": "TEGAR ANDRIE SHEVANTON",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 26,
+   "name": "RIO PRATAMA VALENTINO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 18,
+   "name": "MOHAMAD SYAHRIL AFRIZAL",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 325,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 27,
+   "name": "ROMEO NIZAM ABISHA",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 324,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 2,
+    "LWF": 1,
+    "CF": 1
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 77,
+   "name": "NURDIAN SYAPUTRA CHANIAGO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 301,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 3,
+    "AM": 1
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 13,
+   "name": "MOCHAMAD ADITYA RANGGA SAPUTRA",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 297,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 8,
+   "name": "MARVIN NUGRAHA HILMANSYAH",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBO",
+   "no": 7,
+   "name": "SEHABUDIN AHMAD",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 269,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 29,
+   "name": "BASAJUMP LATUCONSINA",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 145,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBO",
+   "no": 11,
+   "name": "RIFALDI BAWUO",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 120,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBO",
+   "no": 33,
+   "name": "OCVIAN CHANIGIO",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 101,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PBO",
+   "no": 25,
+   "name": "AARON YEKTI",
+   "starts": 1,
+   "sub_apps": 3,
+   "minutes": 93,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 1
+   },
+   "apps": 4
+  },
+  {
+   "club": "PBO",
+   "no": 58,
+   "name": "ADI PURNAMA S. SUAIB",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PBO",
+   "no": 10,
+   "name": "IQBAL TRI SAPUTRA",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 75,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PBO",
+   "no": 76,
+   "name": "JOVAN JORDANTIAN SYAHWA MAULANA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 63,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PBO",
+   "no": 9,
+   "name": "KAKA PUTRA PRAMANA",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 23,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "PBO",
+   "no": 37,
+   "name": "WIRAJA ARIA FADHIL AULIA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 13,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PBO",
+   "no": 34,
+   "name": "KAFKA KHAYLA AZWA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 10,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PBO",
+   "no": 38,
+   "name": "AZRIL DECO NORMADHANY",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 4,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 71,
+   "name": "MUH. AL - QADRI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 8,
+   "name": "AKHMAD RIYADI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 337,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 17,
+   "name": "MUHAMMAD IQBAL AL GHUZAT",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 315,
+   "goals": 0,
+   "pens": 0,
+   "captain": 3,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 16,
+   "name": "DANHYL POETRA MARSELINHO TUKA",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 288,
+   "goals": 2,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 88,
+   "name": "ARIFIN SETYADI",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PIP",
+   "no": 5,
+   "name": "IMAM MAHMUDI",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PIP",
+   "no": 99,
+   "name": "MOCHAMMAD RISAL AMIN",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 44,
+   "name": "MUHAMMAD RHAGA AL MISRI YULIANTO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 263,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 36,
+   "name": "EDGARDA FAHAR BUNTORO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 244,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 14,
+   "name": "YOSUA RAFAEL ATALYA YOLTUWU",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 224,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "PIP",
+   "no": 47,
+   "name": "HERSYA SCIFO",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 199,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PIP",
+   "no": 86,
+   "name": "YOHANES YAPAGAIMU",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 160,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PIP",
+   "no": 52,
+   "name": "SADDAM EMIRUDDIN GAFFAR",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 124,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PIP",
+   "no": 7,
+   "name": "PANDI AHMAD LESTALUHU",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 121,
+   "goals": 0,
+   "pens": 0,
+   "captain": 1,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PIP",
+   "no": 10,
+   "name": "FRITY ARMAN",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 117,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PIP",
+   "no": 15,
+   "name": "ILHAM WIBOWO YUSUF",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 97,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PIP",
+   "no": 1,
+   "name": "ADHIEL TRISTANTO",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 28,
+   "name": "RIONALDI MEHRAN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 94,
+   "name": "DIMAS SAPUTRA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 19,
+   "name": "MOCH REZA ANDREA ARSHAVIN",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 34,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 67,
+   "name": "RIDUWAN JAMIL",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 23,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 30,
+   "name": "GADA RAMADHAN",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 8,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PIP",
+   "no": 9,
+   "name": "QISCHIL GANDRUM MINNY",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 7,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "PIP",
+   "no": 24,
+   "name": "ALFONS RIZAL SAMAN",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 4,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PKA",
+   "no": 31,
+   "name": "NURI AGUS WIBOWO",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 28,
+   "name": "MOHAMAD IQBAL",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 315,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 8,
+   "name": "YOGIEK FERNANDA",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 292,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 25,
+   "name": "YULFIKAR MANSUR BAYUAJI",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 291,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 38,
+   "name": "MUSRIL",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 283,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 16,
+   "name": "LIONEL ZAHRA ALFARIZKI",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 267,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 23,
+   "name": "WAWAN FEBRIANTO",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 233,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PKA",
+   "no": 91,
+   "name": "FEBRIAN TRI YANTO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 222,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 4,
+   "name": "ABI DEFA MARENDRA",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 203,
+   "goals": 0,
+   "pens": 0,
+   "captain": 1,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PKA",
+   "no": 18,
+   "name": "M. SYAIFUL ASRI",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 5,
+   "name": "IFAN IZDIHAR IYANANDA",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 21,
+   "name": "MUHAMMAD FABIAN ASLAM",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 167,
+   "goals": 3,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 1,
+   "red": 0,
+   "positions": {
+    "RB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 77,
+   "name": "UMAR",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 145,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 1,
+   "red": 0,
+   "positions": {
+    "RB": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "PKA",
+   "no": 12,
+   "name": "RONI SUGENG ARIYANTO",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 138,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PKA",
+   "no": 17,
+   "name": "MUHAMMAD RIO SAPUTRO",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 135,
+   "goals": 0,
+   "pens": 0,
+   "captain": 2,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 3,
+   "name": "DHANU SYAH PUTRA",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 135,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 52,
+   "name": "FADHILAH TEGAR NUR AZIZ",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 93,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PKA",
+   "no": 11,
+   "name": "REYHAN FIRDAUS",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 7,
+   "name": "REXO DOLBY CALLEPSO",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 86,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PKA",
+   "no": 19,
+   "name": "IBNUL MUBARAK",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 69,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PKA",
+   "no": 6,
+   "name": "MOCHAMAD RAGIL YUSUF SAPUTRA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PKA",
+   "no": 36,
+   "name": "RELOSA RIVAN SATRIA HUTAMA",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 29,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 1,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "PKA",
+   "no": 14,
+   "name": "ARIF AGUNG MUSTHOFA",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 2,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 19,
+   "name": "NANDA HELVRIT SAPUTRA",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 338,
+   "goals": 0,
+   "pens": 0,
+   "captain": 2,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PNG",
+   "no": 77,
+   "name": "MUHAMAD FIRMAN JANUARI",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 317,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PNG",
+   "no": 3,
+   "name": "SYARFUL MUDAWAM",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 286,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PNG",
+   "no": 66,
+   "name": "MUCH ILHAM NOER",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 283,
+   "goals": 2,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PNG",
+   "no": 96,
+   "name": "FAHMI IDRIS",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 8,
+   "name": "DEJAN ALIKHA MUHAMMAD",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 27,
+   "name": "ADITYA SENTOSA",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 202,
+   "goals": 1,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "PNG",
+   "no": 15,
+   "name": "BAGAS AGUNG UTOMO",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 180,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PNG",
+   "no": 18,
+   "name": "M.ALVIN DWI GUNA",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 167,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 13,
+   "name": "IKBAL KHADAFI",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 164,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 1,
+    "RB": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 14,
+   "name": "BATHSYA DEWA APRILLIANO",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 159,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 21,
+   "name": "AKBAR SYAKIRA",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 157,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 57,
+   "name": "QOYUM NAZALUDIN MUHAMAD",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 148,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 22,
+   "name": "DADAN AKBAR NUGRAHA",
+   "starts": 1,
+   "sub_apps": 2,
+   "minutes": 141,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 1
+   },
+   "apps": 3
+  },
+  {
+   "club": "PNG",
+   "no": 11,
+   "name": "DIMAS GALIH GUMILANG",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 134,
+   "goals": 0,
+   "pens": 0,
+   "captain": 2,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PNG",
+   "no": 25,
+   "name": "JOHANES EDWARD SUBROTO",
+   "starts": 2,
+   "sub_apps": 0,
+   "minutes": 126,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 2
+   },
+   "apps": 2
+  },
+  {
+   "club": "PNG",
+   "no": 7,
+   "name": "REZZA MAULANA FAHRULLAH",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 1,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 34,
+   "name": "MUHAMAD SURYANULLOH",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 16,
+   "name": "ZAM ZAM SOVIA AROPA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CM": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 17,
+   "name": "SAMSUL ALAM",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 87,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PNG",
+   "no": 9,
+   "name": "MOH.NASRUL ARIFIN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 68,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 9,
+   "name": "MOH. NASRUL ARIFIN",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 20,
+   "name": "ARFAMUZI",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 42,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 99,
+   "name": "MUHAMAD GAOSHIROWI",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 32,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 4,
+   "name": "RONALD AFFRIZAL ARDIANSYAH PUTRA SABATH",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 22,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 97,
+   "name": "ZERY ALPINDO KEMBAREN",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 11,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PNG",
+   "no": 10,
+   "name": "DAMAR YUDHISTIRA PANGESTU",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 9,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PSF",
+   "no": 21,
+   "name": "FIRMANSYAH",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 360,
+   "goals": 0,
+   "pens": 0,
+   "captain": 3,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 90,
+   "name": "JOHAN YOGA UTAMA",
+   "starts": 4,
+   "sub_apps": 0,
+   "minutes": 354,
+   "goals": 4,
+   "pens": 2,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 4
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 9,
+   "name": "AHMAD ATHALLAH ARAIHAN",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 20,
+   "name": "DAVA ARYULA SIREGAR",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 270,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 87,
+   "name": "FATHUL IHSAN",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 266,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 29,
+   "name": "FAHRI AKBAR ROMADHON",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 256,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 99,
+   "name": "KEVIN AL HAFIZ",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 239,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 11,
+   "name": "MOCH. ALEX SANDRO",
+   "starts": 3,
+   "sub_apps": 1,
+   "minutes": 233,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 3
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 15,
+   "name": "MUHAMMAD SURYA MAULANA",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 201,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 14,
+   "name": "DIFO PRASETYA",
+   "starts": 2,
+   "sub_apps": 2,
+   "minutes": 199,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 2
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 22,
+   "name": "FAJAR IHSANUDIN",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 192,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "DM": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 7,
+   "name": "RIDWAN ANSORI",
+   "starts": 3,
+   "sub_apps": 0,
+   "minutes": 188,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 3
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 30,
+   "name": "OKY KHARISMA",
+   "starts": 2,
+   "sub_apps": 1,
+   "minutes": 175,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LB": 2
+   },
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 10,
+   "name": "KOMARODIN",
+   "starts": 1,
+   "sub_apps": 3,
+   "minutes": 129,
+   "goals": 2,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RWF": 1
+   },
+   "apps": 4
+  },
+  {
+   "club": "PSF",
+   "no": 12,
+   "name": "FIGO FIRMANSYAH",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 101,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "AM": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PSF",
+   "no": 75,
+   "name": "RIO FERNANDO DWI ARDIANSYAH",
+   "starts": 1,
+   "sub_apps": 1,
+   "minutes": 94,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "CB": 1
+   },
+   "apps": 2
+  },
+  {
+   "club": "PSF",
+   "no": 86,
+   "name": "WAHYU TRI NUGROHO",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "GK": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PSF",
+   "no": 27,
+   "name": "ZIDANE ALZIZOU LUBIS",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "PSF",
+   "no": 51,
+   "name": "AIRLANGGA MUTAMASIQDINA",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 90,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "RB": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PSF",
+   "no": 76,
+   "name": "RADITYA ILHAM PRAMANA",
+   "starts": 0,
+   "sub_apps": 3,
+   "minutes": 64,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 3
+  },
+  {
+   "club": "PSF",
+   "no": 8,
+   "name": "FREZY AL HUDAIFI",
+   "starts": 1,
+   "sub_apps": 0,
+   "minutes": 45,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {
+    "LWF": 1
+   },
+   "apps": 1
+  },
+  {
+   "club": "PSF",
+   "no": 18,
+   "name": "DONA SAPUTRA",
+   "starts": 0,
+   "sub_apps": 2,
+   "minutes": 41,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 2
+  },
+  {
+   "club": "PSF",
+   "no": 40,
+   "name": "MUHAMMAD FAHRUL ROJDI",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 11,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  },
+  {
+   "club": "PSF",
+   "no": 26,
+   "name": "CHARLES GEORGE RUMAROPEN",
+   "starts": 0,
+   "sub_apps": 1,
+   "minutes": 2,
+   "goals": 0,
+   "pens": 0,
+   "captain": 0,
+   "yellow": 0,
+   "red": 0,
+   "positions": {},
+   "apps": 1
+  }
+ ],
+ "fixtures_next": [
+  {
+   "round": 5,
+   "date": "2026-11-30",
+   "home": "PNG",
+   "away": "PBO"
+  },
+  {
+   "round": 5,
+   "date": "2026-11-30",
+   "home": "GRS",
+   "away": "PIP"
+  },
+  {
+   "round": 5,
+   "date": "2026-11-30",
+   "home": "PBG",
+   "away": "BTL"
+  },
+  {
+   "round": 5,
+   "date": "2026-11-30",
+   "home": "PKA",
+   "away": "PSF"
+  }
+ ],
+ "persiba_remaining": [
+  {
+   "round": 5,
+   "date": "2026-11-30",
+   "home": "PBG",
+   "away": "BTL"
+  },
+  {
+   "round": 6,
+   "date": "2026-12-04",
+   "home": "PBO",
+   "away": "BTL"
+  },
+  {
+   "round": 7,
+   "date": "2026-12-08",
+   "home": "BTL",
+   "away": "PSF"
+  },
+  {
+   "round": 8,
+   "date": "2026-12-12",
+   "home": "PKA",
+   "away": "BTL"
+  },
+  {
+   "round": 9,
+   "date": "2026-12-16",
+   "home": "PNG",
+   "away": "BTL"
+  },
+  {
+   "round": 10,
+   "date": "2026-12-20",
+   "home": "BTL",
+   "away": "PBO"
+  }
+ ],
+ "minutes_note": "Minutes are approximate (substitution minutes inferred from unlabeled page markers)."
+}

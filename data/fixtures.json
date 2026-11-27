@@ -1,9 +1,96 @@
 {
   "competition": "Liga Nusantara 2026-27",
-  "updated": "2026-11-18",
+  "updated": "2026-11-27",
   "source": "ileague.id",
-  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "note": "Group B: full results, scorers and W/D/L from the ileague match pages (rounds 1-4). Groups A/C: points from ileague; only Pekan 2 results kept. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
   "fixtures": [
+    {
+      "date": "2026-11-13",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 0,
+      "away": "GRS",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-13",
+      "home": "PBO",
+      "hg": 0,
+      "ag": 0,
+      "away": "PIP",
+      "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-13",
+      "home": "PKA",
+      "hg": 1,
+      "ag": 0,
+      "away": "PNG",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [
+        "M. Syaiful Asri 88'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-14",
+      "home": "PSF",
+      "hg": 2,
+      "ag": 0,
+      "away": "PBG",
+      "venue": "Stadion Gelora Soepriadi, Blitar",
+      "round": "Pekan 1",
+      "group": "B",
+      "scorers_home": [
+        "Johan Yoga Utama 47' (p)",
+        "Johan Yoga Utama 74'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-17",
+      "home": "GRS",
+      "hg": 1,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Stadion Gelora Joko Samudro, Gresik",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Maulana Ilham Jaya Kusuma 78'"
+      ],
+      "scorers_away": [
+        "Rexo Dolby Callepso 90+3'"
+      ]
+    },
+    {
+      "date": "2026-11-17",
+      "home": "PIP",
+      "hg": 2,
+      "ag": 2,
+      "away": "BTL",
+      "venue": "Stadion Moch. Soebroto, Magelang",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Danhyl Poetra Marselinho Tuka 15'",
+        "Danhyl Poetra Marselinho Tuka 58'"
+      ],
+      "scorers_away": [
+        "Elvateeh Varesia Akhada 9'",
+        "Muh Arsil Anas 51'"
+      ]
+    },
     {
       "date": "2026-11-17",
       "home": "PKN",
@@ -11,7 +98,8 @@
       "ag": 2,
       "away": "PKB",
       "venue": "Stadion Galuh Ciamis",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-17",
@@ -20,7 +108,8 @@
       "ag": 0,
       "away": "PKO",
       "venue": "Trisanja",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-17",
@@ -29,61 +118,8 @@
       "ag": 0,
       "away": "PJU",
       "venue": "Kebogiro",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-17",
-      "home": "PIP",
-      "hg": 2,
-      "ag": 2,
-      "away": "BTL",
-      "venue": "Moch. Soebroto",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-17",
-      "home": "GRS",
-      "hg": 1,
-      "ag": 1,
-      "away": "PKA",
-      "venue": "Gelora Joko Samudro",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PNG",
-      "hg": 1,
-      "ag": 2,
-      "away": "PSF",
-      "venue": "Stadion Ketonggo Ngawi",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PBG",
-      "hg": 2,
-      "ag": 1,
-      "away": "PBO",
-      "venue": "Trisanja",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PSU",
-      "hg": 0,
-      "ag": 1,
-      "away": "PKP",
-      "venue": "UNS",
-      "round": "Pekan 2"
-    },
-    {
-      "date": "2026-11-18",
-      "home": "PNB",
-      "hg": 1,
-      "ag": 1,
-      "away": "PSD",
-      "venue": "Brawijaya",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "A"
     },
     {
       "date": "2026-11-18",
@@ -92,7 +128,25 @@
       "ag": 3,
       "away": "DON",
       "venue": "Gelora Joko Samudro",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PBG",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBO",
+      "venue": "Stadion Trisanja, Tegal",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Usama Ahmad Raihan 32'",
+        "Farrel Arya Tri Sandika Supratikno 90+4'"
+      ],
+      "scorers_away": [
+        "Sehabudin Ahmad 48'"
+      ]
     },
     {
       "date": "2026-11-18",
@@ -101,7 +155,289 @@
       "ag": 1,
       "away": "PPI",
       "venue": "Kudungga Sangatta",
-      "round": "Pekan 2"
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNB",
+      "hg": 1,
+      "ag": 1,
+      "away": "PSD",
+      "venue": "Brawijaya",
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 2,
+      "away": "PSF",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 2",
+      "group": "B",
+      "scorers_home": [
+        "Much Ilham Noer 56'"
+      ],
+      "scorers_away": [
+        "Johan Yoga Utama 22'",
+        "Komarodin 86'"
+      ]
+    },
+    {
+      "date": "2026-11-18",
+      "home": "PSU",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKP",
+      "venue": "UNS",
+      "round": "Pekan 2",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-21",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 1,
+      "away": "PKA",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Muhammad Fabian Aslam 29'"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PBO",
+      "hg": 1,
+      "ag": 1,
+      "away": "GRS",
+      "venue": "Stadion Letjen H. Soedirman, Bojonegoro",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [
+        "Iqbal Tri Saputra 79'"
+      ],
+      "scorers_away": [
+        "M. Dzaki Alamsyah 88'"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PIP",
+      "hg": 0,
+      "ag": 1,
+      "away": "PSF",
+      "venue": "Stadion Moch. Soebroto, Magelang",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Johan Yoga Utama 48' (p)"
+      ]
+    },
+    {
+      "date": "2026-11-22",
+      "home": "PNG",
+      "hg": 1,
+      "ag": 1,
+      "away": "PBG",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 3",
+      "group": "B",
+      "scorers_home": [
+        "Much Ilham Noer 67'"
+      ],
+      "scorers_away": [
+        "Usama Ahmad Raihan 27'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "BTL",
+      "hg": 0,
+      "ag": 1,
+      "away": "PNG",
+      "venue": "Stadion Sultan Agung, Bantul",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [],
+      "scorers_away": [
+        "Aditya Sentosa 29'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "GRS",
+      "hg": 2,
+      "ag": 1,
+      "away": "PBG",
+      "venue": "Stadion Gelora Joko Samudro, Gresik",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Shahih Elang Rishandy 78' (p)",
+        "Shahih Elang Rishandy 90'"
+      ],
+      "scorers_away": [
+        "Usama Ahmad Raihan 32'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "PKA",
+      "hg": 3,
+      "ag": 1,
+      "away": "PIP",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Muhammad Fabian Aslam 19'",
+        "Muhammad Fabian Aslam 34'",
+        "Febrian Tri Yanto 43'"
+      ],
+      "scorers_away": [
+        "Ilham Wibowo Yusuf 49'"
+      ]
+    },
+    {
+      "date": "2026-11-26",
+      "home": "PSF",
+      "hg": 1,
+      "ag": 0,
+      "away": "PBO",
+      "venue": "Stadion Gelora Soepriadi, Blitar",
+      "round": "Pekan 4",
+      "group": "B",
+      "scorers_home": [
+        "Komarodin 50'"
+      ],
+      "scorers_away": []
+    },
+    {
+      "date": "2026-11-29",
+      "time": "",
+      "home": "PKN",
+      "hg": null,
+      "ag": null,
+      "away": "PSK",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "",
+      "home": "PKT",
+      "hg": null,
+      "ag": null,
+      "away": "PJU",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PKB",
+      "hg": null,
+      "ag": null,
+      "away": "BAT",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "A"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PNB",
+      "hg": null,
+      "ag": null,
+      "away": "PKU",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PPI",
+      "hg": null,
+      "ag": null,
+      "away": "DON",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PSD",
+      "hg": null,
+      "ag": null,
+      "away": "PKP",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "",
+      "home": "PSU",
+      "hg": null,
+      "ag": null,
+      "away": "NGA",
+      "venue": "",
+      "round": "Pekan 5",
+      "group": "C"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:00",
+      "home": "PNG",
+      "hg": null,
+      "ag": null,
+      "away": "PBO",
+      "venue": "Stadion Ketonggo, Ngawi",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:30",
+      "home": "GRS",
+      "hg": null,
+      "ag": null,
+      "away": "PIP",
+      "venue": "Gelora Joko Samudro",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "15:30",
+      "home": "PBG",
+      "hg": null,
+      "ag": null,
+      "away": "BTL",
+      "venue": "Stadion Trisanja, Tegal",
+      "round": "Pekan 5",
+      "group": "B"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "19:00",
+      "home": "PKA",
+      "hg": null,
+      "ag": null,
+      "away": "PSF",
+      "venue": "Stadion Manahan, Solo",
+      "round": "Pekan 5",
+      "group": "B"
     }
   ]
 }

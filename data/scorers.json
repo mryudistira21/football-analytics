@@ -1,38 +1,38 @@
 {
   "competition": "Liga Nusantara 2026-27",
-  "updated": "2026-11-18",
+  "updated": "2026-11-27",
   "source": "ileague.id",
-  "note": "Snapshot. Standings show points only (ileague lists no W/D/L/GF/GA). Fixtures = Pekan 2 results. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
+  "note": "Group B: full results, scorers and W/D/L from the ileague match pages (rounds 1-4). Groups A/C: points from ileague; only Pekan 2 results kept. Kit colours are placeholders. Rebuild with scripts/build_hub_data.py.",
   "scorers": [
     {
-      "name": "JOHAN YOGA",
-      "club": "PSF",
-      "clubName": "Putra Sang Fajar FC",
-      "goals": 3
+      "name": "FERRY CAHYO",
+      "club": "BAT",
+      "clubName": "BATAVIA FC",
+      "goals": 4
     },
     {
-      "name": "FARID. F",
+      "name": "JOHAN YOGA UTAMA",
+      "club": "PSF",
+      "clubName": "Putra Sang Fajar FC",
+      "goals": 4
+    },
+    {
+      "name": "FARID F.",
       "club": "PSU",
       "clubName": "Pasuruan United",
-      "goals": 2
+      "goals": 3
     },
     {
       "name": "BETO",
       "club": "PKP",
       "clubName": "Persekabpas",
-      "goals": 2
+      "goals": 3
     },
     {
-      "name": "A. SIREGAR",
-      "club": "BAT",
-      "clubName": "BATAVIA FC",
-      "goals": 2
-    },
-    {
-      "name": "DANYL TUKA",
-      "club": "PIP",
-      "clubName": "Persipa Pati",
-      "goals": 2
+      "name": "ALDON LALU",
+      "club": "NGA",
+      "clubName": "PS Ngada",
+      "goals": 3
     }
   ]
 }
