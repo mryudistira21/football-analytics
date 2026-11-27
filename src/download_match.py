@@ -139,11 +139,16 @@ def main() -> int:
               "      Fix once with:  winget install DenoLand.Deno   (then open a new window)\n")
     base_opts = {"js_runtimes": runtimes} if runtimes else {}
     if a.cookies:
-        if not a.cookies.exists():
-            print(f"--cookies file not found: {a.cookies}")
+        ck = a.cookies
+        if ck.is_dir():   # a Kaggle dataset folder was passed: find the cookie file inside it
+            files = [p for p in sorted(ck.rglob("*")) if p.is_file()]
+            ck = next((p for p in files if "cookie" in p.name.lower()), None) \
+                or next((p for p in files if p.suffix.lower() == ".txt"), None)
+        if not ck or not ck.is_file():
+            print(f"--cookies: no cookie file found at {a.cookies}")
             return 1
-        base_opts["cookiefile"] = str(a.cookies)
-        print(f"Using cookies from {a.cookies}")
+        base_opts["cookiefile"] = str(ck)
+        print(f"Using cookies from {ck}")
 
     if a.list:
         with yt_dlp.YoutubeDL({**base_opts, "listformats": True}) as ydl:
